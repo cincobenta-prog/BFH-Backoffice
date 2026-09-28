@@ -3,7 +3,8 @@ import {
   UserRole,
   GoldenRecordCase,
   BackOfficeTab,
-  CasePhase
+  CasePhase,
+  DirectorProfile
 } from '../../lib/types/funeral';
 import {
   DollarSign,
@@ -29,7 +30,9 @@ import {
   ScrollText,
   UserCheck,
   Lock,
-  Printer
+  Printer,
+  FileCheck,
+  Landmark
 } from 'lucide-react';
 
 interface BackOfficeLayoutProps {
@@ -53,6 +56,11 @@ interface BackOfficeLayoutProps {
   onOpenPrintAP47?: () => void;
   onAdvancePhase?: (caseId: string, nextPhase: CasePhase) => void;
   onOpenTwoWaySmsModal?: (requestId?: string) => void;
+  onOpenDocuSignModal?: () => void;
+  onOpenQuickBooksModal?: () => void;
+  currentDirectorId?: string;
+  onChangeDirectorId?: (id: string) => void;
+  directorProfiles?: DirectorProfile[];
 }
 
 export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
@@ -75,7 +83,12 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onOpenContractModal,
   onOpenPrintAP47,
   onAdvancePhase,
-  onOpenTwoWaySmsModal
+  onOpenTwoWaySmsModal,
+  onOpenDocuSignModal,
+  onOpenQuickBooksModal,
+  currentDirectorId,
+  onChangeDirectorId,
+  directorProfiles
 }) => {
   const roleBadges: Record<UserRole, { label: string; color: string; desc: string }> = {
     manager: {
@@ -240,6 +253,30 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               </button>
             )}
 
+            {/* DocuSign Legal eSign Modal Launcher */}
+            {onOpenDocuSignModal && (
+              <button
+                onClick={onOpenDocuSignModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#21409a]/10 hover:bg-[#21409a]/20 text-[#21409a] border border-[#21409a]/30 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Open DocuSign NYS ESRA Legal E-Signature Hub"
+              >
+                <FileCheck className="w-3.5 h-3.5 text-[#21409a] group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">DocuSign Hub</span>
+              </button>
+            )}
+
+            {/* QuickBooks Online Sync Modal Launcher */}
+            {onOpenQuickBooksModal && (
+              <button
+                onClick={onOpenQuickBooksModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#2ca01c]/10 hover:bg-[#2ca01c]/20 text-[#2ca01c] border border-[#2ca01c]/30 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Open QuickBooks Online Accounting & Invoicing Integration"
+              >
+                <Landmark className="w-3.5 h-3.5 text-[#2ca01c] group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">QuickBooks Sync</span>
+              </button>
+            )}
+
             {/* Print Form AP-47 Quick Action */}
             {onOpenPrintAP47 && (
               <button
@@ -312,14 +349,28 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
           </span>
         </div>
 
-        {/* Live Golden Record Architecture Status */}
-        <div className="flex items-center space-x-4 text-[11px] text-neutral-600 font-medium">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-            Zero Transcription Engine: <strong className="text-neutral-900 font-bold">Active</strong>
-          </span>
+        {/* Live Director Persona & Golden Record Status */}
+        <div className="flex flex-wrap items-center space-x-3 text-[11px] text-neutral-600 font-medium">
+          {directorProfiles && onChangeDirectorId && (
+            <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-neutral-300 shadow-2xs">
+              <span className="text-neutral-500 font-semibold">Active Director:</span>
+              <select
+                value={currentDirectorId || 'dir-fd-1'}
+                onChange={(e) => onChangeDirectorId(e.target.value)}
+                className="bg-transparent font-bold text-neutral-900 text-xs outline-none cursor-pointer"
+              >
+                {directorProfiles.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.roleType === 'manager' ? '👑 [Manager] ' : '👔 [LFD] '}
+                    {d.name} ({d.activeCasesCount || 0} cases)
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <span className="hidden sm:inline text-neutral-300">|</span>
-          <span className="hidden sm:inline">
+          <span className="hidden md:inline">
             Director in Charge: <strong className="text-neutral-900">{activeCase.assignedDirector}</strong>
           </span>
         </div>

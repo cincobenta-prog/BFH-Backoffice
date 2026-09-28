@@ -76,6 +76,8 @@ import { ManagerDirectorSchedulingView } from './components/backoffice/ManagerDi
 import { ManagerPinLoginModal } from './components/backoffice/ManagerPinLoginModal';
 import { DirectorAssignmentModal } from './components/backoffice/DirectorAssignmentModal';
 import { PrintableFormAP47Modal } from './components/backoffice/PrintableFormAP47Modal';
+import { DocuSignEnvelopeModal } from './components/backoffice/DocuSignEnvelopeModal';
+import { QuickBooksSyncModal } from './components/backoffice/QuickBooksSyncModal';
 
 // Family Portal Component (with full 9-Part Obituary Writer Suite)
 import { FamilyPortalView } from './components/family/FamilyPortalView';
@@ -202,12 +204,33 @@ export function App() {
   const [currentRole, setCurrentRole] = useState<UserRole>('director');
   const [backOfficeTab, setBackOfficeTab] = useState<BackOfficeTab>('dashboard');
 
+  // Current Active Funeral Director (for director-level case filtering & claiming)
+  const [currentDirectorId, setCurrentDirectorId] = useState<string>('dir-fd-1'); // Default Marcus Vance
+
   // Modals
   const [isArrangerOpen, setIsArrangerOpen] = useState(false);
   const [isESignOpen, setIsESignOpen] = useState(false);
   const [targetESignDoc, setTargetESignDoc] = useState<DocumentItem | null>(null);
   const [isWoodlawnDispatchOpen, setIsWoodlawnDispatchOpen] = useState(false);
   const [selectedServiceOption, setSelectedServiceOption] = useState<string>('full_cremation');
+
+  // DocuSign Legal eSign Suite State
+  const [isDocuSignModalOpen, setIsDocuSignModalOpen] = useState(false);
+  const [docuSignTargetCase, setDocuSignTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  const handleOpenDocuSignModal = (c?: GoldenRecordCase) => {
+    setDocuSignTargetCase(c || activeCase);
+    setIsDocuSignModalOpen(true);
+  };
+
+  // QuickBooks Online Financial Integration State
+  const [isQuickBooksModalOpen, setIsQuickBooksModalOpen] = useState(false);
+  const [quickBooksTargetCase, setQuickBooksTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  const handleOpenQuickBooksModal = (c?: GoldenRecordCase) => {
+    setQuickBooksTargetCase(c || activeCase);
+    setIsQuickBooksModalOpen(true);
+  };
 
   const activeCase = cases.find(c => c.id === activeCaseId) || cases[0];
 
@@ -557,6 +580,138 @@ export function App() {
     }));
   };
 
+  // Case Claiming Handler (Each funeral director claims case before arrangements and after appointment made)
+  const handleClaimCase = (caseId: string) => {
+    const director = directorProfiles.find(d => d.id === currentDirectorId) || directorProfiles[2];
+    setCases(prev => prev.map(c => {
+      if (c.id === caseId) {
+        return {
+          ...c,
+          caseClaimStatus: 'claimed' as const,
+          assignedDirectorId: director.id,
+          assignedDirector: `${director.name} (${director.licenseNumber || 'LFD'})`,
+          notes: [
+            {
+              id: `note-${Date.now()}`,
+              author: 'Case Claiming Engine',
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              text: `Case officially claimed by Licensed Funeral Director ${director.name} (${director.licenseNumber || 'LFD'}) prior to family arrangement conference.`
+            },
+            ...c.notes
+          ]
+        };
+      }
+      return c;
+    }));
+
+    handleSendNotification({
+      id: `notif-${Date.now()}`,
+      caseId: caseId,
+      decedentName: activeCase?.decedent?.legalName || 'Active Case',
+      recipientName: director.name,
+      recipientPhone: director.phone,
+      channel: 'sms',
+      type: 'portal_update',
+      title: '🎯 Case Claimed Successfully',
+      bodyText: `You have claimed responsibility for Case ${caseId}. Proceed with family arrangement conference and Form AP-47.`,
+      sentAt: 'Just now',
+      status: 'delivered'
+    });
+  };
+
+  // Manager Override Handler (Managers can reassign cases & staff to tasks)
+  const handleOverrideDirector = (caseId: string, newDirectorId: string) => {
+    const targetDir = directorProfiles.find(d => d.id === newDirectorId);
+    if (!targetDir) return;
+
+    setCases(prev => prev.map(c => {
+      if (c.id === caseId) {
+        return {
+          ...c,
+          caseClaimStatus: 'claimed' as const,
+          assignedDirectorId: targetDir.id,
+          assignedDirector: `${targetDir.name} (${targetDir.licenseNumber || 'LFD'})`,
+          notes: [
+            {
+              id: `note-${Date.now()}`,
+              author: 'Executive Manager Override',
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              text: `Managerial staff reassignment: Case director overridden to ${targetDir.name} (${targetDir.licenseNumber || 'LFD'}).`
+            },
+            ...c.notes
+          ]
+        };
+      }
+      return c;
+    }));
+
+    handleSendNotification({
+      id: `notif-${Date.now()}`,
+      caseId: caseId,
+      decedentName: "Manager Roster Control",
+      recipientName: targetDir.name,
+      recipientPhone: targetDir.phone,
+      channel: 'sms',
+      type: 'partner_dispatch',
+      title: '👔 Case Responsibility Reassigned',
+      bodyText: `Executive Management has assigned you as lead director for Case ${caseId}.`,
+      sentAt: 'Just now',
+      status: 'delivered'
+    });
+  };
+
+  // DocuSign Save Handler
+  const handleSaveDocuSign = (caseId: string, envelopeData: any) => {
+    const caseToUpdate = cases.find(c => c.id === caseId) || docuSignTargetCase || activeCase;
+    const isSigned = envelopeData.status === 'completed';
+
+    const updatedDocs = caseToUpdate.documents.map(d => {
+      if (envelopeData.documentIds?.includes(d.id) && isSigned) {
+        return {
+          ...d,
+          status: 'signed' as DocumentStatus,
+          signedTimestamp: envelopeData.signedAt || new Date().toLocaleString(),
+          lastUpdated: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+      }
+      return d;
+    });
+
+    handleUpdateCase({
+      ...caseToUpdate,
+      docusignEnvelope: envelopeData,
+      currentPhase: isSigned && caseToUpdate.currentPhase === 'legal_bundle' ? 'permits_logistics' : caseToUpdate.currentPhase,
+      documents: updatedDocs,
+      notes: [
+        {
+          id: `note-${Date.now()}`,
+          author: 'DocuSign NYS ESRA Bridge',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `DocuSign envelope [${envelopeData.envelopeId}] status updated to: ${envelopeData.status.toUpperCase()}. Signer: ${envelopeData.recipientEmail}. Verification: ${envelopeData.idVerificationMethod}.`
+        },
+        ...caseToUpdate.notes
+      ]
+    });
+  };
+
+  // QuickBooks Sync Save Handler
+  const handleSaveQuickBooksSync = (caseId: string, syncData: any) => {
+    const caseToUpdate = cases.find(c => c.id === caseId) || quickBooksTargetCase || activeCase;
+    handleUpdateCase({
+      ...caseToUpdate,
+      quickbooksSync: syncData,
+      notes: [
+        {
+          id: `note-${Date.now()}`,
+          author: 'QuickBooks Online Sync Engine',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `QuickBooks Online sync complete! Customer Invoice #${syncData.invoiceNumber} ($${syncData.syncedAmount?.toFixed(2) || caseToUpdate.totalAmountDue.toFixed(2)}) created. ACH Bank match active.`
+        },
+        ...caseToUpdate.notes
+      ]
+    });
+  };
+
   const handleCaseCreatedFromArranger = (newCase: GoldenRecordCase) => {
     setCases(prev => [newCase, ...prev]);
     setActiveCaseId(newCase.id);
@@ -659,6 +814,11 @@ export function App() {
           onOpenPrintAP47={() => handleOpenPrintAP47Modal(activeCase)}
           onAdvancePhase={handleUpdateCasePhase}
           onOpenTwoWaySmsModal={handleOpenTwoWaySmsModal}
+          onOpenDocuSignModal={() => handleOpenDocuSignModal(activeCase)}
+          onOpenQuickBooksModal={() => handleOpenQuickBooksModal(activeCase)}
+          currentDirectorId={currentDirectorId}
+          onChangeDirectorId={setCurrentDirectorId}
+          directorProfiles={directorProfiles}
         />
 
         <main className="flex-1 overflow-y-auto">
@@ -700,6 +860,13 @@ export function App() {
               onUpdateCasePhase={handleUpdateCasePhase}
               onSendNotification={handleSendNotification}
               currentRole={currentRole}
+              currentDirectorId={currentDirectorId}
+              onChangeDirectorId={setCurrentDirectorId}
+              directorProfiles={directorProfiles}
+              onClaimCase={handleClaimCase}
+              onOverrideDirector={handleOverrideDirector}
+              onOpenDocuSignModal={(targetCase) => handleOpenDocuSignModal(targetCase)}
+              onOpenQuickBooksModal={(targetCase) => handleOpenQuickBooksModal(targetCase)}
             />
           )}
 
@@ -757,6 +924,7 @@ export function App() {
             <FacilityCalendarView
               cases={cases}
               events={calendarEvents}
+              directorProfiles={directorProfiles}
               onAddEvent={handleAddCalendarEvent}
               onSelectCase={(c) => {
                 setActiveCaseId(c.id);
@@ -880,6 +1048,7 @@ export function App() {
                   splitBilling: updatedBilling
                 });
               }}
+              onOpenQuickBooks={(targetCase) => handleOpenQuickBooksModal(targetCase)}
             />
           )}
 
@@ -1189,6 +1358,34 @@ export function App() {
           }}
           caseData={printAP47TargetCase || activeCase}
         />
+
+        {/* DocuSign NYS ESRA Compliant Legal E-Signature Hub Modal */}
+        {isDocuSignModalOpen && (
+          <DocuSignEnvelopeModal
+            isOpen={isDocuSignModalOpen}
+            onClose={() => {
+              setIsDocuSignModalOpen(false);
+              setDocuSignTargetCase(null);
+            }}
+            activeCase={docuSignTargetCase || activeCase}
+            onSaveEnvelope={(env) => handleSaveDocuSign((docuSignTargetCase || activeCase).id, env)}
+            onSendNotification={handleSendNotification}
+          />
+        )}
+
+        {/* QuickBooks Online Accounting & Invoicing Integration Modal */}
+        {isQuickBooksModalOpen && (
+          <QuickBooksSyncModal
+            isOpen={isQuickBooksModalOpen}
+            onClose={() => {
+              setIsQuickBooksModalOpen(false);
+              setQuickBooksTargetCase(null);
+            }}
+            activeCase={quickBooksTargetCase || activeCase}
+            onSaveSync={(syncData) => handleSaveQuickBooksSync((quickBooksTargetCase || activeCase).id, syncData)}
+            onSendNotification={handleSendNotification}
+          />
+        )}
       </div>
     );
   }

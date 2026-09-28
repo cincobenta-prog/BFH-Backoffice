@@ -10,11 +10,13 @@ import {
 interface FinancialVerificationCenterProps {
   caseData: GoldenRecordCase;
   onUpdateBilling: (updatedBilling: SplitBillingItem[]) => void;
+  onOpenQuickBooks?: (targetCase: GoldenRecordCase) => void;
 }
 
 export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterProps> = ({
   caseData,
-  onUpdateBilling
+  onUpdateBilling,
+  onOpenQuickBooks
 }) => {
   const [showAddPayer, setShowAddPayer] = useState(false);
   const [payerType, setPayerType] = useState<SplitBillingItem['payerType']>('Life Insurance Assignment');
@@ -96,6 +98,19 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          {onOpenQuickBooks && (
+            <button
+              onClick={() => onOpenQuickBooks(caseData)}
+              className="bg-[#2ca01c] hover:bg-[#238016] text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm"
+              title="Sync Invoices and Bills directly with QuickBooks Online"
+            >
+              <FileCheck2 className="w-3.5 h-3.5" />
+              <span>
+                {caseData.quickbooksSync?.syncStatus === 'synced' ? 'QuickBooks: Synced ✓' : 'QuickBooks Online Sync'}
+              </span>
+            </button>
+          )}
+
           <button
             onClick={() => setShowAddPayer(true)}
             className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40"

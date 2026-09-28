@@ -195,6 +195,38 @@ export interface GoldenRecordCase {
   safeArrivalStatus: 'pending_removal' | 'in_transit' | 'safe_arrival_confirmed';
   safeArrivalTimestamp?: string;
   assignedDirector: string;
+  assignedDirectorId?: string;
+  caseClaimStatus?: 'unclaimed' | 'claimed' | 'reassigned';
+  appointmentScheduled?: boolean;
+  appointmentDate?: string;
+  appointmentTime?: string;
+
+  quickbooksSync?: {
+    invoiceNumber?: string;
+    syncStatus: 'not_synced' | 'synced' | 'pending';
+    lastSyncedAt?: string;
+    qboInvoiceId?: string;
+    balanceRemaining?: number;
+    totalAmount?: number;
+    billsGenerated?: Array<{
+      vendorName: string;
+      category: string;
+      amount: number;
+      billNumber: string;
+      status: 'synced' | 'pending';
+    }>;
+  };
+
+  docusignEnvelope?: {
+    envelopeId?: string;
+    status: 'not_sent' | 'sent' | 'delivered' | 'id_verified' | 'completed' | 'declined';
+    nokIdVerified: boolean;
+    idVerificationMethod?: 'Govt ID + SMS OTP' | 'Knowledge-Based (KBA)' | 'Direct eSign';
+    sentAt?: string;
+    completedAt?: string;
+    certificateUrl?: string;
+    documentsIncluded?: string[];
+  };
 
   decedent: DecedentInfo;
   informant: InformantInfo;
@@ -273,6 +305,7 @@ export interface RoomScheduleEvent {
   endTime: string; // HH:MM
   serviceType: 'Memorial Service' | 'Viewing / Wake' | 'Family Visitation' | 'Arrangement Conference' | 'Preparation / Restorative' | 'Pre-Need Consultation' | 'Repast Gathering';
   assignedDirector: string;
+  assignedDirectorId?: string;
   officiantName?: string;
   organistOrMusic?: string;
   livestreamActive?: boolean;
@@ -1068,11 +1101,21 @@ export type DirectorType = 'in_house' | 'outsourced';
 
 export type DirectorAvailabilityStatus = 'available' | 'on_service' | 'scheduled_off' | 'near_overtime';
 
+export interface DirectorColorTheme {
+  name: string;
+  primary: string;
+  badgeBg: string;
+  calendarBg: string;
+  border: string;
+  text: string;
+}
+
 export interface DirectorProfile {
   id: string;
   name: string;
   licenseNumber: string; // NYS LFD #
   type: DirectorType;
+  roleType: 'manager' | 'funeral_director';
   title: string;
   phone: string;
   email: string;
@@ -1080,6 +1123,7 @@ export interface DirectorProfile {
   specialties: string[];
   rating: number;
   status: DirectorAvailabilityStatus;
+  colorTheme: DirectorColorTheme;
   
   // In-House Staff Specifics
   weeklyHoursLogged?: number;
