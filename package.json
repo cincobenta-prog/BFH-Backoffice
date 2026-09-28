@@ -1,7 +1,8 @@
 {
-  "name": "point-intl",
+  "name": "bfh-backoffice",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "BFH Backoffice (Version 2) - Golden Record & Director Operations Management System",
   "type": "module",
   "scripts": {
     "dev": "vite",

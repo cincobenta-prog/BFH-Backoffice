@@ -158,10 +158,10 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
 
             <div className="flex items-center space-x-2">
               <span className="font-serif-title font-bold text-[#991b1b] text-base tracking-wide">
-                BFH OS
+                BFH Backoffice
               </span>
-              <span className="text-[11px] text-[#b45309] uppercase tracking-widest font-bold hidden md:inline">
-                Golden Record v3.0
+              <span className="text-[11px] bg-amber-100 text-[#b45309] px-2 py-0.5 rounded uppercase tracking-widest font-bold hidden md:inline border border-amber-300">
+                Version 2
               </span>
             </div>
           </div>
