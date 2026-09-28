@@ -541,7 +541,8 @@ export type FlightChecklistActionType =
   | 'open_livery'
   | 'open_partner_sms'
   | 'open_finances'
-  | 'open_aftercare';
+  | 'open_aftercare'
+  | 'open_cash_advance_checks';
 
 export interface CaseFlightChecklistItem {
   id: string;
@@ -1080,6 +1081,53 @@ export interface StatementOfGoodsSectionIV {
   termsLateChargePercent: number;
 }
 
+export type CashAdvanceCategory =
+  | 'cemetery_interment'
+  | 'crematory_fee'
+  | 'clergy_officiant'
+  | 'death_certificates'
+  | 'organist_musician'
+  | 'evital_edrs_filing'
+  | 'livery_tolls'
+  | 'newspaper_obituary'
+  | 'pallbearer_gratuity'
+  | 'custom_advance';
+
+export type CheckDisbursementStatus =
+  | 'draft_queued'
+  | 'check_printed'
+  | 'hand_delivered_at_service'
+  | 'mailed_to_vendor'
+  | 'reconciled_cleared';
+
+export interface PassThroughPayableCheck {
+  id: string;
+  checkNumber: string; // e.g. "CHK-10482"
+  caseId: string;
+  caseNumber: string; // e.g. "BFH-2026-089"
+  decedentName: string; // e.g. "Dr. Marcus Aurelius Vance"
+  serviceDate: string; // e.g. "2026-09-24"
+  category: CashAdvanceCategory;
+  categoryLabel: string; // e.g. "Cemetery Interment & Vault Opening"
+  payeeName: string; // e.g. "The Woodlawn Cemetery & Crematory"
+  payeeAddress?: string; // e.g. "4199 Webster Ave, Bronx, NY 10470"
+  amount: number; // e.g. 1850.00
+  amountInWords?: string; // e.g. "ONE THOUSAND EIGHT HUNDRED FIFTY AND 00/100 DOLLARS"
+  memo: string; // e.g. "Interment: Dr. Marcus Aurelius Vance • Case #BFH-2026-089 • Svc Date: 09/24/2026"
+  dateOfService: string;
+  status: CheckDisbursementStatus;
+  bankAccount: string; // e.g. "JPMorgan Chase Operating Pass-Through (**4892)"
+  micrEncoding?: string; // e.g. "⑆021000021⑆ 9823489204⑈ 010482"
+  signedByDirector: string; // e.g. "Jason Benta, LFD #08850"
+  generatedAt: string;
+  printedAt?: string;
+  deliveredByDirector?: string;
+  deliveredToRecipient?: string;
+  clearedAt?: string;
+  qboBillPaymentId?: string;
+  notes?: string;
+}
+
 export interface StatementOfGoodsData {
   id: string;
   caseId: string;
@@ -1091,6 +1139,7 @@ export interface StatementOfGoodsData {
   sectionII: StatementOfGoodsSectionII;
   sectionIII: StatementOfGoodsSectionIII;
   sectionIV: StatementOfGoodsSectionIV;
+  cashAdvanceChecks?: PassThroughPayableCheck[];
 }
 
 // ==========================================

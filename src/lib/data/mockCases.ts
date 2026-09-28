@@ -2479,6 +2479,18 @@ export const getInitialFlightChecklist = (caseItem: GoldenRecordCase): CaseFligh
           isCompleted: caseItem.webcastSchedule?.isEnabled !== false,
           actionType: 'open_webcast',
           actionLabel: 'Webcast Scheduling'
+        },
+        {
+          id: 'fc-405',
+          phase: 'permits_logistics',
+          code: 'PASS-THROUGH-CHECKS',
+          title: 'Generate & Print Pass-Through Cash Advance Checks',
+          description: 'Print 3-part payable check vouchers for cemetery, clergy, NYC DOHMH, and organist with deceased name & case # in memo line.',
+          isMandatoryForPhaseAdvance: true,
+          isCompleted: false,
+          actionType: 'open_cash_advance_checks',
+          actionLabel: 'Print Cash Advance Checks',
+          statutoryReference: '10 NYCRR § 77.8 Pass-Through'
         }
       ]
     },

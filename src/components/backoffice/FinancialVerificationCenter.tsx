@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
 import { GoldenRecordCase, SplitBillingItem } from '../../lib/types/funeral';
+import { generateCashAdvanceChecks } from '../../lib/utils/checkGenerator';
+import { CashAdvanceCheckPrinterModal } from './CashAdvanceCheckPrinterModal';
 import { 
   CheckCircle, 
   Plus, 
   Calculator, 
-  FileCheck2 
+  FileCheck2, 
+  HandCoins, 
+  Printer 
 } from 'lucide-react';
 
 interface FinancialVerificationCenterProps {
   caseData: GoldenRecordCase;
   onUpdateBilling: (updatedBilling: SplitBillingItem[]) => void;
   onOpenQuickBooks?: (targetCase: GoldenRecordCase) => void;
+  onOpenCheckPrinter?: (targetCase: GoldenRecordCase) => void;
 }
 
 export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterProps> = ({
   caseData,
   onUpdateBilling,
-  onOpenQuickBooks
+  onOpenQuickBooks,
+  onOpenCheckPrinter
 }) => {
   const [showAddPayer, setShowAddPayer] = useState(false);
+  const [isCheckPrinterOpen, setIsCheckPrinterOpen] = useState(false);
   const [payerType, setPayerType] = useState<SplitBillingItem['payerType']>('Life Insurance Assignment');
   const [providerName, setProviderName] = useState('C&J Financial / Mutual of Omaha');
   const [policyNumber, setPolicyNumber] = useState('MO-449102');
@@ -366,6 +373,114 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
           ))}
         </div>
       </div>
+
+      {/* ========================================================= */}
+      {/* SECTION II CASH ADVANCE PASS-THROUGH CHECKS LEDGER       */}
+      {/* ========================================================= */}
+      {(() => {
+        const checks = caseData.statementOfGoods?.cashAdvanceChecks && caseData.statementOfGoods.cashAdvanceChecks.length > 0
+          ? caseData.statementOfGoods.cashAdvanceChecks
+          : generateCashAdvanceChecks(caseData);
+        const totalChecksAmount = checks.reduce((sum, c) => sum + c.amount, 0);
+
+        return (
+          <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-neutral-200 bg-neutral-50 flex flex-wrap justify-between items-center gap-3">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-[#991b1b]">
+                  <HandCoins className="w-4 h-4 text-amber-700" />
+                </div>
+                <div>
+                  <h3 className="font-serif-title text-sm font-bold text-neutral-900 uppercase tracking-wider">
+                    Form AP-47 Section II Pass-Through Checks & Accounts Payable Ledger
+                  </h3>
+                  <p className="text-[11px] text-neutral-500 font-light">
+                    100% Pass-through disbursements paid to third-party vendors on family's behalf (0% BFH markup).
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-mono font-bold text-xs text-[#991b1b] bg-red-50 px-2.5 py-1 rounded-lg border border-red-200">
+                  Total: ${totalChecksAmount.toFixed(2)} ({checks.length} checks)
+                </span>
+                <button
+                  onClick={() => onOpenCheckPrinter ? onOpenCheckPrinter(caseData) : setIsCheckPrinterOpen(true)}
+                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
+                >
+                  <Printer className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Open 3-Part Check Printer</span>
+                </button>
+              </div>
+            </div>
+
+            {checks.length === 0 ? (
+              <div className="p-6 text-center text-xs text-neutral-500">
+                No active cash advance disbursements generated for this case.
+              </div>
+            ) : (
+              <div className="divide-y divide-neutral-100">
+                {checks.map((check) => (
+                  <div key={check.id} className="p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs hover:bg-neutral-50/80 transition">
+                    <div className="space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-mono font-bold text-neutral-900 bg-neutral-100 px-1.5 py-0.5 rounded border border-neutral-300 text-[11px]">
+                          {check.checkNumber}
+                        </span>
+                        <span className="font-bold text-neutral-900 text-sm">{check.payeeName}</span>
+                        <span className="text-neutral-500">• {check.categoryLabel}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-[11px]">
+                        <span className="text-neutral-500 font-medium">MEMO:</span>
+                        <code className="bg-amber-50 text-[#991b1b] px-1.5 py-0.5 rounded font-mono text-[10px] border border-amber-200">
+                          {check.memo}
+                        </code>
+                      </div>
+                      <p className="text-[10px] text-neutral-400 font-mono">
+                        Drawn on: {check.bankAccount} • Service Date: {check.serviceDate}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center space-x-4 shrink-0 justify-between md:justify-end">
+                      <div className="text-right">
+                        <span className="text-sm font-bold font-mono text-neutral-900">
+                          ${check.amount.toFixed(2)}
+                        </span>
+                        <span className={`block text-[10px] font-bold uppercase ${
+                          check.status === 'hand_delivered_at_service' || check.status === 'reconciled_cleared'
+                            ? 'text-emerald-700'
+                            : check.status === 'check_printed'
+                            ? 'text-blue-700'
+                            : 'text-amber-700'
+                        }`}>
+                          {check.status.replace(/_/g, ' ')}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() => onOpenCheckPrinter ? onOpenCheckPrinter(caseData) : setIsCheckPrinterOpen(true)}
+                        className="px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold rounded-lg border border-neutral-300 transition text-[11px] flex items-center gap-1"
+                      >
+                        <Printer className="w-3 h-3 text-neutral-600" />
+                        <span>View Voucher</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* 3-Part Check Voucher Printer Modal */}
+      {isCheckPrinterOpen && (
+        <CashAdvanceCheckPrinterModal
+          isOpen={isCheckPrinterOpen}
+          onClose={() => setIsCheckPrinterOpen(false)}
+          caseData={caseData}
+        />
+      )}
 
       {/* Add Payer Modal */}
       {showAddPayer && (

@@ -59,6 +59,7 @@ interface GoldenRecordDetailProps {
   onOpenLiveryModal?: () => void;
   onOpenFinances?: () => void;
   onOpenAftercare?: () => void;
+  onOpenCheckPrinter?: () => void;
   partnerRequests?: PartnerScheduleRequest[];
 }
 
@@ -85,6 +86,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
   onOpenLiveryModal,
   onOpenFinances,
   onOpenAftercare,
+  onOpenCheckPrinter,
   partnerRequests = []
 }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'vitals' | 'informant' | 'services' | 'notes'>('overview');
@@ -113,6 +115,9 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
         break;
       case 'open_print_ap47':
         onOpenPrintAP47 ? onOpenPrintAP47() : onOpenContractModal?.();
+        break;
+      case 'open_cash_advance_checks':
+        onOpenCheckPrinter?.();
         break;
       case 'open_calendar':
         onOpenCalendar?.();
@@ -406,6 +411,17 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
             >
               <Printer className="w-3.5 h-3.5 text-amber-300" />
               <span>🖨️ Print Form AP-47</span>
+            </button>
+          )}
+
+          {onOpenCheckPrinter && (
+            <button
+              onClick={onOpenCheckPrinter}
+              className="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              title="Print 3-Part Pass-Through Cash Advance Checks (10 NYCRR § 77.8)"
+            >
+              <Printer className="w-3.5 h-3.5 text-amber-700" />
+              <span>💵 Cash Advance Checks</span>
             </button>
           )}
 

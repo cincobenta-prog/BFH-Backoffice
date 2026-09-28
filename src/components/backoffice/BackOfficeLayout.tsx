@@ -58,6 +58,7 @@ interface BackOfficeLayoutProps {
   onOpenTwoWaySmsModal?: (requestId?: string) => void;
   onOpenDocuSignModal?: () => void;
   onOpenQuickBooksModal?: () => void;
+  onOpenCheckPrinter?: () => void;
   currentDirectorId?: string;
   onChangeDirectorId?: (id: string) => void;
   directorProfiles?: DirectorProfile[];
@@ -86,6 +87,7 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onOpenTwoWaySmsModal,
   onOpenDocuSignModal,
   onOpenQuickBooksModal,
+  onOpenCheckPrinter,
   currentDirectorId,
   onChangeDirectorId,
   directorProfiles
@@ -286,6 +288,18 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               >
                 <Printer className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
                 <span className="hidden xl:inline">Print AP-47</span>
+              </button>
+            )}
+
+            {/* Pass-Through Checks Quick Action */}
+            {onOpenCheckPrinter && (
+              <button
+                onClick={onOpenCheckPrinter}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Print 3-Part Pass-Through Cash Advance Checks (10 NYCRR § 77.8)"
+              >
+                <Printer className="w-3.5 h-3.5 text-amber-700 group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">Pass-Through Checks</span>
               </button>
             )}
 

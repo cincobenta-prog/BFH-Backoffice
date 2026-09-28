@@ -17,7 +17,8 @@ import {
   RoomId,
   DirectorProfile,
   ServiceDirectorAssignment,
-  Director1099Voucher
+  Director1099Voucher,
+  PassThroughPayableCheck
 } from './lib/types/funeral';
 import {
   MOCK_CASES,
@@ -78,6 +79,7 @@ import { DirectorAssignmentModal } from './components/backoffice/DirectorAssignm
 import { PrintableFormAP47Modal } from './components/backoffice/PrintableFormAP47Modal';
 import { DocuSignEnvelopeModal } from './components/backoffice/DocuSignEnvelopeModal';
 import { QuickBooksSyncModal } from './components/backoffice/QuickBooksSyncModal';
+import { CashAdvanceCheckPrinterModal } from './components/backoffice/CashAdvanceCheckPrinterModal';
 
 // Family Portal Component (with full 9-Part Obituary Writer Suite)
 import { FamilyPortalView } from './components/family/FamilyPortalView';
@@ -230,6 +232,31 @@ export function App() {
   const handleOpenQuickBooksModal = (c?: GoldenRecordCase) => {
     setQuickBooksTargetCase(c || activeCase);
     setIsQuickBooksModalOpen(true);
+  };
+
+  // Cash Advance Pass-Through Check Generator State
+  const [isCheckPrinterModalOpen, setIsCheckPrinterModalOpen] = useState(false);
+  const [checkPrinterTargetCase, setCheckPrinterTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  const handleOpenCheckPrinterModal = (c?: GoldenRecordCase) => {
+    setCheckPrinterTargetCase(c || activeCase);
+    setIsCheckPrinterModalOpen(true);
+  };
+
+  const handleUpdatePassThroughChecks = (caseId: string, updatedChecks: PassThroughPayableCheck[]) => {
+    setCases(prev => prev.map(c => {
+      if (c.id === caseId) {
+        const currentStatement = c.statementOfGoods;
+        return {
+          ...c,
+          statementOfGoods: currentStatement ? {
+            ...currentStatement,
+            cashAdvanceChecks: updatedChecks
+          } : undefined
+        };
+      }
+      return c;
+    }));
   };
 
   const activeCase = cases.find(c => c.id === activeCaseId) || cases[0];
@@ -816,6 +843,7 @@ export function App() {
           onOpenTwoWaySmsModal={handleOpenTwoWaySmsModal}
           onOpenDocuSignModal={() => handleOpenDocuSignModal(activeCase)}
           onOpenQuickBooksModal={() => handleOpenQuickBooksModal(activeCase)}
+          onOpenCheckPrinter={() => handleOpenCheckPrinterModal(activeCase)}
           currentDirectorId={currentDirectorId}
           onChangeDirectorId={setCurrentDirectorId}
           directorProfiles={directorProfiles}
@@ -916,6 +944,7 @@ export function App() {
               onOpenLiveryModal={() => setIsLiveryModalOpen(true)}
               onOpenFinances={() => setBackOfficeTab('finances')}
               onOpenAftercare={() => setBackOfficeTab('aftercare')}
+              onOpenCheckPrinter={() => handleOpenCheckPrinterModal(activeCase)}
               partnerRequests={partnerRequests}
             />
           )}
@@ -1049,6 +1078,7 @@ export function App() {
                 });
               }}
               onOpenQuickBooks={(targetCase) => handleOpenQuickBooksModal(targetCase)}
+              onOpenCheckPrinter={(targetCase) => handleOpenCheckPrinterModal(targetCase)}
             />
           )}
 
@@ -1357,6 +1387,7 @@ export function App() {
             setPrintAP47TargetCase(null);
           }}
           caseData={printAP47TargetCase || activeCase}
+          onOpenCheckPrinter={(targetCase) => handleOpenCheckPrinterModal(targetCase)}
         />
 
         {/* DocuSign NYS ESRA Compliant Legal E-Signature Hub Modal */}
@@ -1384,6 +1415,20 @@ export function App() {
             activeCase={quickBooksTargetCase || activeCase}
             onSaveSync={(syncData) => handleSaveQuickBooksSync((quickBooksTargetCase || activeCase).id, syncData)}
             onSendNotification={handleSendNotification}
+          />
+        )}
+
+        {/* Pass-Through Accounts Payable Check Generator & Voucher Printer Modal */}
+        {isCheckPrinterModalOpen && (
+          <CashAdvanceCheckPrinterModal
+            isOpen={isCheckPrinterModalOpen}
+            onClose={() => {
+              setIsCheckPrinterModalOpen(false);
+              setCheckPrinterTargetCase(null);
+            }}
+            caseData={checkPrinterTargetCase || activeCase}
+            onUpdateChecks={(updatedChecks) => handleUpdatePassThroughChecks((checkPrinterTargetCase || activeCase).id, updatedChecks)}
+            onOpenQuickBooks={(targetCase: GoldenRecordCase) => handleOpenQuickBooksModal(targetCase)}
           />
         )}
       </div>
