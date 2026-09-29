@@ -104,13 +104,50 @@ export interface ServiceSelections {
   specialRequests?: string;
 }
 
+export interface CommunityContribution {
+  id: string;
+  contributorName: string;
+  contributorEmail?: string;
+  contributorPhone?: string;
+  relationship?: string;
+  amount: number;
+  message?: string;
+  date: string;
+  paymentMethod: 'Apple Pay' | 'Google Pay' | 'Card' | 'ACH' | 'Cash / Check';
+  transactionId: string;
+  isAnonymous?: boolean;
+}
+
 export interface SplitBillingItem {
+  id?: string;
   payerType: 'Family ACH Direct' | 'Life Insurance Assignment' | 'Credit Card' | 'County/Grant Aid' | 'Cash / Certified Bank Check';
+  payerName?: string;
+  payerEmail?: string;
+  payerPhone?: string;
+  relationshipToDecedent?: string;
   providerName?: string;
   policyNumber?: string;
   amountAllocated: number;
+  amountPaid?: number;
   status: 'pending_verification' | 'verified_active' | 'funded' | 'processing';
+  itemAssigned?: string;
   notes?: string;
+  inviteSentAt?: string;
+  paidAt?: string;
+  transactionReference?: string;
+  receiptNumber?: string;
+  shareableToken?: string;
+}
+
+export interface FamilySplitPayConfig {
+  enabled: boolean;
+  communityContributionsEnabled: boolean;
+  communityGoalAmount?: number;
+  communityDescription?: string;
+  shareableLinkCode?: string;
+  contributions?: CommunityContribution[];
+  allowCustomAmounts?: boolean;
+  passThroughSponsorshipsEnabled?: boolean;
 }
 
 export interface AftercareScheduleItem {
@@ -247,6 +284,7 @@ export interface GoldenRecordCase {
   cortegeRoute?: LiveryCortegeRoute;
   funeralAnnouncement?: FuneralAnnouncementData;
   statementOfGoods?: StatementOfGoodsData;
+  familySplitPayConfig?: FamilySplitPayConfig;
   arrangementAppointment?: ArrangementAppointmentInfo;
   notes: Array<{
     id: string;

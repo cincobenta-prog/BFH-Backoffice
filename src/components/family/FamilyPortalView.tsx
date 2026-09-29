@@ -61,11 +61,13 @@ import {
   Layout,
   MessageCircle,
   Trash2,
-  ScrollText
+  ScrollText,
+  CreditCard
 } from 'lucide-react';
 import { FamilyPortalOverviewHome } from './FamilyPortalOverviewHome';
 import { FamilyCareConciergeView } from './FamilyCareConciergeView';
 import { FamilyWebcastServiceView } from './FamilyWebcastServiceView';
+import { FamilySplitPaymentPortal } from './FamilySplitPaymentPortal';
 
 interface VoiceTributeItem {
   id: string;
@@ -101,7 +103,7 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
   isStaffUser = false
 }) => {
   // Main Family Portal Nav Tab (Defaults to 'home' Welcome & Overview)
-  const [portalTab, setPortalTab] = useState<'home' | 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status'>('home');
+  const [portalTab, setPortalTab] = useState<'home' | 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay'>('home');
 
   // Obituary Assistant Sub-View: 'interview' | 'drafting' | 'ledger' | 'safety' | 'approval'
   const [obitSection, setObitSection] = useState<'interview' | 'drafting' | 'ledger' | 'safety' | 'approval'>('interview');
@@ -1218,6 +1220,18 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           >
             <Calendar className="w-3.5 h-3.5" />
             <span>📋 Arrangement & Vital Summary</span>
+          </button>
+
+          <button
+            onClick={() => setPortalTab('split_pay')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
+              portalTab === 'split_pay'
+                ? 'bg-emerald-800 text-white shadow-md ring-2 ring-amber-400'
+                : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200'
+            }`}
+          >
+            <CreditCard className="w-3.5 h-3.5 text-emerald-700" />
+            <span>💳 Family Split-Pay & Contributions</span>
           </button>
 
           <button
@@ -2814,6 +2828,23 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             )}
 
           </div>
+        )}
+
+        {/* TAB: COLLABORATIVE FAMILY SPLIT-PAY & CONTRIBUTIONS */}
+        {portalTab === 'split_pay' && (
+          <FamilySplitPaymentPortal
+            caseData={activeCase}
+            onUpdateCase={onUpdateCase}
+            onUpdateBilling={(updatedBilling) => {
+              if (onUpdateCase) {
+                onUpdateCase({
+                  ...activeCase,
+                  splitBilling: updatedBilling
+                });
+              }
+            }}
+            isStaffMode={isStaffUser}
+          />
         )}
 
         {/* TAB 2: ARRANGEMENT & VITAL SUMMARY */}

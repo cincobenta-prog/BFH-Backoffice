@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { GoldenRecordCase, SplitBillingItem } from '../../lib/types/funeral';
 import { generateCashAdvanceChecks } from '../../lib/utils/checkGenerator';
 import { CashAdvanceCheckPrinterModal } from './CashAdvanceCheckPrinterModal';
+import { FamilySplitPaymentPortal } from '../family/FamilySplitPaymentPortal';
 import { 
   CheckCircle, 
   Plus, 
   Calculator, 
   FileCheck2, 
   HandCoins, 
-  Printer 
+  Printer,
+  Users,
+  Layers
 } from 'lucide-react';
 
 interface FinancialVerificationCenterProps {
@@ -24,6 +27,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
   onOpenQuickBooks,
   onOpenCheckPrinter
 }) => {
+  const [financialTab, setFinancialTab] = useState<'matrix' | 'family_split_portal'>('matrix');
   const [showAddPayer, setShowAddPayer] = useState(false);
   const [isCheckPrinterOpen, setIsCheckPrinterOpen] = useState(false);
   const [payerType, setPayerType] = useState<SplitBillingItem['payerType']>('Life Insurance Assignment');
@@ -128,13 +132,61 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
         </div>
       </div>
 
-      {/* 3 Metric Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm space-y-1">
-          <span className="text-[11px] text-neutral-500 uppercase tracking-wider font-semibold">Total Contract Due</span>
-          <p className="font-serif-title text-2xl font-bold text-neutral-900">${caseData.totalAmountDue.toLocaleString()}</p>
-          <span className="text-[10px] text-neutral-400">100% Itemized NYS Form AP-47</span>
+      {/* Financial Center Sub-Navigation Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-neutral-100 p-2 rounded-2xl border border-neutral-200">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => setFinancialTab('matrix')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 ${
+              financialTab === 'matrix'
+                ? 'bg-[#991b1b] text-white shadow-md'
+                : 'bg-white text-neutral-700 hover:bg-neutral-200 border border-neutral-200'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Insurance Assignment & Split Matrix</span>
+          </button>
+
+          <button
+            onClick={() => setFinancialTab('family_split_portal')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-2 ${
+              financialTab === 'family_split_portal'
+                ? 'bg-emerald-800 text-white shadow-md ring-2 ring-amber-400'
+                : 'bg-white text-emerald-900 hover:bg-emerald-50 border border-emerald-200'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Family Split-Pay & Contribution Portal ({caseData.splitBilling.length} Payers)</span>
+          </button>
         </div>
+
+        {financialTab === 'matrix' && (
+          <button
+            onClick={() => setIsCalculatorOpen(!isCalculatorOpen)}
+            className="text-xs text-neutral-600 hover:text-neutral-900 font-bold px-3 py-1.5 rounded-lg bg-white border border-neutral-200 transition"
+          >
+            {isCalculatorOpen ? 'Hide Insurance Calculator' : 'Show Insurance Calculator'}
+          </button>
+        )}
+      </div>
+
+      {/* Render Selected View */}
+      {financialTab === 'family_split_portal' ? (
+        <FamilySplitPaymentPortal
+          caseData={caseData}
+          onUpdateBilling={onUpdateBilling}
+          onOpenQuickBooks={onOpenQuickBooks}
+          isStaffMode={true}
+        />
+      ) : (
+        <>
+          {/* 3 Metric Summary Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm space-y-1">
+              <span className="text-[11px] text-neutral-500 uppercase tracking-wider font-semibold">Total Contract Due</span>
+              <p className="font-serif-title text-2xl font-bold text-neutral-900">${caseData.totalAmountDue.toLocaleString()}</p>
+              <span className="text-[10px] text-neutral-400">100% Itemized NYS Form AP-47</span>
+            </div>
 
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm space-y-1">
           <span className="text-[11px] text-neutral-500 uppercase tracking-wider font-semibold">Allocated & Verified</span>
@@ -472,6 +524,8 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
           </div>
         );
       })()}
+      </>
+      )}
 
       {/* 3-Part Check Voucher Printer Modal */}
       {isCheckPrinterOpen && (

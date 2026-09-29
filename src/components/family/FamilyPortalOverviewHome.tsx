@@ -22,12 +22,13 @@ import {
   Check,
   CalendarCheck,
   UserCheck,
-  AlertCircle
+  AlertCircle,
+  HandCoins
 } from 'lucide-react';
 
 interface FamilyPortalOverviewHomeProps {
   activeCase: GoldenRecordCase;
-  onNavigateTab: (tab: 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status') => void;
+  onNavigateTab: (tab: 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay') => void;
   onOpenESignModal?: () => void;
   onUpdateCase?: (updatedCase: GoldenRecordCase) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
@@ -331,6 +332,25 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
       ],
       buttonText: 'Track Care & Livery Status',
       buttonColor: 'bg-[#991b1b] text-white hover:bg-red-800'
+    },
+    {
+      id: 'split_pay' as const,
+      tab: 'split_pay' as const,
+      title: 'Family Split-Pay & Contribution Hub',
+      subtitle: 'Transparent Multi-Payer & Love Gifts Pool',
+      icon: HandCoins,
+      iconBg: 'bg-emerald-100 text-emerald-800',
+      borderHover: 'hover:border-emerald-400',
+      badge: '0% Markup Pass-Through Guarantee',
+      badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+      description: 'Coordinate sibling shares, sponsor Section II pass-through cash advances (Cemetery, Clergy, Organist), or invite community friends to send love gifts with real-time balance deductions.',
+      highlights: [
+        '1-Click Equal Sibling Split Calculator (2, 3, 4 ways)',
+        'Private SMS & Email Payment Links with Apple Pay / Card / ACH',
+        'Official NYS Form AP-47 digital payment receipts'
+      ],
+      buttonText: 'Open Split-Pay Hub',
+      buttonColor: 'bg-emerald-800 text-white hover:bg-emerald-900'
     }
   ];
 
