@@ -30,10 +30,12 @@ import {
   Users,
   Calendar,
   CalendarCheck,
-  Printer
+  Printer,
+  Compass
 } from 'lucide-react';
 import { WebcastSchedulingModal } from './WebcastSchedulingModal';
 import { CaseFlightChecklist } from './CaseFlightChecklist';
+import { DayOfServiceVIPItineraryModal } from '../family/DayOfServiceVIPItineraryModal';
 import { INITIAL_SERVICE_PARTNERS, getInitialFlightChecklist } from '../../lib/data/mockCases';
 
 interface GoldenRecordDetailProps {
@@ -95,6 +97,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
   const [previewEmailModalOpen, setPreviewEmailModalOpen] = useState(false);
   const [previewSMSModalOpen, setPreviewSMSModalOpen] = useState(false);
   const [isWebcastModalOpen, setIsWebcastModalOpen] = useState(false);
+  const [isVIPItineraryModalOpen, setIsVIPItineraryModalOpen] = useState(false);
   const [copiedAlert, setCopiedAlert] = useState<string | null>(null);
   const [checklistProgress, setChecklistProgress] = useState<CaseFlightPhaseProgress[]>(() => getInitialFlightChecklist(caseData));
 
@@ -424,6 +427,15 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               <span>💵 Cash Advance Checks</span>
             </button>
           )}
+
+          <button
+            onClick={() => setIsVIPItineraryModalOpen(true)}
+            className="bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+            title="Open Day-of-Service Mobile VIP Family Itinerary & GPS Dispatch"
+          >
+            <Compass className="w-3.5 h-3.5 text-amber-700" />
+            <span>📱 VIP Itinerary & GPS</span>
+          </button>
 
           {onOpenMemorialProgramModal && (
             <button
@@ -1710,6 +1722,17 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               });
             }
           }}
+        />
+      )}
+
+      {/* Day-of-Service Mobile VIP Family Itinerary & GPS Dispatch Modal */}
+      {isVIPItineraryModalOpen && (
+        <DayOfServiceVIPItineraryModal
+          isOpen={isVIPItineraryModalOpen}
+          onClose={() => setIsVIPItineraryModalOpen(false)}
+          caseData={caseData}
+          onUpdateCase={onUpdateCase}
+          isStaffMode={true}
         />
       )}
 

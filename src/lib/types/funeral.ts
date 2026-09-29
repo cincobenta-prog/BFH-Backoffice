@@ -285,6 +285,7 @@ export interface GoldenRecordCase {
   funeralAnnouncement?: FuneralAnnouncementData;
   statementOfGoods?: StatementOfGoodsData;
   familySplitPayConfig?: FamilySplitPayConfig;
+  vipItinerary?: DayOfServiceVIPItinerary;
   arrangementAppointment?: ArrangementAppointmentInfo;
   notes: Array<{
     id: string;
@@ -815,6 +816,48 @@ export interface LiveryCortegeRoute {
   serviceDateTime: string; // e.g. "2026-09-24 11:00 AM"
   cutoffHours: number; // 10
   isLockedBy10HourRule?: boolean;
+}
+
+export interface ServiceMilestoneItem {
+  id: string;
+  timeLabel: string;
+  title: string;
+  category: 'pickup' | 'viewing' | 'service' | 'motorcade' | 'committal' | 'repast' | 'custom';
+  venueName: string;
+  address: string;
+  gpsCoordinates?: { lat: number; lng: number };
+  directionsUrl?: string;
+  contactPerson?: string;
+  contactPhone?: string;
+  specialInstructions?: string;
+  status: 'upcoming' | 'in_progress' | 'completed';
+  badgeLabel?: string;
+  iconName?: string;
+  keyDetails?: Array<{ label: string; value: string }>;
+}
+
+export interface DayOfServiceVIPItinerary {
+  caseId: string;
+  caseNumber: string;
+  decedentName: string;
+  serviceDate: string;
+  directorName: string;
+  directorPhone: string;
+  directorEmail?: string;
+  directorLicense?: string;
+  limousineLeadChauffeur?: string;
+  limousinePhone?: string;
+  limousinePlate?: string;
+  pallbearers?: Array<{ name: string; type: 'active' | 'honorary'; role?: string }>;
+  milestones: ServiceMilestoneItem[];
+  cortegeInstructions: string[];
+  repastInfo?: {
+    venue: string;
+    address: string;
+    time: string;
+    notes?: string;
+  };
+  shareableToken?: string;
 }
 
 export type AnnouncementTheme = 

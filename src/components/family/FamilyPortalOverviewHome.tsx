@@ -23,12 +23,13 @@ import {
   CalendarCheck,
   UserCheck,
   AlertCircle,
-  HandCoins
+  HandCoins,
+  Compass
 } from 'lucide-react';
 
 interface FamilyPortalOverviewHomeProps {
   activeCase: GoldenRecordCase;
-  onNavigateTab: (tab: 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay') => void;
+  onNavigateTab: (tab: 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay' | 'itinerary') => void;
   onOpenESignModal?: () => void;
   onUpdateCase?: (updatedCase: GoldenRecordCase) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
@@ -351,6 +352,25 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
       ],
       buttonText: 'Open Split-Pay Hub',
       buttonColor: 'bg-emerald-800 text-white hover:bg-emerald-900'
+    },
+    {
+      id: 'itinerary' as const,
+      tab: 'itinerary' as const,
+      title: 'Day-of-Service Mobile VIP Itinerary',
+      subtitle: 'Pocket VIP Concierge & Digital Escort',
+      icon: Compass,
+      iconBg: 'bg-amber-100 text-amber-800',
+      borderHover: 'hover:border-amber-400',
+      badge: 'Live Service Timeline',
+      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+      description: 'Follow every step of the funeral morning in real time. 1-tap Google/Apple Maps GPS directions, limousine pickup arrival alerts, cortege motorcade safety rules, and direct director calling.',
+      highlights: [
+        'Cadillac Limousine pickup ETA & chauffeur hotline',
+        '1-Tap turn-by-turn GPS to chapel, church & cemetery section',
+        '1-Click SMS sharing for family group chats'
+      ],
+      buttonText: 'Open VIP Itinerary',
+      buttonColor: 'bg-[#991b1b] text-white hover:bg-red-800'
     }
   ];
 

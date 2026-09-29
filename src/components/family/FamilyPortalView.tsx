@@ -62,12 +62,14 @@ import {
   MessageCircle,
   Trash2,
   ScrollText,
-  CreditCard
+  CreditCard,
+  Compass
 } from 'lucide-react';
 import { FamilyPortalOverviewHome } from './FamilyPortalOverviewHome';
 import { FamilyCareConciergeView } from './FamilyCareConciergeView';
 import { FamilyWebcastServiceView } from './FamilyWebcastServiceView';
 import { FamilySplitPaymentPortal } from './FamilySplitPaymentPortal';
+import { DayOfServiceVIPItineraryModal } from './DayOfServiceVIPItineraryModal';
 
 interface VoiceTributeItem {
   id: string;
@@ -103,7 +105,7 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
   isStaffUser = false
 }) => {
   // Main Family Portal Nav Tab (Defaults to 'home' Welcome & Overview)
-  const [portalTab, setPortalTab] = useState<'home' | 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay'>('home');
+  const [portalTab, setPortalTab] = useState<'home' | 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay' | 'itinerary'>('home');
 
   // Obituary Assistant Sub-View: 'interview' | 'drafting' | 'ledger' | 'safety' | 'approval'
   const [obitSection, setObitSection] = useState<'interview' | 'drafting' | 'ledger' | 'safety' | 'approval'>('interview');
@@ -1268,6 +1270,18 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           >
             <Car className="w-3.5 h-3.5" />
             <span>🚗 Service & Livery Status</span>
+          </button>
+
+          <button
+            onClick={() => setPortalTab('itinerary')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
+              portalTab === 'itinerary'
+                ? 'bg-[#991b1b] text-white shadow-md ring-2 ring-amber-400'
+                : 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300'
+            }`}
+          >
+            <Compass className="w-3.5 h-3.5 text-amber-600" />
+            <span>📱 Day-of-Service VIP Itinerary</span>
           </button>
         </div>
       </header>
@@ -2828,6 +2842,17 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             )}
 
           </div>
+        )}
+
+        {/* TAB: DAY-OF-SERVICE VIP ITINERARY */}
+        {portalTab === 'itinerary' && (
+          <DayOfServiceVIPItineraryModal
+            isOpen={true}
+            onClose={() => setPortalTab('home')}
+            caseData={activeCase}
+            onUpdateCase={onUpdateCase}
+            isStaffMode={isStaffUser}
+          />
         )}
 
         {/* TAB: COLLABORATIVE FAMILY SPLIT-PAY & CONTRIBUTIONS */}
