@@ -1268,6 +1268,9 @@ export interface DirectorProfile {
   ytdServicesCompleted?: number;
   ytdEarnings?: number;
   punctualityScore?: number; // percentage e.g. 99.4%
+  
+  // Manager & Security Authentication
+  securityPin?: string; // 4-digit PIN for manager / director authorization (e.g. "3995")
 }
 
 export type ServiceAssignmentStatus = 'unassigned' | 'dispatched' | 'confirmed' | 'in_progress' | 'completed' | 'declined';

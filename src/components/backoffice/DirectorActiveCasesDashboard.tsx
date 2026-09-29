@@ -322,11 +322,20 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                 onChange={(e) => setTargetReassignDirectorId(e.target.value)}
                 className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2.5 text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
               >
-                {directorProfiles.filter(d => d.roleType === 'funeral_director' || d.roleType === 'manager').map(d => (
-                  <option key={d.id} value={d.id}>
-                    {d.name} ({d.licenseNumber}) • {d.colorTheme.name}
-                  </option>
-                ))}
+                <optgroup label="Licensed Funeral Directors (In-House Staff)">
+                  {directorProfiles.filter(d => d.roleType === 'funeral_director').map(d => (
+                    <option key={d.id} value={d.id}>
+                      👔 {d.name} ({d.licenseNumber}) • {d.colorTheme.name}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Managing Directors">
+                  {directorProfiles.filter(d => d.roleType === 'manager').map(d => (
+                    <option key={d.id} value={d.id}>
+                      👑 {d.name} ({d.title})
+                    </option>
+                  ))}
+                </optgroup>
               </select>
             </div>
 

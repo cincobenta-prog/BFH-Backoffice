@@ -373,12 +373,20 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
                 onChange={(e) => onChangeDirectorId(e.target.value)}
                 className="bg-transparent font-bold text-neutral-900 text-xs outline-none cursor-pointer"
               >
-                {directorProfiles.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.roleType === 'manager' ? '👑 [Manager] ' : '👔 [LFD] '}
-                    {d.name} ({d.activeCasesCount || 0} cases)
-                  </option>
-                ))}
+                <optgroup label="Licensed Funeral Directors (Case Claiming)">
+                  {directorProfiles.filter(d => d.roleType === 'funeral_director').map((d) => (
+                    <option key={d.id} value={d.id}>
+                      👔 {d.name} ({d.activeCasesCount || 0} cases)
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Executive Managers (Override Authority)">
+                  {directorProfiles.filter(d => d.roleType === 'manager').map((d) => (
+                    <option key={d.id} value={d.id}>
+                      👑 [Manager] {d.name}
+                    </option>
+                  ))}
+                </optgroup>
               </select>
             </div>
           )}

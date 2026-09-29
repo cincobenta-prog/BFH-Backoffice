@@ -207,7 +207,7 @@ export function App() {
   const [backOfficeTab, setBackOfficeTab] = useState<BackOfficeTab>('dashboard');
 
   // Current Active Funeral Director (for director-level case filtering & claiming)
-  const [currentDirectorId, setCurrentDirectorId] = useState<string>('dir-fd-1'); // Default Marcus Vance
+  const [currentDirectorId, setCurrentDirectorId] = useState<string>('dir-fd-1'); // Default Beth Crowe (LFD)
 
   // Modals
   const [isArrangerOpen, setIsArrangerOpen] = useState(false);

@@ -21,7 +21,7 @@ interface ManagerPinLoginModalProps {
   onSuccess: () => void;
 }
 
-const DEFAULT_PINS = ['1928', '8850', '2026'];
+const DEFAULT_PINS = ['3995', '8850', '1928', '2026'];
 
 export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
   isOpen,
@@ -37,8 +37,8 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
   // Biometrics simulation
   const [isScanningBiometric, setIsScanningBiometric] = useState(false);
 
-  // Custom PIN from persistent storage
-  const [customPin, setCustomPin] = useState<string>(() => loadPersistedState<string>(STORAGE_KEYS.MANAGER_PIN, '1928'));
+  // Custom PIN from persistent storage (Default: 3995 for Jason Benta)
+  const [customPin, setCustomPin] = useState<string>(() => loadPersistedState<string>(STORAGE_KEYS.MANAGER_PIN, '3995'));
   const [newPinInput, setNewPinInput] = useState('');
   const [pinChangeSuccess, setPinChangeSuccess] = useState(false);
 
@@ -104,7 +104,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
       }, 450);
     } else {
       setIsShaking(true);
-      setError(`Invalid Manager PIN. Default demo PIN: ${customPin} or 8850.`);
+      setError(`Invalid Manager PIN. Jason Benta PIN: 3995.`);
       setTimeout(() => {
         setIsShaking(false);
         setPin('');
@@ -316,7 +316,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
 
               <div className="flex items-center gap-2 text-[11px] text-neutral-400 font-light">
                 <Lock className="w-3 h-3" />
-                <span>Active PIN: <strong className="text-neutral-700 font-mono">{customPin}</strong> or <strong className="text-neutral-700 font-mono">8850</strong></span>
+                <span>Active PIN: <strong className="text-neutral-700 font-mono">{customPin}</strong> (Jason Benta: <strong className="text-[#991b1b] font-mono">3995</strong>)</span>
               </div>
             </div>
           </>
