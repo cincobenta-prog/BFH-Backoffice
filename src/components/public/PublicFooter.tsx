@@ -9,7 +9,7 @@ interface PublicFooterProps {
 
 export const PublicFooter: React.FC<PublicFooterProps> = ({ onOpenPortal, onOpenFamilyPortal, onNavigate }) => {
   return (
-    <footer className="bg-[#1c1917] text-neutral-300 border-t-2 border-[#991b1b] text-xs">
+    <footer className="bg-[#1c1917] text-neutral-300 border-t-2 border-[#065f46] text-xs">
       {/* Main Footer Links */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
@@ -17,9 +17,9 @@ export const PublicFooter: React.FC<PublicFooterProps> = ({ onOpenPortal, onOpen
           {/* Brand & Mission */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#991b1b] to-amber-600 p-0.5">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#065f46] to-amber-600 p-0.5">
                 <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                  <span className="font-serif-title font-bold text-[#991b1b] text-sm">BFH</span>
+                  <span className="font-serif-title font-bold text-[#065f46] text-sm">BFH</span>
                 </div>
               </div>
               <span className="font-serif-title text-base font-bold text-white tracking-wide">
@@ -132,7 +132,7 @@ export const PublicFooter: React.FC<PublicFooterProps> = ({ onOpenPortal, onOpen
               )}
               <button
                 onClick={onOpenPortal}
-                className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition text-xs shadow-md border border-red-700/50"
+                className="w-full bg-[#065f46] hover:bg-emerald-800 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition text-xs shadow-md border border-emerald-700/50"
               >
                 <Lock className="w-3.5 h-3.5 text-amber-300" />
                 <span>Licensed Funeral Director Portal</span>

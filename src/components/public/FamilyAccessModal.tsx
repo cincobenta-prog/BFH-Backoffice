@@ -79,8 +79,8 @@ export const FamilyAccessModal: React.FC<FamilyAccessModalProps> = ({
 
         {/* Header */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 text-[#991b1b] flex items-center justify-center mx-auto shadow-sm">
-            <Lock className="w-6 h-6 text-[#991b1b]" />
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-[#065f46] flex items-center justify-center mx-auto shadow-sm">
+            <Lock className="w-6 h-6 text-[#065f46]" />
           </div>
           <h2 className="font-serif-title font-bold text-2xl text-neutral-900">
             Private Family Portal Vault
@@ -112,7 +112,7 @@ export const FamilyAccessModal: React.FC<FamilyAccessModalProps> = ({
                 value={caseNumberInput}
                 onChange={(e) => setCaseNumberInput(e.target.value)}
                 placeholder="e.g. BFH-2026-0891 or Eleanor Vance"
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl pl-9 pr-3 py-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b] shadow-2xs"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl pl-9 pr-3 py-2.5 font-bold text-neutral-900 outline-none focus:border-[#065f46] shadow-2xs"
               />
             </div>
           </div>
@@ -128,7 +128,7 @@ export const FamilyAccessModal: React.FC<FamilyAccessModalProps> = ({
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
                 placeholder="4-Digit Security PIN (Default: 1928)"
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl pl-9 pr-3 py-2.5 font-mono text-neutral-900 outline-none focus:border-[#991b1b] shadow-2xs"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl pl-9 pr-3 py-2.5 font-mono text-neutral-900 outline-none focus:border-[#065f46] shadow-2xs"
               />
             </div>
           </div>
@@ -142,7 +142,7 @@ export const FamilyAccessModal: React.FC<FamilyAccessModalProps> = ({
 
           <button
             type="submit"
-            className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 text-xs border border-amber-300/30"
+            className="w-full bg-[#065f46] hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition shadow-md flex items-center justify-center gap-2 text-xs border border-amber-300/30"
           >
             <UserCheck className="w-4 h-4 text-amber-300" />
             <span>Unlock My Family Vault</span>
@@ -167,16 +167,16 @@ export const FamilyAccessModal: React.FC<FamilyAccessModalProps> = ({
                 key={c.id}
                 type="button"
                 onClick={() => handleSelectPreVerifiedFamily(c)}
-                className="p-3 bg-neutral-50 hover:bg-red-50/50 hover:border-[#991b1b] border border-neutral-200 rounded-xl text-left transition flex flex-col justify-between group"
+                className="p-3 bg-neutral-50 hover:bg-emerald-50/50 hover:border-[#065f46] border border-neutral-200 rounded-xl text-left transition flex flex-col justify-between group"
               >
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-[10px] font-bold text-[#991b1b] bg-red-50 px-1.5 py-0.5 rounded border border-red-100 font-mono">
+                  <span className="text-[10px] font-bold text-[#065f46] bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-mono">
                     {c.caseNumber}
                   </span>
-                  <Heart className="w-3.5 h-3.5 text-neutral-300 group-hover:text-red-500 transition" />
+                  <Heart className="w-3.5 h-3.5 text-neutral-300 group-hover:text-emerald-500 transition" />
                 </div>
                 <div className="mt-1.5">
-                  <div className="font-serif-title font-bold text-xs text-neutral-900 group-hover:text-[#991b1b] transition leading-tight">
+                  <div className="font-serif-title font-bold text-xs text-neutral-900 group-hover:text-[#065f46] transition leading-tight">
                     {c.decedent.legalName}
                   </div>
                   <div className="text-[10px] text-neutral-500 font-light truncate">
@@ -196,7 +196,7 @@ export const FamilyAccessModal: React.FC<FamilyAccessModalProps> = ({
               onClose();
               onOpenDirectorPortal();
             }}
-            className="text-[11px] text-neutral-500 hover:text-[#991b1b] transition font-medium flex items-center justify-center gap-1 mx-auto"
+            className="text-[11px] text-neutral-500 hover:text-[#065f46] transition font-medium flex items-center justify-center gap-1 mx-auto"
           >
             <Lock className="w-3 h-3 text-neutral-400" />
             <span>Are you a BFH Licensed Director or Staff? Access Back-Office Console →</span>

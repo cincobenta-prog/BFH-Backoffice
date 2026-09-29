@@ -72,12 +72,22 @@
   -webkit-text-fill-color: transparent;
 }
 
+.green-gradient-text {
+  background: linear-gradient(135deg, #059669 0%, #047857 50%, #064e3b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .gold-border-subtle {
   border: 1px solid rgba(212, 175, 55, 0.35);
 }
 
 .red-border-subtle {
   border: 1px solid rgba(185, 28, 28, 0.25);
+}
+
+.green-border-subtle {
+  border: 1px solid rgba(4, 120, 87, 0.25);
 }
 
 .glass-card-light {

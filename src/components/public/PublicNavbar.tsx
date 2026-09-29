@@ -28,15 +28,15 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-red-900/10 shadow-sm text-neutral-900">
-      {/* Top Banner: Benta Crimson Red Bar */}
-      <div className="bg-[#991b1b] text-white py-1.5 px-4 text-xs font-medium border-b border-amber-400/30">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-emerald-900/10 shadow-sm text-neutral-900">
+      {/* Top Banner: Benta Emerald Green Bar */}
+      <div className="bg-[#064e3b] text-white py-1.5 px-4 text-xs font-medium border-b border-amber-400/30">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center space-x-3 text-amber-200">
             <span className="inline-flex items-center px-2 py-0.5 rounded bg-black/20 border border-amber-300/40 text-[11px] text-amber-200 font-bold tracking-wide">
               EST. 1928 • HARLEM, NYC
             </span>
-            <span className="hidden sm:inline text-red-200">|</span>
+            <span className="hidden sm:inline text-emerald-200">|</span>
             <span className="hidden sm:inline text-white/90">630 Saint Nicholas Ave, New York, NY 10030</span>
           </div>
           
@@ -77,13 +77,13 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
           onClick={() => onNavigate('home')} 
           className="flex items-center space-x-3 cursor-pointer group"
         >
-          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#991b1b] via-[#b91c1c] to-[#d97706] p-0.5 shadow-md shadow-red-950/20">
+          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#065f46] via-[#047857] to-[#d97706] p-0.5 shadow-md shadow-emerald-950/20">
             <div className="w-full h-full bg-white rounded-full flex items-center justify-center border border-amber-500/40">
-              <span className="font-serif-title font-bold text-lg text-[#991b1b] tracking-tighter">BFH</span>
+              <span className="font-serif-title font-bold text-lg text-[#065f46] tracking-tighter">BFH</span>
             </div>
           </div>
           <div>
-            <h1 className="font-serif-title text-xl font-bold tracking-wide text-[#991b1b] group-hover:text-red-700 transition flex items-center gap-1.5">
+            <h1 className="font-serif-title text-xl font-bold tracking-wide text-[#065f46] group-hover:text-emerald-800 transition flex items-center gap-1.5">
               BENTA'S FUNERAL HOME
             </h1>
             <p className="text-[11px] text-[#b45309] tracking-widest uppercase font-semibold">
@@ -100,8 +100,8 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
               onClick={() => onNavigate(link.id)}
               className={`px-3 py-2 rounded-md text-xs font-semibold tracking-wide transition ${
                 activeSection === link.id
-                  ? 'text-[#991b1b] bg-red-50 border border-red-200'
-                  : 'text-neutral-700 hover:text-[#991b1b] hover:bg-neutral-50'
+                  ? 'text-[#065f46] bg-emerald-50 border border-emerald-200 font-bold'
+                  : 'text-neutral-700 hover:text-[#065f46] hover:bg-neutral-50'
               }`}
             >
               {link.label}
@@ -109,11 +109,11 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
           ))}
         </nav>
 
-        {/* Primary Action Button: Crimson with Gold Accent */}
+        {/* Primary Action Button: Emerald Green with Gold Accent */}
         <div className="hidden sm:flex items-center space-x-3">
           <button
             onClick={onOpenArranger}
-            className="flex items-center space-x-2 bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-lg shadow-md shadow-red-950/20 hover:shadow-lg transition transform active:scale-95 border border-amber-400/40"
+            className="flex items-center space-x-2 bg-gradient-to-r from-[#065f46] to-[#047857] hover:from-[#064e3b] hover:to-[#065f46] text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-lg shadow-md shadow-emerald-950/20 hover:shadow-lg transition transform active:scale-95 border border-amber-400/40"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span>Plan Online / Get Started</span>
@@ -124,7 +124,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
         <div className="lg:hidden flex items-center space-x-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded text-neutral-700 hover:text-red-800 hover:bg-neutral-100"
+            className="p-2 rounded text-neutral-700 hover:text-emerald-800 hover:bg-neutral-100"
             aria-label="Toggle menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,7 +140,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-red-100 px-4 pt-2 pb-4 space-y-2 shadow-lg">
+        <div className="lg:hidden bg-white border-b border-emerald-100 px-4 pt-2 pb-4 space-y-2 shadow-lg">
           {navLinks.map((link) => (
             <button
               key={link.id}
@@ -148,7 +148,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
                 onNavigate(link.id);
                 setMobileMenuOpen(false);
               }}
-              className="block w-full text-left px-3 py-2 rounded text-sm font-medium text-neutral-700 hover:bg-red-50 hover:text-[#991b1b]"
+              className="block w-full text-left px-3 py-2 rounded text-sm font-medium text-neutral-700 hover:bg-emerald-50 hover:text-[#065f46]"
             >
               {link.label}
             </button>
@@ -159,7 +159,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
                 onOpenArranger();
                 setMobileMenuOpen(false);
               }}
-              className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-2 rounded text-xs uppercase text-center border border-amber-400/40"
+              className="w-full bg-[#065f46] hover:bg-emerald-800 text-white font-bold py-2 rounded text-xs uppercase text-center border border-amber-400/40"
             >
               Plan Online / Get Started
             </button>
@@ -170,7 +170,7 @@ export const PublicNavbar: React.FC<PublicNavbarProps> = ({
               }}
               className="w-full bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold py-2 rounded text-xs text-center border border-neutral-300 flex items-center justify-center space-x-2"
             >
-              <Lock className="w-3.5 h-3.5 text-[#991b1b]" />
+              <Lock className="w-3.5 h-3.5 text-[#065f46]" />
               <span>Director / Family Portal</span>
             </button>
           </div>

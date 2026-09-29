@@ -28,12 +28,12 @@ export const GriefHealingSection: React.FC = () => {
   ];
 
   return (
-    <section id="grief" className="py-20 bg-[#fafafa] border-b border-red-900/10">
+    <section id="grief" className="py-20 bg-[#fafafa] border-b border-emerald-900/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 px-3 py-1 rounded-full text-xs text-[#991b1b] font-bold tracking-wide uppercase">
-            <Heart className="w-3.5 h-3.5 text-[#991b1b]" />
+          <div className="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-xs text-[#065f46] font-bold tracking-wide uppercase">
+            <Heart className="w-3.5 h-3.5 text-[#065f46]" />
             <span>Compassionate Aftercare</span>
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-neutral-900">
@@ -50,30 +50,30 @@ export const GriefHealingSection: React.FC = () => {
           {/* Left Column */}
           <div className="lg:col-span-5 space-y-6">
             {/* Anne Lamott Quote Box */}
-            <div className="bg-white p-7 rounded-2xl border border-red-200/80 shadow-md relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-28 h-28 bg-red-50 rounded-bl-full pointer-events-none" />
+            <div className="bg-white p-7 rounded-2xl border border-emerald-200/80 shadow-md relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-28 h-28 bg-emerald-50 rounded-bl-full pointer-events-none" />
               <Sparkles className="w-6 h-6 text-[#b45309] mb-3" />
               <blockquote className="text-sm text-neutral-700 italic leading-relaxed font-light">
                 "You will lose someone you can’t live without, and your heart will be badly broken, and the bad news is that you never completely get over the loss of your beloved. But this is also the good news. They live forever in your broken heart that doesn’t seal back up. And you come through. It’s like having a broken leg that never heals perfectly... but you learn to dance with a limp."
               </blockquote>
-              <p className="text-xs text-[#991b1b] font-bold mt-4 text-right uppercase tracking-wider">
+              <p className="text-xs text-[#065f46] font-bold mt-4 text-right uppercase tracking-wider">
                 — Anne Lamott
               </p>
             </div>
 
-            {/* 24/7 Helpline Card: Crimson Red Background */}
-            <div className="p-6 rounded-2xl bg-gradient-to-r from-[#991b1b] via-[#b91c1c] to-[#991b1b] text-white border border-amber-300/40 flex items-center justify-between shadow-lg shadow-red-950/20">
+            {/* 24/7 Helpline Card: Emerald Green Background */}
+            <div className="p-6 rounded-2xl bg-gradient-to-r from-[#065f46] via-[#047857] to-[#065f46] text-white border border-amber-300/40 flex items-center justify-between shadow-lg shadow-emerald-950/20">
               <div className="space-y-1">
                 <span className="text-xs text-amber-300 font-bold uppercase tracking-wider">Need to speak with someone?</span>
                 <p className="text-base font-bold text-white">Benta’s 24/7 Careline</p>
-                <p className="text-xs text-red-100 font-light">We are always here to listen and assist.</p>
+                <p className="text-xs text-emerald-100 font-light">We are always here to listen and assist.</p>
               </div>
               <a
                 href="tel:+12122818850"
-                className="bg-white hover:bg-amber-100 text-[#991b1b] font-bold p-3.5 rounded-full shadow-md transition transform active:scale-95"
+                className="bg-white hover:bg-amber-100 text-[#065f46] font-bold p-3.5 rounded-full shadow-md transition transform active:scale-95"
                 aria-label="Call 24/7 Careline"
               >
-                <Phone className="w-5 h-5 text-[#991b1b]" />
+                <Phone className="w-5 h-5 text-[#065f46]" />
               </a>
             </div>
           </div>
@@ -99,7 +99,7 @@ export const GriefHealingSection: React.FC = () => {
                         {topic.excerpt}
                       </p>
                     </div>
-                    <div className="p-1.5 rounded-full bg-neutral-100 text-[#991b1b]">
+                    <div className="p-1.5 rounded-full bg-neutral-100 text-[#065f46]">
                       {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </div>
                   </button>

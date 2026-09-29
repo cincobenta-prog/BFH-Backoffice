@@ -124,12 +124,12 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
   });
 
   return (
-    <section id="services" className="py-20 bg-[#fafafa] border-b border-red-900/10">
+    <section id="services" className="py-20 bg-[#fafafa] border-b border-emerald-900/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 px-3 py-1 rounded-full text-xs text-[#991b1b] font-bold tracking-wide uppercase">
+          <div className="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-xs text-[#065f46] font-bold tracking-wide uppercase">
             <DollarSign className="w-3.5 h-3.5 text-[#b45309]" />
             <span>Honest & FTC-Compliant Pricing</span>
           </div>
@@ -146,8 +146,8 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
               onClick={() => setActiveTab('all')}
               className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition ${
                 activeTab === 'all'
-                  ? 'bg-[#991b1b] text-white shadow-md'
-                  : 'bg-white text-neutral-700 hover:text-[#991b1b] border border-neutral-200'
+                  ? 'bg-[#065f46] text-white shadow-md'
+                  : 'bg-white text-neutral-700 hover:text-[#065f46] border border-neutral-200'
               }`}
             >
               All Options ({packages.length})
@@ -156,8 +156,8 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
               onClick={() => setActiveTab('cremation')}
               className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition ${
                 activeTab === 'cremation'
-                  ? 'bg-[#991b1b] text-white shadow-md'
-                  : 'bg-white text-neutral-700 hover:text-[#991b1b] border border-neutral-200'
+                  ? 'bg-[#065f46] text-white shadow-md'
+                  : 'bg-white text-neutral-700 hover:text-[#065f46] border border-neutral-200'
               }`}
             >
               Cremation Services (3)
@@ -166,8 +166,8 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
               onClick={() => setActiveTab('burial')}
               className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition ${
                 activeTab === 'burial'
-                  ? 'bg-[#991b1b] text-white shadow-md'
-                  : 'bg-white text-neutral-700 hover:text-[#991b1b] border border-neutral-200'
+                  ? 'bg-[#065f46] text-white shadow-md'
+                  : 'bg-white text-neutral-700 hover:text-[#065f46] border border-neutral-200'
               }`}
             >
               Burial Services (2)
@@ -176,8 +176,8 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
               onClick={() => setActiveTab('preneed')}
               className={`px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition ${
                 activeTab === 'preneed'
-                  ? 'bg-[#991b1b] text-white shadow-md'
-                  : 'bg-white text-neutral-700 hover:text-[#991b1b] border border-neutral-200'
+                  ? 'bg-[#065f46] text-white shadow-md'
+                  : 'bg-white text-neutral-700 hover:text-[#065f46] border border-neutral-200'
               }`}
             >
               Pre-Need Planning
@@ -192,19 +192,19 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
               key={pkg.id}
               className={`rounded-2xl p-7 flex flex-col justify-between transition-all duration-300 relative ${
                 pkg.recommended
-                  ? 'bg-white border-2 border-[#991b1b] shadow-xl transform lg:-translate-y-2 ring-2 ring-red-400/20'
-                  : 'bg-white border border-neutral-200 hover:border-red-200 shadow-sm hover:shadow-md'
+                  ? 'bg-white border-2 border-[#065f46] shadow-xl transform lg:-translate-y-2 ring-2 ring-emerald-400/20'
+                  : 'bg-white border border-neutral-200 hover:border-emerald-200 shadow-sm hover:shadow-md'
               }`}
             >
               {pkg.recommended && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#991b1b] to-[#b91c1c] text-white font-bold text-[11px] uppercase tracking-widest px-4 py-1 rounded-full shadow-md border border-amber-300/40">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#065f46] to-[#047857] text-white font-bold text-[11px] uppercase tracking-widest px-4 py-1 rounded-full shadow-md border border-amber-300/40">
                   {pkg.badge}
                 </div>
               )}
 
               <div>
                 {!pkg.recommended && (
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#991b1b] bg-red-50 px-2.5 py-1 rounded border border-red-200 inline-block mb-3">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#065f46] bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200 inline-block mb-3">
                     {pkg.badge}
                   </span>
                 )}
@@ -217,7 +217,7 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
                 </p>
 
                 <div className="mb-6 pb-6 border-b border-neutral-100">
-                  <span className="text-3xl font-bold font-serif-title text-[#991b1b]">
+                  <span className="text-3xl font-bold font-serif-title text-[#065f46]">
                     {pkg.price}
                   </span>
                   <span className="text-xs text-neutral-500 block mt-1">
@@ -231,7 +231,7 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
                   </p>
                   {pkg.features.map((feat, i) => (
                     <div key={i} className="flex items-start space-x-2.5 text-xs text-neutral-600">
-                      <CheckCircle className="w-4 h-4 text-[#991b1b] shrink-0 mt-0.5" />
+                      <CheckCircle className="w-4 h-4 text-[#065f46] shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -242,8 +242,8 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
                 onClick={() => onSelectService(pkg.id)}
                 className={`w-full py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition flex items-center justify-center space-x-2 ${
                   pkg.recommended
-                    ? 'bg-[#991b1b] hover:bg-red-800 text-white shadow-md shadow-red-950/20 border border-amber-300/30'
-                    : 'bg-neutral-100 hover:bg-red-50 text-neutral-800 hover:text-[#991b1b] border border-neutral-200'
+                    ? 'bg-[#065f46] hover:bg-emerald-800 text-white shadow-md shadow-emerald-950/20 border border-amber-300/30'
+                    : 'bg-neutral-100 hover:bg-emerald-50 text-neutral-800 hover:text-[#065f46] border border-neutral-200'
                 }`}
               >
                 <span>Select & Customize Plan</span>
@@ -256,7 +256,7 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
         {/* CUSTOMIZABLE VARIABLES & ADD-ON SUITE */}
         <div className="mt-16 bg-white rounded-3xl p-8 border border-neutral-200 shadow-sm space-y-6">
           <div className="text-center max-w-2xl mx-auto space-y-2">
-            <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase text-[#991b1b] bg-red-50 px-3 py-1 rounded-full border border-red-200">
+            <div className="inline-flex items-center space-x-1.5 text-xs font-bold uppercase text-[#065f46] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
               <Sparkles className="w-3.5 h-3.5 text-[#b45309]" />
               <span>Personalized Touch & Flexibility</span>
             </div>
@@ -272,7 +272,7 @@ export const ServiceOptionsSection: React.FC<ServiceOptionsSectionProps> = ({ on
             
             {/* 1. Printing & Stationery */}
             <div className="p-5 rounded-2xl bg-[#fcfbfa] border border-neutral-200 space-y-3">
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#991b1b] border border-red-200 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#065f46] border border-emerald-200 flex items-center justify-center font-bold">
                 <BookOpen className="w-5 h-5" />
               </div>
               <h4 className="font-serif-title font-bold text-sm text-neutral-900">

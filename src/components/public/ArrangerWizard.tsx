@@ -224,8 +224,8 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
 
         {/* Wizard Header */}
         <div className="mb-6 pb-4 border-b border-neutral-200">
-          <div className="flex items-center space-x-2 text-xs text-[#991b1b] font-bold tracking-wide uppercase">
-            <Sparkles className="w-4 h-4 text-[#991b1b]" />
+          <div className="flex items-center space-x-2 text-xs text-[#065f46] font-bold tracking-wide uppercase">
+            <Sparkles className="w-4 h-4 text-[#065f46]" />
             <span>Self-Guided Digital Arranger • Step {step} of 4</span>
           </div>
           <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mt-1">
@@ -240,8 +240,8 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
         <div className="grid grid-cols-4 gap-2 mb-8">
           {['Service Type', 'Loved One Info', 'Arranger Info', 'Variables & Review'].map((label, idx) => (
             <div key={idx} className="space-y-1">
-              <div className={`h-1.5 rounded-full ${step >= idx + 1 ? 'bg-[#991b1b]' : 'bg-neutral-200'}`} />
-              <p className={`text-[10px] font-bold ${step >= idx + 1 ? 'text-[#991b1b]' : 'text-neutral-400'}`}>
+              <div className={`h-1.5 rounded-full ${step >= idx + 1 ? 'bg-[#065f46]' : 'bg-neutral-200'}`} />
+              <p className={`text-[10px] font-bold ${step >= idx + 1 ? 'text-[#065f46]' : 'text-neutral-400'}`}>
                 {label}
               </p>
             </div>
@@ -293,13 +293,13 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   onClick={() => setDisposition(item.id as DispositionType)}
                   className={`p-4 rounded-xl border cursor-pointer transition ${
                     disposition === item.id
-                      ? 'bg-red-50/80 border-[#991b1b] ring-2 ring-[#991b1b]/20 shadow-sm'
+                      ? 'bg-emerald-50/80 border-[#065f46] ring-2 ring-[#065f46]/20 shadow-sm'
                       : 'bg-white border-neutral-200 hover:border-neutral-300'
                   }`}
                 >
                   <div className="flex justify-between items-center mb-1">
                     <h4 className="font-serif-title font-bold text-sm text-neutral-900">{item.title}</h4>
-                    <span className="text-[#991b1b] font-bold text-xs">{item.price}</span>
+                    <span className="text-[#065f46] font-bold text-xs">{item.price}</span>
                   </div>
                   <p className="text-xs text-neutral-500 font-light">{item.desc}</p>
                 </div>
@@ -313,7 +313,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
               <select
                 value={viewingChoice}
                 onChange={(e) => setViewingChoice(e.target.value as any)}
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-3 text-xs text-neutral-900 focus:border-[#991b1b] outline-none shadow-sm"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-3 text-xs text-neutral-900 focus:border-[#065f46] outline-none shadow-sm"
               >
                 <option value="Parlor A (Seats 120)">Parlor A (Saint Nicholas Main Chapel - Seats 120)</option>
                 <option value="Parlor B (Seats 110)">Parlor B (Harlem Memorial Chapel - Seats 110)</option>
@@ -340,7 +340,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   value={decedentName}
                   onChange={(e) => setDecedentName(e.target.value)}
                   placeholder="e.g. Arthur Robinson"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
 
@@ -350,7 +350,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   type="date"
                   value={decedentDob}
                   onChange={(e) => setDecedentDob(e.target.value)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
 
@@ -361,7 +361,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   required
                   value={decedentDod}
                   onChange={(e) => setDecedentDod(e.target.value)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
 
@@ -373,7 +373,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   value={placeOfDeath}
                   onChange={(e) => setPlaceOfDeath(e.target.value)}
                   placeholder="e.g. Mount Sinai Morningside or Harlem Hospital"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
             </div>
@@ -385,7 +385,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 value={residence}
                 onChange={(e) => setResidence(e.target.value)}
                 placeholder="e.g. 240 W 138th St, New York, NY 10030"
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
               />
             </div>
 
@@ -395,7 +395,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 id="veteranCheck"
                 checked={isVeteran}
                 onChange={(e) => setIsVeteran(e.target.checked)}
-                className="rounded text-[#991b1b] focus:ring-[#991b1b]"
+                className="rounded text-[#065f46] focus:ring-[#065f46]"
               />
               <label htmlFor="veteranCheck" className="text-xs text-neutral-700 cursor-pointer font-medium">
                 Honorably Served in the U.S. Armed Forces (Eligible for Flag & Honors)
@@ -420,7 +420,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   value={informantName}
                   onChange={(e) => setInformantName(e.target.value)}
                   placeholder="e.g. Eleanor Vance-Holloway"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
 
@@ -429,7 +429,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 <select
                   value={informantRelation}
                   onChange={(e) => setInformantRelation(e.target.value)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 >
                   <option value="Spouse">Spouse / Domestic Partner</option>
                   <option value="Child / Son / Daughter">Child (Son / Daughter)</option>
@@ -448,7 +448,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   value={informantPhone}
                   onChange={(e) => setInformantPhone(e.target.value)}
                   placeholder="(212) 555-0198"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
 
@@ -460,12 +460,12 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   value={informantEmail}
                   onChange={(e) => setInformantEmail(e.target.value)}
                   placeholder="eleanor.vance@gmail.com"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
             </div>
 
-            <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#991b1b]">
+            <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-[#065f46]">
               <span className="font-bold">Privacy Promise:</span> We never sell your contact information. This creates your private, secure Golden Record so you can review details without re-entering them.
             </div>
           </div>
@@ -487,16 +487,16 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 
                 {/* Programs */}
-                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#991b1b] transition">
+                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#065f46] transition">
                   <input
                     type="checkbox"
                     checked={includePrograms}
                     onChange={(e) => setIncludePrograms(e.target.checked)}
-                    className="rounded text-[#991b1b]"
+                    className="rounded text-[#065f46]"
                   />
                   <div className="flex-1">
                     <div className="font-bold text-neutral-900 flex items-center gap-1">
-                      <BookOpen className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <BookOpen className="w-3.5 h-3.5 text-[#065f46]" />
                       <span>Custom Memorial Programs</span>
                     </div>
                     <div className="text-[11px] text-neutral-500">4-Panel large bifold suite (+ $325)</div>
@@ -504,16 +504,16 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </label>
 
                 {/* Prayer Cards */}
-                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#991b1b] transition">
+                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#065f46] transition">
                   <input
                     type="checkbox"
                     checked={includePrayerCards}
                     onChange={(e) => setIncludePrayerCards(e.target.checked)}
-                    className="rounded text-[#991b1b]"
+                    className="rounded text-[#065f46]"
                   />
                   <div className="flex-1">
                     <div className="font-bold text-neutral-900 flex items-center gap-1">
-                      <BookOpen className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <BookOpen className="w-3.5 h-3.5 text-[#065f46]" />
                       <span>Photo Prayer Cards (50 pk)</span>
                     </div>
                     <div className="text-[11px] text-neutral-500">Laminated with portrait (+ $200)</div>
@@ -521,12 +521,12 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </label>
 
                 {/* Clergy & Organist */}
-                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#991b1b] transition">
+                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#065f46] transition">
                   <input
                     type="checkbox"
                     checked={includeClergyOrganist}
                     onChange={(e) => setIncludeClergyOrganist(e.target.checked)}
-                    className="rounded text-[#991b1b]"
+                    className="rounded text-[#065f46]"
                   />
                   <div className="flex-1">
                     <div className="font-bold text-neutral-900 flex items-center gap-1">
@@ -538,12 +538,12 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </label>
 
                 {/* Limousine */}
-                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#991b1b] transition">
+                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#065f46] transition">
                   <input
                     type="checkbox"
                     checked={includeLimousine}
                     onChange={(e) => setIncludeLimousine(e.target.checked)}
-                    className="rounded text-[#991b1b]"
+                    className="rounded text-[#065f46]"
                   />
                   <div className="flex-1">
                     <div className="font-bold text-neutral-900 flex items-center gap-1">
@@ -555,12 +555,12 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </label>
 
                 {/* Repast Room */}
-                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#991b1b] transition sm:col-span-2">
+                <label className="flex items-center space-x-2.5 p-2.5 rounded-xl border bg-white cursor-pointer hover:border-[#065f46] transition sm:col-span-2">
                   <input
                     type="checkbox"
                     checked={includeRepast}
                     onChange={(e) => setIncludeRepast(e.target.checked)}
-                    className="rounded text-[#991b1b]"
+                    className="rounded text-[#065f46]"
                   />
                   <div className="flex-1">
                     <div className="font-bold text-neutral-900 flex items-center gap-1">
@@ -590,7 +590,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 <span>Venue & Facility Allocation:</span>
                 <span className="text-neutral-900 font-medium">{viewingChoice}</span>
               </div>
-              <div className="pt-2 border-t border-neutral-200 flex justify-between text-sm font-bold text-[#991b1b]">
+              <div className="pt-2 border-t border-neutral-200 flex justify-between text-sm font-bold text-[#065f46]">
                 <span>Estimated Total (FTC Itemized):</span>
                 <span>${totalPrice.toLocaleString()}</span>
               </div>
@@ -607,7 +607,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   onClick={() => setPaymentMethod('cash')}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'cash'
-                      ? 'bg-red-50 border-[#991b1b] ring-2 ring-[#991b1b]/20 font-bold text-[#991b1b]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -619,7 +619,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   onClick={() => setPaymentMethod('insurance')}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'insurance'
-                      ? 'bg-red-50 border-[#991b1b] ring-2 ring-[#991b1b]/20 font-bold text-[#991b1b]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -631,7 +631,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   onClick={() => setPaymentMethod('ach')}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'ach'
-                      ? 'bg-red-50 border-[#991b1b] ring-2 ring-[#991b1b]/20 font-bold text-[#991b1b]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -643,7 +643,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   onClick={() => setPaymentMethod('credit')}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'credit'
-                      ? 'bg-red-50 border-[#991b1b] ring-2 ring-[#991b1b]/20 font-bold text-[#991b1b]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -674,7 +674,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
             <button
               type="button"
               onClick={() => setStep(step + 1)}
-              className="flex items-center space-x-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-md shadow-red-950/20"
+              className="flex items-center space-x-1.5 bg-[#065f46] hover:bg-emerald-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-md shadow-emerald-950/20"
             >
               <span>Continue</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -683,7 +683,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
             <button
               type="button"
               onClick={handleSubmit}
-              className="flex items-center space-x-2 bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg shadow-lg shadow-red-950/20 transition border border-amber-300/40"
+              className="flex items-center space-x-2 bg-gradient-to-r from-[#065f46] to-emerald-700 hover:from-[#064e3b] hover:to-[#065f46] text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-lg shadow-lg shadow-emerald-950/20 transition border border-amber-300/40"
             >
               <Sparkles className="w-4 h-4 text-amber-300" />
               <span>Submit & Open Golden Record Hub</span>

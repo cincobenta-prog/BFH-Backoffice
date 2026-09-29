@@ -60,13 +60,13 @@ export const ObituariesTributes: React.FC = () => {
   );
 
   return (
-    <section id="obituaries" className="py-20 bg-white border-b border-red-900/10">
+    <section id="obituaries" className="py-20 bg-white border-b border-emerald-900/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 px-3 py-1 rounded-full text-xs text-[#991b1b] font-bold tracking-wide uppercase">
+            <div className="inline-flex items-center space-x-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-xs text-[#065f46] font-bold tracking-wide uppercase">
               <BookOpen className="w-3.5 h-3.5 text-[#b45309]" />
               <span>Current Memorials & Tributes</span>
             </div>
@@ -86,7 +86,7 @@ export const ObituariesTributes: React.FC = () => {
               placeholder="Search by loved one's name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#fbfbfd] border border-neutral-300 focus:border-[#991b1b] rounded-lg pl-10 pr-4 py-2.5 text-xs text-neutral-900 placeholder-neutral-400 outline-none transition shadow-sm"
+              className="w-full bg-[#fbfbfd] border border-neutral-300 focus:border-[#065f46] rounded-lg pl-10 pr-4 py-2.5 text-xs text-neutral-900 placeholder-neutral-400 outline-none transition shadow-sm"
             />
           </div>
         </div>
@@ -96,7 +96,7 @@ export const ObituariesTributes: React.FC = () => {
           {filtered.map((obit) => (
             <div 
               key={obit.id}
-              className="bg-white rounded-2xl border border-neutral-200 hover:border-red-300 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl group"
+              className="bg-white rounded-2xl border border-neutral-200 hover:border-emerald-300 transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl group"
             >
               <div>
                 {/* Photo & Badges */}
@@ -110,7 +110,7 @@ export const ObituariesTributes: React.FC = () => {
                   
                   <div className="absolute top-3 right-3 flex gap-1.5">
                     {obit.hasLivestream && (
-                      <span className="bg-red-900/90 backdrop-blur-md border border-red-400/50 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                      <span className="bg-emerald-900/90 backdrop-blur-md border border-emerald-400/50 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
                         <Video className="w-3 h-3 text-white animate-pulse" /> Virtual Stream
                       </span>
                     )}
@@ -136,7 +136,7 @@ export const ObituariesTributes: React.FC = () => {
                   </p>
 
                   <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200/80 text-[11px] space-y-1">
-                    <span className="text-[#991b1b] font-bold block uppercase tracking-wider">Service Information:</span>
+                    <span className="text-[#065f46] font-bold block uppercase tracking-wider">Service Information:</span>
                     <p className="text-neutral-900 font-semibold">{obit.serviceDate}</p>
                     <p className="text-neutral-600 font-light">{obit.location}</p>
                   </div>
@@ -147,9 +147,9 @@ export const ObituariesTributes: React.FC = () => {
               <div className="p-5 pt-0 border-t border-neutral-100 mt-4 flex items-center justify-between text-xs">
                 <button
                   onClick={() => handleLightCandle(obit.id)}
-                  className="flex items-center space-x-1.5 text-[#991b1b] hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 font-bold transition"
+                  className="flex items-center space-x-1.5 text-[#065f46] hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg border border-emerald-200 font-bold transition"
                 >
-                  <Heart className="w-3.5 h-3.5 fill-[#991b1b] text-[#991b1b]" />
+                  <Heart className="w-3.5 h-3.5 fill-[#065f46] text-[#065f46]" />
                   <span>Light Candle ({litCandles[obit.id] || 0})</span>
                 </button>
 
@@ -163,14 +163,14 @@ export const ObituariesTributes: React.FC = () => {
 
               {/* Collapsible Condolence Form */}
               {activeMessage === obit.id && (
-                <div className="p-4 bg-red-50/50 border-t border-red-100 space-y-2">
+                <div className="p-4 bg-emerald-50/50 border-t border-emerald-100 space-y-2">
                   <p className="text-[11px] text-neutral-800 font-bold">Leave a memory or prayer for the family:</p>
                   <textarea
                     rows={2}
                     value={condolenceText}
                     onChange={(e) => setCondolenceText(e.target.value)}
                     placeholder="Write a message of comfort..."
-                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 placeholder-neutral-400 outline-none focus:border-[#065f46]"
                   />
                   <div className="flex justify-end gap-2">
                     <button
@@ -185,7 +185,7 @@ export const ObituariesTributes: React.FC = () => {
                         setCondolenceText('');
                         setActiveMessage(null);
                       }}
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3 py-1 rounded-lg flex items-center gap-1 shadow-sm"
+                      className="bg-[#065f46] hover:bg-emerald-800 text-white font-bold text-xs px-3 py-1 rounded-lg flex items-center gap-1 shadow-sm"
                     >
                       <Send className="w-3 h-3" /> Send to Family
                     </button>
