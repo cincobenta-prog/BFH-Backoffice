@@ -18,7 +18,8 @@ import {
   DirectorProfile,
   ServiceDirectorAssignment,
   Director1099Voucher,
-  PassThroughPayableCheck
+  PassThroughPayableCheck,
+  FirstCallIntakeFormData
 } from './lib/types/funeral';
 import {
   MOCK_CASES,
@@ -80,6 +81,8 @@ import { PrintableFormAP47Modal } from './components/backoffice/PrintableFormAP4
 import { DocuSignEnvelopeModal } from './components/backoffice/DocuSignEnvelopeModal';
 import { QuickBooksSyncModal } from './components/backoffice/QuickBooksSyncModal';
 import { CashAdvanceCheckPrinterModal } from './components/backoffice/CashAdvanceCheckPrinterModal';
+import { FirstCallIntakeModal } from './components/backoffice/FirstCallIntakeModal';
+import { createCaseFromFirstCall } from './lib/data/firstCallHelper';
 
 // Family Portal Component (with full 9-Part Obituary Writer Suite)
 import { FamilyPortalView } from './components/family/FamilyPortalView';
@@ -134,6 +137,9 @@ export function App() {
   // 4K Webcast Scheduling State
   const [isWebcastModalOpen, setIsWebcastModalOpen] = useState(false);
   const [webcastTargetCase, setWebcastTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  // Universal First Call & Intake Studio State
+  const [isFirstCallIntakeOpen, setIsFirstCallIntakeOpen] = useState(false);
 
   // First Call Removal & Custody Affidavit State
   const [isRemovalModalOpen, setIsRemovalModalOpen] = useState(false);
@@ -509,6 +515,41 @@ export function App() {
     });
   };
 
+  // First Call Intake Case Generator & Bi-Directional Router
+  const handleCreateCaseFromIntake = (
+    formData: FirstCallIntakeFormData,
+    nextAction: 'open_removal' | 'open_appointment' | 'save_only'
+  ) => {
+    const newCase = createCaseFromFirstCall(formData, cases.length);
+    setCases(prev => [newCase, ...prev]);
+    setActiveCaseId(newCase.id);
+    setIsFirstCallIntakeOpen(false);
+
+    handleSendNotification({
+      id: `notif-intake-${Date.now()}`,
+      caseId: newCase.id,
+      decedentName: newCase.decedent.legalName,
+      recipientName: newCase.assignedDirector,
+      recipientPhone: '(212) 281-8850',
+      channel: 'sms',
+      type: 'service_schedule',
+      title: `NEW FIRST CALL INTAKE: ${newCase.decedent.legalName} (${newCase.caseNumber})`,
+      bodyText: `Intake logged by ${formData.callerName} (${formData.callerPhone}). Pickup: ${formData.facilityName}. Pathway: ${formData.intakePathway.toUpperCase()}. Assigned Lead: ${newCase.assignedDirector}.`,
+      sentAt: 'Just now',
+      status: 'delivered'
+    });
+
+    if (nextAction === 'open_removal') {
+      setRemovalTargetCase(newCase);
+      setIsRemovalModalOpen(true);
+    } else if (nextAction === 'open_appointment') {
+      setAppointmentTargetCase(newCase);
+      setIsAppointmentModalOpen(true);
+    } else {
+      setBackOfficeTab('golden_record');
+    }
+  };
+
   // Service Partner Network Handlers
   const handleAddServicePartner = (newPartner: ServicePartnerContact) => {
     setServicePartners(prev => [newPartner, ...prev]);
@@ -824,6 +865,7 @@ export function App() {
           onChangeTab={setBackOfficeTab}
           onExitBackOffice={() => setViewMode('public')}
           onOpenNewCase={() => setIsArrangerOpen(true)}
+          onOpenFirstCallIntake={() => setIsFirstCallIntakeOpen(true)}
           onOpenNotifications={() => setIsNotificationHubOpen(true)}
           notificationCount={notifications.length}
           onOpenLiveryModal={() => setIsLiveryModalOpen(true)}
@@ -883,6 +925,7 @@ export function App() {
                 setIsWebcastModalOpen(true);
               }}
               onOpenNewCase={() => setIsArrangerOpen(true)}
+              onOpenFirstCallIntake={() => setIsFirstCallIntakeOpen(true)}
               onOpenFamilyPortal={(caseId) => {
                 if (caseId) setActiveCaseId(caseId);
                 setCurrentRole('family');
@@ -1188,6 +1231,17 @@ export function App() {
           />
         )}
 
+        {/* Universal First Call & Intake Studio Modal */}
+        {isFirstCallIntakeOpen && (
+          <FirstCallIntakeModal
+            isOpen={isFirstCallIntakeOpen}
+            onClose={() => setIsFirstCallIntakeOpen(false)}
+            onSubmitIntake={handleCreateCaseFromIntake}
+            directorProfiles={directorProfiles}
+            currentDirectorId={currentDirectorId}
+          />
+        )}
+
         {/* First Call Removal & Legal Custody Affidavit Modal */}
         {isRemovalModalOpen && (
           <RemovalSchedulingModal
@@ -1200,6 +1254,16 @@ export function App() {
             cases={cases}
             onSaveRemoval={handleSaveRemoval}
             onSendNotification={handleSendNotification}
+            onOpenAppointmentModal={(c) => {
+              setIsRemovalModalOpen(false);
+              setAppointmentTargetCase(c || removalTargetCase || activeCase);
+              setIsAppointmentModalOpen(true);
+            }}
+            onOpenContractModal={(c) => {
+              setIsRemovalModalOpen(false);
+              setContractTargetCase(c || removalTargetCase || activeCase);
+              setIsContractModalOpen(true);
+            }}
           />
         )}
 
@@ -1230,6 +1294,16 @@ export function App() {
             onSaveAppointment={handleSaveAppointment}
             onSendNotification={handleSendNotification}
             onOpenCalendar={() => setBackOfficeTab('calendar')}
+            onOpenContractModal={() => {
+              setIsAppointmentModalOpen(false);
+              setContractTargetCase(appointmentTargetCase || activeCase);
+              setIsContractModalOpen(true);
+            }}
+            onOpenRemovalModal={(c) => {
+              setIsAppointmentModalOpen(false);
+              setRemovalTargetCase(c || appointmentTargetCase || activeCase);
+              setIsRemovalModalOpen(true);
+            }}
           />
         )}
 

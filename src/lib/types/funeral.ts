@@ -341,12 +341,56 @@ export interface GoldenRecordCase {
   familySplitPayConfig?: FamilySplitPayConfig;
   vipItinerary?: DayOfServiceVIPItinerary;
   arrangementAppointment?: ArrangementAppointmentInfo;
+  intakePathway?: IntakePathwayType;
+  firstCallNotes?: string;
   notes: Array<{
     id: string;
     author: string;
     timestamp: string;
     text: string;
   }>;
+}
+
+export type IntakePathwayType =
+  | 'unexpected_removal_first'
+  | 'scheduled_arrangement_first'
+  | 'imminent_hospice';
+
+export interface FirstCallIntakeFormData {
+  callerName: string;
+  callerRelationship: string;
+  callerPhone: string;
+  callerEmail: string;
+  callerAddress: string;
+  hasRightToControl: boolean;
+  
+  decedentLegalName: string;
+  gender: 'male' | 'female' | 'other';
+  dateOfBirth: string;
+  dateOfDeath: string;
+  isExpectedDeath: boolean;
+  
+  locationType: RemovalLocationType;
+  facilityName: string;
+  facilityAddress: string;
+  facilityFloorRoom: string;
+  facilityContactPhone: string;
+  morgueAttendantOrNurse: string;
+  
+  physicianName: string;
+  physicianPhone: string;
+  physicianLicenseNumber?: string;
+  
+  dispositionType: DispositionType;
+  viewingParlor: 'Parlor A (Seats 120)' | 'Parlor B (Seats 110)' | 'Church / External Venue' | 'Direct / No Viewing';
+  targetServiceDate?: string;
+  
+  assignedDirectorId: string;
+  assignedDirectorName: string;
+  intakePathway: IntakePathwayType;
+  urgency: RemovalUrgency;
+  specialInstructions?: string;
+  specialEquipment: string[];
 }
 
 export type BackOfficeTab =

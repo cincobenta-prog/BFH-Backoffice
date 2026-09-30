@@ -33,7 +33,8 @@ import {
   Lock,
   Printer,
   FileCheck,
-  Landmark
+  Landmark,
+  PhoneCall
 } from 'lucide-react';
 
 interface BackOfficeLayoutProps {
@@ -46,6 +47,7 @@ interface BackOfficeLayoutProps {
   onChangeTab: (tab: BackOfficeTab) => void;
   onExitBackOffice: () => void;
   onOpenNewCase: () => void;
+  onOpenFirstCallIntake?: () => void;
   onOpenNotifications?: () => void;
   notificationCount?: number;
   onOpenLiveryModal?: () => void;
@@ -76,6 +78,7 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onChangeTab,
   onExitBackOffice,
   onOpenNewCase,
+  onOpenFirstCallIntake,
   onOpenNotifications,
   notificationCount = 5,
   onOpenLiveryModal,
@@ -205,6 +208,17 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
                 </option>
               ))}
             </select>
+
+            {onOpenFirstCallIntake && (
+              <button
+                onClick={onOpenFirstCallIntake}
+                className="bg-gradient-to-r from-amber-600 via-amber-700 to-[#991b1b] hover:brightness-110 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-amber-400/50"
+                title="Capture First Call Intake (Unexpected Death Removal or Advance Arrangement Conference)"
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
+                <span>+ First Call / Intake</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenNewCase}

@@ -541,6 +541,66 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {activeTab === 'overview' && (
             <div className="space-y-6">
               
+              {/* BI-DIRECTIONAL FIRST CALL & LOGISTICS BRIDGE PANEL */}
+              <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-[#991b1b] text-white p-5 rounded-2xl shadow-md border border-amber-400/30 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2.5 py-1 rounded-lg">
+                      Bi-Directional Case Bridge
+                    </span>
+                    <span className="text-xs text-neutral-300 font-semibold">
+                      Pathway: {caseData.intakePathway === 'unexpected_removal_first' ? '🚨 Unexpected Death (Removal First)' : caseData.intakePathway === 'scheduled_arrangement_first' ? '📅 Advance Arrangement First' : '⚖️ Standard First Call'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    {onOpenRemovalModal && (
+                      <button
+                        onClick={onOpenRemovalModal}
+                        className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm"
+                      >
+                        <Truck className="w-3.5 h-3.5 text-blue-200" />
+                        <span>{caseData.safeArrivalStatus === 'safe_arrival_confirmed' ? '✓ Removal Completed' : '🚑 Dispatch Removal'}</span>
+                      </button>
+                    )}
+
+                    {onOpenAppointmentModal && (
+                      <button
+                        onClick={onOpenAppointmentModal}
+                        className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm"
+                      >
+                        <Calendar className="w-3.5 h-3.5 text-amber-200" />
+                        <span>{caseData.arrangementAppointment?.status === 'confirmed' ? `📅 Conference: ${caseData.arrangementAppointment.confirmedSlot?.date}` : '📅 Schedule Conference'}</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1 border-t border-white/10">
+                  <div className="bg-white/10 p-2.5 rounded-xl">
+                    <span className="text-neutral-400 text-[10px] uppercase font-bold block">First Call Custody Location</span>
+                    <strong className="text-white text-xs block truncate">{caseData.removalSchedule?.facilityName || caseData.decedent.facilityName || caseData.decedent.placeOfDeath}</strong>
+                    <span className="text-neutral-300 text-[11px] block truncate">{caseData.removalSchedule?.facilityFloorRoom || 'Floor / Bay Noted'}</span>
+                  </div>
+
+                  <div className="bg-white/10 p-2.5 rounded-xl">
+                    <span className="text-neutral-400 text-[10px] uppercase font-bold block">Attending Physician (EDRS)</span>
+                    <strong className="text-white text-xs block truncate">{caseData.medicalCertifier.physicianName}</strong>
+                    <span className="text-neutral-300 text-[11px] block">{caseData.medicalCertifier.phone}</span>
+                  </div>
+
+                  <div className="bg-white/10 p-2.5 rounded-xl">
+                    <span className="text-neutral-400 text-[10px] uppercase font-bold block">Family Arrangement Status</span>
+                    <strong className="text-amber-300 text-xs block truncate">
+                      {caseData.arrangementAppointment?.status === 'confirmed' 
+                        ? `Confirmed: ${caseData.arrangementAppointment.confirmedSlot?.date} (${caseData.arrangementAppointment.confirmedSlot?.time})`
+                        : 'Candidate Timeslots Offered'}
+                    </strong>
+                    <span className="text-neutral-300 text-[11px] block truncate">{caseData.arrangementAppointment?.locationVenue || '630 St. Nicholas Ave'}</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Decedent Summary Card */}
               <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-4">
                 <h3 className="font-serif-title text-sm font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">

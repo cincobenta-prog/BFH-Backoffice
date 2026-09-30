@@ -21,7 +21,11 @@ import {
   UserCheck,
   User,
   AlertCircle,
-  Smartphone
+  Smartphone,
+  Truck,
+  Calendar,
+  Clock,
+  PhoneCall
 } from 'lucide-react';
 
 export interface DirectorActiveCasesDashboardProps {
@@ -40,6 +44,7 @@ export interface DirectorActiveCasesDashboardProps {
   onOpenPrintAP47?: (caseItem: GoldenRecordCase) => void;
   onOpenAppointmentModal?: (caseItem: GoldenRecordCase) => void;
   onOpenNewCase?: () => void;
+  onOpenFirstCallIntake?: () => void;
   onOpenFamilyPortal?: (caseId?: string) => void;
   onUpdateCasePhase?: (caseId: string, phase: CasePhase) => void;
   onSendNotification?: (notif: any) => void;
@@ -83,11 +88,12 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   onOpenPartnerModal,
   onOpenTwoWaySmsModal,
   onOpenWebcastModal: _onOpenWebcastModal,
-  onOpenRemovalModal: _onOpenRemovalModal,
+  onOpenRemovalModal,
   onOpenContractModal,
   onOpenPrintAP47: _onOpenPrintAP47,
-  onOpenAppointmentModal: _onOpenAppointmentModal,
+  onOpenAppointmentModal,
   onOpenNewCase,
+  onOpenFirstCallIntake,
   onOpenFamilyPortal: _onOpenFamilyPortal,
   onUpdateCasePhase: _onUpdateCasePhase,
   onSendNotification,
@@ -532,6 +538,17 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
 
             {/* Quick Actions */}
             <div className="flex items-center space-x-2">
+              {onOpenFirstCallIntake && (
+                <button
+                  onClick={onOpenFirstCallIntake}
+                  className="bg-gradient-to-r from-amber-600 via-amber-700 to-[#991b1b] hover:brightness-110 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/50"
+                  title="Capture First Call Intake (Immediate Removal or Advance Arrangement)"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
+                  <span>+ First Call Intake</span>
+                </button>
+              )}
+
               {onOpenNewCase && (
                 <button
                   onClick={onOpenNewCase}
@@ -719,6 +736,28 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                               Your Case
                             </span>
                           )}
+
+                          {/* Bi-Directional Removal / Arrangement Flow Badge */}
+                          {c.safeArrivalStatus === 'safe_arrival_confirmed' && c.arrangementAppointment?.status === 'confirmed' ? (
+                            <span className="text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                              <span>Removal & Arrangement Synced</span>
+                            </span>
+                          ) : c.safeArrivalStatus === 'safe_arrival_confirmed' ? (
+                            <span className="text-[10px] font-bold bg-amber-50 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-amber-600" />
+                              <span>Removal Done ➔ Needs Arrangement</span>
+                            </span>
+                          ) : c.arrangementAppointment?.status === 'confirmed' ? (
+                            <span className="text-[10px] font-bold bg-blue-50 text-blue-900 border border-blue-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <Truck className="w-3 h-3 text-blue-600" />
+                              <span>Arrangement Booked ➔ Removal Pending</span>
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold bg-neutral-100 text-neutral-700 border border-neutral-200 px-2 py-0.5 rounded-full">
+                              Intake Pending
+                            </span>
+                          )}
                         </div>
 
                         <h3 className="font-serif-title font-bold text-base text-neutral-900 group-hover:text-[#991b1b] transition-colors mt-1">
@@ -864,6 +903,46 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                         <FileText className="w-3.5 h-3.5" />
                         <span>Golden Record</span>
                       </button>
+
+                      {/* First Call Removal Modal Launcher */}
+                      {onOpenRemovalModal && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenRemovalModal(c);
+                          }}
+                          className={`font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs border ${
+                            c.safeArrivalStatus === 'safe_arrival_confirmed'
+                              ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300'
+                              : 'bg-blue-50 hover:bg-blue-100 text-blue-900 border-blue-300'
+                          }`}
+                          title="Open First Call Removal Logistics & Custody Affidavit"
+                        >
+                          <Truck className="w-3.5 h-3.5 text-blue-700" />
+                          <span>Removal</span>
+                        </button>
+                      )}
+
+                      {/* In-Person Arrangement Appointment Modal Launcher */}
+                      {onOpenAppointmentModal && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenAppointmentModal(c);
+                          }}
+                          className={`font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs border ${
+                            c.arrangementAppointment?.status === 'confirmed'
+                              ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300'
+                              : 'bg-white hover:bg-neutral-100 text-neutral-800 border-neutral-300'
+                          }`}
+                          title="Open Family Arrangement Conference Scheduling Studio"
+                        >
+                          <Calendar className="w-3.5 h-3.5 text-amber-700" />
+                          <span>Arrangement</span>
+                        </button>
+                      )}
 
                       {/* 2-Way Vendor SMS Studio Launcher */}
                       {onOpenTwoWaySmsModal && (
