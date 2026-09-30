@@ -70,6 +70,7 @@ interface FamilyPortalViewProps {
   onUpdateCase: (updatedCase: GoldenRecordCase) => void;
   onOpenESignModal?: (doc?: DocumentItem) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
+  onOpenFamilyProofApproval?: () => void;
   onExitPortal: () => void;
   isStaffUser?: boolean;
 }
@@ -81,6 +82,7 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
   onUpdateCase,
   onOpenESignModal,
   onSendNotification,
+  onOpenFamilyProofApproval,
   onExitPortal,
   isStaffUser = false
 }) => {
@@ -1065,6 +1067,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             activeCase={activeCase}
             onUpdateCase={onUpdateCase}
             onSendNotification={onSendNotification}
+            onOpenFamilyProofApproval={onOpenFamilyProofApproval}
             isStaffUser={isStaffUser}
           />
         )}

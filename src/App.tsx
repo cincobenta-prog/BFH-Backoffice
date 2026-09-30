@@ -82,6 +82,9 @@ import { DocuSignEnvelopeModal } from './components/backoffice/DocuSignEnvelopeM
 import { QuickBooksSyncModal } from './components/backoffice/QuickBooksSyncModal';
 import { CashAdvanceCheckPrinterModal } from './components/backoffice/CashAdvanceCheckPrinterModal';
 import { FirstCallIntakeModal } from './components/backoffice/FirstCallIntakeModal';
+import { DiscrepancyGuardrailModal } from './components/backoffice/DiscrepancyGuardrailModal';
+import { DirectorDayOfServiceHUDModal } from './components/backoffice/DirectorDayOfServiceHUDModal';
+import { FamilyProofApprovalModal } from './components/backoffice/FamilyProofApprovalModal';
 import { createCaseFromFirstCall } from './lib/data/firstCallHelper';
 
 // Family Portal Component (with full 9-Part Obituary Writer Suite)
@@ -247,6 +250,33 @@ export function App() {
   const handleOpenCheckPrinterModal = (c?: GoldenRecordCase) => {
     setCheckPrinterTargetCase(c || activeCase);
     setIsCheckPrinterModalOpen(true);
+  };
+
+  // 1. Multi-Document Discrepancy & NYS PHL § 4201 Guardrail State
+  const [isDiscrepancyModalOpen, setIsDiscrepancyModalOpen] = useState(false);
+  const [discrepancyTargetCase, setDiscrepancyTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  const handleOpenDiscrepancyModal = (c?: GoldenRecordCase) => {
+    setDiscrepancyTargetCase(c || activeCase);
+    setIsDiscrepancyModalOpen(true);
+  };
+
+  // 2. Mobile Day-of-Service Director Pocket HUD State
+  const [isDirectorHUDModalOpen, setIsDirectorHUDModalOpen] = useState(false);
+  const [directorHUDTargetCase, setDirectorHUDTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  const handleOpenDirectorHUDModal = (c?: GoldenRecordCase) => {
+    setDirectorHUDTargetCase(c || activeCase);
+    setIsDirectorHUDModalOpen(true);
+  };
+
+  // 3. Family Proof Approval & Commercial Press Lock State
+  const [isProofApprovalModalOpen, setIsProofApprovalModalOpen] = useState(false);
+  const [proofApprovalTargetCase, setProofApprovalTargetCase] = useState<GoldenRecordCase | null>(null);
+
+  const handleOpenProofApprovalModal = (c?: GoldenRecordCase) => {
+    setProofApprovalTargetCase(c || activeCase);
+    setIsProofApprovalModalOpen(true);
   };
 
   const handleUpdatePassThroughChecks = (caseId: string, updatedChecks: PassThroughPayableCheck[]) => {
@@ -825,6 +855,7 @@ export function App() {
             setIsESignOpen(true);
           }}
           onSendNotification={handleSendNotification}
+          onOpenFamilyProofApproval={() => handleOpenProofApprovalModal(activeCase)}
           onExitPortal={() => {
             if (isStaffUser) {
               setCurrentRole('director');
@@ -881,6 +912,9 @@ export function App() {
             setIsContractModalOpen(true);
           }}
           onOpenPrintAP47={() => handleOpenPrintAP47Modal(activeCase)}
+          onOpenDiscrepancyGuardrail={() => handleOpenDiscrepancyModal(activeCase)}
+          onOpenDirectorDayOfServiceHUD={() => handleOpenDirectorHUDModal(activeCase)}
+          onOpenFamilyProofApproval={() => handleOpenProofApprovalModal(activeCase)}
           onAdvancePhase={handleUpdateCasePhase}
           onOpenTwoWaySmsModal={handleOpenTwoWaySmsModal}
           onOpenDocuSignModal={() => handleOpenDocuSignModal(activeCase)}
@@ -940,6 +974,9 @@ export function App() {
               onOverrideDirector={handleOverrideDirector}
               onOpenDocuSignModal={(targetCase) => handleOpenDocuSignModal(targetCase)}
               onOpenQuickBooksModal={(targetCase) => handleOpenQuickBooksModal(targetCase)}
+              onOpenDiscrepancyGuardrail={(targetCase) => handleOpenDiscrepancyModal(targetCase)}
+              onOpenDirectorDayOfServiceHUD={(targetCase) => handleOpenDirectorHUDModal(targetCase)}
+              onOpenFamilyProofApproval={(targetCase) => handleOpenProofApprovalModal(targetCase)}
               partnerRequests={partnerRequests}
             />
           )}
@@ -978,6 +1015,9 @@ export function App() {
               }}
               onOpenPrintAP47={() => handleOpenPrintAP47Modal(activeCase)}
               onOpenAppointmentModal={() => handleOpenAppointmentModal(activeCase)}
+              onOpenDiscrepancyGuardrail={() => handleOpenDiscrepancyModal(activeCase)}
+              onOpenDirectorDayOfServiceHUD={() => handleOpenDirectorHUDModal(activeCase)}
+              onOpenFamilyProofApproval={() => handleOpenProofApprovalModal(activeCase)}
               onSendNotification={handleSendNotification}
               onOpenNotifications={() => setIsNotificationHubOpen(true)}
               onOpenFamilyPortal={() => setCurrentRole('family')}
@@ -1313,6 +1353,7 @@ export function App() {
             isOpen={isMemorialProgramModalOpen}
             onClose={() => setIsMemorialProgramModalOpen(false)}
             caseData={activeCase}
+            onOpenFamilyProofApproval={() => handleOpenProofApprovalModal(activeCase)}
           />
         )}
 
@@ -1507,6 +1548,52 @@ export function App() {
             caseData={checkPrinterTargetCase || activeCase}
             onUpdateChecks={(updatedChecks) => handleUpdatePassThroughChecks((checkPrinterTargetCase || activeCase).id, updatedChecks)}
             onOpenQuickBooks={(targetCase: GoldenRecordCase) => handleOpenQuickBooksModal(targetCase)}
+          />
+        )}
+
+        {/* Multi-Document Discrepancy & NYS PHL § 4201 Guardrail Modal */}
+        {isDiscrepancyModalOpen && (
+          <DiscrepancyGuardrailModal
+            isOpen={isDiscrepancyModalOpen}
+            onClose={() => {
+              setIsDiscrepancyModalOpen(false);
+              setDiscrepancyTargetCase(null);
+            }}
+            caseData={discrepancyTargetCase || activeCase}
+            onUpdateCase={handleUpdateCase}
+            onOpenEdrsRapidFill={() => setIsEdrsModalOpen(true)}
+            onOpenContractModal={() => {
+              setContractTargetCase(discrepancyTargetCase || activeCase);
+              setIsContractModalOpen(true);
+            }}
+          />
+        )}
+
+        {/* Mobile Day-of-Service Director Pocket HUD & SMS Cortege Dispatch Modal */}
+        {isDirectorHUDModalOpen && (
+          <DirectorDayOfServiceHUDModal
+            isOpen={isDirectorHUDModalOpen}
+            onClose={() => {
+              setIsDirectorHUDModalOpen(false);
+              setDirectorHUDTargetCase(null);
+            }}
+            caseData={directorHUDTargetCase || activeCase}
+            onUpdateCase={handleUpdateCase}
+            onSendNotification={handleSendNotification}
+          />
+        )}
+
+        {/* Family Proof Approval & Commercial Press Lock Hub Modal */}
+        {isProofApprovalModalOpen && (
+          <FamilyProofApprovalModal
+            isOpen={isProofApprovalModalOpen}
+            onClose={() => {
+              setIsProofApprovalModalOpen(false);
+              setProofApprovalTargetCase(null);
+            }}
+            caseData={proofApprovalTargetCase || activeCase}
+            onUpdateCase={handleUpdateCase}
+            onSendNotification={handleSendNotification}
           />
         )}
       </div>

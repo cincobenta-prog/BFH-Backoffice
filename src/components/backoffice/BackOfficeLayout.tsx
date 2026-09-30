@@ -32,9 +32,12 @@ import {
   UserCheck,
   Lock,
   Printer,
-  FileCheck,
   Landmark,
-  PhoneCall
+  PhoneCall,
+  ShieldAlert,
+  FileCheck2,
+  Compass,
+  BookOpen
 } from 'lucide-react';
 
 interface BackOfficeLayoutProps {
@@ -57,6 +60,9 @@ interface BackOfficeLayoutProps {
   onOpenRemovalModal?: () => void;
   onOpenContractModal?: () => void;
   onOpenPrintAP47?: () => void;
+  onOpenDiscrepancyGuardrail?: () => void;
+  onOpenDirectorDayOfServiceHUD?: () => void;
+  onOpenFamilyProofApproval?: () => void;
   onAdvancePhase?: (caseId: string, nextPhase: CasePhase) => void;
   onOpenTwoWaySmsModal?: (requestId?: string) => void;
   onOpenDocuSignModal?: () => void;
@@ -88,6 +94,9 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onOpenRemovalModal,
   onOpenContractModal,
   onOpenPrintAP47,
+  onOpenDiscrepancyGuardrail,
+  onOpenDirectorDayOfServiceHUD,
+  onOpenFamilyProofApproval,
   onAdvancePhase,
   onOpenTwoWaySmsModal,
   onOpenDocuSignModal,
@@ -252,7 +261,43 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
           </div>
 
           {/* RBAC Role Switcher & Family SMS Dispatch Launcher */}
-          <div className="flex items-center space-x-2.5">
+          <div className="flex items-center space-x-2">
+
+            {/* 1. Multi-Document Discrepancy Guardrail Quick Action */}
+            {onOpenDiscrepancyGuardrail && (
+              <button
+                onClick={onOpenDiscrepancyGuardrail}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-950/10 hover:bg-red-950/20 text-[#991b1b] border border-red-300 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Open Zero-Slippage Discrepancy Guardrail & NYS PHL § 4201 Compliance Hub"
+              >
+                <ShieldAlert className="w-3.5 h-3.5 text-[#991b1b] group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">Discrepancy Guard</span>
+              </button>
+            )}
+
+            {/* 2. Mobile Day-of-Service Director Pocket HUD Quick Action */}
+            {onOpenDirectorDayOfServiceHUD && (
+              <button
+                onClick={onOpenDirectorDayOfServiceHUD}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-950 border border-amber-400/80 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Open Mobile Day-of-Service Director Pocket HUD & 1-Click SMS Cortege Dispatch"
+              >
+                <Compass className="w-3.5 h-3.5 text-amber-700 group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">Director HUD</span>
+              </button>
+            )}
+
+            {/* 3. Family Proof Approval & Press Lock Quick Action */}
+            {onOpenFamilyProofApproval && (
+              <button
+                onClick={onOpenFamilyProofApproval}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Open Family Proof Approval & Commercial Press Lock Hub"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-purple-700 group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">Proof Lock</span>
+              </button>
+            )}
 
             {/* Livery Hold Modal Launcher */}
             <button
@@ -283,7 +328,7 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
                 className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#21409a]/10 hover:bg-[#21409a]/20 text-[#21409a] border border-[#21409a]/30 rounded-xl text-xs font-bold transition shadow-2xs group"
                 title="Open DocuSign NYS ESRA Legal E-Signature Hub"
               >
-                <FileCheck className="w-3.5 h-3.5 text-[#21409a] group-hover:scale-110 transition-transform" />
+                <FileCheck2 className="w-3.5 h-3.5 text-[#21409a] group-hover:scale-110 transition-transform" />
                 <span className="hidden xl:inline">DocuSign Hub</span>
               </button>
             )}

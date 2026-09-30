@@ -25,7 +25,10 @@ import {
   Truck,
   Calendar,
   Clock,
-  PhoneCall
+  PhoneCall,
+  ShieldAlert,
+  Compass,
+  BookOpen
 } from 'lucide-react';
 
 export interface DirectorActiveCasesDashboardProps {
@@ -43,6 +46,9 @@ export interface DirectorActiveCasesDashboardProps {
   onOpenContractModal?: (caseItem: GoldenRecordCase) => void;
   onOpenPrintAP47?: (caseItem: GoldenRecordCase) => void;
   onOpenAppointmentModal?: (caseItem: GoldenRecordCase) => void;
+  onOpenDiscrepancyGuardrail?: (caseItem: GoldenRecordCase) => void;
+  onOpenDirectorDayOfServiceHUD?: (caseItem: GoldenRecordCase) => void;
+  onOpenFamilyProofApproval?: (caseItem: GoldenRecordCase) => void;
   onOpenNewCase?: () => void;
   onOpenFirstCallIntake?: () => void;
   onOpenFamilyPortal?: (caseId?: string) => void;
@@ -92,6 +98,9 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   onOpenContractModal,
   onOpenPrintAP47: _onOpenPrintAP47,
   onOpenAppointmentModal,
+  onOpenDiscrepancyGuardrail,
+  onOpenDirectorDayOfServiceHUD,
+  onOpenFamilyProofApproval,
   onOpenNewCase,
   onOpenFirstCallIntake,
   onOpenFamilyPortal: _onOpenFamilyPortal,
@@ -995,6 +1004,54 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                         >
                           <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
                           <span>QuickBooks</span>
+                        </button>
+                      )}
+
+                      {/* Discrepancy Guardrail Launcher */}
+                      {onOpenDiscrepancyGuardrail && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenDiscrepancyGuardrail(c);
+                          }}
+                          className="bg-red-950/10 hover:bg-red-950/20 text-[#991b1b] border border-red-300 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          title="Open Zero-Slippage Discrepancy Guardrail & NYS PHL § 4201 Check"
+                        >
+                          <ShieldAlert className="w-3.5 h-3.5 text-[#991b1b]" />
+                          <span>Guardrail</span>
+                        </button>
+                      )}
+
+                      {/* Day of Service Director Pocket HUD Launcher */}
+                      {onOpenDirectorDayOfServiceHUD && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenDirectorDayOfServiceHUD(c);
+                          }}
+                          className="bg-amber-500/15 hover:bg-amber-500/25 text-amber-950 border border-amber-400 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          title="Open Mobile Day-of-Service Director Pocket HUD & Cortege SMS Dispatch"
+                        >
+                          <Compass className="w-3.5 h-3.5 text-amber-700" />
+                          <span>Director HUD</span>
+                        </button>
+                      )}
+
+                      {/* Family Proof Approval & Press Lock Launcher */}
+                      {onOpenFamilyProofApproval && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenFamilyProofApproval(c);
+                          }}
+                          className="bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          title="Open Family Proof Approval & Commercial Press Lock Hub"
+                        >
+                          <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+                          <span>Proof Lock</span>
                         </button>
                       )}
 

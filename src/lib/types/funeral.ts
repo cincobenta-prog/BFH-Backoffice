@@ -342,6 +342,9 @@ export interface GoldenRecordCase {
   vipItinerary?: DayOfServiceVIPItinerary;
   arrangementAppointment?: ArrangementAppointmentInfo;
   intakePathway?: IntakePathwayType;
+  proofApproval?: FamilyProofApprovalRecord;
+  discrepancyAudit?: DiscrepancyAuditReport;
+  dayOfServiceHUD?: DayOfServiceHUDData;
   firstCallNotes?: string;
   notes: Array<{
     id: string;
@@ -1328,6 +1331,8 @@ export interface StatementOfGoodsData {
   invoiceNumber: string;
   agreementDate: string;
   serviceType: ServiceTypeAP47;
+  purchaserName?: string;
+  decedentName?: string;
   lovedOneBiography: LovedOneBiographyInterview;
   sectionI: StatementOfGoodsSectionI;
   sectionII: StatementOfGoodsSectionII;
@@ -1445,3 +1450,125 @@ export interface Director1099Voucher {
   approvedAt?: string;
   notes?: string;
 }
+
+// -------------------------------------------------------------
+// 1. MULTI-DOCUMENT DISCREPANCY & NYS PHL § 4201 GUARDRAIL
+// -------------------------------------------------------------
+
+export type DiscrepancySeverity = 'critical' | 'warning' | 'info' | 'verified';
+
+export interface DiscrepancyItem {
+  id: string;
+  category: 'decedent_name' | 'dates_of_death' | 'phl_4201_kinship' | 'ap47_purchaser' | 'edrs_vitals' | 'cemetery_deed';
+  title: string;
+  description: string;
+  severity: DiscrepancySeverity;
+  goldenRecordValue: string;
+  conflictingDocumentName: string;
+  conflictingValue: string;
+  statutoryImpact: string;
+  suggestedFix: string;
+  status: 'active_mismatch' | 'rectified_synced' | 'director_exception_approved';
+  rectifiedAt?: string;
+  exceptionNote?: string;
+}
+
+export interface DiscrepancyAuditReport {
+  alignmentScore: number; // 0 to 100 percentage
+  totalChecks: number;
+  discrepanciesFound: number;
+  lastAuditedAt: string;
+  auditedBy: string;
+  items: DiscrepancyItem[];
+  phl4201Validated: boolean;
+  phl4201PriorityTier: number; // 1 (Designee), 2 (Spouse), 3 (Domestic Partner), 4 (Adult Children), etc.
+  phl4201PriorityTitle: string;
+  hasCemeteryDeedConflict: boolean;
+  hasEdrsVitalsConflict: boolean;
+}
+
+// -------------------------------------------------------------
+// 2. DAY-OF-SERVICE DIRECTOR POCKET HUD & CORTEGE RUN-SHEET
+// -------------------------------------------------------------
+
+export type CortegeVehicleRole = 
+  | 'lead_car'
+  | 'flower_car'
+  | 'hearse_coach'
+  | 'family_limo_1'
+  | 'family_limo_2'
+  | 'family_limo_3'
+  | 'pallbearer_van'
+  | 'police_escort';
+
+export interface CortegeDriverDispatchItem {
+  id: string;
+  vehicleNumber: string;
+  role: CortegeVehicleRole;
+  roleLabel: string;
+  driverName: string;
+  driverPhone: string;
+  vehicleModel: string;
+  plateNumber: string;
+  assignedPassengers: string[];
+  capacity: number;
+  status: 'standby' | 'arrived_st_nicholas' | 'family_seated' | 'rolling_in_cortege' | 'arrived_at_cemetery';
+  smsDispatchedAt?: string;
+  smsDelivered?: boolean;
+  turnByTurnUrl: string;
+  specialInstructions?: string;
+}
+
+export interface DayOfServiceReadinessItem {
+  id: string;
+  category: 'clergy_music' | 'floral_sanctuary' | 'pallbearers' | 'media_webcast' | 'cemetery_gate';
+  title: string;
+  assignedTo: string;
+  status: 'pending' | 'in_progress' | 'confirmed_ready';
+  confirmedAt?: string;
+  notes?: string;
+}
+
+export interface DayOfServiceHUDData {
+  serviceDate: string;
+  callTime: string;
+  serviceStartTime: string;
+  committalDepartureTime: string;
+  currentPhaseIndex: number;
+  leadDirectorName: string;
+  leadDirectorPhone: string;
+  chapelCueUrl: string;
+  drivers: CortegeDriverDispatchItem[];
+  readinessChecklist: DayOfServiceReadinessItem[];
+  allDriversSmsDispatched: boolean;
+  lastDriverSmsBroadcastAt?: string;
+}
+
+// -------------------------------------------------------------
+// 3. FAMILY PROOF APPROVAL & PRINT-LOCK PROTOCOL
+// -------------------------------------------------------------
+
+export interface FamilyProofApprovalRecord {
+  status: 'draft_in_review' | 'submitted_to_family' | 'family_approved_locked' | 'reopened_for_correction';
+  programApproved: boolean;
+  keepsakeBookApproved: boolean;
+  spellingsVerified: boolean;
+  photosApproved: boolean;
+  legalPrintLockAcknowledged: boolean;
+  signatoryFullName: string;
+  signatoryRelationship: string;
+  signatoryEmail: string;
+  signedAt?: string;
+  signatureDataUrl?: string;
+  ipAddressHash?: string;
+  lockedByDirector?: string;
+  lockedAt?: string;
+  pressVendorDispatched?: boolean;
+  pressVendorDispatchedAt?: string;
+  pressOrderQuantity: {
+    memorialPrograms: number;
+    keepsakeVolumes: number;
+  };
+  pressJobTicketNumber?: string;
+}
+

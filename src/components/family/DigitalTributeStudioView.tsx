@@ -56,6 +56,7 @@ interface DigitalTributeStudioViewProps {
   activeCase: GoldenRecordCase;
   onUpdateCase?: (updatedCase: GoldenRecordCase) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
+  onOpenFamilyProofApproval?: () => void;
   isStaffUser?: boolean;
 }
 
@@ -63,6 +64,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
   activeCase,
   onUpdateCase,
   onSendNotification,
+  onOpenFamilyProofApproval,
   isStaffUser = false
 }) => {
   // Main Studio Mode: 'studio' (Contributor Recording) | 'book' (Coffee Table Volume) | 'admin' (Moderation) | 'invites' (Outreach & QR) | 'cloud' (Storage & Purge)
@@ -1294,6 +1296,17 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              {onOpenFamilyProofApproval && (
+                <button
+                  onClick={onOpenFamilyProofApproval}
+                  className="bg-purple-900 hover:bg-purple-800 text-purple-100 font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md border border-purple-400/40"
+                  title="Open Family Proof Approval & Commercial Press Lock Hub"
+                >
+                  <Lock className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Family Proof Approval & Press Lock</span>
+                </button>
+              )}
+
               <button
                 onClick={() => window.print()}
                 className="bg-[#af893e] hover:bg-[#967432] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-amber-950/20"
