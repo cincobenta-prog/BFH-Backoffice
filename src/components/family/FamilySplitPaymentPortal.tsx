@@ -6,6 +6,10 @@ import {
   FamilySplitPayConfig 
 } from '../../lib/types/funeral';
 import { 
+  formatPhoneNumbersOnly, 
+  isValidEmailFormat 
+} from '../../lib/utils/inputValidation';
+import { 
   CreditCard, 
   Smartphone, 
   Building2, 
@@ -159,6 +163,11 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
     e.preventDefault();
     if (!newPayerName.trim()) {
       showToast("Please enter a valid payer name");
+      return;
+    }
+
+    if (newPayerEmail.trim() && !isValidEmailFormat(newPayerEmail.trim())) {
+      showToast("Please enter a valid email address format (e.g. name@example.com)");
       return;
     }
 
@@ -1395,20 +1404,20 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-neutral-400 font-mono uppercase block mb-1">
-                    Mobile Phone (For SMS Link)
+                    Mobile Phone (Numbers Only)
                   </label>
                   <input
                     type="tel"
                     value={newPayerPhone}
-                    onChange={(e) => setNewPayerPhone(e.target.value)}
+                    onChange={(e) => setNewPayerPhone(formatPhoneNumbersOnly(e.target.value))}
                     placeholder="(212) 555-0199"
-                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 text-xs"
+                    className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-amber-400 text-xs font-mono"
                   />
                 </div>
 
                 <div>
                   <label className="text-neutral-400 font-mono uppercase block mb-1">
-                    Email Address
+                    Email Address (Email Format)
                   </label>
                   <input
                     type="email"

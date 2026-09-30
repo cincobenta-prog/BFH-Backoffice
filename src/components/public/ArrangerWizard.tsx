@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowRight, ArrowLeft, X, BookOpen, Music, Car, Utensils } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, X, BookOpen, Music, Car, Utensils, AlertCircle } from 'lucide-react';
 import { DispositionType, GoldenRecordCase } from '../../lib/types/funeral';
 import { INITIAL_DOCUMENT_TEMPLATES } from '../../lib/data/mockCases';
 import { getDefaultStatementOfGoodsForCase, BFH_GPL_2026 } from '../../lib/data/generalPriceList';
+import { 
+  formatPhoneNumbersOnly, 
+  isValidEmailFormat, 
+  validateLifeDates 
+} from '../../lib/utils/inputValidation';
 
 interface ArrangerWizardProps {
   onClose: () => void;
@@ -16,6 +21,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   initialService = 'cremation_memorial'
 }) => {
   const [step, setStep] = useState<number>(1);
+  const [validationError, setValidationError] = useState<string | null>(null);
   
   // Form State
   const [disposition, setDisposition] = useState<DispositionType>(
@@ -71,8 +77,65 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   const variablesTotal = programsPrice + prayerCardsPrice + clergyOrganistPrice + limousinePrice + repastPrice;
   const totalPrice = currentBasePrice + variablesTotal;
 
+  const handleNextStep = () => {
+    setValidationError(null);
+
+    if (step === 2) {
+      if (!decedentName.trim()) {
+        setValidationError('Please enter the full legal name of your loved one.');
+        return;
+      }
+      if (!decedentDod) {
+        setValidationError('Please enter the Date of Passing (Date of Death).');
+        return;
+      }
+      // Date of birth cannot exceed date of death validation
+      const dateCheck = validateLifeDates(decedentDob, decedentDod);
+      if (!dateCheck.isValid) {
+        setValidationError(dateCheck.error || 'Date of Birth entered cannot exceed the Date of Passing (Date of Death).');
+        return;
+      }
+    }
+
+    if (step === 3) {
+      if (!informantName.trim()) {
+        setValidationError('Please enter your full name as the primary arranger.');
+        return;
+      }
+      if (!informantPhone.trim()) {
+        setValidationError('Please enter your mobile phone number.');
+        return;
+      }
+      if (informantPhone.replace(/\D/g, '').length < 10) {
+        setValidationError('Please enter a valid 10-digit phone number (numbers only).');
+        return;
+      }
+      if (!informantEmail.trim() || !isValidEmailFormat(informantEmail)) {
+        setValidationError('Please enter a valid email address format (e.g. name@example.com).');
+        return;
+      }
+    }
+
+    setStep(step + 1);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError(null);
+
+    // Strict validation
+    const dateCheck = validateLifeDates(decedentDob, decedentDod);
+    if (!dateCheck.isValid) {
+      setValidationError(dateCheck.error || 'Date of Birth entered cannot exceed the Date of Passing (Date of Death).');
+      setStep(2);
+      return;
+    }
+
+    if (informantEmail && !isValidEmailFormat(informantEmail)) {
+      setValidationError('Please enter a valid email address format (e.g. name@example.com).');
+      setStep(3);
+      return;
+    }
     
     const newCaseNumber = `BFH-2026-09${Math.floor(Math.random() * 90 + 10)}`;
     const newCase: GoldenRecordCase = {
@@ -338,7 +401,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   type="text"
                   required
                   value={decedentName}
-                  onChange={(e) => setDecedentName(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setDecedentName(e.target.value);
+                  }}
                   placeholder="e.g. Arthur Robinson"
                   className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
@@ -349,18 +415,24 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 <input
                   type="date"
                   value={decedentDob}
-                  onChange={(e) => setDecedentDob(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setDecedentDob(e.target.value);
+                  }}
                   className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-600 font-medium mb-1">Date of Passing *</label>
+                <label className="block text-xs text-neutral-600 font-medium mb-1">Date of Passing (Date of Death) *</label>
                 <input
                   type="date"
                   required
                   value={decedentDod}
-                  onChange={(e) => setDecedentDod(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setDecedentDod(e.target.value);
+                  }}
                   className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
               </div>
@@ -371,7 +443,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   type="text"
                   required
                   value={placeOfDeath}
-                  onChange={(e) => setPlaceOfDeath(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setPlaceOfDeath(e.target.value);
+                  }}
                   placeholder="e.g. Mount Sinai Morningside or Harlem Hospital"
                   className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
@@ -383,7 +458,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
               <input
                 type="text"
                 value={residence}
-                onChange={(e) => setResidence(e.target.value)}
+                onChange={(e) => {
+                  setValidationError(null);
+                  setResidence(e.target.value);
+                }}
                 placeholder="e.g. 240 W 138th St, New York, NY 10030"
                 className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
               />
@@ -418,7 +496,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                   type="text"
                   required
                   value={informantName}
-                  onChange={(e) => setInformantName(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setInformantName(e.target.value);
+                  }}
                   placeholder="e.g. Eleanor Vance-Holloway"
                   className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
@@ -441,24 +522,34 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-600 font-medium mb-1">Mobile Phone (For Safe Arrival Alerts) *</label>
+                <label className="block text-xs text-neutral-600 font-medium mb-1">
+                  Mobile Phone (Numbers Only) *
+                </label>
                 <input
                   type="tel"
                   required
                   value={informantPhone}
-                  onChange={(e) => setInformantPhone(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setInformantPhone(formatPhoneNumbersOnly(e.target.value));
+                  }}
                   placeholder="(212) 555-0198"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-neutral-600 font-medium mb-1">Email Address (For Legal e-Sign Portal) *</label>
+                <label className="block text-xs text-neutral-600 font-medium mb-1">
+                  Email Address (Email Format Required) *
+                </label>
                 <input
                   type="email"
                   required
                   value={informantEmail}
-                  onChange={(e) => setInformantEmail(e.target.value)}
+                  onChange={(e) => {
+                    setValidationError(null);
+                    setInformantEmail(e.target.value);
+                  }}
                   placeholder="eleanor.vance@gmail.com"
                   className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none"
                 />
@@ -655,12 +746,23 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
           </div>
         )}
 
+        {/* Validation Error Alert Banner */}
+        {validationError && (
+          <div className="p-3 bg-red-50 border-2 border-red-300 rounded-xl text-xs text-red-800 font-medium flex items-center space-x-2 animate-shake">
+            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+            <span>{validationError}</span>
+          </div>
+        )}
+
         {/* Wizard Controls */}
         <div className="flex justify-between items-center mt-8 pt-4 border-t border-neutral-200">
           {step > 1 ? (
             <button
               type="button"
-              onClick={() => setStep(step - 1)}
+              onClick={() => {
+                setValidationError(null);
+                setStep(step - 1);
+              }}
               className="flex items-center space-x-1 text-xs text-neutral-700 hover:text-neutral-900 bg-neutral-100 hover:bg-neutral-200 px-4 py-2.5 rounded-lg font-semibold transition"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -673,7 +775,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
           {step < 4 ? (
             <button
               type="button"
-              onClick={() => setStep(step + 1)}
+              onClick={handleNextStep}
               className="flex items-center space-x-1.5 bg-[#065f46] hover:bg-emerald-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-md shadow-emerald-950/20"
             >
               <span>Continue</span>

@@ -24,6 +24,10 @@ import {
   searchMerchandise
 } from '../../lib/data/casketCatalog';
 import { 
+  formatPhoneNumbersOnly, 
+  isValidEmailFormat 
+} from '../../lib/utils/inputValidation';
+import { 
   Users, 
   Scissors, 
   Music, 
@@ -179,20 +183,25 @@ export const ServicePartnerNetworkManager: React.FC<ServicePartnerNetworkManager
 
   const handleCreatePartner = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newPartnerName || !newPartnerPhone) return;
+    if (!newPartnerName.trim() || !newPartnerPhone.trim()) return;
+
+    if (newPartnerEmail.trim() && !isValidEmailFormat(newPartnerEmail.trim())) {
+      alert('Please enter a valid email format (e.g. partner@harlem.org).');
+      return;
+    }
 
     const initials = newPartnerName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     const newP: ServicePartnerContact = {
       id: `sp-${Date.now()}`,
-      fullName: newPartnerName,
-      roleTitle: newPartnerRole || 'Specialized Service Partner',
+      fullName: newPartnerName.trim(),
+      roleTitle: newPartnerRole.trim() || 'Specialized Service Partner',
       category: newPartnerCategory,
-      phone: newPartnerPhone,
-      email: newPartnerEmail || undefined,
-      organization: newPartnerOrg || undefined,
+      phone: newPartnerPhone.trim(),
+      email: newPartnerEmail.trim() || undefined,
+      organization: newPartnerOrg.trim() || undefined,
       status: 'active',
-      rateInfo: newPartnerRate || undefined,
-      notes: newPartnerNotes || undefined,
+      rateInfo: newPartnerRate.trim() || undefined,
+      notes: newPartnerNotes.trim() || undefined,
       avatarInitials: initials
     };
 
@@ -201,6 +210,10 @@ export const ServicePartnerNetworkManager: React.FC<ServicePartnerNetworkManager
     setNewPartnerName('');
     setNewPartnerPhone('');
     setNewPartnerRole('');
+    setNewPartnerEmail('');
+    setNewPartnerOrg('');
+    setNewPartnerRate('');
+    setNewPartnerNotes('');
   };
 
   const handleCreateDispatchRequest = (e: React.FormEvent) => {
@@ -1716,19 +1729,19 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-neutral-700 mb-1">SMS Phone Number *</label>
+                  <label className="block font-bold text-neutral-700 mb-1">SMS Phone Number (Numbers Only) *</label>
                   <input
-                    type="text"
+                    type="tel"
                     required
                     value={newPartnerPhone}
-                    onChange={(e) => setNewPartnerPhone(e.target.value)}
+                    onChange={(e) => setNewPartnerPhone(formatPhoneNumbersOnly(e.target.value))}
                     placeholder="(212) 555-0199"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b] font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-neutral-700 mb-1">Email (Optional)</label>
+                  <label className="block font-bold text-neutral-700 mb-1">Email (Optional - Valid Format)</label>
                   <input
                     type="email"
                     value={newPartnerEmail}
