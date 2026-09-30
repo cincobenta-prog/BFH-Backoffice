@@ -11,7 +11,8 @@ import {
   HandCoins, 
   Printer,
   Users,
-  Layers
+  Layers,
+  X
 } from 'lucide-react';
 
 interface FinancialVerificationCenterProps {
@@ -30,13 +31,14 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
   const [financialTab, setFinancialTab] = useState<'matrix' | 'family_split_portal'>('matrix');
   const [showAddPayer, setShowAddPayer] = useState(false);
   const [isCheckPrinterOpen, setIsCheckPrinterOpen] = useState(false);
-  const [payerType, setPayerType] = useState<SplitBillingItem['payerType']>('Life Insurance Assignment');
-  const [providerName, setProviderName] = useState('C&J Financial / Mutual of Omaha');
-  const [policyNumber, setPolicyNumber] = useState('MO-449102');
+  const [payerType, setPayerType] = useState<SplitBillingItem['payerType'] | ''>('');
+  const [providerName, setProviderName] = useState('');
+  const [policyNumber, setPolicyNumber] = useState('');
   const [amount, setAmount] = useState<number>(3500);
+  const [modalValidationError, setModalValidationError] = useState<string | null>(null);
 
-  // Life Insurance Assignment Calculator State
-  const [isCalculatorOpen, setIsCalculatorOpen] = useState(true);
+  // Life Insurance Assignment Calculator State (Optional Tool - not assumed)
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
   const [carrierName, setCarrierName] = useState('MetLife / Brighthouse Financial');
   const [policyFaceValue, setPolicyFaceValue] = useState<number>(15000);
   const [beneficiaryName, setBeneficiaryName] = useState(caseData.informant.fullName);
@@ -52,17 +54,41 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
 
   const handleAddSplitItem = (e: React.FormEvent) => {
     e.preventDefault();
+    setModalValidationError(null);
+
+    if (!payerType) {
+      setModalValidationError('Please select a funding option.');
+      return;
+    }
+
+    if (!providerName.trim()) {
+      setModalValidationError('Please enter a provider / source description.');
+      return;
+    }
+
+    if (amount <= 0) {
+      setModalValidationError('Please enter a valid allocation amount greater than $0.');
+      return;
+    }
+
     const newItem: SplitBillingItem = {
-      payerType,
-      providerName,
-      policyNumber: payerType === 'Life Insurance Assignment' ? policyNumber : undefined,
+      payerType: payerType as SplitBillingItem['payerType'],
+      providerName: providerName.trim(),
+      policyNumber: payerType === 'Life Insurance Assignment' ? (policyNumber.trim() || undefined) : undefined,
       amountAllocated: amount,
       status: 'pending_verification',
-      notes: 'Added to split billing allocation matrix'
+      notes: payerType === 'Cash / Certified Bank Check'
+        ? "In-person arrangement conference payment at 630 St. Nicholas Ave. BFH Official Itemized Receipt to be issued."
+        : payerType === 'Life Insurance Assignment'
+        ? "Direct assignment claim filing via C&J Financial clearinghouse."
+        : 'Added to split billing allocation matrix'
     };
 
     onUpdateBilling([...caseData.splitBilling, newItem]);
     setShowAddPayer(false);
+    setPayerType('');
+    setProviderName('');
+    setPolicyNumber('');
   };
 
   const handleApplyInsuranceAssignment = () => {
@@ -536,80 +562,181 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
         />
       )}
 
-      {/* Add Payer Modal */}
+      {/* Add Payer / Funding Source Modal */}
       {showAddPayer && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white border border-neutral-200 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl text-neutral-900">
-            <h3 className="font-serif-title font-bold text-lg text-neutral-900">
-              Add Split Billing / Insurance Source
-            </h3>
-
-            <form onSubmit={handleAddSplitItem} className="space-y-3 text-xs">
+          <div className="bg-white border border-neutral-200 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-neutral-900">
+            <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div>
-                <label className="block text-neutral-700 font-medium mb-1">Funding Type</label>
-                <select
-                  value={payerType}
-                  onChange={(e) => setPayerType(e.target.value as any)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
-                >
-                  <option value="Cash / Certified Bank Check">Cash / Certified Bank Check (BFH Office Receipt)</option>
-                  <option value="Life Insurance Assignment">Life Insurance Assignment (C&J Financial)</option>
-                  <option value="Family ACH Direct">Family ACH Direct Bank Transfer</option>
-                  <option value="County/Grant Aid">County / Social Services Burial Grant</option>
-                  <option value="Credit Card">Credit Card / Split Pay</option>
-                </select>
+                <h3 className="font-serif-title font-bold text-lg text-neutral-900">
+                  Select & Add Funding Source
+                </h3>
+                <p className="text-xs text-neutral-500 font-light">
+                  Choose a payment or settlement option for Case <strong className="text-[#991b1b]">{caseData.caseNumber}</strong>.
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowAddPayer(false);
+                  setModalValidationError(null);
+                }}
+                className="p-1.5 rounded-full hover:bg-neutral-100 text-neutral-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {modalValidationError && (
+              <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-medium flex items-center gap-2">
+                <span className="font-bold">Notice:</span> {modalValidationError}
+              </div>
+            )}
+
+            <form onSubmit={handleAddSplitItem} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-neutral-800 font-bold mb-1.5">
+                  1. Select Funding Method * (Click to Choose)
+                </label>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    {
+                      id: 'Cash / Certified Bank Check',
+                      label: 'Cash / Bank Check',
+                      sub: 'In-person BFH office receipt',
+                      icon: '💵'
+                    },
+                    {
+                      id: 'Life Insurance Assignment',
+                      label: 'Life Insurance Claim',
+                      sub: 'Direct carrier assignment (C&J)',
+                      icon: '🛡️'
+                    },
+                    {
+                      id: 'Family ACH Direct',
+                      label: 'Family ACH Direct',
+                      sub: 'Zero-fee bank transfer',
+                      icon: '🏦'
+                    },
+                    {
+                      id: 'Credit Card',
+                      label: 'Credit Card / Split Pay',
+                      sub: 'Multi-member split pay portal',
+                      icon: '💳'
+                    },
+                    {
+                      id: 'County/Grant Aid',
+                      label: 'County / Social Services',
+                      sub: 'NYC HRA burial assistance grant',
+                      icon: '🏛️'
+                    }
+                  ].map((opt) => (
+                    <div
+                      key={opt.id}
+                      onClick={() => {
+                        setModalValidationError(null);
+                        setPayerType(opt.id as any);
+                        if (opt.id === 'Cash / Certified Bank Check') {
+                          setProviderName("Benta's Funeral Home (In-Person Office Receipt)");
+                        } else if (opt.id === 'Family ACH Direct') {
+                          setProviderName('Chase Direct ACH Transfer');
+                        } else if (opt.id === 'Credit Card') {
+                          setProviderName('Family Credit Card / Digital Split Portal');
+                        } else if (opt.id === 'County/Grant Aid') {
+                          setProviderName('NYC HRA Social Services Burial Grant');
+                        } else {
+                          setProviderName('');
+                        }
+                      }}
+                      className={`p-2.5 rounded-xl border cursor-pointer transition flex items-center space-x-2.5 ${
+                        payerType === opt.id
+                          ? 'bg-red-50 border-[#991b1b] ring-2 ring-[#991b1b]/20 font-bold text-[#991b1b]'
+                          : 'bg-white border-neutral-200 text-neutral-700 hover:border-neutral-300'
+                      }`}
+                    >
+                      <span className="text-base">{opt.icon}</span>
+                      <div>
+                        <p className="font-bold text-xs">{opt.label}</p>
+                        <p className="text-[10px] text-neutral-500 font-normal">{opt.sub}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div>
-                <label className="block text-neutral-700 font-medium mb-1">Provider / Carrier Name</label>
-                <input
-                  type="text"
-                  required
-                  value={providerName}
-                  onChange={(e) => setProviderName(e.target.value)}
-                  placeholder="e.g. Lincoln Heritage, New York Life, Chase ACH"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
-                />
-              </div>
+              {payerType && (
+                <div className="space-y-3 pt-2 border-t border-neutral-200 animate-fadeIn">
+                  <div>
+                    <label className="block text-neutral-700 font-medium mb-1">
+                      {payerType === 'Life Insurance Assignment' 
+                        ? 'Insurance Carrier / Provider Name *' 
+                        : payerType === 'County/Grant Aid'
+                        ? 'Agency / Government Department Name *'
+                        : 'Funding Entity / Account Description *'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={providerName}
+                      onChange={(e) => setProviderName(e.target.value)}
+                      placeholder={
+                        payerType === 'Life Insurance Assignment'
+                          ? 'e.g. MetLife, Lincoln Heritage, Prudential'
+                          : 'e.g. In-Person Payment, Chase Bank'
+                      }
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    />
+                  </div>
 
-              {payerType === 'Life Insurance Assignment' && (
-                <div>
-                  <label className="block text-neutral-700 font-medium mb-1">Policy / Certificate Number</label>
-                  <input
-                    type="text"
-                    required
-                    value={policyNumber}
-                    onChange={(e) => setPolicyNumber(e.target.value)}
-                    placeholder="e.g. NYL-882019"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
-                  />
+                  {payerType === 'Life Insurance Assignment' && (
+                    <div>
+                      <label className="block text-neutral-700 font-medium mb-1">Policy / Certificate / Claim Number *</label>
+                      <input
+                        type="text"
+                        required
+                        value={policyNumber}
+                        onChange={(e) => setPolicyNumber(e.target.value)}
+                        placeholder="e.g. POL-882019"
+                        className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none font-mono"
+                      />
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-neutral-700 font-medium mb-1">Amount Allocated ($) *</label>
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      value={amount}
+                      onChange={(e) => setAmount(Number(e.target.value))}
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none font-bold"
+                    />
+                  </div>
                 </div>
               )}
 
-              <div>
-                <label className="block text-neutral-700 font-medium mb-1">Amount Allocated ($)</label>
-                <input
-                  type="number"
-                  required
-                  value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-3">
+              <div className="flex justify-end gap-2 pt-3 border-t border-neutral-200">
                 <button
                   type="button"
-                  onClick={() => setShowAddPayer(false)}
-                  className="px-3.5 py-2 text-neutral-600 hover:text-neutral-900 font-medium"
+                  onClick={() => {
+                    setShowAddPayer(false);
+                    setModalValidationError(null);
+                  }}
+                  className="px-4 py-2 text-neutral-600 hover:text-neutral-900 font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm border border-amber-300/40"
+                  disabled={!payerType}
+                  className={`px-5 py-2.5 rounded-xl font-bold text-xs transition shadow-sm ${
+                    payerType
+                      ? 'bg-[#991b1b] hover:bg-red-800 text-white border border-amber-300/40 cursor-pointer'
+                      : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+                  }`}
                 >
-                  Save Funding Source
+                  Add Selected Funding Source
                 </button>
               </div>
             </form>

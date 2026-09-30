@@ -223,6 +223,59 @@ export interface ObituaryPackageData {
   photos: TributePhotoItem[];
 }
 
+export interface JewelryItemSpec {
+  id: string;
+  item: string;
+  description?: string;
+  checked: boolean;
+  disposition: 'remain_on_decedent' | 'return_to_family';
+}
+
+export interface ClothingChecklistData {
+  socks: boolean;
+  socksNotes?: string;
+  pants: boolean;
+  pantsNotes?: string;
+  shirt: boolean;
+  shirtNotes?: string;
+  underwear: boolean;
+  underwearNotes?: string;
+  shoes: boolean;
+  shoesNotes?: string;
+  dress: boolean; // "deass"
+  dressNotes?: string;
+  panties: boolean; // "pantes"
+  pantiesNotes?: string;
+  wig: boolean;
+  wigNotes?: string;
+  jacket: boolean;
+  jacketNotes?: string;
+  tie: boolean;
+  tieNotes?: string;
+  pocketSquare: boolean;
+  pocketSquareNotes?: string;
+  jewelryList: JewelryItemSpec[];
+  customItems?: Array<{
+    id: string;
+    name: string;
+    checked: boolean;
+    notes?: string;
+  }>;
+  casketNumber?: string;
+  casketName?: string;
+  namePlate?: boolean;
+  hairdresserAssigned?: boolean;
+  hairdresserName?: string;
+  cosmeticsNotes?: string;
+  glassesInstruction?: 'on_for_viewing_remove_before_burial' | 'remain_on_decedent' | 'return_to_family' | 'none';
+  deliveredBy?: string;
+  deliveredByPhone?: string;
+  receivedByDirector?: string;
+  dateReceived?: string;
+  isCompleted?: boolean;
+  lastUpdated?: string;
+}
+
 export interface GoldenRecordCase {
   id: string;
   caseNumber: string;
@@ -284,6 +337,7 @@ export interface GoldenRecordCase {
   cortegeRoute?: LiveryCortegeRoute;
   funeralAnnouncement?: FuneralAnnouncementData;
   statementOfGoods?: StatementOfGoodsData;
+  clothingSubmittal?: ClothingChecklistData;
   familySplitPayConfig?: FamilySplitPayConfig;
   vipItinerary?: DayOfServiceVIPItinerary;
   arrangementAppointment?: ArrangementAppointmentInfo;

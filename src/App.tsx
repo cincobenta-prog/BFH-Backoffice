@@ -1023,6 +1023,7 @@ export function App() {
             <DocumentJourneyMatrix
               caseData={activeCase}
               onUpdateDocumentStatus={handleUpdateDocumentStatus}
+              onUpdateCase={handleUpdateCase}
               onOpenESign={(doc) => {
                 setTargetESignDoc(doc || null);
                 setIsESignOpen(true);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowRight, ArrowLeft, X, BookOpen, Music, Car, Utensils, AlertCircle } from 'lucide-react';
+import { Sparkles, ArrowRight, ArrowLeft, X, BookOpen, Music, Car, Utensils, AlertCircle, Calendar } from 'lucide-react';
 import { DispositionType, GoldenRecordCase } from '../../lib/types/funeral';
 import { INITIAL_DOCUMENT_TEMPLATES } from '../../lib/data/mockCases';
 import { getDefaultStatementOfGoodsForCase, BFH_GPL_2026 } from '../../lib/data/generalPriceList';
@@ -18,23 +18,27 @@ interface ArrangerWizardProps {
 export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   onClose,
   onCaseCreated,
-  initialService = 'cremation_memorial'
+  initialService = ''
 }) => {
   const [step, setStep] = useState<number>(1);
   const [validationError, setValidationError] = useState<string | null>(null);
   
-  // Form State
-  const [disposition, setDisposition] = useState<DispositionType>(
+  // Form State - ZERO PRE-SELECTIONS
+  const [disposition, setDisposition] = useState<DispositionType | ''>(
     (initialService === 'full_cremation' || initialService === 'cremation_memorial' || initialService === 'direct_cremation' || initialService === 'full_burial' || initialService === 'direct_burial')
       ? (initialService as DispositionType)
-      : 'cremation_memorial'
+      : ''
   );
-  const [viewingChoice, setViewingChoice] = useState<'Parlor A (Seats 120)' | 'Parlor B (Seats 110)' | 'Church / External Venue' | 'Direct / No Viewing'>('Parlor A (Seats 120)');
+  const [viewingChoice, setViewingChoice] = useState<string>('');
   
-  // Customizable Variables / Add-ons
-  const [includePrograms, setIncludePrograms] = useState(true);
-  const [includePrayerCards, setIncludePrayerCards] = useState(true);
-  const [includeClergyOrganist, setIncludeClergyOrganist] = useState(true);
+  // Date of Service State
+  const [serviceDate, setServiceDate] = useState<string>('');
+  const [serviceTimeWindow, setServiceTimeWindow] = useState<string>('');
+
+  // Customizable Variables / Add-ons (Default to FALSE/UNSELECTED)
+  const [includePrograms, setIncludePrograms] = useState(false);
+  const [includePrayerCards, setIncludePrayerCards] = useState(false);
+  const [includeClergyOrganist, setIncludeClergyOrganist] = useState(false);
   const [includeLimousine, setIncludeLimousine] = useState(false);
   const [includeRepast, setIncludeRepast] = useState(false);
 
@@ -42,7 +46,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   const [decedentName, setDecedentName] = useState('');
   const [decedentDob, setDecedentDob] = useState('');
   const [decedentDod, setDecedentDod] = useState('');
-  const [placeOfDeath, setPlaceOfDeath] = useState('Mount Sinai Morningside Hospital, NYC');
+  const [placeOfDeath, setPlaceOfDeath] = useState('');
   const [isVeteran, setIsVeteran] = useState(false);
   const [residence, setResidence] = useState('');
   
@@ -52,10 +56,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   const [informantPhone, setInformantPhone] = useState('');
   const [informantEmail, setInformantEmail] = useState('');
 
-  // Payment Selection
-  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'insurance' | 'ach' | 'credit'>('insurance');
-  const [insuranceCarrier] = useState('Lincoln National Life / C&J Financial');
-  const [policyNum] = useState('LN-992014');
+  // Payment Selection (NO ASSUMED PRE-SELECTION)
+  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'insurance' | 'ach' | 'credit' | ''>('');
+  const [insuranceCarrier, setInsuranceCarrier] = useState('');
+  const [policyNum, setPolicyNum] = useState('');
 
   // Pricing Calculation
   const basePrices: Record<DispositionType, number> = {
@@ -73,12 +77,33 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   const limousinePrice = includeLimousine ? 715 : 0;
   const repastPrice = includeRepast ? 1400 : 0;
 
-  const currentBasePrice = basePrices[disposition] || 3195;
+  const currentBasePrice = disposition ? (basePrices[disposition as DispositionType] || 0) : 0;
   const variablesTotal = programsPrice + prayerCardsPrice + clergyOrganistPrice + limousinePrice + repastPrice;
   const totalPrice = currentBasePrice + variablesTotal;
 
   const handleNextStep = () => {
     setValidationError(null);
+
+    if (step === 1) {
+      if (!disposition) {
+        setValidationError('Please select a service category to proceed.');
+        return;
+      }
+      if (!viewingChoice) {
+        setValidationError('Please select your preferred gathering / chapel location preference.');
+        return;
+      }
+      if (!serviceDate) {
+        setValidationError('Please select a Date of Service for the ceremony.');
+        return;
+      }
+      // Check date is not in past
+      const today = new Date().toISOString().split('T')[0];
+      if (serviceDate < today) {
+        setValidationError('Date of Service cannot be scheduled in the past. Please select a current or future date.');
+        return;
+      }
+    }
 
     if (step === 2) {
       if (!decedentName.trim()) {
@@ -93,6 +118,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
       const dateCheck = validateLifeDates(decedentDob, decedentDod);
       if (!dateCheck.isValid) {
         setValidationError(dateCheck.error || 'Date of Birth entered cannot exceed the Date of Passing (Date of Death).');
+        return;
+      }
+      if (serviceDate && decedentDod && serviceDate < decedentDod) {
+        setValidationError('Date of Service cannot be earlier than the Date of Passing.');
         return;
       }
     }
@@ -122,6 +151,23 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError(null);
+
+    if (!disposition) {
+      setValidationError('Please select a service category.');
+      setStep(1);
+      return;
+    }
+
+    if (!serviceDate) {
+      setValidationError('Please select a Date of Service.');
+      setStep(1);
+      return;
+    }
+
+    if (!paymentMethod) {
+      setValidationError('Please select your preferred payment or financing method.');
+      return;
+    }
 
     // Strict validation
     const dateCheck = validateLifeDates(decedentDob, decedentDod);
@@ -181,7 +227,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
         edrsStatus: 'pending'
       },
       serviceSelections: {
-        dispositionType: disposition,
+        dispositionType: (disposition || 'cremation_memorial') as DispositionType,
         packageTitle: disposition === 'full_cremation' 
           ? 'Funeral Service with Cremation'
           : disposition === 'cremation_memorial'
@@ -192,16 +238,21 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
           ? 'Direct Cremation'
           : 'Direct Earth Burial',
         basePackagePrice: currentBasePrice,
-        casketOrUrnSelected: disposition.includes('cremation') ? 'Handcrafted Solid Bronze Urn' : 'The St. Nicholas Heritage Casket',
+        casketOrUrnSelected: (disposition || '').includes('cremation') ? 'Handcrafted Solid Bronze Urn' : 'The St. Nicholas Heritage Casket',
         casketPrice: 0,
-        viewingParlor: viewingChoice,
-        crematoryOrCemeteryName: disposition.includes('cremation') 
+        viewingParlor: (viewingChoice || 'Parlor A (Seats 120)') as any,
+        serviceDate: serviceDate,
+        serviceTime: serviceTimeWindow || '11:00 AM – 01:00 PM',
+        crematoryOrCemeteryName: (disposition || '').includes('cremation') 
           ? 'Woodlawn Crematory (Bronx, NY)'
           : 'Woodlawn Cemetery (Bronx, NY)',
         officiantName: includeClergyOrganist ? 'Senior Officiant' : undefined,
         organistName: includeClergyOrganist ? 'Master Sanctuary Organist' : undefined,
         specialRequests: isVeteran ? 'Military flag presentation requested.' : undefined
       },
+      appointmentScheduled: Boolean(serviceDate),
+      appointmentDate: serviceDate || undefined,
+      appointmentTime: serviceTimeWindow || '11:00 AM – 01:00 PM',
       documents: INITIAL_DOCUMENT_TEMPLATES,
       splitBilling: [
         {
@@ -213,13 +264,13 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
             ? 'Credit Card'
             : 'Family ACH Direct',
           providerName: paymentMethod === 'insurance' 
-            ? insuranceCarrier 
+            ? (insuranceCarrier || 'Lincoln National Life / C&J Financial') 
             : paymentMethod === 'cash'
             ? "In-Person Cash / Certified Bank Check (Benta's 630 St. Nicholas Ave)"
             : paymentMethod === 'credit'
             ? 'Credit Card / Split Pay'
             : 'Direct ACH Bank Transfer',
-          policyNumber: paymentMethod === 'insurance' ? policyNum : undefined,
+          policyNumber: paymentMethod === 'insurance' ? (policyNum || 'POL-PENDING') : undefined,
           amountAllocated: totalPrice,
           status: 'pending_verification',
           notes: paymentMethod === 'cash'
@@ -246,7 +297,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
           id: `note-${Date.now()}`,
           author: 'Online Intake Portal (Golden Record Hub)',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          text: `Arrangement inquiry initiated online by ${informantName || 'Next of Kin'}. Selected ${disposition.replace('_', ' ')} with total estimated at $${totalPrice.toLocaleString()}.`
+          text: `Arrangement inquiry initiated online by ${informantName || 'Next of Kin'}. Selected ${(disposition || 'unspecified').replace('_', ' ')} for service on ${serviceDate || 'TBD'} with total estimated at $${totalPrice.toLocaleString()}.`
         }
       ]
     };
@@ -301,7 +352,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
 
         {/* Step Progress Bar */}
         <div className="grid grid-cols-4 gap-2 mb-8">
-          {['Service Type', 'Loved One Info', 'Arranger Info', 'Variables & Review'].map((label, idx) => (
+          {['Service & Date', 'Loved One Info', 'Arranger Info', 'Variables & Review'].map((label, idx) => (
             <div key={idx} className="space-y-1">
               <div className={`h-1.5 rounded-full ${step >= idx + 1 ? 'bg-[#065f46]' : 'bg-neutral-200'}`} />
               <p className={`text-[10px] font-bold ${step >= idx + 1 ? 'text-[#065f46]' : 'text-neutral-400'}`}>
@@ -311,78 +362,138 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
           ))}
         </div>
 
-        {/* Step 1: Select Service Option */}
+        {/* Step 1: Select Service Option, Venue & Date of Service */}
         {step === 1 && (
-          <div className="space-y-5">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-800">
-              Select Desired Service Category:
-            </h3>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-neutral-800 mb-1">
+                1. Select Desired Service Category *
+              </h3>
+              <p className="text-xs text-neutral-500 mb-3">
+                Please select a service option below. Nothing is pre-selected.
+              </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              {[
-                {
-                  id: 'cremation_memorial',
-                  title: 'Cremation and Memorial Service',
-                  price: '$3,195',
-                  desc: 'Direct cremation followed by chapel memorial celebration with urn present, guestbook, and staff supervision.'
-                },
-                {
-                  id: 'full_cremation',
-                  title: 'Funeral Service with Cremation',
-                  price: '$4,850',
-                  desc: 'Full visitation & funeral ceremony in Chapel with ceremonial rental casket, followed by cremation at Woodlawn.'
-                },
-                {
-                  id: 'direct_cremation',
-                  title: 'Direct Cremation',
-                  price: '$1,995',
-                  desc: 'Simple, direct transfer and cremation with return of remains to family.'
-                },
-                {
-                  id: 'full_burial',
-                  title: 'Traditional Service and Burial',
-                  price: '$5,950',
-                  desc: 'Full church or chapel ceremony, hearse cortege, family limousine escort, and committal at cemetery.'
-                },
-                {
-                  id: 'direct_burial',
-                  title: 'Direct Earth Burial',
-                  price: '$2,750',
-                  desc: 'Direct transfer and burial at cemetery without formal chapel ceremonies.'
-                }
-              ].map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => setDisposition(item.id as DispositionType)}
-                  className={`p-4 rounded-xl border cursor-pointer transition ${
-                    disposition === item.id
-                      ? 'bg-emerald-50/80 border-[#065f46] ring-2 ring-[#065f46]/20 shadow-sm'
-                      : 'bg-white border-neutral-200 hover:border-neutral-300'
-                  }`}
-                >
-                  <div className="flex justify-between items-center mb-1">
-                    <h4 className="font-serif-title font-bold text-sm text-neutral-900">{item.title}</h4>
-                    <span className="text-[#065f46] font-bold text-xs">{item.price}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {[
+                  {
+                    id: 'cremation_memorial',
+                    title: 'Cremation and Memorial Service',
+                    price: '$3,195',
+                    desc: 'Direct cremation followed by chapel memorial celebration with urn present, guestbook, and staff supervision.'
+                  },
+                  {
+                    id: 'full_cremation',
+                    title: 'Funeral Service with Cremation',
+                    price: '$4,850',
+                    desc: 'Full visitation & funeral ceremony in Chapel with ceremonial rental casket, followed by cremation at Woodlawn.'
+                  },
+                  {
+                    id: 'direct_cremation',
+                    title: 'Direct Cremation',
+                    price: '$1,995',
+                    desc: 'Simple, direct transfer and cremation with return of remains to family.'
+                  },
+                  {
+                    id: 'full_burial',
+                    title: 'Traditional Service and Burial',
+                    price: '$5,950',
+                    desc: 'Full church or chapel ceremony, hearse cortege, family limousine escort, and committal at cemetery.'
+                  },
+                  {
+                    id: 'direct_burial',
+                    title: 'Direct Earth Burial',
+                    price: '$2,750',
+                    desc: 'Direct transfer and burial at cemetery without formal chapel ceremonies.'
+                  }
+                ].map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => {
+                      setValidationError(null);
+                      setDisposition(item.id as DispositionType);
+                    }}
+                    className={`p-4 rounded-xl border cursor-pointer transition ${
+                      disposition === item.id
+                        ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46] shadow-sm'
+                        : 'bg-white border-neutral-200 hover:border-neutral-300'
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-1">
+                      <h4 className="font-serif-title font-bold text-sm text-neutral-900">{item.title}</h4>
+                      <span className="text-[#065f46] font-bold text-xs">{item.price}</span>
+                    </div>
+                    <p className="text-xs text-neutral-500 font-light">{item.desc}</p>
                   </div>
-                  <p className="text-xs text-neutral-500 font-light">{item.desc}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            <div className="pt-2">
-              <label className="block text-xs font-bold text-neutral-800 mb-2">
-                Viewing / Gathering Location Preference:
+            {/* Venue Preference */}
+            <div>
+              <label className="block text-xs font-bold text-neutral-800 mb-1">
+                2. Viewing / Gathering Location Preference *
               </label>
               <select
                 value={viewingChoice}
-                onChange={(e) => setViewingChoice(e.target.value as any)}
+                onChange={(e) => {
+                  setValidationError(null);
+                  setViewingChoice(e.target.value);
+                }}
                 className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-3 text-xs text-neutral-900 focus:border-[#065f46] outline-none shadow-sm"
               >
+                <option value="">-- Please Select Gathering / Chapel Venue --</option>
                 <option value="Parlor A (Seats 120)">Parlor A (Saint Nicholas Main Chapel - Seats 120)</option>
                 <option value="Parlor B (Seats 110)">Parlor B (Harlem Memorial Chapel - Seats 110)</option>
                 <option value="Church / External Venue">Church / External Sanctuary (e.g. Abyssinian Baptist)</option>
                 <option value="Direct / No Viewing">Direct Service (No Formal Viewing)</option>
               </select>
+            </div>
+
+            {/* Date of Service Selection (Required by family) */}
+            <div className="p-4 bg-[#f8faf8] border border-emerald-200 rounded-2xl space-y-3">
+              <div className="flex items-center space-x-2 text-xs font-bold uppercase text-[#065f46]">
+                <Calendar className="w-4 h-4 text-[#065f46]" />
+                <span>3. Date of Service & Ceremony Time Window *</span>
+              </div>
+              <p className="text-xs text-neutral-600">
+                Please select the family's preferred service date. This schedules the chapel and coordinates the director team.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-neutral-700 font-medium mb-1">
+                    Preferred Date of Service *
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    min={new Date().toISOString().split('T')[0]}
+                    value={serviceDate}
+                    onChange={(e) => {
+                      setValidationError(null);
+                      setServiceDate(e.target.value);
+                    }}
+                    className="w-full bg-white border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs text-neutral-700 font-medium mb-1">
+                    Preferred Time Window / Session
+                  </label>
+                  <select
+                    value={serviceTimeWindow}
+                    onChange={(e) => setServiceTimeWindow(e.target.value)}
+                    className="w-full bg-white border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 focus:border-[#065f46] outline-none font-medium"
+                  >
+                    <option value="">-- Select Preferred Time Slot --</option>
+                    <option value="10:00 AM – 12:00 PM (Morning Service)">10:00 AM – 12:00 PM (Morning Service)</option>
+                    <option value="01:00 PM – 03:00 PM (Afternoon Service)">01:00 PM – 03:00 PM (Afternoon Service)</option>
+                    <option value="05:00 PM – 07:00 PM (Evening Visitation)">05:00 PM – 07:00 PM (Evening Visitation)</option>
+                    <option value="To Be Coordinated with Funeral Director">To Be Coordinated with Funeral Director</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -669,7 +780,15 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
             <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2 text-xs">
               <div className="flex justify-between text-neutral-700">
                 <span>Selected Service Package:</span>
-                <span className="font-bold text-neutral-900">${currentBasePrice.toLocaleString()}</span>
+                <span className="font-bold text-neutral-900">
+                  {disposition ? `$${currentBasePrice.toLocaleString()}` : 'None Selected'}
+                </span>
+              </div>
+              <div className="flex justify-between text-neutral-700">
+                <span>Date & Time of Service:</span>
+                <span className="font-bold text-[#065f46]">
+                  {serviceDate ? `${serviceDate} • ${serviceTimeWindow || '11:00 AM – 01:00 PM'}` : 'Not Selected'}
+                </span>
               </div>
               {variablesTotal > 0 && (
                 <div className="flex justify-between text-neutral-700">
@@ -679,7 +798,7 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
               )}
               <div className="flex justify-between text-neutral-700">
                 <span>Venue & Facility Allocation:</span>
-                <span className="text-neutral-900 font-medium">{viewingChoice}</span>
+                <span className="text-neutral-900 font-medium">{viewingChoice || 'Not Selected'}</span>
               </div>
               <div className="pt-2 border-t border-neutral-200 flex justify-between text-sm font-bold text-[#065f46]">
                 <span>Estimated Total (FTC Itemized):</span>
@@ -687,18 +806,26 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
               </div>
             </div>
 
-            {/* Payment Method Selector */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-neutral-800">
-                Select Preferred Payment / Financing Method:
-              </label>
+            {/* Payment Method Selector (No Assumed Pre-selection) */}
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-neutral-800 mb-0.5">
+                  Select Preferred Payment / Financing Method * (Required):
+                </label>
+                <p className="text-[11px] text-neutral-500">
+                  Please select one of our verified funding pathways below. No method is assumed.
+                </p>
+              </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div
-                  onClick={() => setPaymentMethod('cash')}
+                  onClick={() => {
+                    setValidationError(null);
+                    setPaymentMethod('cash');
+                  }}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'cash'
-                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46] font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -707,10 +834,13 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </div>
 
                 <div
-                  onClick={() => setPaymentMethod('insurance')}
+                  onClick={() => {
+                    setValidationError(null);
+                    setPaymentMethod('insurance');
+                  }}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'insurance'
-                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46] font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -719,10 +849,13 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </div>
 
                 <div
-                  onClick={() => setPaymentMethod('ach')}
+                  onClick={() => {
+                    setValidationError(null);
+                    setPaymentMethod('ach');
+                  }}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'ach'
-                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46] font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
@@ -731,17 +864,70 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
                 </div>
 
                 <div
-                  onClick={() => setPaymentMethod('credit')}
+                  onClick={() => {
+                    setValidationError(null);
+                    setPaymentMethod('credit');
+                  }}
                   className={`p-3.5 rounded-xl border cursor-pointer text-xs transition ${
                     paymentMethod === 'credit'
-                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46]/20 font-bold text-[#065f46]'
+                      ? 'bg-emerald-50 border-[#065f46] ring-2 ring-[#065f46] font-bold text-[#065f46]'
                       : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                   }`}
                 >
                   <p className="font-bold">Credit / Split Pay</p>
-                  <p className="text-[11px] text-neutral-500 mt-1 font-light">Split across family</p>
+                  <p className="text-[11px] text-neutral-500 mt-1 font-light">Split across family members</p>
                 </div>
               </div>
+
+              {/* Contextual Payment Details */}
+              {paymentMethod === 'insurance' && (
+                <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs animate-fadeIn">
+                  <div>
+                    <label className="block text-[11px] text-neutral-600 font-medium mb-1">Insurance Company / Carrier</label>
+                    <input
+                      type="text"
+                      value={insuranceCarrier}
+                      onChange={(e) => setInsuranceCarrier(e.target.value)}
+                      placeholder="e.g. Lincoln National Life, Prudential, MetLife"
+                      className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 outline-none focus:border-[#065f46]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] text-neutral-600 font-medium mb-1">Policy Number / Certificate #</label>
+                    <input
+                      type="text"
+                      value={policyNum}
+                      onChange={(e) => setPolicyNum(e.target.value)}
+                      placeholder="e.g. POL-992014"
+                      className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 outline-none focus:border-[#065f46] font-mono"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {paymentMethod === 'cash' && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900">
+                  <p className="font-medium">
+                    ✓ <strong>Cash / Certified Bank Check:</strong> You will receive an official itemized BFH paper and digital receipt during your arrangement conference at 630 St. Nicholas Ave.
+                  </p>
+                </div>
+              )}
+
+              {paymentMethod === 'ach' && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900">
+                  <p className="font-medium">
+                    ✓ <strong>ACH Direct Bank Transfer:</strong> Direct bank transfer with zero convenience fees, processed securely via bank-grade 256-bit encryption.
+                  </p>
+                </div>
+              )}
+
+              {paymentMethod === 'credit' && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900">
+                  <p className="font-medium">
+                    ✓ <strong>Credit Card & Family Split-Pay:</strong> You can divide this funeral cost evenly or by custom amounts among family members with instant email & SMS links.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
