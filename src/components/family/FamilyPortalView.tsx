@@ -50,6 +50,7 @@ import {
   Globe,
   Palette,
   Layout,
+  SlidersHorizontal,
   MessageCircle,
   Trash2,
   ScrollText,
@@ -393,6 +394,13 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
   const [announcementFamilyMessage, setAnnouncementFamilyMessage] = useState(
     activeCase.funeralAnnouncement?.familyMessage || `“The ${activeCase.informant.fullName.split(' ').pop() || 'Vance'} Family extends our deepest gratitude for your comforting prayers, condolences, and enduring love.”`
   );
+
+  // Announcement Layout Fit & Content Visibility Controls
+  const [announcementFitMode, setAnnouncementFitMode] = useState<'smart_fit' | 'compact' | 'comfortable'>('smart_fit');
+  const [showWebcastInAnnouncement, setShowWebcastInAnnouncement] = useState(true);
+  const [showCommittalInAnnouncement, setShowCommittalInAnnouncement] = useState(true);
+  const [showOfficiantInAnnouncement, setShowOfficiantInAnnouncement] = useState(true);
+  const [showFamilyNoteInAnnouncement, setShowFamilyNoteInAnnouncement] = useState(true);
 
   // SMS Text Announcement Dispatcher Modal State
   const [isAnnouncementSMSModalOpen, setIsAnnouncementSMSModalOpen] = useState(false);
@@ -2399,6 +2407,82 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       </div>
                     </div>
 
+                    {/* Content Fit & Canvas Spacing Control Panel */}
+                    <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
+                          <SlidersHorizontal className="w-3.5 h-3.5 text-[#991b1b]" />
+                          Content Fit & Spacing Settings:
+                        </label>
+                        <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+                          Zero Clipping Mode
+                        </span>
+                      </div>
+
+                      {/* Density Presets */}
+                      <div className="grid grid-cols-3 gap-1.5 text-xs">
+                        {[
+                          { id: 'smart_fit', label: '✨ Auto-Fit', desc: 'Optimal proportion' },
+                          { id: 'compact', label: '📐 Compact', desc: 'More content room' },
+                          { id: 'comfortable', label: '🌿 Spacious', desc: 'Generous margins' }
+                        ].map((fit) => (
+                          <button
+                            key={fit.id}
+                            type="button"
+                            onClick={() => setAnnouncementFitMode(fit.id as any)}
+                            className={`p-2 rounded-xl border text-center transition flex flex-col items-center gap-0.5 ${
+                              announcementFitMode === fit.id
+                                ? 'bg-red-50 border-[#991b1b] text-[#991b1b] font-bold shadow-2xs'
+                                : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-100'
+                            }`}
+                          >
+                            <span className="text-[10.5px] font-bold leading-tight">{fit.label}</span>
+                            <span className="text-[9px] text-neutral-500 font-normal">{fit.desc}</span>
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Content Element Toggles */}
+                      <div className="pt-2 border-t border-neutral-200 grid grid-cols-2 gap-2 text-[11px]">
+                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={showWebcastInAnnouncement}
+                            onChange={(e) => setShowWebcastInAnnouncement(e.target.checked)}
+                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
+                          />
+                          <span className="font-medium">4K Webcast & PIN</span>
+                        </label>
+                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={showCommittalInAnnouncement}
+                            onChange={(e) => setShowCommittalInAnnouncement(e.target.checked)}
+                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
+                          />
+                          <span className="font-medium">Witness Committal</span>
+                        </label>
+                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={showOfficiantInAnnouncement}
+                            onChange={(e) => setShowOfficiantInAnnouncement(e.target.checked)}
+                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
+                          />
+                          <span className="font-medium">Officiating Clergy</span>
+                        </label>
+                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={showFamilyNoteInAnnouncement}
+                            onChange={(e) => setShowFamilyNoteInAnnouncement(e.target.checked)}
+                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
+                          />
+                          <span className="font-medium">Family Note</span>
+                        </label>
+                      </div>
+                    </div>
+
                     {/* Portrait Photo Selector & Frame Picker */}
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
                       <div className="flex items-center justify-between">
@@ -2646,14 +2730,38 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     {/* LIVE RENDERED ANNOUNCEMENT CARD */}
                     <div
                       id="funeral-announcement-card"
-                      className={`w-full rounded-3xl p-6 sm:p-8 transition-all duration-300 shadow-2xl relative overflow-hidden flex flex-col justify-between text-center ${
+                      className={`w-full rounded-3xl transition-all duration-300 shadow-2xl relative overflow-hidden flex flex-col justify-between ${
                         announcementAspectRatio === 'mobile_story_9_16'
-                          ? 'max-w-sm aspect-[9/16] min-h-[660px]'
+                          ? `max-w-sm aspect-[9/16] ${
+                              announcementFitMode === 'compact'
+                                ? 'min-h-[620px] p-4 sm:p-5'
+                                : announcementFitMode === 'comfortable'
+                                ? 'min-h-[720px] p-6'
+                                : 'min-h-[660px] p-5 sm:p-6'
+                            } text-center`
                           : announcementAspectRatio === 'social_square_1_1'
-                          ? 'max-w-md aspect-square'
+                          ? `max-w-md w-full aspect-square ${
+                              announcementFitMode === 'compact'
+                                ? 'min-h-[440px] p-3 sm:p-3.5'
+                                : announcementFitMode === 'comfortable'
+                                ? 'min-h-[520px] p-5 sm:p-6'
+                                : 'min-h-[470px] p-4 sm:p-4.5'
+                            } text-center`
                           : announcementAspectRatio === 'landscape_banner_16_9'
-                          ? 'max-w-xl aspect-[16/9]'
-                          : 'max-w-md aspect-[8.5/11]'
+                          ? `max-w-2xl w-full aspect-[16/9] ${
+                              announcementFitMode === 'compact'
+                                ? 'min-h-[350px] p-3'
+                                : announcementFitMode === 'comfortable'
+                                ? 'min-h-[420px] p-5'
+                                : 'min-h-[375px] p-3.5 sm:p-4'
+                            }`
+                          : `max-w-md w-full aspect-[8.5/11] ${
+                              announcementFitMode === 'compact'
+                                ? 'min-h-[580px] p-4 sm:p-4.5'
+                                : announcementFitMode === 'comfortable'
+                                ? 'min-h-[680px] p-6'
+                                : 'min-h-[630px] p-5 sm:p-5.5'
+                            } text-center`
                       } ${
                         announcementTheme === 'harlem_obsidian_gold'
                           ? 'bg-[#0f1523] text-white border-2 border-amber-400 shadow-amber-950/40'
@@ -2665,136 +2773,305 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       }`}
                     >
                       {/* Top Gold / Crimson Foil Filigree Accent */}
-                      <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#991b1b] via-[#d4af37] to-[#991b1b]" />
+                      <div className="absolute top-0 inset-x-0 h-1.5 sm:h-2 bg-gradient-to-r from-[#991b1b] via-[#d4af37] to-[#991b1b]" />
 
-                      {/* Header Section */}
-                      <div className="space-y-1.5 pt-2">
-                        <div className="flex items-center justify-center space-x-1.5 text-[9px] font-bold uppercase tracking-widest text-amber-400 font-mono">
-                          <span>✦</span>
-                          <span>BENTA'S FUNERAL HOME · HARLEM, NYC · EST. 1928</span>
-                          <span>✦</span>
+                      {/* --- CONDITIONAL LAYOUT: 16:9 LANDSCAPE BANNER (SPLIT 2-COLUMN) VS VERTICAL RATIOS --- */}
+                      {announcementAspectRatio === 'landscape_banner_16_9' ? (
+                        /* LANDSCAPE BANNER (16:9) HORIZONTAL 2-COLUMN SPLIT */
+                        <div className="w-full flex-1 grid grid-cols-12 gap-3 sm:gap-4 items-center pt-1.5">
+                          {/* Left Column (5 Cols): Decedent Info & Portrait */}
+                          <div className="col-span-5 flex flex-col items-center justify-between h-full text-center py-0.5">
+                            <div className="space-y-0.5">
+                              <div className="flex items-center justify-center space-x-1 text-[7.5px] font-bold uppercase tracking-widest text-amber-400 font-mono">
+                                <span>✦</span>
+                                <span>BENTA'S HARLEM · EST. 1928</span>
+                                <span>✦</span>
+                              </div>
+                              <h4 className={`font-serif-title font-bold text-[9.5px] sm:text-[10px] tracking-wider uppercase leading-tight ${
+                                announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                                  ? 'text-[#991b1b]'
+                                  : 'text-amber-300'
+                              }`}>
+                                {announcementHeadline}
+                              </h4>
+                              <h2 className="font-serif-title font-bold text-xs sm:text-sm leading-snug text-current">
+                                {activeCase.decedent.legalName}
+                              </h2>
+                              <div className={`text-[8.5px] font-light italic font-serif ${
+                                announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                                  ? 'text-neutral-600'
+                                  : 'text-neutral-300'
+                              }`}>
+                                {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
+                              </div>
+                            </div>
+
+                            {/* Photo Frame */}
+                            <div className="my-1 flex justify-center">
+                              <div className={`relative p-1 ${
+                                announcementFrameStyle === 'arched_gold_foil'
+                                  ? 'rounded-t-full rounded-b-xl border border-amber-400 shadow-md bg-gradient-to-b from-amber-300/30 to-transparent'
+                                  : announcementFrameStyle === 'oval_classic'
+                                  ? 'rounded-full border border-amber-400 shadow-md'
+                                  : 'rounded-xl border border-amber-400 shadow-md'
+                              }`}>
+                                <div className={`overflow-hidden bg-neutral-800 ${
+                                  announcementFrameStyle === 'arched_gold_foil'
+                                    ? 'w-16 h-20 sm:w-18 sm:h-22 rounded-t-full rounded-b-lg'
+                                    : announcementFrameStyle === 'oval_classic'
+                                    ? 'w-16 h-20 sm:w-18 sm:h-22 rounded-full'
+                                    : 'w-16 h-20 sm:w-18 sm:h-22 rounded-lg'
+                                }`}>
+                                  <img
+                                    src={announcementPortraitUrl}
+                                    alt={activeCase.decedent.legalName}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#991b1b] border border-amber-400 flex items-center justify-center text-white text-[8px] shadow-xs">
+                                  🕊️
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Family Note */}
+                            {showFamilyNoteInAnnouncement && (
+                              <div className="text-[7.5px] italic opacity-75 line-clamp-1 max-w-full px-1">
+                                {announcementFamilyMessage}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Right Column (7 Cols): Schedule, Webcast, Address */}
+                          <div className="col-span-7 flex flex-col justify-between h-full space-y-1.5 text-left py-0.5">
+                            {/* Ceremony Schedule Block */}
+                            <div className={`p-2 sm:p-2.5 rounded-xl border space-y-1 text-[9px] leading-tight ${
+                              announcementTheme === 'sanctuary_crimson_ivory'
+                                ? 'bg-neutral-50/90 border-neutral-200 text-neutral-800'
+                                : announcementTheme === 'serenity_white_silver'
+                                ? 'bg-slate-50 border-slate-200 text-slate-800'
+                                : 'bg-white/5 border-white/10 text-neutral-200'
+                            }`}>
+                              {/* Visitation */}
+                              <div className="space-y-0.5">
+                                <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                                  <Clock className="w-2.5 h-2.5 text-amber-400" />
+                                  <span>Viewing & Visitation:</span>
+                                </div>
+                                <div className="font-semibold text-current text-[9px]">{announcementWakeInfo}</div>
+                                <div className="text-[8px] opacity-75 truncate">{announcementWakeVenue}</div>
+                              </div>
+
+                              {/* Service */}
+                              <div className="space-y-0.5 pt-0.5 border-t border-white/10">
+                                <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                                  <Calendar className="w-2.5 h-2.5 text-amber-400" />
+                                  <span>Funeral Sanctuary Service:</span>
+                                </div>
+                                <div className="font-bold text-current text-[9px]">{announcementServiceInfo}</div>
+                                <div className="text-[8px] opacity-75 truncate">{announcementServiceVenue} • {announcementServiceAddress}</div>
+                                {showOfficiantInAnnouncement && announcementOfficiant && (
+                                  <div className="text-[8px] text-amber-300 font-medium italic truncate">{announcementOfficiant}</div>
+                                )}
+                              </div>
+
+                              {/* Committal */}
+                              {showCommittalInAnnouncement && announcementCommittal && (
+                                <div className="pt-0.5 border-t border-white/10 text-[8px]">
+                                  <div className="font-semibold text-current truncate">{announcementCommittal}</div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* 4K Webcast Box */}
+                            {showWebcastInAnnouncement && (
+                              <div className={`p-1.5 rounded-lg border flex items-center justify-between text-left ${
+                                announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                                  ? 'bg-amber-50/80 border-amber-200 text-neutral-900'
+                                  : 'bg-amber-400/10 border-amber-400/30 text-amber-200'
+                              }`}>
+                                <div className="space-y-0.5 max-w-[70%]">
+                                  <div className="text-[8px] font-bold flex items-center gap-1 text-red-600">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+                                    <span>Live 4K Webcast Available</span>
+                                  </div>
+                                  <div className="text-[7.5px] font-mono truncate text-current">
+                                    {announcementWebcastUrl}
+                                  </div>
+                                  <div className="text-[7.5px] font-medium opacity-80">
+                                    Security PIN: <strong>{announcementWebcastPin}</strong>
+                                  </div>
+                                </div>
+
+                                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white p-0.5 rounded border border-neutral-300 flex items-center justify-center shrink-0">
+                                  <QrCode className="w-full h-full text-neutral-900" />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* BFH Contact Line */}
+                            <div className="text-[7px] font-mono uppercase tracking-widest text-amber-400/90 text-center truncate">
+                              630 St. Nicholas Ave, Harlem, NY 10030 · (212) 281-8850
+                            </div>
+                          </div>
                         </div>
+                      ) : (
+                        /* VERTICAL LAYOUT (SOCIAL SQUARE, PRINTABLE FLYER, MOBILE STORY) */
+                        <>
+                          {/* Header Section */}
+                          <div className={`pt-0.5 ${announcementAspectRatio === 'social_square_1_1' ? 'space-y-0.5' : 'space-y-1'}`}>
+                            <div className="flex items-center justify-center space-x-1.5 text-[8px] sm:text-[8.5px] font-bold uppercase tracking-widest text-amber-400 font-mono">
+                              <span>✦</span>
+                              <span>BENTA'S FUNERAL HOME · HARLEM, NYC · EST. 1928</span>
+                              <span>✦</span>
+                            </div>
 
-                        <h4 className={`font-serif-title font-bold text-xs sm:text-sm tracking-wider uppercase ${
-                          announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                            ? 'text-[#991b1b]'
-                            : 'text-amber-300'
-                        }`}>
-                          {announcementHeadline}
-                        </h4>
+                            <h4 className={`font-serif-title font-bold tracking-wider uppercase ${
+                              announcementAspectRatio === 'social_square_1_1' ? 'text-[9.5px] sm:text-[10.5px]' : 'text-xs sm:text-sm'
+                            } ${
+                              announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                                ? 'text-[#991b1b]'
+                                : 'text-amber-300'
+                            }`}>
+                              {announcementHeadline}
+                            </h4>
 
-                        <h2 className="font-serif-title font-bold text-lg sm:text-2xl leading-tight text-current">
-                          {activeCase.decedent.legalName}
-                        </h2>
+                            <h2 className={`font-serif-title font-bold leading-tight text-current ${
+                              announcementAspectRatio === 'social_square_1_1' ? 'text-sm sm:text-base' : 'text-base sm:text-xl'
+                            }`}>
+                              {activeCase.decedent.legalName}
+                            </h2>
 
-                        <div className={`text-[11px] font-light italic font-serif ${
-                          announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                            ? 'text-neutral-600'
-                            : 'text-neutral-300'
-                        }`}>
-                          {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
-                        </div>
-                      </div>
+                            <div className={`font-light italic font-serif ${
+                              announcementAspectRatio === 'social_square_1_1' ? 'text-[9px]' : 'text-[10px] sm:text-[11px]'
+                            } ${
+                              announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                                ? 'text-neutral-600'
+                                : 'text-neutral-300'
+                            }`}>
+                              {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
+                            </div>
+                          </div>
 
-                      {/* Center Portrait with Selected Frame Style */}
-                      <div className="my-3 flex justify-center">
-                        <div className={`relative p-1.5 ${
-                          announcementFrameStyle === 'arched_gold_foil'
-                            ? 'rounded-t-full rounded-b-2xl border-2 border-amber-400 shadow-lg bg-gradient-to-b from-amber-300/30 to-transparent'
-                            : announcementFrameStyle === 'oval_classic'
-                            ? 'rounded-full border-2 border-amber-400 shadow-lg'
-                            : 'rounded-2xl border-2 border-amber-400 shadow-lg'
-                        }`}>
-                          <div className={`overflow-hidden bg-neutral-800 ${
-                            announcementFrameStyle === 'arched_gold_foil'
-                              ? 'w-28 h-36 sm:w-32 sm:h-40 rounded-t-full rounded-b-xl'
-                              : announcementFrameStyle === 'oval_classic'
-                              ? 'w-28 h-36 sm:w-32 sm:h-40 rounded-full'
-                              : 'w-28 h-36 sm:w-32 sm:h-40 rounded-xl'
+                          {/* Center Portrait with Selected Frame Style */}
+                          <div className={`flex justify-center ${announcementAspectRatio === 'social_square_1_1' ? 'my-1' : 'my-2 sm:my-2.5'}`}>
+                            <div className={`relative p-1 ${
+                              announcementFrameStyle === 'arched_gold_foil'
+                                ? 'rounded-t-full rounded-b-xl border border-amber-400 shadow-md bg-gradient-to-b from-amber-300/30 to-transparent'
+                                : announcementFrameStyle === 'oval_classic'
+                                ? 'rounded-full border border-amber-400 shadow-md'
+                                : 'rounded-xl border border-amber-400 shadow-md'
+                            }`}>
+                              <div className={`overflow-hidden bg-neutral-800 ${
+                                announcementAspectRatio === 'social_square_1_1'
+                                  ? (announcementFrameStyle === 'arched_gold_foil'
+                                    ? 'w-18 h-22 sm:w-20 sm:h-24 rounded-t-full rounded-b-lg'
+                                    : announcementFrameStyle === 'oval_classic'
+                                    ? 'w-18 h-22 sm:w-20 sm:h-24 rounded-full'
+                                    : 'w-18 h-22 sm:w-20 sm:h-24 rounded-lg')
+                                  : (announcementFrameStyle === 'arched_gold_foil'
+                                    ? 'w-22 h-28 sm:w-26 sm:h-32 rounded-t-full rounded-b-xl'
+                                    : announcementFrameStyle === 'oval_classic'
+                                    ? 'w-22 h-28 sm:w-26 sm:h-32 rounded-full'
+                                    : 'w-22 h-28 sm:w-26 sm:h-32 rounded-xl')
+                              }`}>
+                                <img
+                                  src={announcementPortraitUrl}
+                                  alt={activeCase.decedent.legalName}
+                                  className="w-full h-full object-cover"
+                                />
+                              </div>
+
+                              {/* Dove Badge */}
+                              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#991b1b] border border-amber-400 flex items-center justify-center text-white text-[9px] shadow-sm">
+                                🕊️
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Ceremony Schedule Block */}
+                          <div className={`rounded-xl border text-left leading-tight ${
+                            announcementAspectRatio === 'social_square_1_1' ? 'p-2 space-y-0.5 text-[9px]' : 'p-2.5 sm:p-3 space-y-1 text-[10px]'
+                          } ${
+                            announcementTheme === 'sanctuary_crimson_ivory'
+                              ? 'bg-neutral-50/90 border-neutral-200 text-neutral-800'
+                              : announcementTheme === 'serenity_white_silver'
+                              ? 'bg-slate-50 border-slate-200 text-slate-800'
+                              : 'bg-white/5 border-white/10 text-neutral-200'
                           }`}>
-                            <img
-                              src={announcementPortraitUrl}
-                              alt={activeCase.decedent.legalName}
-                              className="w-full h-full object-cover"
-                            />
+                            
+                            {/* Visitation / Wake */}
+                            <div className="space-y-0.5">
+                              <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                                <Clock className="w-2.5 h-2.5 text-amber-400" />
+                                <span>Public Viewing & Visitation:</span>
+                              </div>
+                              <div className="font-semibold text-current">{announcementWakeInfo}</div>
+                              <div className="text-[8px] opacity-75 truncate">{announcementWakeVenue}</div>
+                            </div>
+
+                            {/* Funeral Sanctuary Service */}
+                            <div className="space-y-0.5 pt-0.5 border-t border-white/10">
+                              <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                                <Calendar className="w-2.5 h-2.5 text-amber-400" />
+                                <span>Funeral Sanctuary Service:</span>
+                              </div>
+                              <div className="font-bold text-current">{announcementServiceInfo}</div>
+                              <div className="text-[8px] opacity-75 truncate">{announcementServiceVenue} • {announcementServiceAddress}</div>
+                              {showOfficiantInAnnouncement && announcementOfficiant && (
+                                <div className="text-[8px] text-amber-300 font-medium italic truncate">{announcementOfficiant}</div>
+                              )}
+                            </div>
+
+                            {/* Committal */}
+                            {showCommittalInAnnouncement && announcementCommittal && (
+                              <div className="space-y-0.5 pt-0.5 border-t border-white/10 text-[8px]">
+                                <div className="font-semibold text-current truncate">{announcementCommittal}</div>
+                              </div>
+                            )}
                           </div>
 
-                          {/* Dove / Gold Crest Badge */}
-                          <div className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-[#991b1b] border-2 border-amber-400 flex items-center justify-center text-white text-xs shadow-md">
-                            🕊️
-                          </div>
-                        </div>
-                      </div>
+                          {/* 4K Webcast & QR Code Banner */}
+                          {showWebcastInAnnouncement && (
+                            <div className={`rounded-lg border flex items-center justify-between text-left ${
+                              announcementAspectRatio === 'social_square_1_1' ? 'mt-1 p-1' : 'mt-1.5 p-1.5'
+                            } ${
+                              announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                                ? 'bg-amber-50/80 border-amber-200 text-neutral-900'
+                                : 'bg-amber-400/10 border-amber-400/30 text-amber-200'
+                            }`}>
+                              <div className="space-y-0.5 max-w-[75%]">
+                                <div className="text-[8.5px] font-bold flex items-center gap-1 text-red-600">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+                                  <span>Live 4K Webcast Available</span>
+                                </div>
+                                <div className="text-[7.5px] font-mono truncate text-current">
+                                  {announcementWebcastUrl}
+                                </div>
+                                <div className="text-[7.5px] font-medium opacity-80">
+                                  Security PIN: <strong>{announcementWebcastPin}</strong>
+                                </div>
+                              </div>
 
-                      {/* Ceremony Schedule Block */}
-                      <div className={`p-3.5 rounded-2xl border space-y-2 text-left text-[11px] ${
-                        announcementTheme === 'sanctuary_crimson_ivory'
-                          ? 'bg-neutral-50/90 border-neutral-200 text-neutral-800'
-                          : announcementTheme === 'serenity_white_silver'
-                          ? 'bg-slate-50 border-slate-200 text-slate-800'
-                          : 'bg-white/5 border-white/10 text-neutral-200'
-                      }`}>
-                        
-                        {/* Visitation / Wake */}
-                        <div className="space-y-0.5">
-                          <div className="font-bold text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-amber-400" />
-                            <span>Public Viewing & Visitation:</span>
-                          </div>
-                          <div className="font-semibold text-current">{announcementWakeInfo}</div>
-                          <div className="text-[10px] opacity-75">{announcementWakeVenue}</div>
-                        </div>
-
-                        {/* Funeral Sanctuary Service */}
-                        <div className="space-y-0.5 pt-1 border-t border-white/10">
-                          <div className="font-bold text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                            <Calendar className="w-3 h-3 text-amber-400" />
-                            <span>Funeral Sanctuary Service:</span>
-                          </div>
-                          <div className="font-bold text-current">{announcementServiceInfo}</div>
-                          <div className="text-[10px] opacity-75">{announcementServiceVenue} • {announcementServiceAddress}</div>
-                          {announcementOfficiant && (
-                            <div className="text-[10px] text-amber-300 font-medium italic">{announcementOfficiant}</div>
+                              <div className={`bg-white p-0.5 rounded border border-neutral-300 flex items-center justify-center shrink-0 ${
+                                announcementAspectRatio === 'social_square_1_1' ? 'w-7 h-7' : 'w-8 h-8'
+                              }`}>
+                                <QrCode className="w-full h-full text-neutral-900" />
+                              </div>
+                            </div>
                           )}
-                        </div>
 
-                        {/* Committal */}
-                        <div className="space-y-0.5 pt-1 border-t border-white/10 text-[10px]">
-                          <div className="font-semibold text-current">{announcementCommittal}</div>
-                        </div>
-                      </div>
-
-                      {/* 4K Webcast & QR Code Banner */}
-                      <div className={`mt-2 p-2 rounded-xl border flex items-center justify-between text-left ${
-                        announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                          ? 'bg-amber-50/80 border-amber-200 text-neutral-900'
-                          : 'bg-amber-400/10 border-amber-400/30 text-amber-200'
-                      }`}>
-                        <div className="space-y-0.5 max-w-[75%]">
-                          <div className="text-[10px] font-bold flex items-center gap-1 text-red-600">
-                            <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
-                            <span>Live 4K Webcast Available</span>
+                          {/* Footer Note & BFH Seal */}
+                          <div className={`text-[8px] space-y-0.5 opacity-80 font-light ${announcementAspectRatio === 'social_square_1_1' ? 'pt-0.5' : 'pt-1'}`}>
+                            {showFamilyNoteInAnnouncement && (
+                              <div className="italic line-clamp-1">{announcementFamilyMessage}</div>
+                            )}
+                            <div className="font-mono text-[7px] sm:text-[7.5px] uppercase tracking-widest text-amber-400">
+                              630 St. Nicholas Ave, New York, NY 10030 · (212) 281-8850
+                            </div>
                           </div>
-                          <div className="text-[9px] font-mono truncate text-current">
-                            {announcementWebcastUrl}
-                          </div>
-                          <div className="text-[9px] font-medium opacity-80">
-                            Security PIN: <strong>{announcementWebcastPin}</strong>
-                          </div>
-                        </div>
-
-                        <div className="w-11 h-11 bg-white p-1 rounded-lg border border-neutral-300 flex items-center justify-center shrink-0">
-                          <QrCode className="w-full h-full text-neutral-900" />
-                        </div>
-                      </div>
-
-                      {/* Footer Note & BFH Seal */}
-                      <div className="pt-2 text-[9px] space-y-0.5 opacity-80 font-light">
-                        <div className="italic line-clamp-1">{announcementFamilyMessage}</div>
-                        <div className="font-mono text-[8px] uppercase tracking-widest text-amber-400">
-                          630 St. Nicholas Ave, New York, NY 10030 · (212) 281-8850
-                        </div>
-                      </div>
+                        </>
+                      )}
                     </div>
 
                     {/* PUBLIC SOCIAL MEDIA & SMS TEXT SHARING ACTION BAR */}
