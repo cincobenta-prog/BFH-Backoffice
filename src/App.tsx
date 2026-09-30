@@ -85,6 +85,7 @@ import { FirstCallIntakeModal } from './components/backoffice/FirstCallIntakeMod
 import { DiscrepancyGuardrailModal } from './components/backoffice/DiscrepancyGuardrailModal';
 import { DirectorDayOfServiceHUDModal } from './components/backoffice/DirectorDayOfServiceHUDModal';
 import { FamilyProofApprovalModal } from './components/backoffice/FamilyProofApprovalModal';
+import { TwilioGatewaySettingsModal } from './components/backoffice/TwilioGatewaySettingsModal';
 import { createCaseFromFirstCall } from './lib/data/firstCallHelper';
 
 // Family Portal Component (with full 9-Part Obituary Writer Suite)
@@ -278,6 +279,9 @@ export function App() {
     setProofApprovalTargetCase(c || activeCase);
     setIsProofApprovalModalOpen(true);
   };
+
+  // 4. Twilio Live SMS Gateway Config Modal State
+  const [isTwilioGatewayModalOpen, setIsTwilioGatewayModalOpen] = useState(false);
 
   const handleUpdatePassThroughChecks = (caseId: string, updatedChecks: PassThroughPayableCheck[]) => {
     setCases(prev => prev.map(c => {
@@ -920,6 +924,7 @@ export function App() {
           onOpenDocuSignModal={() => handleOpenDocuSignModal(activeCase)}
           onOpenQuickBooksModal={() => handleOpenQuickBooksModal(activeCase)}
           onOpenCheckPrinter={() => handleOpenCheckPrinterModal(activeCase)}
+          onOpenTwilioGatewayModal={() => setIsTwilioGatewayModalOpen(true)}
           currentDirectorId={currentDirectorId}
           onChangeDirectorId={setCurrentDirectorId}
           directorProfiles={directorProfiles}
@@ -1596,6 +1601,12 @@ export function App() {
             onSendNotification={handleSendNotification}
           />
         )}
+
+        {/* Twilio Live SMS Cellular Gateway Configuration Modal */}
+        <TwilioGatewaySettingsModal
+          isOpen={isTwilioGatewayModalOpen}
+          onClose={() => setIsTwilioGatewayModalOpen(false)}
+        />
       </div>
     );
   }

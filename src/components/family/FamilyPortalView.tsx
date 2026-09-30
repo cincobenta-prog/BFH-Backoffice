@@ -63,6 +63,7 @@ import { FamilyWebcastServiceView } from './FamilyWebcastServiceView';
 import { FamilySplitPaymentPortal } from './FamilySplitPaymentPortal';
 import { DayOfServiceVIPItineraryModal } from './DayOfServiceVIPItineraryModal';
 import { DigitalTributeStudioView } from './DigitalTributeStudioView';
+import { sendTwilioSms, getTwilioConfig } from '../../lib/services/twilioService';
 
 interface FamilyPortalViewProps {
   activeCase: GoldenRecordCase;
@@ -640,7 +641,21 @@ ${announcementFamilyMessage}
       }
       showToast(`📱 Opening native Messages/SMS app for ${recipientPhone}...`);
     } else {
-      showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
+      // Dispatch via Twilio REST Gateway
+      const twilioCfg = getTwilioConfig();
+      if (twilioCfg.accountSid && twilioCfg.authToken) {
+        sendTwilioSms(cleanPhone, formattedMsg).then(res => {
+          if (res.success && !res.isSimulated) {
+            showToast(`🚀 Live Cellular SMS dispatched via Twilio (SID: ${res.messageSid})!`);
+          } else if (!res.success) {
+            showToast(`⚠️ Twilio Gateway Notice: ${res.error || 'Check credentials'}`);
+          } else {
+            showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
+          }
+        });
+      } else {
+        showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
+      }
     }
 
     setAnnouncementSMSRecipientName('');

@@ -68,6 +68,7 @@ interface BackOfficeLayoutProps {
   onOpenDocuSignModal?: () => void;
   onOpenQuickBooksModal?: () => void;
   onOpenCheckPrinter?: () => void;
+  onOpenTwilioGatewayModal?: () => void;
   currentDirectorId?: string;
   onChangeDirectorId?: (id: string) => void;
   directorProfiles?: DirectorProfile[];
@@ -102,6 +103,7 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onOpenDocuSignModal,
   onOpenQuickBooksModal,
   onOpenCheckPrinter,
+  onOpenTwilioGatewayModal,
   currentDirectorId,
   onChangeDirectorId,
   directorProfiles,
@@ -318,6 +320,18 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               >
                 <Users className="w-3.5 h-3.5 text-amber-300 group-hover:scale-110 transition-transform" />
                 <span className="hidden xl:inline">Vendor SMS</span>
+              </button>
+            )}
+
+            {/* Twilio Telecom Gateway Settings */}
+            {onOpenTwilioGatewayModal && (
+              <button
+                onClick={onOpenTwilioGatewayModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-emerald-400 border border-emerald-500/40 rounded-xl text-xs font-bold transition shadow-2xs group"
+                title="Configure Live Twilio Account SID, Auth Token & Phone Number"
+              >
+                <Smartphone className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span className="hidden xl:inline">Twilio Gateway</span>
               </button>
             )}
 
