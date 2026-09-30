@@ -158,11 +158,11 @@ Benta's Funeral Home will directly prepare the itemized invoices and documentati
         text: `Your Family Portal includes two powerful commemorative tools:
 
 1. **🕊️ 9-Part Trauma-Informed Obituary Studio:** Walks you step-by-step through ordinary habits, signature sayings, and milestones without overwhelming timelines. Automatically produces a **Full Memorial Program draft** and a **Short Newspaper Notice**.
-2. **🎙️ 360° Digital Tribute & Voice Archive:** Collects living voice recordings and stories from friends, church members, and relatives worldwide. You can share via SMS/Email or print 4-up QR cards for the service.`,
+2. **🎙️ Digi-Tribute 2.0 & Keepsake Volume:** Collects living acoustic voice memories, video tributes, and reflections from family and friends. Formats them into poetic stanzas bound in a museum-grade Coffee Table Keepsake Book with scan-to-stream QR audio codes.`,
         citation: "Benta's Trauma-Informed Memory Suite",
         actions: [
           { label: 'Open 9-Part Obituary Studio', actionKey: 'nav_obit' },
-          { label: 'Open 360° Digital Tribute Studio', actionKey: 'nav_tribute' }
+          { label: 'Open Digi-Tribute & Keepsake Studio', actionKey: 'nav_tribute' }
         ]
       };
     }

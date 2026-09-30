@@ -204,20 +204,20 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
     {
       id: 'tribute' as const,
       tab: 'tribute' as const,
-      title: '360° Living Digital Tribute & Voice Archive',
-      subtitle: 'Living Memories & Voice Keepsakes',
+      title: 'Digi-Tribute 2.0 • Living Memorial & Keepsake Volume',
+      subtitle: '78-Question Dynamic Bank, AI Poetic Stanzas & Keepsake Booklet',
       icon: Headphones,
-      iconBg: 'bg-rose-100 text-[#991b1b]',
-      borderHover: 'hover:border-red-400',
-      badge: 'Living Voice Keepsakes',
-      badgeColor: 'bg-red-50 text-[#991b1b] border-red-200',
-      description: 'Collect living voice memories from relatives, church elders, and lifelong friends worldwide. Listen to heartfelt recordings in an interactive audio waveform player.',
+      iconBg: 'bg-amber-100 text-[#b45309]',
+      borderHover: 'hover:border-amber-400',
+      badge: 'Digi-Tribute 2.0 & Keepsake Volume',
+      badgeColor: 'bg-amber-50 text-[#b45309] border-amber-200',
+      description: 'Gather living acoustic voice memories, video tributes, and reflections from family and friends worldwide. Bound into a luxury Coffee Table Keepsake Volume with scan-to-stream QR audio codes.',
       highlights: [
-        'Voice prompt cards for childhood, church & family reflections',
-        '1-Click SMS & Email invitation sender for friends',
-        'Print-ready 4-up memorial QR cards for wake easels'
+        '78 curated relationship prompts across 4 narrative pillars',
+        'Multi-format audio waveform, video & photo memory collection',
+        'High-res Coffee Table Keepsake Book compiler with scan-to-stream QR codes'
       ],
-      buttonText: 'Listen & Record Memories',
+      buttonText: 'Open Digi-Tribute Studio',
       buttonColor: 'bg-[#991b1b] text-white hover:bg-red-800'
     },
     {
