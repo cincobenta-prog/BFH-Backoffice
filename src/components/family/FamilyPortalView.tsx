@@ -624,9 +624,20 @@ ${announcementFamilyMessage}
 
     if (openDeviceApp) {
       // Launch native device SMS app (iMessage / Messages)
+      const cleanNumber = cleanPhone.startsWith('+') ? cleanPhone : `+1${cleanPhone.replace(/^1/, '')}`;
       const isApple = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const smsUri = `sms:${cleanPhone}${isApple ? '&' : '?'}body=${encodeURIComponent(formattedMsg)}`;
-      window.location.href = smsUri;
+      const smsUri = `sms:${cleanNumber}${isApple ? '&' : '?'}body=${encodeURIComponent(formattedMsg)}`;
+      
+      try {
+        const link = document.createElement('a');
+        link.href = smsUri;
+        link.target = '_self';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch {
+        window.location.href = smsUri;
+      }
       showToast(`📱 Opening native Messages/SMS app for ${recipientPhone}...`);
     } else {
       showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
