@@ -568,14 +568,22 @@ ${announcementFamilyMessage}
     handleSaveAnnouncementData();
   };
 
-  // Dispatch SMS Text Announcement
-  const handleDispatchAnnouncementSMS = (recipientName: string, recipientPhone: string) => {
+  // Build formatted SMS announcement text
+  const getFormattedAnnouncementSMSText = (customNote?: string) => {
+    return `🕊️ BENTA'S FUNERAL ANNOUNCEMENT: ${announcementHeadline} for ${activeCase.decedent.legalName}.\n📅 Service: ${announcementServiceInfo} at ${announcementServiceVenue}.\n🔴 Live Webcast & Memorial Archive: ${announcementWebcastUrl} (PIN: ${announcementWebcastPin})${customNote ? `\n\n"${customNote}"` : ''}\n\n📍 Benta's Funeral Home, 630 St. Nicholas Ave, NY 10030 · (212) 281-8850`;
+  };
+
+  // Dispatch SMS Text Announcement (Direct Native SMS or Cloud Gateway)
+  const handleDispatchAnnouncementSMS = (recipientName: string, recipientPhone: string, openDeviceApp: boolean = false) => {
     if (!recipientPhone.trim()) {
       showToast('Please enter a recipient phone number.');
       return;
     }
 
     const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const formattedMsg = getFormattedAnnouncementSMSText(announcementSMSCustomNote);
+    const cleanPhone = recipientPhone.replace(/[^\d+]/g, '');
+
     const newEntry = {
       id: `sms-${Date.now()}`,
       name: recipientName.trim() || 'Community Contact',
@@ -595,7 +603,7 @@ ${announcementFamilyMessage}
         channel: 'sms',
         type: 'service_schedule',
         title: `FUNERAL ANNOUNCEMENT: ${activeCase.decedent.legalName}`,
-        bodyText: `Benta's Memorial Notice: ${announcementHeadline} for ${activeCase.decedent.legalName}. Service: ${announcementServiceInfo} at ${announcementServiceVenue}. Live Webcast & Memorial Archive: ${announcementWebcastUrl} (PIN: ${announcementWebcastPin}). ${announcementSMSCustomNote ? `Note from family: "${announcementSMSCustomNote}"` : ''}`,
+        bodyText: formattedMsg,
         sentAt: 'Just now',
         status: 'delivered'
       });
@@ -614,12 +622,26 @@ ${announcementFamilyMessage}
       ]
     });
 
+    if (openDeviceApp) {
+      // Launch native device SMS app (iMessage / Messages)
+      const isApple = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const smsUri = `sms:${cleanPhone}${isApple ? '&' : '?'}body=${encodeURIComponent(formattedMsg)}`;
+      window.location.href = smsUri;
+      showToast(`📱 Opening native Messages/SMS app for ${recipientPhone}...`);
+    } else {
+      showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
+    }
+
     setAnnouncementSMSRecipientName('');
     setAnnouncementSMSRecipientPhone('');
     setAnnouncementSMSCustomNote('');
     setIsAnnouncementSMSModalOpen(false);
+  };
 
-    showToast(`📱 Official funeral announcement SMS successfully dispatched to ${recipientName || recipientPhone}!`);
+  const handleCopySMSBubbleText = () => {
+    const text = getFormattedAnnouncementSMSText(announcementSMSCustomNote);
+    navigator.clipboard.writeText(text);
+    showToast('📋 SMS Announcement text copied to clipboard!');
   };
 
   // Digital Tribute Modals
@@ -3366,9 +3388,14 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                 <div className="flex items-center space-x-2">
                   <Smartphone className="w-5 h-5 text-[#991b1b]" />
-                  <h4 className="font-serif-title text-lg font-bold text-neutral-900">
-                    Dispatch Funeral Announcement via SMS
-                  </h4>
+                  <div>
+                    <h4 className="font-serif-title text-lg font-bold text-neutral-900">
+                      Dispatch Funeral Announcement via SMS
+                    </h4>
+                    <p className="text-[11px] text-neutral-500">
+                      Send formatted service details, live 4K webcast link, and condolence notes to family and community members.
+                    </p>
+                  </div>
                 </div>
                 <button
                   onClick={() => setIsAnnouncementSMSModalOpen(false)}
@@ -3378,6 +3405,24 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </button>
               </div>
 
+              {/* System Activation & Delivery Mode Info */}
+              <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-[11px] space-y-1">
+                <div className="flex items-center justify-between text-amber-900 font-bold">
+                  <span className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-700" />
+                    How SMS Dispatch Works:
+                  </span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-mono">
+                    ● System Active
+                  </span>
+                </div>
+                <p className="text-amber-800 leading-relaxed text-[10.5px]">
+                  <strong>• Instant Phone / iMessage:</strong> Opens your device's Messages app with the phone number and formatted announcement ready to send in 1-tap.
+                  <br />
+                  <strong>• BFH Cloud Gateway:</strong> Dispatches via BFH's Twilio 10DLC Relay and logs the transaction directly to the case audit notes.
+                </p>
+              </div>
+
               <div className="space-y-3.5 text-xs">
                 <div>
                   <label className="text-xs font-bold text-neutral-700 block mb-1">Recipient Name / Community Group:</label>
@@ -3385,7 +3430,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     type="text"
                     value={announcementSMSRecipientName}
                     onChange={(e) => setAnnouncementSMSRecipientName(e.target.value)}
-                    placeholder="e.g. Harlem Church Deacons / Cousin Michael"
+                    placeholder="e.g. Jason Benta / Harlem Church Deacons / Family Circle"
                     className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
                   />
                 </div>
@@ -3396,7 +3441,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     type="text"
                     value={announcementSMSRecipientPhone}
                     onChange={(e) => setAnnouncementSMSRecipientPhone(e.target.value)}
-                    placeholder="e.g. (212) 555-0198"
+                    placeholder="e.g. (917) 807-3995 or +19178073995"
                     className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] font-mono"
                   />
                 </div>
@@ -3407,16 +3452,23 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     type="text"
                     value={announcementSMSCustomNote}
                     onChange={(e) => setAnnouncementSMSCustomNote(e.target.value)}
-                    placeholder="e.g. Please join us in celebrating Arthur's legacy."
+                    placeholder="e.g. Please join our family in celebrating Arthur's legacy."
                     className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
                   />
                 </div>
 
                 {/* Live Carrier SMS Bubble Preview */}
-                <div className="bg-neutral-900 text-white p-4 rounded-2xl border border-amber-400/40 space-y-1.5 shadow-inner">
+                <div className="bg-neutral-900 text-white p-4 rounded-2xl border border-amber-400/40 space-y-2 shadow-inner">
                   <div className="flex items-center justify-between text-[10px] text-amber-400 font-mono">
                     <span>📱 CARRIER SMS PREVIEW</span>
-                    <span>Carrier Delivered</span>
+                    <button
+                      type="button"
+                      onClick={handleCopySMSBubbleText}
+                      className="text-[10px] bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded flex items-center gap-1 transition"
+                    >
+                      <Copy className="w-3 h-3" />
+                      <span>Copy Text</span>
+                    </button>
                   </div>
                   <p className="text-[11px] leading-relaxed text-neutral-200">
                     🕊️ <strong>BENTA'S FUNERAL ANNOUNCEMENT:</strong> {announcementHeadline} for <strong>{activeCase.decedent.legalName}</strong>.
@@ -3448,22 +3500,38 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 )}
               </div>
 
-              <div className="flex justify-end space-x-2 pt-2 border-t border-neutral-200">
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-neutral-200">
                 <button
                   type="button"
                   onClick={() => setIsAnnouncementSMSModalOpen(false)}
-                  className="px-4 py-2 text-xs font-bold text-neutral-600 hover:bg-neutral-100 rounded-xl"
+                  className="px-3 py-2 text-xs font-bold text-neutral-600 hover:bg-neutral-100 rounded-xl"
                 >
                   Close
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone)}
-                  className="px-5 py-2 text-xs font-bold text-white bg-[#991b1b] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20 flex items-center space-x-1.5"
-                >
-                  <Send className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Dispatch SMS Announcement</span>
-                </button>
+
+                <div className="flex items-center space-x-2">
+                  {/* Option 1: Native Phone / iMessage App */}
+                  <button
+                    type="button"
+                    onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone, true)}
+                    className="px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-xl transition flex items-center space-x-1.5 shadow-2xs"
+                    title="Open on your phone or Mac Messages app with prefilled text"
+                  >
+                    <Smartphone className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>📱 Open in Messages / SMS</span>
+                  </button>
+
+                  {/* Option 2: Cloud Gateway Dispatch */}
+                  <button
+                    type="button"
+                    onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone, false)}
+                    className="px-4 py-2 text-xs font-bold text-white bg-[#991b1b] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20 flex items-center space-x-1.5"
+                  >
+                    <Send className="w-3.5 h-3.5 text-amber-300" />
+                    <span>⚡ Dispatch via BFH Gateway</span>
+                  </button>
+                </div>
               </div>
 
             </div>
