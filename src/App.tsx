@@ -1207,6 +1207,7 @@ export function App() {
             onClose={() => setIsNotificationHubOpen(false)}
             onSendNotification={handleSendNotification}
             onSelectCase={(c) => setActiveCaseId(c.id)}
+            onOpenTwilioGateway={() => setIsTwilioGatewayModalOpen(true)}
           />
         )}
 

@@ -27,6 +27,7 @@ interface LiveNotificationSimulatorModalProps {
   onClose: () => void;
   onSendNotification: (notification: SimulatedNotification) => void;
   onSelectCase: (caseItem: GoldenRecordCase) => void;
+  onOpenTwilioGateway?: () => void;
 }
 
 export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorModalProps> = ({
@@ -35,7 +36,8 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
   notifications,
   onClose,
   onSendNotification,
-  onSelectCase
+  onSelectCase,
+  onOpenTwilioGateway
 }) => {
   const [selectedCaseId, setSelectedCaseId] = useState<string>(activeCase.id);
   const [activeTab, setActiveTab] = useState<'quick_triggers' | 'composer' | 'audit_log'>('quick_triggers');
@@ -207,10 +209,22 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 <h3 className="font-serif-title font-bold text-xl text-neutral-900">
                   Live Family SMS & Notification Dispatch Hub
                 </h3>
-                <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1">
-                  <Radio className="w-3 h-3 text-emerald-600 animate-pulse" />
-                  Twilio 5G Gateway Active
-                </span>
+                {onOpenTwilioGateway ? (
+                  <button
+                    onClick={onOpenTwilioGateway}
+                    title="Click to configure Twilio API keys, phone number, and send test SMS"
+                    className="px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1 transition-colors cursor-pointer shadow-xs"
+                  >
+                    <Radio className="w-3 h-3 text-emerald-600 animate-pulse" />
+                    Twilio 5G Gateway Active
+                    <span className="text-[9px] text-emerald-600 underline ml-0.5 font-normal">Configure</span>
+                  </button>
+                ) : (
+                  <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                    <Radio className="w-3 h-3 text-emerald-600 animate-pulse" />
+                    Twilio 5G Gateway Active
+                  </span>
+                )}
               </div>
               <p className="text-xs text-neutral-500 font-light">
                 Real-time interactive mobile preview of SMS text dispatches and digital touchpoints sent to Next of Kin.
