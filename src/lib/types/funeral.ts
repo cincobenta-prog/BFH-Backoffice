@@ -515,6 +515,7 @@ export type PartnerRequestStatus =
   | 'sms_sent'
   | 'reminder_1_sent'
   | 'reminder_2_sent'
+  | 'overdue_unconfirmed'
   | 'confirmed'
   | 'declined'
   | 'completed';
@@ -547,6 +548,20 @@ export interface PartnerScheduleRequest {
   vendorNotes?: string;
   adjustedArrivalTime?: string;
   declineReason?: string;
+  
+  // SLA & Director Follow-Up Escalation Fields
+  responseDeadline?: string; // e.g. "Today 2:00 PM" or "2026-09-18 14:00"
+  isOverdue?: boolean;
+  overdueMinutes?: number;
+  urgencyLevel?: 'normal' | 'urgent' | 'critical';
+  directorFollowUpRequired?: boolean;
+  directorFollowUpNotes?: string;
+  directorCalledAt?: string;
+  standbyBackupPartnerId?: string;
+  standbyBackupPartnerName?: string;
+  standbyBackupPartnerPhone?: string;
+  standbyBackupRoleTitle?: string;
+  escalationStatus?: 'normal' | 'overdue_director_alert' | 'escalated_to_director' | 'backup_cascaded' | 'director_phone_confirmed';
 }
 
 export interface VendorSmsThreadMessage {

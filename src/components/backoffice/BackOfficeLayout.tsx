@@ -4,7 +4,8 @@ import {
   GoldenRecordCase,
   BackOfficeTab,
   CasePhase,
-  DirectorProfile
+  DirectorProfile,
+  PartnerScheduleRequest
 } from '../../lib/types/funeral';
 import {
   DollarSign,
@@ -62,6 +63,7 @@ interface BackOfficeLayoutProps {
   currentDirectorId?: string;
   onChangeDirectorId?: (id: string) => void;
   directorProfiles?: DirectorProfile[];
+  partnerRequests?: PartnerScheduleRequest[];
 }
 
 export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
@@ -90,8 +92,13 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onOpenCheckPrinter,
   currentDirectorId,
   onChangeDirectorId,
-  directorProfiles
+  directorProfiles,
+  partnerRequests = []
 }) => {
+  const overduePartnerRequests = partnerRequests.filter(
+    r => r.status === 'overdue_unconfirmed' || r.isOverdue || (r.status !== 'confirmed' && r.status !== 'completed' && r.status !== 'declined' && r.directorFollowUpRequired)
+  );
+
   const roleBadges: Record<UserRole, { label: string; color: string; desc: string }> = {
     manager: {
       label: 'Managing Director & Administration',
@@ -120,13 +127,13 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
     }
   };
 
-  const navItems: Array<{ id: BackOfficeTab; label: string; icon: any }> = [
+  const navItems: Array<{ id: BackOfficeTab; label: string; icon: any; badgeCount?: number }> = [
     { id: 'dashboard', label: 'Director Active Cases', icon: LayoutDashboard },
     { id: 'manager', label: 'Director Scheduling & Roster', icon: UserCheck },
     { id: 'pipeline', label: '5-Phase Case Pipeline', icon: Layers },
     { id: 'golden_record', label: 'Golden Record Hub', icon: FileText },
     { id: 'calendar', label: 'Facility & Room Calendar', icon: Calendar },
-    { id: 'partners', label: 'Service Partners & SMS', icon: Users },
+    { id: 'partners', label: 'Service Partners & SMS', icon: Users, badgeCount: overduePartnerRequests.length },
     { id: 'documents', label: 'Document Delivery Matrix', icon: CheckCircle2 },
     { id: 'dispatch', label: 'Woodlawn & Logistics Dispatch', icon: Flame },
     { id: 'finances', label: 'ACH & Insurance Financing', icon: DollarSign },
@@ -616,6 +623,48 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
         </div>
       </div>
 
+      {/* TOP URGENT DIRECTOR ALERT: OVERDUE UNCONFIRMED VENDOR SMS */}
+      {overduePartnerRequests.length > 0 && (
+        <div className="bg-gradient-to-r from-red-700 via-[#991b1b] to-red-900 text-white px-4 sm:px-6 py-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-inner border-b border-red-500 animate-fadeIn">
+          <div className="flex items-center space-x-2.5">
+            <div className="p-1.5 bg-white/20 rounded-lg text-amber-300 shrink-0 border border-white/30 animate-pulse">
+              <Smartphone className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-xs uppercase tracking-wider text-amber-300">
+                  🚨 URGENT DIRECTOR ACTION REQUIRED: {overduePartnerRequests.length} Vendor SMS Confirmation{overduePartnerRequests.length > 1 ? 's' : ''} Overdue
+                </span>
+                <span className="bg-white/20 text-white text-[10px] font-mono font-bold px-2 py-0.2 rounded-full">
+                  SLA Expired
+                </span>
+              </div>
+              <p className="text-[11px] text-red-100 font-light mt-0.5 line-clamp-1">
+                {overduePartnerRequests.map(r => `${r.partnerName} (${r.roleTitle} - Case #${r.caseNumber})`).join(' • ')} — No response received past deadline. Standby backups ready.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2 shrink-0">
+            {onOpenTwoWaySmsModal && (
+              <button
+                onClick={() => onOpenTwoWaySmsModal(overduePartnerRequests[0]?.id)}
+                className="px-3 py-1 bg-amber-400 hover:bg-amber-300 text-neutral-950 font-bold rounded-lg text-xs transition shadow-sm flex items-center space-x-1"
+              >
+                <span>Follow-Up / Cascade Now</span>
+                <span>➔</span>
+              </button>
+            )}
+            <button
+              onClick={() => onChangeTab('partners')}
+              className="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg text-xs transition"
+            >
+              View Matrix
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Sub-Navigation Tabs */}
       <nav className="bg-white border-b border-neutral-200 px-4 sm:px-6 flex overflow-x-auto no-scrollbar">
         <div className="flex space-x-1 py-2">
@@ -626,13 +675,18 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               <button
                 key={item.id}
                 onClick={() => onChangeTab(item.id as any)}
-                className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition ${isActive
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition relative ${isActive
                     ? 'bg-red-50 text-[#991b1b] border border-red-200 shadow-sm'
                     : 'text-neutral-600 hover:text-[#991b1b] hover:bg-neutral-50'
                   }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#991b1b]' : 'text-neutral-400'}`} />
                 <span>{item.label}</span>
+                {item.badgeCount !== undefined && item.badgeCount > 0 && (
+                  <span className="px-1.5 py-0.2 bg-[#991b1b] text-white text-[10px] font-mono rounded-full font-extrabold animate-pulse">
+                    {item.badgeCount}
+                  </span>
+                )}
               </button>
             );
           })}

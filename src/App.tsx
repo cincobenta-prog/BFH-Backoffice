@@ -847,6 +847,7 @@ export function App() {
           currentDirectorId={currentDirectorId}
           onChangeDirectorId={setCurrentDirectorId}
           directorProfiles={directorProfiles}
+          partnerRequests={partnerRequests}
         />
 
         <main className="flex-1 overflow-y-auto">
@@ -866,6 +867,7 @@ export function App() {
               onOpenLiveryModal={() => setIsLiveryModalOpen(true)}
               onOpenWoodlawnModal={() => setIsWoodlawnDispatchOpen(true)}
               onOpenPartnerModal={() => setIsPartnerModalOpen(true)}
+              onOpenTwoWaySmsModal={handleOpenTwoWaySmsModal}
               onOpenRemovalModal={(targetCase) => {
                 setRemovalTargetCase(targetCase);
                 setIsRemovalModalOpen(true);
@@ -895,6 +897,7 @@ export function App() {
               onOverrideDirector={handleOverrideDirector}
               onOpenDocuSignModal={(targetCase) => handleOpenDocuSignModal(targetCase)}
               onOpenQuickBooksModal={(targetCase) => handleOpenQuickBooksModal(targetCase)}
+              partnerRequests={partnerRequests}
             />
           )}
 

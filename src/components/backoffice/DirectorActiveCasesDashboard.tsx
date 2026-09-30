@@ -4,7 +4,8 @@ import {
   CasePhase,
   DocumentItem,
   UserRole,
-  DirectorProfile
+  DirectorProfile,
+  PartnerScheduleRequest
 } from '../../lib/types/funeral';
 import { CaseProgressBar } from './CaseProgressBar';
 import {
@@ -19,7 +20,8 @@ import {
   ScrollText,
   UserCheck,
   User,
-  AlertCircle
+  AlertCircle,
+  Smartphone
 } from 'lucide-react';
 
 export interface DirectorActiveCasesDashboardProps {
@@ -31,6 +33,7 @@ export interface DirectorActiveCasesDashboardProps {
   onOpenLiveryModal?: () => void;
   onOpenWoodlawnModal?: () => void;
   onOpenPartnerModal?: () => void;
+  onOpenTwoWaySmsModal?: (requestId?: string) => void;
   onOpenWebcastModal?: (caseItem: GoldenRecordCase) => void;
   onOpenRemovalModal?: (caseItem: GoldenRecordCase) => void;
   onOpenContractModal?: (caseItem: GoldenRecordCase) => void;
@@ -48,6 +51,7 @@ export interface DirectorActiveCasesDashboardProps {
   onOverrideDirector?: (caseId: string, newDirectorId: string) => void;
   onOpenDocuSignModal?: (caseItem: GoldenRecordCase) => void;
   onOpenQuickBooksModal?: (caseItem: GoldenRecordCase) => void;
+  partnerRequests?: PartnerScheduleRequest[];
 }
 
 export type UrgencyLevel = 'critical' | 'warning' | 'ontrack' | 'administrative';
@@ -57,14 +61,15 @@ export interface CaseDueAlert {
   caseId: string;
   caseNumber: string;
   decedentName: string;
-  category: 'edrs_72h' | 'program_print' | 'legal_esign' | 'livery_lock' | 'webcast_tech' | 'hra_60d' | 'insurance_claim' | 'unclaimed_case';
+  category: 'edrs_72h' | 'program_print' | 'legal_esign' | 'livery_lock' | 'webcast_tech' | 'hra_60d' | 'insurance_claim' | 'unclaimed_case' | 'vendor_sms_overdue';
   categoryLabel: string;
   urgency: UrgencyLevel;
   title: string;
   description: string;
   dueTimeLabel: string;
   actionLabel: string;
-  actionType: 'call_dr' | 'open_esign' | 'open_livery' | 'open_webcast' | 'open_print' | 'open_golden_record' | 'claim_case';
+  actionType: 'call_dr' | 'open_esign' | 'open_livery' | 'open_webcast' | 'open_print' | 'open_golden_record' | 'claim_case' | 'open_partner_sms';
+  targetRequestId?: string;
 }
 
 export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboardProps> = ({
@@ -75,7 +80,8 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   onOpenESignModal: _onOpenESignModal,
   onOpenLiveryModal: _onOpenLiveryModal,
   onOpenWoodlawnModal: _onOpenWoodlawnModal,
-  onOpenPartnerModal: _onOpenPartnerModal,
+  onOpenPartnerModal,
+  onOpenTwoWaySmsModal,
   onOpenWebcastModal: _onOpenWebcastModal,
   onOpenRemovalModal: _onOpenRemovalModal,
   onOpenContractModal,
@@ -92,7 +98,8 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   onClaimCase,
   onOverrideDirector,
   onOpenDocuSignModal,
-  onOpenQuickBooksModal
+  onOpenQuickBooksModal,
+  partnerRequests = []
 }) => {
   // Scope Filter: 'my_cases' | 'unclaimed' | 'all'
   const [scopeFilter, setScopeFilter] = useState<'my_cases' | 'unclaimed' | 'all'>(
@@ -131,7 +138,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
     cases.forEach(c => {
       const caseAlerts: CaseDueAlert[] = [];
 
-      // Unclaimed Alert
+      // 1. Unclaimed Alert
       if (c.caseClaimStatus === 'unclaimed' || !c.assignedDirectorId) {
         caseAlerts.push({
           id: `alert-claim-${c.id}`,
@@ -149,7 +156,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
         });
       }
 
-      // NYC EDRS 72-Hour Statutory Clock
+      // 2. NYC EDRS 72-Hour Statutory Clock
       if (c.medicalCertifier.edrsStatus === 'pending') {
         if (c.id === 'case-003') {
           caseAlerts.push({
@@ -169,7 +176,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
         }
       }
 
-      // DocuSign Legal eSign Authorization
+      // 3. DocuSign Legal eSign Authorization
       if (c.docusignEnvelope?.status === 'sent' || c.docusignEnvelope?.status === 'not_sent') {
         if (c.currentPhase === 'legal_bundle') {
           caseAlerts.push({
@@ -189,11 +196,34 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
         }
       }
 
+      // 4. Vendor SMS Unconfirmed & SLA Overdue Alerts
+      const caseRequests = partnerRequests.filter(r => r.caseId === c.id);
+      caseRequests.forEach(req => {
+        const isOverdue = req.isOverdue || req.status === 'overdue_unconfirmed' || (req.status !== 'confirmed' && req.status !== 'completed' && req.status !== 'declined' && req.directorFollowUpRequired);
+        if (isOverdue) {
+          caseAlerts.push({
+            id: `alert-vendor-sms-${req.id}`,
+            caseId: c.id,
+            caseNumber: c.caseNumber,
+            decedentName: c.decedent.legalName,
+            category: 'vendor_sms_overdue',
+            categoryLabel: 'Vendor SMS SLA Overdue',
+            urgency: 'critical',
+            title: `🚨 Unconfirmed Partner: ${req.partnerName} (${req.roleTitle})`,
+            description: `SMS dispatched for ${req.roleTitle} (${req.serviceDate} ${req.callTime}). SLA response deadline (${req.responseDeadline || 'Expired'}) passed. Standby backup: ${req.standbyBackupPartnerName || 'Assigned in directory'}. Immediate director follow-up required.`,
+            dueTimeLabel: req.overdueMinutes ? `${req.overdueMinutes}m Overdue` : 'SLA Expired',
+            actionLabel: 'Follow-Up / Standby',
+            actionType: 'open_partner_sms',
+            targetRequestId: req.id
+          });
+        }
+      });
+
       alerts[c.id] = caseAlerts;
     });
 
     return alerts;
-  }, [cases]);
+  }, [cases, partnerRequests]);
 
   const allAlertsList = useMemo(() => {
     return Object.values(caseAlertsMap).flat();
@@ -262,6 +292,12 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
       onOpenDocuSignModal(targetCase);
     } else if (alert.actionType === 'call_dr') {
       showToast(`📞 Calling Dr. ${targetCase.medicalCertifier.physicianName} at ${targetCase.medicalCertifier.phone || '(212) 939-1000'}.`);
+    } else if (alert.actionType === 'open_partner_sms') {
+      if (onOpenTwoWaySmsModal) {
+        onOpenTwoWaySmsModal(alert.targetRequestId);
+      } else if (onOpenPartnerModal) {
+        onOpenPartnerModal();
+      }
     } else {
       onOpenGoldenRecord(targetCase.id);
     }
@@ -758,6 +794,48 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                         </div>
                       </div>
 
+                      {/* Vendor SMS Confirmation Status */}
+                      {(() => {
+                        const caseReqs = partnerRequests.filter(r => r.caseId === c.id);
+                        const hasOverdue = caseReqs.some(r => r.isOverdue || r.status === 'overdue_unconfirmed' || (r.status !== 'confirmed' && r.directorFollowUpRequired));
+                        const allConfirmed = caseReqs.length > 0 && caseReqs.every(r => r.status === 'confirmed');
+
+                        return (
+                          <div 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onOpenTwoWaySmsModal) {
+                                const overdueReq = caseReqs.find(r => r.isOverdue || r.status === 'overdue_unconfirmed');
+                                onOpenTwoWaySmsModal(overdueReq?.id || caseReqs[0]?.id);
+                              }
+                            }}
+                            className={`p-2.5 rounded-xl border cursor-pointer transition ${
+                              hasOverdue
+                                ? 'bg-red-50 border-red-300 hover:bg-red-100/80 animate-pulse'
+                                : allConfirmed
+                                ? 'bg-emerald-50 border-emerald-200 hover:bg-emerald-100/70'
+                                : 'bg-neutral-50 border-neutral-200 hover:bg-neutral-100'
+                            }`}
+                          >
+                            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block mb-0.5">
+                              Vendor SMS ({caseReqs.length})
+                            </span>
+                            <div className="flex items-center space-x-1 font-bold text-xs">
+                              <Smartphone className={`w-3.5 h-3.5 ${hasOverdue ? 'text-[#991b1b]' : allConfirmed ? 'text-emerald-600' : 'text-[#b45309]'}`} />
+                              <span className={hasOverdue ? 'text-[#991b1b]' : allConfirmed ? 'text-emerald-700' : 'text-[#b45309]'}>
+                                {hasOverdue
+                                  ? '🚨 SLA Overdue!'
+                                  : allConfirmed
+                                  ? '✓ All Confirmed'
+                                  : caseReqs.length > 0
+                                  ? `${caseReqs.filter(r => r.status !== 'confirmed').length} Awaiting YES`
+                                  : 'No Partners'}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
                       {/* Form AP-47 Statement Total */}
                       <div className="bg-neutral-50 p-2.5 rounded-xl border border-neutral-200">
                         <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block mb-0.5">
@@ -786,6 +864,28 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                         <FileText className="w-3.5 h-3.5" />
                         <span>Golden Record</span>
                       </button>
+
+                      {/* 2-Way Vendor SMS Studio Launcher */}
+                      {onOpenTwoWaySmsModal && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            const caseReqs = partnerRequests.filter(r => r.caseId === c.id);
+                            const targetReq = caseReqs.find(r => r.isOverdue || r.status === 'overdue_unconfirmed') || caseReqs[0];
+                            onOpenTwoWaySmsModal(targetReq?.id);
+                          }}
+                          className={`font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs ${
+                            partnerRequests.some(r => r.caseId === c.id && (r.isOverdue || r.status === 'overdue_unconfirmed'))
+                              ? 'bg-red-100 text-red-900 border border-red-300 font-bold animate-pulse'
+                              : 'bg-neutral-900 hover:bg-neutral-800 text-amber-300 border border-neutral-700'
+                          }`}
+                          title="Open Two-Way Service Partner SMS Dispatch & Carrier Confirmation Hub"
+                        >
+                          <Smartphone className="w-3.5 h-3.5" />
+                          <span>Vendor SMS</span>
+                        </button>
+                      )}
 
                       {/* DocuSign Modal Launcher */}
                       {onOpenDocuSignModal && (
@@ -877,6 +977,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                     <th className="px-4 py-3">Case / Decedent</th>
                     <th className="px-4 py-3">Lead Director</th>
                     <th className="px-4 py-3">Phase & Progress</th>
+                    <th className="px-4 py-3">Vendor SMS</th>
                     <th className="px-4 py-3">DocuSign</th>
                     <th className="px-4 py-3">QuickBooks</th>
                     <th className="px-4 py-3">Statement Total</th>
@@ -887,6 +988,9 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                   {filteredCases.map(c => {
                     const isUnclaimed = c.caseClaimStatus === 'unclaimed' || !c.assignedDirectorId;
                     const assignedDirObj = directorProfiles.find(d => d.id === c.assignedDirectorId);
+                    const caseReqs = partnerRequests.filter(r => r.caseId === c.id);
+                    const hasOverdue = caseReqs.some(r => r.isOverdue || r.status === 'overdue_unconfirmed' || (r.status !== 'confirmed' && r.directorFollowUpRequired));
+                    const allConfirmed = caseReqs.length > 0 && caseReqs.every(r => r.status === 'confirmed');
 
                     return (
                       <tr 
@@ -915,6 +1019,38 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                           <div className="w-36">
                             <CaseProgressBar caseItem={c} compact={true} />
                           </div>
+                        </td>
+
+                        <td className="px-4 py-3.5">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (onOpenTwoWaySmsModal) {
+                                const overdueReq = caseReqs.find(r => r.isOverdue || r.status === 'overdue_unconfirmed');
+                                onOpenTwoWaySmsModal(overdueReq?.id || caseReqs[0]?.id);
+                              }
+                            }}
+                            className={`px-2 py-0.5 rounded text-[11px] font-bold border transition flex items-center gap-1 ${
+                              hasOverdue
+                                ? 'bg-red-100 text-red-900 border-red-300 animate-pulse'
+                                : allConfirmed
+                                ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                                : caseReqs.length > 0
+                                ? 'bg-amber-100 text-amber-900 border-amber-300'
+                                : 'bg-neutral-100 text-neutral-600 border-neutral-200'
+                            }`}
+                          >
+                            <Smartphone className="w-3 h-3 shrink-0" />
+                            <span>
+                              {hasOverdue
+                                ? '🚨 Overdue'
+                                : allConfirmed
+                                ? '✓ Confirmed'
+                                : caseReqs.length > 0
+                                ? `${caseReqs.length} Sent`
+                                : 'None'}
+                            </span>
+                          </button>
                         </td>
 
                         <td className="px-4 py-3.5">
