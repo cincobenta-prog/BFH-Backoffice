@@ -28,7 +28,12 @@ import {
   PhoneCall,
   ShieldAlert,
   Compass,
-  BookOpen
+  BookOpen,
+  Cloud,
+  Bot,
+  Printer,
+  Video,
+  CreditCard
 } from 'lucide-react';
 
 export interface DirectorActiveCasesDashboardProps {
@@ -62,6 +67,10 @@ export interface DirectorActiveCasesDashboardProps {
   onOverrideDirector?: (caseId: string, newDirectorId: string) => void;
   onOpenDocuSignModal?: (caseItem: GoldenRecordCase) => void;
   onOpenQuickBooksModal?: (caseItem: GoldenRecordCase) => void;
+  onOpenCloudModal?: () => void;
+  onOpenAIModal?: () => void;
+  onOpenPressModal?: () => void;
+  onOpenStripeModal?: (caseItem: GoldenRecordCase) => void;
   partnerRequests?: PartnerScheduleRequest[];
 }
 
@@ -93,7 +102,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   onOpenWoodlawnModal: _onOpenWoodlawnModal,
   onOpenPartnerModal,
   onOpenTwoWaySmsModal,
-  onOpenWebcastModal: _onOpenWebcastModal,
+  onOpenWebcastModal,
   onOpenRemovalModal,
   onOpenContractModal,
   onOpenPrintAP47: _onOpenPrintAP47,
@@ -114,6 +123,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   onOverrideDirector,
   onOpenDocuSignModal,
   onOpenQuickBooksModal,
+  onOpenCloudModal,
+  onOpenAIModal,
+  onOpenPressModal,
+  onOpenStripeModal,
   partnerRequests = []
 }) => {
   // Scope Filter: 'my_cases' | 'unclaimed' | 'all'
@@ -442,28 +455,96 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
             </div>
           </div>
 
-          {/* Director / Manager Persona Switcher Dropdown */}
-          {onChangeDirectorId && directorProfiles.length > 0 && (
-            <div className="flex items-center space-x-2 bg-neutral-50 p-1.5 rounded-xl border border-neutral-200 text-xs">
-              <span className="text-neutral-500 font-semibold pl-1">Switch User:</span>
-              <select
-                value={currentDirectorId}
-                onChange={(e) => onChangeDirectorId(e.target.value)}
-                className="bg-white border border-neutral-300 text-neutral-900 font-bold rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#991b1b]"
+          <div className="flex items-center space-x-2">
+            {onOpenCloudModal && (
+              <button
+                onClick={onOpenCloudModal}
+                className="bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-300 rounded-xl text-xs font-bold px-3 py-1.5 transition flex items-center space-x-1.5 shadow-2xs cursor-pointer"
+                title="Open Cloud Database & S3 Storage Hub"
               >
-                <optgroup label="Managing Directors (Full Access & Overrides)">
-                  {directorProfiles.filter(d => d.roleType === 'manager').map(d => (
-                    <option key={d.id} value={d.id}>👑 {d.name} ({d.title})</option>
-                  ))}
-                </optgroup>
-                <optgroup label="Licensed Funeral Directors (Case Claiming)">
-                  {directorProfiles.filter(d => d.roleType === 'funeral_director').map(d => (
-                    <option key={d.id} value={d.id}>👤 {d.name} ({d.colorTheme.name})</option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
-          )}
+                <Cloud className="w-3.5 h-3.5 text-sky-700" />
+                <span>Cloud Hub</span>
+              </button>
+            )}
+
+            {onOpenAIModal && (
+              <button
+                onClick={onOpenAIModal}
+                className="bg-indigo-700 hover:bg-indigo-800 text-white border border-indigo-400/50 rounded-xl text-xs font-bold px-3 py-1.5 transition flex items-center space-x-1.5 shadow-md cursor-pointer"
+                title="Open 24/7 AI Family Care Concierge, 9-Part Obituary Generator & Whisper Audio Archive"
+              >
+                <Bot className="w-3.5 h-3.5 text-indigo-200 animate-pulse" />
+                <span>AI Concierge 🤖</span>
+              </button>
+            )}
+
+            {onOpenPressModal && (
+              <button
+                onClick={onOpenPressModal}
+                className="bg-amber-600 hover:bg-amber-700 text-white border border-amber-400/50 rounded-xl text-xs font-bold px-3 py-1.5 transition flex items-center space-x-1.5 shadow-md cursor-pointer"
+                title="Open Commercial Press Fulfillment & 300 DPI CMYK Engine"
+              >
+                <Printer className="w-3.5 h-3.5 text-amber-100" />
+                <span>Press Fulfillment 🖨️</span>
+              </button>
+            )}
+
+            {onOpenWebcastModal && (
+              <button
+                onClick={() => onOpenWebcastModal(activeCase || cases[0])}
+                className="bg-red-700 hover:bg-red-800 text-white border border-red-400/50 rounded-xl text-xs font-bold px-3 py-1.5 transition flex items-center space-x-1.5 shadow-md cursor-pointer animate-pulse"
+                title="Open Live 4K Webcast Hub & Multi-Cam Studio"
+              >
+                <Video className="w-3.5 h-3.5 text-red-100" />
+                <span>4K Webcast 🎥</span>
+              </button>
+            )}
+
+            {onOpenStripeModal && (
+              <button
+                onClick={() => onOpenStripeModal(activeCase || cases[0])}
+                className="bg-emerald-700 hover:bg-emerald-800 text-white border border-emerald-400/50 rounded-xl text-xs font-bold px-3 py-1.5 transition flex items-center space-x-1.5 shadow-md cursor-pointer"
+                title="Open Stripe Merchant POS Terminal & Split-Pay Gateway"
+              >
+                <CreditCard className="w-3.5 h-3.5 text-emerald-200" />
+                <span>Stripe POS 💳</span>
+              </button>
+            )}
+
+            {onOpenQuickBooksModal && (
+              <button
+                onClick={() => onOpenQuickBooksModal(activeCase || cases[0])}
+                className="bg-teal-700 hover:bg-teal-800 text-white border border-teal-400/50 rounded-xl text-xs font-bold px-3 py-1.5 transition flex items-center space-x-1.5 shadow-md cursor-pointer"
+                title="Open Intuit QuickBooks Online 2-Way Invoice Sync & General Ledger Reconciliation"
+              >
+                <DollarSign className="w-3.5 h-3.5 text-teal-200" />
+                <span>QuickBooks 📊</span>
+              </button>
+            )}
+
+            {/* Director / Manager Persona Switcher Dropdown */}
+            {onChangeDirectorId && directorProfiles.length > 0 && (
+              <div className="flex items-center space-x-2 bg-neutral-50 p-1.5 rounded-xl border border-neutral-200 text-xs">
+                <span className="text-neutral-500 font-semibold pl-1">Switch User:</span>
+                <select
+                  value={currentDirectorId}
+                  onChange={(e) => onChangeDirectorId(e.target.value)}
+                  className="bg-white border border-neutral-300 text-neutral-900 font-bold rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#991b1b]"
+                >
+                  <optgroup label="Managing Directors (Full Access & Overrides)">
+                    {directorProfiles.filter(d => d.roleType === 'manager').map(d => (
+                      <option key={d.id} value={d.id}>👑 {d.name} ({d.title})</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Licensed Funeral Directors (Case Claiming)">
+                    {directorProfiles.filter(d => d.roleType === 'funeral_director').map(d => (
+                      <option key={d.id} value={d.id}>👤 {d.name} ({d.colorTheme.name})</option>
+                    ))}
+                  </optgroup>
+                </select>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -1067,6 +1148,38 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                         >
                           <ScrollText className="w-3.5 h-3.5 text-emerald-700" />
                           <span>AP-47 Studio</span>
+                        </button>
+                      )}
+
+                      {/* 4K Webcasting & PIN Hub Launcher */}
+                      {onOpenWebcastModal && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenWebcastModal(c);
+                          }}
+                          className="bg-red-50 hover:bg-red-100 text-red-950 border border-red-300 font-bold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          title="Open Live 4K Webcast Hub & Multi-Cam Studio"
+                        >
+                          <Video className="w-3.5 h-3.5 text-red-600" />
+                          <span>4K Webcast</span>
+                        </button>
+                      )}
+
+                      {/* Stripe Merchant POS & Split-Pay Launcher */}
+                      {onOpenStripeModal && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectCase(c);
+                            onOpenStripeModal(c);
+                          }}
+                          className="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          title="Open Stripe POS Terminal & Process Payments"
+                        >
+                          <CreditCard className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Stripe Pay</span>
                         </button>
                       )}
                     </div>

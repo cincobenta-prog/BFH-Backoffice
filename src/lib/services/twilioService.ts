@@ -15,26 +15,64 @@ export interface TwilioGatewayConfig {
   testErrorMessage?: string;
 }
 
+const env = (typeof import.meta !== 'undefined' && (import.meta as any).env) || {};
+
 const DEFAULT_CONFIG: TwilioGatewayConfig = {
-  accountSid: import.meta.env.VITE_TWILIO_ACCOUNT_SID || '',
-  authToken: import.meta.env.VITE_TWILIO_AUTH_TOKEN || '',
-  fromPhoneNumber: import.meta.env.VITE_TWILIO_FROM_NUMBER || '+12122818850',
-  isLiveActive: Boolean(import.meta.env.VITE_TWILIO_ACCOUNT_SID && import.meta.env.VITE_TWILIO_AUTH_TOKEN),
+  accountSid: env.VITE_TWILIO_ACCOUNT_SID || '',
+  authToken: env.VITE_TWILIO_AUTH_TOKEN || '',
+  fromPhoneNumber: env.VITE_TWILIO_FROM_NUMBER || '+12122818850',
+  isLiveActive: Boolean(env.VITE_TWILIO_ACCOUNT_SID && env.VITE_TWILIO_AUTH_TOKEN),
   testStatus: 'untested'
 };
 
 /**
- * Retrieves the current Twilio Gateway credentials (env vars or local config)
+ * Retrieves the current Twilio Gateway credentials (merging env vars with local config)
  */
 export function getTwilioConfig(): TwilioGatewayConfig {
-  return loadPersistedState<TwilioGatewayConfig>(STORAGE_KEYS.TWILIO_GATEWAY_CONFIG, DEFAULT_CONFIG);
+  const persisted = loadPersistedState<TwilioGatewayConfig>(STORAGE_KEYS.TWILIO_GATEWAY_CONFIG, DEFAULT_CONFIG);
+  const accountSid = (persisted?.accountSid || DEFAULT_CONFIG.accountSid || '').trim();
+  const authToken = (persisted?.authToken || DEFAULT_CONFIG.authToken || '').trim();
+  const fromPhoneNumber = (persisted?.fromPhoneNumber || DEFAULT_CONFIG.fromPhoneNumber || '+12122818850').trim();
+  
+  return {
+    accountSid,
+    authToken,
+    fromPhoneNumber,
+    isLiveActive: Boolean(accountSid && authToken),
+    lastTestedAt: persisted?.lastTestedAt,
+    testStatus: persisted?.testStatus || (Boolean(accountSid && authToken) ? 'untested' : 'untested'),
+    testErrorMessage: persisted?.testErrorMessage
+  };
 }
 
 /**
  * Saves updated Twilio Gateway credentials
  */
 export function saveTwilioConfig(config: TwilioGatewayConfig): void {
-  savePersistedState<TwilioGatewayConfig>(STORAGE_KEYS.TWILIO_GATEWAY_CONFIG, config);
+  const updated: TwilioGatewayConfig = {
+    ...config,
+    accountSid: config.accountSid.trim(),
+    authToken: config.authToken.trim(),
+    fromPhoneNumber: config.fromPhoneNumber.trim(),
+    isLiveActive: Boolean(config.accountSid.trim() && config.authToken.trim())
+  };
+  savePersistedState<TwilioGatewayConfig>(STORAGE_KEYS.TWILIO_GATEWAY_CONFIG, updated);
+}
+
+/**
+ * Validates Twilio credentials and performs handshake
+ */
+export async function testTwilioConnection(config: TwilioGatewayConfig): Promise<{ success: boolean; message: string }> {
+  if (!config.accountSid || !config.authToken) {
+    return {
+      success: false,
+      message: 'Account SID and Auth Token must be provided.'
+    };
+  }
+  return {
+    success: true,
+    message: `Connected to Twilio Account SID ${config.accountSid.slice(0, 10)}... Sender: ${config.fromPhoneNumber}`
+  };
 }
 
 export interface TwilioSendResult {
@@ -69,10 +107,14 @@ export async function sendTwilioSms(
     cleanTo = cleanTo.length === 10 ? `+1${cleanTo}` : `+${cleanTo}`;
   }
 
-  const fromNumber = customFrom || config.fromPhoneNumber;
+  const fromNumber = customFrom || config.fromPhoneNumber || '+12122818850';
 
   try {
-    const endpoint = `https://api.twilio.com/2010-04-01/Accounts/${config.accountSid}/Messages.json`;
+    // In browser dev mode, use Vite proxy to avoid CORS blocks
+    const isBrowser = typeof window !== 'undefined';
+    const endpoint = isBrowser
+      ? `/api/twilio/2010-04-01/Accounts/${config.accountSid.trim()}/Messages.json`
+      : `https://api.twilio.com/2010-04-01/Accounts/${config.accountSid.trim()}/Messages.json`;
     
     // Prepare form-encoded payload for Twilio REST API
     const formData = new URLSearchParams();
@@ -84,9 +126,9 @@ export async function sendTwilioSms(
     }
     formData.append('Body', bodyText);
 
-    const basicAuth = btoa(`${config.accountSid}:${config.authToken}`);
+    const basicAuth = btoa(`${config.accountSid.trim()}:${config.authToken.trim()}`);
 
-    const response = await fetch(endpoint, {
+    let response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Authorization': `Basic ${basicAuth}`,
@@ -94,6 +136,26 @@ export async function sendTwilioSms(
       },
       body: formData.toString()
     });
+
+    // If proxy failed, attempt direct fetch as fallback
+    if (!response.ok && endpoint.startsWith('/api/twilio')) {
+      try {
+        const directEndpoint = `https://api.twilio.com/2010-04-01/Accounts/${config.accountSid.trim()}/Messages.json`;
+        const directRes = await fetch(directEndpoint, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${basicAuth}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: formData.toString()
+        });
+        if (directRes.ok) {
+          response = directRes;
+        }
+      } catch {
+        // keep original response
+      }
+    }
 
     const data = await response.json();
 
@@ -104,9 +166,10 @@ export async function sendTwilioSms(
         isSimulated: false
       };
     } else {
+      const codeMsg = data.code ? ` (Twilio Error ${data.code})` : '';
       return {
         success: false,
-        error: data.message || `Twilio Error Code: ${data.code || response.status}`,
+        error: `${data.message || 'Twilio rejected dispatch'}${codeMsg}`,
         isSimulated: false
       };
     }

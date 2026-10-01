@@ -22,17 +22,16 @@ import {
   Check,
   CalendarCheck,
   UserCheck,
-  AlertCircle,
-  HandCoins,
-  Compass
+  AlertCircle
 } from 'lucide-react';
 
 interface FamilyPortalOverviewHomeProps {
   activeCase: GoldenRecordCase;
-  onNavigateTab: (tab: 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay' | 'itinerary') => void;
+  onNavigateTab: (tab: 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status') => void;
   onOpenESignModal?: () => void;
   onUpdateCase?: (updatedCase: GoldenRecordCase) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
+  onOpenGuidedTour?: () => void;
 }
 
 export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> = ({
@@ -40,7 +39,8 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
   onNavigateTab,
   onOpenESignModal: _onOpenESignModal,
   onUpdateCase,
-  onSendNotification
+  onSendNotification,
+  onOpenGuidedTour
 }) => {
   const [selectedSlotIndex, setSelectedSlotIndex] = useState<number | null>(0);
   const [attendeesCount, setAttendeesCount] = useState<number>(activeCase.arrangementAppointment?.attendingFamilyCount || 2);
@@ -204,20 +204,20 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
     {
       id: 'tribute' as const,
       tab: 'tribute' as const,
-      title: 'Digi-Tribute 2.0 • Living Memorial & Keepsake Volume',
-      subtitle: '78-Question Dynamic Bank, AI Poetic Stanzas & Keepsake Booklet',
+      title: '360° Living Digital Tribute & Voice Archive',
+      subtitle: 'Living Memories & Voice Keepsakes',
       icon: Headphones,
-      iconBg: 'bg-amber-100 text-[#b45309]',
-      borderHover: 'hover:border-amber-400',
-      badge: 'Digi-Tribute 2.0 & Keepsake Volume',
-      badgeColor: 'bg-amber-50 text-[#b45309] border-amber-200',
-      description: 'Gather living acoustic voice memories, video tributes, and reflections from family and friends worldwide. Bound into a luxury Coffee Table Keepsake Volume with scan-to-stream QR audio codes.',
+      iconBg: 'bg-rose-100 text-[#991b1b]',
+      borderHover: 'hover:border-red-400',
+      badge: 'Living Voice Keepsakes',
+      badgeColor: 'bg-red-50 text-[#991b1b] border-red-200',
+      description: 'Collect living voice memories from relatives, church elders, and lifelong friends worldwide. Listen to heartfelt recordings in an interactive audio waveform player.',
       highlights: [
-        '78 curated relationship prompts across 4 narrative pillars',
-        'Multi-format audio waveform, video & photo memory collection',
-        'High-res Coffee Table Keepsake Book compiler with scan-to-stream QR codes'
+        'Voice prompt cards for childhood, church & family reflections',
+        '1-Click SMS & Email invitation sender for friends',
+        'Print-ready 4-up memorial QR cards for wake easels'
       ],
-      buttonText: 'Open Digi-Tribute Studio',
+      buttonText: 'Listen & Record Memories',
       buttonColor: 'bg-[#991b1b] text-white hover:bg-red-800'
     },
     {
@@ -333,44 +333,6 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
       ],
       buttonText: 'Track Care & Livery Status',
       buttonColor: 'bg-[#991b1b] text-white hover:bg-red-800'
-    },
-    {
-      id: 'split_pay' as const,
-      tab: 'split_pay' as const,
-      title: 'Family Split-Pay & Contribution Hub',
-      subtitle: 'Transparent Multi-Payer & Love Gifts Pool',
-      icon: HandCoins,
-      iconBg: 'bg-emerald-100 text-emerald-800',
-      borderHover: 'hover:border-emerald-400',
-      badge: '0% Markup Pass-Through Guarantee',
-      badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-      description: 'Coordinate sibling shares, sponsor Section II pass-through cash advances (Cemetery, Clergy, Organist), or invite community friends to send love gifts with real-time balance deductions.',
-      highlights: [
-        '1-Click Equal Sibling Split Calculator (2, 3, 4 ways)',
-        'Private SMS & Email Payment Links with Apple Pay / Card / ACH',
-        'Official NYS Form AP-47 digital payment receipts'
-      ],
-      buttonText: 'Open Split-Pay Hub',
-      buttonColor: 'bg-emerald-800 text-white hover:bg-emerald-900'
-    },
-    {
-      id: 'itinerary' as const,
-      tab: 'itinerary' as const,
-      title: 'Day-of-Service Mobile VIP Itinerary',
-      subtitle: 'Pocket VIP Concierge & Digital Escort',
-      icon: Compass,
-      iconBg: 'bg-amber-100 text-amber-800',
-      borderHover: 'hover:border-amber-400',
-      badge: 'Live Service Timeline',
-      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
-      description: 'Follow every step of the funeral morning in real time. 1-tap Google/Apple Maps GPS directions, limousine pickup arrival alerts, cortege motorcade safety rules, and direct director calling.',
-      highlights: [
-        'Cadillac Limousine pickup ETA & chauffeur hotline',
-        '1-Tap turn-by-turn GPS to chapel, church & cemetery section',
-        '1-Click SMS sharing for family group chats'
-      ],
-      buttonText: 'Open VIP Itinerary',
-      buttonColor: 'bg-[#991b1b] text-white hover:bg-red-800'
     }
   ];
 
@@ -442,6 +404,24 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
               <div className="text-[10px] text-neutral-300">Jason Benta, LFD</div>
             </div>
           </div>
+
+          {/* Interactive Tutorial Launcher Banner */}
+          {onOpenGuidedTour && (
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <button
+                onClick={onOpenGuidedTour}
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-lg transition transform hover:scale-[1.02] cursor-pointer"
+                title="Start the 6-step interactive family portal guide"
+              >
+                <Sparkles className="w-4 h-4 text-neutral-950 animate-pulse" />
+                <span>Start Interactive Family Guide (6 Comfort Steps)</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <span className="text-[11px] text-amber-200/90 italic">
+                💡 Guided walkthrough of your obituary suite, floral gifts, live webcast & legal vault
+              </span>
+            </div>
+          )}
 
         </div>
       </div>

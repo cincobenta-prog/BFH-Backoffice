@@ -3,9 +3,7 @@ import {
   UserRole,
   GoldenRecordCase,
   BackOfficeTab,
-  CasePhase,
-  DirectorProfile,
-  PartnerScheduleRequest
+  CasePhase
 } from '../../lib/types/funeral';
 import {
   DollarSign,
@@ -32,12 +30,14 @@ import {
   UserCheck,
   Lock,
   Printer,
-  Landmark,
-  PhoneCall,
-  ShieldAlert,
-  FileCheck2,
-  Compass,
-  BookOpen
+  Radio,
+  ShieldCheck,
+  Cloud,
+  Bot,
+  Video,
+  CreditCard,
+  Receipt,
+  Zap
 } from 'lucide-react';
 
 interface BackOfficeLayoutProps {
@@ -50,7 +50,6 @@ interface BackOfficeLayoutProps {
   onChangeTab: (tab: BackOfficeTab) => void;
   onExitBackOffice: () => void;
   onOpenNewCase: () => void;
-  onOpenFirstCallIntake?: () => void;
   onOpenNotifications?: () => void;
   notificationCount?: number;
   onOpenLiveryModal?: () => void;
@@ -60,19 +59,30 @@ interface BackOfficeLayoutProps {
   onOpenRemovalModal?: () => void;
   onOpenContractModal?: () => void;
   onOpenPrintAP47?: () => void;
+  onAdvancePhase?: (caseId: string, nextPhase: CasePhase) => void;
+  onOpenTwoWaySmsModal?: (requestId?: string) => void;
+  onOpenTwilioGatewayModal?: () => void;
+  onOpenDocuSignModal?: () => void;
+  onOpenCloudModal?: () => void;
+  onOpenAIModal?: () => void;
+  onOpenPressModal?: () => void;
+  onOpenWebcastModal?: () => void;
+  onOpenStripeModal?: () => void;
+  onOpenQuickBooks?: () => void;
+  onOpenQuickBooksModal?: () => void;
+  onOpenIntegrationsCenter?: () => void;
+  onOpenSimulationModal?: () => void;
+  onOpenFirstCallIntake?: () => void;
   onOpenDiscrepancyGuardrail?: () => void;
   onOpenDirectorDayOfServiceHUD?: () => void;
   onOpenFamilyProofApproval?: () => void;
-  onAdvancePhase?: (caseId: string, nextPhase: CasePhase) => void;
-  onOpenTwoWaySmsModal?: (requestId?: string) => void;
-  onOpenDocuSignModal?: () => void;
-  onOpenQuickBooksModal?: () => void;
   onOpenCheckPrinter?: () => void;
-  onOpenTwilioGatewayModal?: () => void;
+  onOpenGuidedTour?: () => void;
+  onLockManagerSuite?: () => void;
   currentDirectorId?: string;
   onChangeDirectorId?: (id: string) => void;
-  directorProfiles?: DirectorProfile[];
-  partnerRequests?: PartnerScheduleRequest[];
+  directorProfiles?: any[];
+  partnerRequests?: any[];
 }
 
 export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
@@ -84,8 +94,8 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   activeTab,
   onChangeTab,
   onExitBackOffice,
+  onLockManagerSuite,
   onOpenNewCase,
-  onOpenFirstCallIntake,
   onOpenNotifications,
   notificationCount = 5,
   onOpenLiveryModal,
@@ -95,24 +105,25 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
   onOpenRemovalModal,
   onOpenContractModal,
   onOpenPrintAP47,
-  onOpenDiscrepancyGuardrail,
-  onOpenDirectorDayOfServiceHUD,
-  onOpenFamilyProofApproval,
   onAdvancePhase,
   onOpenTwoWaySmsModal,
-  onOpenDocuSignModal,
-  onOpenQuickBooksModal,
-  onOpenCheckPrinter,
   onOpenTwilioGatewayModal,
-  currentDirectorId,
-  onChangeDirectorId,
-  directorProfiles,
-  partnerRequests = []
+  onOpenDocuSignModal,
+  onOpenCloudModal,
+  onOpenAIModal,
+  onOpenPressModal,
+  onOpenWebcastModal,
+  onOpenStripeModal,
+  onOpenQuickBooks,
+  onOpenIntegrationsCenter,
+  onOpenSimulationModal,
+  onOpenFirstCallIntake: _onOpenFirstCallIntake,
+  onOpenDiscrepancyGuardrail: _onOpenDiscrepancyGuardrail,
+  onOpenDirectorDayOfServiceHUD: _onOpenDirectorDayOfServiceHUD,
+  onOpenFamilyProofApproval: _onOpenFamilyProofApproval,
+  onOpenCheckPrinter: _onOpenCheckPrinter,
+  onOpenGuidedTour
 }) => {
-  const overduePartnerRequests = partnerRequests.filter(
-    r => r.status === 'overdue_unconfirmed' || r.isOverdue || (r.status !== 'confirmed' && r.status !== 'completed' && r.status !== 'declined' && r.directorFollowUpRequired)
-  );
-
   const roleBadges: Record<UserRole, { label: string; color: string; desc: string }> = {
     manager: {
       label: 'Managing Director & Administration',
@@ -141,13 +152,13 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
     }
   };
 
-  const navItems: Array<{ id: BackOfficeTab; label: string; icon: any; badgeCount?: number }> = [
+  const navItems: Array<{ id: BackOfficeTab; label: string; icon: any }> = [
     { id: 'dashboard', label: 'Director Active Cases', icon: LayoutDashboard },
     { id: 'manager', label: 'Director Scheduling & Roster', icon: UserCheck },
     { id: 'pipeline', label: '5-Phase Case Pipeline', icon: Layers },
     { id: 'golden_record', label: 'Golden Record Hub', icon: FileText },
     { id: 'calendar', label: 'Facility & Room Calendar', icon: Calendar },
-    { id: 'partners', label: 'Service Partners & SMS', icon: Users, badgeCount: overduePartnerRequests.length },
+    { id: 'partners', label: 'Service Partners & SMS', icon: Users },
     { id: 'documents', label: 'Document Delivery Matrix', icon: CheckCircle2 },
     { id: 'dispatch', label: 'Woodlawn & Logistics Dispatch', icon: Flame },
     { id: 'finances', label: 'ACH & Insurance Financing', icon: DollarSign },
@@ -220,17 +231,6 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               ))}
             </select>
 
-            {onOpenFirstCallIntake && (
-              <button
-                onClick={onOpenFirstCallIntake}
-                className="bg-gradient-to-r from-amber-600 via-amber-700 to-[#991b1b] hover:brightness-110 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-amber-400/50"
-                title="Capture First Call Intake (Unexpected Death Removal or Advance Arrangement Conference)"
-              >
-                <PhoneCall className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
-                <span>+ First Call / Intake</span>
-              </button>
-            )}
-
             <button
               onClick={onOpenNewCase}
               className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1 transition shadow-sm border border-amber-400/40"
@@ -260,46 +260,107 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
                 <span className="hidden md:inline">AP-47 Contract</span>
               </button>
             )}
+
+            {/* Top Primary AI Concierge & Whisper Launcher */}
+            {onOpenAIModal && (
+              <button
+                onClick={onOpenAIModal}
+                className="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-indigo-400/50 cursor-pointer"
+                title="Open 24/7 AI Family Care Concierge, 9-Part Obituary Generator & Whisper Audio Archive"
+              >
+                <Bot className="w-3.5 h-3.5 text-indigo-200 animate-pulse" />
+                <span>AI Concierge 🤖</span>
+              </button>
+            )}
+
+            {/* Commercial Press Fulfillment & 300 DPI CMYK Launcher */}
+            {onOpenPressModal && (
+              <button
+                onClick={onOpenPressModal}
+                className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-amber-400/50 cursor-pointer"
+                title="Open Commercial Press Fulfillment, 300 DPI CMYK Programs & Hardcover Books"
+              >
+                <Printer className="w-3.5 h-3.5 text-amber-100" />
+                <span>Press Dispatch 🖨️</span>
+              </button>
+            )}
+
+            {/* Live 4K Webcasting & PTZ Multi-Cam Studio Launcher */}
+            {onOpenWebcastModal && (
+              <button
+                onClick={onOpenWebcastModal}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-red-400/50 cursor-pointer animate-pulse"
+                title="Open Live 4K Webcasting, Multi-Camera PTZ Switcher, Security PIN & Vimeo Gateway"
+              >
+                <Video className="w-3.5 h-3.5 text-red-100" />
+                <span>Live 4K Webcast 🎥</span>
+              </button>
+            )}
+
+            {/* Stripe Merchant POS Terminal & Split-Pay Launcher */}
+            {onOpenStripeModal && (
+              <button
+                onClick={onOpenStripeModal}
+                className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-emerald-400/50 cursor-pointer"
+                title="Open Stripe Merchant Terminal, Apple/Google Pay, Plaid ACH & Split-Pay Crowdfunding Hub"
+              >
+                <CreditCard className="w-3.5 h-3.5 text-emerald-200" />
+                <span>Stripe POS 💳</span>
+              </button>
+            )}
+
+            {/* Intuit QuickBooks Online Invoicing & GL Sync Launcher */}
+            {onOpenQuickBooks && (
+              <button
+                onClick={onOpenQuickBooks}
+                className="bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-teal-400/50 cursor-pointer"
+                title="Open Intuit QuickBooks Online 2-Way Invoice Sync & General Ledger Reconciliation"
+              >
+                <Receipt className="w-3.5 h-3.5 text-teal-200" />
+                <span>QuickBooks 📊</span>
+              </button>
+            )}
+
+            {/* Unified Enterprise Integrations Command Center Hub */}
+            {onOpenIntegrationsCenter && (
+              <button
+                onClick={onOpenIntegrationsCenter}
+                className="bg-gradient-to-r from-amber-700 via-red-900 to-neutral-900 hover:opacity-95 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-md border border-amber-400/60 cursor-pointer"
+                title="Open Unified Enterprise Integrations Command Center & API Gateway Hub"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+                <span>Integrations Hub ⚡</span>
+                <span className="bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 px-1 py-0.2 rounded text-[9px] font-mono font-bold">9/9 LIVE</span>
+              </button>
+            )}
+
+            {/* End-to-End Case Lifecycle Simulation Runner */}
+            {onOpenSimulationModal && (
+              <button
+                onClick={onOpenSimulationModal}
+                className="bg-gradient-to-r from-indigo-800 to-purple-900 hover:opacity-95 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-md border border-purple-400/50 cursor-pointer"
+                title="Run 1-Click Interactive End-to-End Case Lifecycle Simulation Across All 5 Phases"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-spin" />
+                <span>Case Simulation 🚀</span>
+              </button>
+            )}
+
+            {/* Interactive Guided Tour & Spotlight Tutorial Launcher */}
+            {onOpenGuidedTour && (
+              <button
+                onClick={onOpenGuidedTour}
+                className="bg-gradient-to-r from-amber-600 via-amber-700 to-amber-900 hover:opacity-95 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-md border border-amber-300/60 cursor-pointer animate-pulse"
+                title="Open Interactive Step-by-Step Guided Tour for Staff & Families"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+                <span>Guided Tour 🎓</span>
+              </button>
+            )}
           </div>
 
           {/* RBAC Role Switcher & Family SMS Dispatch Launcher */}
-          <div className="flex items-center space-x-2">
-
-            {/* 1. Multi-Document Discrepancy Guardrail Quick Action */}
-            {onOpenDiscrepancyGuardrail && (
-              <button
-                onClick={onOpenDiscrepancyGuardrail}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-950/10 hover:bg-red-950/20 text-[#991b1b] border border-red-300 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Open Zero-Slippage Discrepancy Guardrail & NYS PHL § 4201 Compliance Hub"
-              >
-                <ShieldAlert className="w-3.5 h-3.5 text-[#991b1b] group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">Discrepancy Guard</span>
-              </button>
-            )}
-
-            {/* 2. Mobile Day-of-Service Director Pocket HUD Quick Action */}
-            {onOpenDirectorDayOfServiceHUD && (
-              <button
-                onClick={onOpenDirectorDayOfServiceHUD}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-500/15 hover:bg-amber-500/25 text-amber-950 border border-amber-400/80 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Open Mobile Day-of-Service Director Pocket HUD & 1-Click SMS Cortege Dispatch"
-              >
-                <Compass className="w-3.5 h-3.5 text-amber-700 group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">Director HUD</span>
-              </button>
-            )}
-
-            {/* 3. Family Proof Approval & Press Lock Quick Action */}
-            {onOpenFamilyProofApproval && (
-              <button
-                onClick={onOpenFamilyProofApproval}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Open Family Proof Approval & Commercial Press Lock Hub"
-              >
-                <BookOpen className="w-3.5 h-3.5 text-purple-700 group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">Proof Lock</span>
-              </button>
-            )}
+          <div className="flex items-center space-x-2.5">
 
             {/* Livery Hold Modal Launcher */}
             <button
@@ -323,42 +384,6 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               </button>
             )}
 
-            {/* Twilio Telecom Gateway Settings */}
-            {onOpenTwilioGatewayModal && (
-              <button
-                onClick={onOpenTwilioGatewayModal}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-emerald-400 border border-emerald-500/40 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Configure Live Twilio Account SID, Auth Token & Phone Number"
-              >
-                <Smartphone className="w-3.5 h-3.5 text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">Twilio Gateway</span>
-              </button>
-            )}
-
-            {/* DocuSign Legal eSign Modal Launcher */}
-            {onOpenDocuSignModal && (
-              <button
-                onClick={onOpenDocuSignModal}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#21409a]/10 hover:bg-[#21409a]/20 text-[#21409a] border border-[#21409a]/30 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Open DocuSign NYS ESRA Legal E-Signature Hub"
-              >
-                <FileCheck2 className="w-3.5 h-3.5 text-[#21409a] group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">DocuSign Hub</span>
-              </button>
-            )}
-
-            {/* QuickBooks Online Sync Modal Launcher */}
-            {onOpenQuickBooksModal && (
-              <button
-                onClick={onOpenQuickBooksModal}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-[#2ca01c]/10 hover:bg-[#2ca01c]/20 text-[#2ca01c] border border-[#2ca01c]/30 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Open QuickBooks Online Accounting & Invoicing Integration"
-              >
-                <Landmark className="w-3.5 h-3.5 text-[#2ca01c] group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">QuickBooks Sync</span>
-              </button>
-            )}
-
             {/* Print Form AP-47 Quick Action */}
             {onOpenPrintAP47 && (
               <button
@@ -371,22 +396,10 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               </button>
             )}
 
-            {/* Pass-Through Checks Quick Action */}
-            {onOpenCheckPrinter && (
-              <button
-                onClick={onOpenCheckPrinter}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold transition shadow-2xs group"
-                title="Print 3-Part Pass-Through Cash Advance Checks (10 NYCRR § 77.8)"
-              >
-                <Printer className="w-3.5 h-3.5 text-amber-700 group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline">Pass-Through Checks</span>
-              </button>
-            )}
-
             {/* Live Family SMS Simulator Quick Button */}
             <button
               onClick={onOpenNotifications}
-              className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-[#991b1b] border border-red-300/80 rounded-xl text-xs font-bold transition shadow-2xs group"
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-[#991b1b] border border-red-300/80 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
               title="Open Live Family SMS & Alert Dispatch Hub"
             >
               <Smartphone className="w-3.5 h-3.5 text-[#991b1b] group-hover:scale-110 transition-transform" />
@@ -397,6 +410,103 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
                 </span>
               )}
             </button>
+
+            {/* Twilio Telecom Gateway Settings */}
+            {onOpenTwilioGatewayModal && (
+              <button
+                onClick={onOpenTwilioGatewayModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Configure Twilio API Keys, Sender Phone Number, and Live Gateway"
+              >
+                <Radio className="w-3.5 h-3.5 text-emerald-600 animate-pulse" />
+                <span className="hidden sm:inline">Twilio Gateway ⚙️</span>
+              </button>
+            )}
+
+            {/* DocuSign Legal eSign & NYS ESRA Hub */}
+            {onOpenDocuSignModal && (
+              <button
+                onClick={onOpenDocuSignModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Open DocuSign Legal Signature Hub & NYS ESRA Compliance"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
+                <span className="hidden sm:inline">DocuSign Hub 📜</span>
+              </button>
+            )}
+
+            {/* Cloud Database, S3 Storage & Multi-Device Real-Time Sync */}
+            {onOpenCloudModal && (
+              <button
+                onClick={onOpenCloudModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-950 border border-sky-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Open Multi-Device Cloud Sync, PostgreSQL Cluster & S3 Object Storage Hub"
+              >
+                <Cloud className="w-3.5 h-3.5 text-sky-700" />
+                <span className="hidden sm:inline">Cloud Sync ☁️</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              </button>
+            )}
+
+            {/* AI Family Care Concierge & Whisper Audio Hub */}
+            {onOpenAIModal && (
+              <button
+                onClick={onOpenAIModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-indigo-700 hover:bg-indigo-800 text-white border border-indigo-400/50 rounded-xl text-xs font-bold transition shadow-md group cursor-pointer"
+                title="Open 24/7 AI Family Care Concierge, 9-Part Obituary Generator & Whisper Audio Archive"
+              >
+                <Bot className="w-3.5 h-3.5 text-indigo-200 animate-pulse" />
+                <span>AI Concierge 🤖</span>
+              </button>
+            )}
+
+            {/* Commercial Press Fulfillment & SFTP Drop */}
+            {onOpenPressModal && (
+              <button
+                onClick={onOpenPressModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Open Commercial Press Fulfillment, 300 DPI CMYK Programs & Hardcover Books"
+              >
+                <Printer className="w-3.5 h-3.5 text-amber-700" />
+                <span className="hidden sm:inline">Press Fulfillment 🖨️</span>
+              </button>
+            )}
+
+            {/* Live 4K Webcasting & PIN Guard */}
+            {onOpenWebcastModal && (
+              <button
+                onClick={onOpenWebcastModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-950 border border-red-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Open Live 4K Webcasting, Multi-Cam PTZ Switcher, Security PIN & Vimeo Gateway"
+              >
+                <Video className="w-3.5 h-3.5 text-red-600 animate-pulse" />
+                <span className="hidden sm:inline">4K Webcast 🎥</span>
+              </button>
+            )}
+
+            {/* Stripe Merchant POS & Split-Pay Terminal */}
+            {onOpenStripeModal && (
+              <button
+                onClick={onOpenStripeModal}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Open Stripe Merchant Terminal, Apple Pay, Plaid ACH & Split-Pay Crowdfunding Hub"
+              >
+                <CreditCard className="w-3.5 h-3.5 text-emerald-700" />
+                <span className="hidden sm:inline">Stripe POS 💳</span>
+              </button>
+            )}
+
+            {/* Intuit QuickBooks Online 2-Way Invoice Sync */}
+            {onOpenQuickBooks && (
+              <button
+                onClick={onOpenQuickBooks}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-300 rounded-xl text-xs font-bold transition shadow-2xs group cursor-pointer"
+                title="Open Intuit QuickBooks Online 2-Way Invoice Sync & General Ledger Reconciliation"
+              >
+                <Receipt className="w-3.5 h-3.5 text-teal-700" />
+                <span className="hidden sm:inline">QuickBooks 📊</span>
+              </button>
+            )}
 
             <div className="flex items-center space-x-1 bg-neutral-100 p-1 rounded-lg border border-neutral-200">
               {(['manager', 'director', 'staff', 'accounting', 'family'] as UserRole[]).map((r) => (
@@ -441,38 +551,36 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
           <span className="text-neutral-600 text-[11px] hidden md:inline font-light">
             — {roleBadges[currentRole].desc}
           </span>
+          {currentRole === 'manager' && onLockManagerSuite && (
+            <button
+              onClick={onLockManagerSuite}
+              className="ml-2 px-2 py-0.5 bg-amber-100 hover:bg-amber-200 text-[#991b1b] border border-amber-300 rounded-md text-[10px] font-bold flex items-center gap-1 transition cursor-pointer shadow-2xs"
+              title="Lock Manager Suite and revoke signed session token"
+            >
+              <Lock className="w-2.5 h-2.5 text-[#991b1b]" />
+              <span>Lock Suite</span>
+            </button>
+          )}
         </div>
 
-        {/* Live Director Persona & Golden Record Status */}
-        <div className="flex flex-wrap items-center space-x-3 text-[11px] text-neutral-600 font-medium">
-          {directorProfiles && onChangeDirectorId && (
-            <div className="flex items-center space-x-1.5 bg-white px-2.5 py-1 rounded-lg border border-neutral-300 shadow-2xs">
-              <span className="text-neutral-500 font-semibold">Active Director:</span>
-              <select
-                value={currentDirectorId || 'dir-fd-1'}
-                onChange={(e) => onChangeDirectorId(e.target.value)}
-                className="bg-transparent font-bold text-neutral-900 text-xs outline-none cursor-pointer"
-              >
-                <optgroup label="Licensed Funeral Directors (Case Claiming)">
-                  {directorProfiles.filter(d => d.roleType === 'funeral_director').map((d) => (
-                    <option key={d.id} value={d.id}>
-                      👔 {d.name} ({d.activeCasesCount || 0} cases)
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="Executive Managers (Override Authority)">
-                  {directorProfiles.filter(d => d.roleType === 'manager').map((d) => (
-                    <option key={d.id} value={d.id}>
-                      👑 [Manager] {d.name}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
-            </div>
+        {/* Live Golden Record Architecture Status */}
+        <div className="flex items-center space-x-4 text-[11px] text-neutral-600 font-medium">
+          {onOpenIntegrationsCenter && (
+            <button
+              onClick={onOpenIntegrationsCenter}
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 text-[10px] font-bold transition cursor-pointer shadow-2xs"
+              title="Open Unified Integrations Command Center"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse inline-block" />
+              <span>Gateways: <strong className="text-emerald-900 font-extrabold">9/9 Live</strong></span>
+            </button>
           )}
-
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+            Zero Transcription Engine: <strong className="text-neutral-900 font-bold">Active</strong>
+          </span>
           <span className="hidden sm:inline text-neutral-300">|</span>
-          <span className="hidden md:inline">
+          <span className="hidden sm:inline">
             Director in Charge: <strong className="text-neutral-900">{activeCase.assignedDirector}</strong>
           </span>
         </div>
@@ -696,50 +804,8 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
         </div>
       </div>
 
-      {/* TOP URGENT DIRECTOR ALERT: OVERDUE UNCONFIRMED VENDOR SMS */}
-      {overduePartnerRequests.length > 0 && (
-        <div className="bg-gradient-to-r from-red-700 via-[#991b1b] to-red-900 text-white px-4 sm:px-6 py-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-inner border-b border-red-500 animate-fadeIn">
-          <div className="flex items-center space-x-2.5">
-            <div className="p-1.5 bg-white/20 rounded-lg text-amber-300 shrink-0 border border-white/30 animate-pulse">
-              <Smartphone className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-xs uppercase tracking-wider text-amber-300">
-                  🚨 URGENT DIRECTOR ACTION REQUIRED: {overduePartnerRequests.length} Vendor SMS Confirmation{overduePartnerRequests.length > 1 ? 's' : ''} Overdue
-                </span>
-                <span className="bg-white/20 text-white text-[10px] font-mono font-bold px-2 py-0.2 rounded-full">
-                  SLA Expired
-                </span>
-              </div>
-              <p className="text-[11px] text-red-100 font-light mt-0.5 line-clamp-1">
-                {overduePartnerRequests.map(r => `${r.partnerName} (${r.roleTitle} - Case #${r.caseNumber})`).join(' • ')} — No response received past deadline. Standby backups ready.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2 shrink-0">
-            {onOpenTwoWaySmsModal && (
-              <button
-                onClick={() => onOpenTwoWaySmsModal(overduePartnerRequests[0]?.id)}
-                className="px-3 py-1 bg-amber-400 hover:bg-amber-300 text-neutral-950 font-bold rounded-lg text-xs transition shadow-sm flex items-center space-x-1"
-              >
-                <span>Follow-Up / Cascade Now</span>
-                <span>➔</span>
-              </button>
-            )}
-            <button
-              onClick={() => onChangeTab('partners')}
-              className="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg text-xs transition"
-            >
-              View Matrix
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Sub-Navigation Tabs */}
-      <nav className="bg-white border-b border-neutral-200 px-4 sm:px-6 flex overflow-x-auto no-scrollbar">
+      <nav className="bg-white border-b border-neutral-200 px-4 sm:px-6 flex items-center justify-between overflow-x-auto no-scrollbar">
         <div className="flex space-x-1 py-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -748,22 +814,39 @@ export const BackOfficeLayout: React.FC<BackOfficeLayoutProps> = ({
               <button
                 key={item.id}
                 onClick={() => onChangeTab(item.id as any)}
-                className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition relative ${isActive
+                className={`flex items-center space-x-2 px-3.5 py-2 rounded-lg text-xs font-bold whitespace-nowrap transition ${isActive
                     ? 'bg-red-50 text-[#991b1b] border border-red-200 shadow-sm'
                     : 'text-neutral-600 hover:text-[#991b1b] hover:bg-neutral-50'
                   }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#991b1b]' : 'text-neutral-400'}`} />
                 <span>{item.label}</span>
-                {item.badgeCount !== undefined && item.badgeCount > 0 && (
-                  <span className="px-1.5 py-0.2 bg-[#991b1b] text-white text-[10px] font-mono rounded-full font-extrabold animate-pulse">
-                    {item.badgeCount}
-                  </span>
-                )}
               </button>
             );
           })}
         </div>
+
+        {onOpenAIModal && (
+          <button
+            onClick={onOpenAIModal}
+            className="flex items-center space-x-2 px-3.5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-xs rounded-xl shadow-md border border-indigo-400/50 shrink-0 ml-3 cursor-pointer"
+            title="Open 24/7 AI Family Care Concierge, 9-Part Obituary Generator & Whisper Audio Archive"
+          >
+            <Bot className="w-4 h-4 text-indigo-200 animate-pulse" />
+            <span>AI Concierge &amp; Whisper Hub 🤖</span>
+          </button>
+        )}
+
+        {onOpenPressModal && (
+          <button
+            onClick={onOpenPressModal}
+            className="flex items-center space-x-2 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shadow-md border border-amber-400/50 shrink-0 ml-2 cursor-pointer"
+            title="Open Commercial Press Fulfillment, 300 DPI CMYK Programs & Hardcover Books"
+          >
+            <Printer className="w-4 h-4 text-amber-100" />
+            <span>Commercial Press 🖨️</span>
+          </button>
+        )}
       </nav>
 
     </div>

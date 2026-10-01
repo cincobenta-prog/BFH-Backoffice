@@ -4,6 +4,7 @@ import {
   ObituaryPackageData, 
   FactLedgerItem, 
   DocumentItem,
+  FriendTributeShare,
   SimulatedNotification,
   LiveryCortegeRoute,
   FuneralAnnouncementData,
@@ -26,15 +27,23 @@ import {
   ArrowLeft,
   AlertTriangle,
   Upload,
+  Mic,
+  Play,
+  Pause,
+  Volume2,
   Share2,
   QrCode,
   Headphones,
+  Radio,
   Send,
+  Mail,
   Smartphone,
+  Users,
   User,
   CheckCircle2,
   Clock,
   Eye,
+  RefreshCw,
   X,
   MessageSquare,
   Video,
@@ -50,20 +59,27 @@ import {
   Globe,
   Palette,
   Layout,
-  SlidersHorizontal,
   MessageCircle,
   Trash2,
   ScrollText,
-  CreditCard,
-  Compass
+  Flower2
 } from 'lucide-react';
 import { FamilyPortalOverviewHome } from './FamilyPortalOverviewHome';
 import { FamilyCareConciergeView } from './FamilyCareConciergeView';
 import { FamilyWebcastServiceView } from './FamilyWebcastServiceView';
-import { FamilySplitPaymentPortal } from './FamilySplitPaymentPortal';
-import { DayOfServiceVIPItineraryModal } from './DayOfServiceVIPItineraryModal';
-import { DigitalTributeStudioView } from './DigitalTributeStudioView';
-import { sendTwilioSms, getTwilioConfig } from '../../lib/services/twilioService';
+import { FloralTributeShopModal } from './FloralTributeShopModal';
+
+interface VoiceTributeItem {
+  id: string;
+  contributorName: string;
+  contributorRelation: string;
+  promptQuestion: string;
+  audioDuration: string;
+  durationSeconds: number;
+  recordedDate: string;
+  audioWaveData: number[];
+  isFeatured?: boolean;
+}
 
 interface FamilyPortalViewProps {
   activeCase: GoldenRecordCase;
@@ -73,6 +89,7 @@ interface FamilyPortalViewProps {
   onOpenESignModal?: (doc?: DocumentItem) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
   onOpenFamilyProofApproval?: () => void;
+  onOpenGuidedTour?: () => void;
   onExitPortal: () => void;
   isStaffUser?: boolean;
 }
@@ -84,16 +101,19 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
   onUpdateCase,
   onOpenESignModal,
   onSendNotification,
-  onOpenFamilyProofApproval,
+  onOpenGuidedTour,
   onExitPortal,
   isStaffUser = false
 }) => {
   // Main Family Portal Nav Tab (Defaults to 'home' Welcome & Overview)
-  const [portalTab, setPortalTab] = useState<'home' | 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status' | 'split_pay' | 'itinerary'>('home');
+  const [portalTab, setPortalTab] = useState<'home' | 'obituary' | 'tribute' | 'webcast' | 'concierge' | 'arrangements' | 'documents' | 'photos' | 'status'>('home');
 
   // Obituary Assistant Sub-View: 'interview' | 'drafting' | 'ledger' | 'safety' | 'approval'
   const [obitSection, setObitSection] = useState<'interview' | 'drafting' | 'ledger' | 'safety' | 'approval'>('interview');
   const [interviewStep, setInterviewStep] = useState<number>(1);
+
+  // Floral Tribute Shop Modal State
+  const [isFloralShopModalOpen, setIsFloralShopModalOpen] = useState<boolean>(false);
 
   // Toast Notification Alert State
   const [toastAlert, setToastAlert] = useState<string | null>(null);
@@ -396,13 +416,6 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
     activeCase.funeralAnnouncement?.familyMessage || `“The ${activeCase.informant.fullName.split(' ').pop() || 'Vance'} Family extends our deepest gratitude for your comforting prayers, condolences, and enduring love.”`
   );
 
-  // Announcement Layout Fit & Content Visibility Controls
-  const [announcementFitMode, setAnnouncementFitMode] = useState<'smart_fit' | 'compact' | 'comfortable'>('smart_fit');
-  const [showWebcastInAnnouncement, setShowWebcastInAnnouncement] = useState(true);
-  const [showCommittalInAnnouncement, setShowCommittalInAnnouncement] = useState(true);
-  const [showOfficiantInAnnouncement, setShowOfficiantInAnnouncement] = useState(true);
-  const [showFamilyNoteInAnnouncement, setShowFamilyNoteInAnnouncement] = useState(true);
-
   // SMS Text Announcement Dispatcher Modal State
   const [isAnnouncementSMSModalOpen, setIsAnnouncementSMSModalOpen] = useState(false);
   const [announcementSMSRecipientName, setAnnouncementSMSRecipientName] = useState('');
@@ -569,22 +582,14 @@ ${announcementFamilyMessage}
     handleSaveAnnouncementData();
   };
 
-  // Build formatted SMS announcement text
-  const getFormattedAnnouncementSMSText = (customNote?: string) => {
-    return `🕊️ BENTA'S FUNERAL ANNOUNCEMENT: ${announcementHeadline} for ${activeCase.decedent.legalName}.\n📅 Service: ${announcementServiceInfo} at ${announcementServiceVenue}.\n🔴 Live Webcast & Memorial Archive: ${announcementWebcastUrl} (PIN: ${announcementWebcastPin})${customNote ? `\n\n"${customNote}"` : ''}\n\n📍 Benta's Funeral Home, 630 St. Nicholas Ave, NY 10030 · (212) 281-8850`;
-  };
-
-  // Dispatch SMS Text Announcement (Direct Native SMS or Cloud Gateway)
-  const handleDispatchAnnouncementSMS = (recipientName: string, recipientPhone: string, openDeviceApp: boolean = false) => {
+  // Dispatch SMS Text Announcement
+  const handleDispatchAnnouncementSMS = (recipientName: string, recipientPhone: string) => {
     if (!recipientPhone.trim()) {
       showToast('Please enter a recipient phone number.');
       return;
     }
 
     const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const formattedMsg = getFormattedAnnouncementSMSText(announcementSMSCustomNote);
-    const cleanPhone = recipientPhone.replace(/[^\d+]/g, '');
-
     const newEntry = {
       id: `sms-${Date.now()}`,
       name: recipientName.trim() || 'Community Contact',
@@ -604,7 +609,7 @@ ${announcementFamilyMessage}
         channel: 'sms',
         type: 'service_schedule',
         title: `FUNERAL ANNOUNCEMENT: ${activeCase.decedent.legalName}`,
-        bodyText: formattedMsg,
+        bodyText: `Benta's Memorial Notice: ${announcementHeadline} for ${activeCase.decedent.legalName}. Service: ${announcementServiceInfo} at ${announcementServiceVenue}. Live Webcast & Memorial Archive: ${announcementWebcastUrl} (PIN: ${announcementWebcastPin}). ${announcementSMSCustomNote ? `Note from family: "${announcementSMSCustomNote}"` : ''}`,
         sentAt: 'Just now',
         status: 'delivered'
       });
@@ -623,56 +628,234 @@ ${announcementFamilyMessage}
       ]
     });
 
-    if (openDeviceApp) {
-      // Launch native device SMS app (iMessage / Messages)
-      const cleanNumber = cleanPhone.startsWith('+') ? cleanPhone : `+1${cleanPhone.replace(/^1/, '')}`;
-      const isApple = /Mac|iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const smsUri = `sms:${cleanNumber}${isApple ? '&' : '?'}body=${encodeURIComponent(formattedMsg)}`;
-      
-      try {
-        const link = document.createElement('a');
-        link.href = smsUri;
-        link.target = '_self';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch {
-        window.location.href = smsUri;
-      }
-      showToast(`📱 Opening native Messages/SMS app for ${recipientPhone}...`);
-    } else {
-      // Dispatch via Twilio REST Gateway
-      const twilioCfg = getTwilioConfig();
-      if (twilioCfg.accountSid && twilioCfg.authToken) {
-        sendTwilioSms(cleanPhone, formattedMsg).then(res => {
-          if (res.success && !res.isSimulated) {
-            showToast(`🚀 Live Cellular SMS dispatched via Twilio (SID: ${res.messageSid})!`);
-          } else if (!res.success) {
-            showToast(`⚠️ Twilio Gateway Notice: ${res.error || 'Check credentials'}`);
-          } else {
-            showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
-          }
-        });
-      } else {
-        showToast(`📱 Official funeral announcement SMS logged & dispatched to ${recipientName || recipientPhone}!`);
-      }
-    }
-
     setAnnouncementSMSRecipientName('');
     setAnnouncementSMSRecipientPhone('');
     setAnnouncementSMSCustomNote('');
     setIsAnnouncementSMSModalOpen(false);
+
+    showToast(`📱 Official funeral announcement SMS successfully dispatched to ${recipientName || recipientPhone}!`);
   };
 
-  const handleCopySMSBubbleText = () => {
-    const text = getFormattedAnnouncementSMSText(announcementSMSCustomNote);
-    navigator.clipboard.writeText(text);
-    showToast('📋 SMS Announcement text copied to clipboard!');
-  };
+  // Digital Tribute Voice Keepsakes State
+  const initialVoiceTributes: VoiceTributeItem[] = [
+    {
+      id: 'vt-1',
+      contributorName: 'Martha Hayes',
+      contributorRelation: 'Childhood & Lifelong Friend',
+      promptQuestion: '“What was an adventure only the two of you knew about?”',
+      audioDuration: '03:02',
+      durationSeconds: 182,
+      recordedDate: 'Yesterday at 4:15 PM',
+      audioWaveData: [18, 32, 48, 24, 52, 38, 20, 44, 16, 30, 42, 28, 50, 36, 22, 40],
+      isFeatured: true
+    },
+    {
+      id: 'vt-2',
+      contributorName: 'Rev. Dr. Calvin Butts IV',
+      contributorRelation: 'Pastor & Spiritual Mentor',
+      promptQuestion: '“What was a piece of wisdom or mantra they always shared with you?”',
+      audioDuration: '02:45',
+      durationSeconds: 165,
+      recordedDate: 'September 17, 2026',
+      audioWaveData: [14, 28, 40, 50, 35, 22, 45, 30, 18, 26, 48, 32, 20, 38, 42, 16],
+      isFeatured: false
+    },
+    {
+      id: 'vt-3',
+      contributorName: 'David Vance',
+      contributorRelation: 'Son',
+      promptQuestion: '“What is your favorite memory from Sunday morning traditions?”',
+      audioDuration: '04:12',
+      durationSeconds: 252,
+      recordedDate: 'September 18, 2026',
+      audioWaveData: [22, 36, 52, 44, 30, 48, 54, 32, 24, 40, 46, 28, 34, 50, 26, 18],
+      isFeatured: false
+    },
+    {
+      id: 'vt-4',
+      contributorName: 'Claire Vance-Miller',
+      contributorRelation: 'Daughter',
+      promptQuestion: '“How did they guide and support you through challenging times?”',
+      audioDuration: '03:30',
+      durationSeconds: 210,
+      recordedDate: 'September 18, 2026',
+      audioWaveData: [16, 30, 44, 38, 52, 26, 34, 48, 22, 36, 42, 30, 24, 46, 38, 20],
+      isFeatured: false
+    }
+  ];
 
-  // Digital Tribute Modals
+  const [voiceTributes, setVoiceTributes] = useState<VoiceTributeItem[]>(initialVoiceTributes);
+  const [activeVoiceTrack, setActiveVoiceTrack] = useState<VoiceTributeItem>(initialVoiceTributes[0]);
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isRecordingMic, setIsRecordingMic] = useState(false);
+  const [recordSeconds, setRecordSeconds] = useState(0);
+
+  // New Voice Tribute Form
+  const [newContributorName, setNewContributorName] = useState('');
+  const [newContributorRelation, setNewContributorRelation] = useState('');
+  const [newPromptQuestion, setNewPromptQuestion] = useState('“What was an adventure only the two of you knew about?”');
+  const [includeInMemorialDVD, setIncludeInMemorialDVD] = useState(true);
+
+  // Friend Tribute Share & Invite State
+  const [friendShares, setFriendShares] = useState<FriendTributeShare[]>(activeCase.friendTributeShares || []);
+  const [shareRecipientName, setShareRecipientName] = useState('');
+  const [shareRecipientContact, setShareRecipientContact] = useState('');
+  const [shareChannel, setShareChannel] = useState<'sms' | 'email'>('sms');
+  const [sharePersonalNote, setSharePersonalNote] = useState(
+    `We are gathering living voice memories, prayers, and reflections for ${activeCase.decedent.legalName}'s digital keepsake archive. Please tap the link to listen and record your own reflection:`
+  );
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isSendingInvite, setIsSendingInvite] = useState(false);
+  const [inviteSuccessToast, setInviteSuccessToast] = useState<string | null>(null);
+
+  // Sync friendShares when activeCase changes
+  useEffect(() => {
+    if (activeCase.friendTributeShares) {
+      setFriendShares(activeCase.friendTributeShares);
+    } else {
+      setFriendShares([]);
+    }
+  }, [activeCase.id, activeCase.friendTributeShares]);
+
+  // Send Friend Tribute Invitation (SMS or Email)
+  const handleSendFriendInvite = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!shareRecipientName.trim()) {
+      alert('Please enter your friend or relative\'s name.');
+      return;
+    }
+    if (!shareRecipientContact.trim()) {
+      alert(`Please enter a valid ${shareChannel === 'sms' ? 'mobile phone number' : 'email address'}.`);
+      return;
+    }
+
+    setIsSendingInvite(true);
+    const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const tributeUrl = `https://e-bfh.com/tribute/${activeCase.caseNumber}`;
+    
+    const newShare: FriendTributeShare = {
+      id: `share-${Date.now()}`,
+      recipientName: shareRecipientName.trim(),
+      recipientContact: shareRecipientContact.trim(),
+      channel: shareChannel,
+      personalNote: sharePersonalNote.trim(),
+      sentAt: `Today ${nowTime}`,
+      status: 'sent'
+    };
+
+    const updatedShares = [newShare, ...friendShares];
+    setFriendShares(updatedShares);
+
+    // Save to Golden Record Case
+    const updatedCase: GoldenRecordCase = {
+      ...activeCase,
+      friendTributeShares: updatedShares,
+      notes: [
+        {
+          id: `note-${Date.now()}`,
+          author: 'Family Digital Tribute Dispatcher',
+          timestamp: nowTime,
+          text: `Digital Tribute invite dispatched to ${newShare.recipientName} via ${newShare.channel.toUpperCase()} (${newShare.recipientContact})`
+        },
+        ...activeCase.notes
+      ]
+    };
+    onUpdateCase(updatedCase);
+
+    // Dispatch Simulated Notification if provided
+    if (onSendNotification) {
+      const simNotif: SimulatedNotification = {
+        id: `notif-${Date.now()}`,
+        caseId: activeCase.id,
+        decedentName: activeCase.decedent.legalName,
+        recipientName: newShare.recipientName,
+        recipientPhone: newShare.channel === 'sms' ? newShare.recipientContact : activeCase.informant.phone,
+        recipientEmail: newShare.channel === 'email' ? newShare.recipientContact : activeCase.informant.email,
+        channel: newShare.channel,
+        type: 'tribute_share_invite',
+        title: `Digital Tribute Invitation in Memory of ${activeCase.decedent.legalName}`,
+        bodyText: `${newShare.personalNote} ${tributeUrl}`,
+        sentAt: `Today ${nowTime}`,
+        status: 'delivered',
+        actionUrl: tributeUrl,
+        actionButtonText: 'Listen & Record Tribute'
+      };
+      onSendNotification(simNotif);
+    }
+
+    setTimeout(() => {
+      setIsSendingInvite(false);
+      setInviteSuccessToast(`Tribute invite successfully sent to ${newShare.recipientName} via ${newShare.channel === 'sms' ? 'SMS' : 'Email'}!`);
+      setTimeout(() => setInviteSuccessToast(null), 5000);
+      setShareRecipientName('');
+      setShareRecipientContact('');
+    }, 400);
+  };
+
+  // Simulate lifecycle transitions (for interactive testing & demonstration)
+  const handleSimulateShareStatus = (shareId: string, newStatus: 'sent' | 'opened' | 'voice_recorded') => {
+    const updatedShares = friendShares.map(s => {
+      if (s.id === shareId) {
+        // If changing to voice_recorded, add a corresponding track in voiceTributes if not already present
+        if (newStatus === 'voice_recorded' && s.status !== 'voice_recorded') {
+          const autoVoiceTrack: VoiceTributeItem = {
+            id: `vt-${Date.now()}`,
+            contributorName: s.recipientName,
+            contributorRelation: 'Family Friend',
+            promptQuestion: '“What made them laugh harder than anyone else?”',
+            audioDuration: '02:18',
+            durationSeconds: 138,
+            recordedDate: 'Just now',
+            audioWaveData: [24, 42, 35, 50, 44, 30, 48, 52, 28, 38, 44, 26, 32, 46, 30, 22]
+          };
+          setVoiceTributes(prev => [autoVoiceTrack, ...prev]);
+          setActiveVoiceTrack(autoVoiceTrack);
+          setIsPlayingAudio(true);
+        }
+        return { ...s, status: newStatus };
+      }
+      return s;
+    });
+
+    setFriendShares(updatedShares);
+    onUpdateCase({
+      ...activeCase,
+      friendTributeShares: updatedShares
+    });
+  };
+
+  // Resend Invite Handler
+  const handleResendInvite = (share: FriendTributeShare) => {
+    const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const updatedShares = friendShares.map(s => {
+      if (s.id === share.id) {
+        return { ...s, sentAt: `Resent Today ${nowTime}` };
+      }
+      return s;
+    });
+    setFriendShares(updatedShares);
+    onUpdateCase({
+      ...activeCase,
+      friendTributeShares: updatedShares
+    });
+    setInviteSuccessToast(`Invitation resent to ${share.recipientName} via ${share.channel.toUpperCase()}!`);
+    setTimeout(() => setInviteSuccessToast(null), 4000);
+  };
+
+  // Timer for active recording
+  useEffect(() => {
+    let interval: any = null;
+    if (isRecordingMic) {
+      interval = setInterval(() => {
+        setRecordSeconds(prev => prev + 1);
+      }, 1000);
+    } else {
+      setRecordSeconds(0);
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isRecordingMic]);
 
   // Initialize or pull obituary data from activeCase
   const defaultObituaryData: ObituaryPackageData = {
@@ -841,7 +1024,36 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
     alert(`Obituary publication successfully authorized by ${obitState.spokespersonName}! Master record synchronized with Director Production Desk.`);
   };
 
+  // Handle Save New Voice Recording Memory
+  const handleSaveVoiceRecording = () => {
+    if (!newContributorName.trim()) {
+      alert('Please enter your name as contributor before saving.');
+      return;
+    }
 
+    const durationMins = Math.floor(recordSeconds / 60);
+    const durationRemSecs = recordSeconds % 60;
+    const formattedDuration = `${String(durationMins).padStart(2, '0')}:${String(durationRemSecs).padStart(2, '0')}`;
+
+    const newTribute: VoiceTributeItem = {
+      id: `vt-${Date.now()}`,
+      contributorName: newContributorName.trim(),
+      contributorRelation: newContributorRelation.trim() || 'Family & Friend',
+      promptQuestion: newPromptQuestion,
+      audioDuration: formattedDuration === '00:00' ? '02:30' : formattedDuration,
+      durationSeconds: recordSeconds || 150,
+      recordedDate: 'Just now',
+      audioWaveData: [20, 35, 45, 50, 30, 40, 55, 32, 22, 38, 48, 26, 32, 44, 30, 20]
+    };
+
+    setVoiceTributes([newTribute, ...voiceTributes]);
+    setActiveVoiceTrack(newTribute);
+    setIsRecordingMic(false);
+    setRecordSeconds(0);
+    setNewContributorName('');
+    setNewContributorRelation('');
+    alert(`Thank you, ${newTribute.contributorName}! Your voice memory has been added to the Digital Tribute Archive for ${activeCase.decedent.legalName}.`);
+  };
 
   return (
     <div className="min-h-screen bg-[#fcfbfa] text-neutral-900 font-sans flex flex-col">
@@ -859,6 +1071,16 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                 👑 Licensed Staff Console Mode
               </span>
+              {onOpenGuidedTour && (
+                <button
+                  onClick={onOpenGuidedTour}
+                  className="flex items-center space-x-1 bg-amber-400/30 hover:bg-amber-400/40 text-amber-100 px-2.5 py-1 rounded text-[11px] font-bold transition border border-amber-300/50"
+                  title="Launch Family Portal Interactive Tutorial"
+                >
+                  <Sparkles className="w-3 h-3 text-amber-200" />
+                  <span>Portal Tour 🎓</span>
+                </button>
+              )}
               <button
                 onClick={onExitPortal}
                 className="flex items-center space-x-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 px-2.5 py-1 rounded text-[11px] font-bold transition border border-amber-400/30"
@@ -873,6 +1095,16 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Confidential Family Portal</span>
               </span>
+              {onOpenGuidedTour && (
+                <button
+                  onClick={onOpenGuidedTour}
+                  className="flex items-center space-x-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 px-2.5 py-1 rounded text-[11px] font-bold transition border border-amber-400/40"
+                  title="Launch Family Portal Interactive Walkthrough"
+                >
+                  <Sparkles className="w-3 h-3 text-amber-300 animate-pulse" />
+                  <span>Interactive Guide 💡</span>
+                </button>
+              )}
               <button
                 onClick={onExitPortal}
                 className="flex items-center space-x-1 bg-red-950/40 hover:bg-red-900/60 text-red-200 px-2.5 py-1 rounded text-[11px] font-bold transition border border-red-700/40"
@@ -1017,18 +1249,6 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           </button>
 
           <button
-            onClick={() => setPortalTab('split_pay')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
-              portalTab === 'split_pay'
-                ? 'bg-emerald-800 text-white shadow-md ring-2 ring-amber-400'
-                : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200'
-            }`}
-          >
-            <CreditCard className="w-3.5 h-3.5 text-emerald-700" />
-            <span>💳 Family Split-Pay & Contributions</span>
-          </button>
-
-          <button
             onClick={() => setPortalTab('documents')}
             className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
               portalTab === 'documents'
@@ -1065,15 +1285,11 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           </button>
 
           <button
-            onClick={() => setPortalTab('itinerary')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
-              portalTab === 'itinerary'
-                ? 'bg-[#991b1b] text-white shadow-md ring-2 ring-amber-400'
-                : 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300'
-            }`}
+            onClick={() => setIsFloralShopModalOpen(true)}
+            className="px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white shadow-md transition ml-auto"
           >
-            <Compass className="w-3.5 h-3.5 text-amber-600" />
-            <span>📱 Day-of-Service VIP Itinerary</span>
+            <Flower2 className="w-3.5 h-3.5 text-amber-200" />
+            <span>🌸 Send Flowers (Daniela’s)</span>
           </button>
         </div>
       </header>
@@ -1093,10 +1309,11 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
         {portalTab === 'home' && (
           <FamilyPortalOverviewHome
             activeCase={activeCase}
-            onNavigateTab={(tab) => setPortalTab(tab)}
+            onNavigateTab={(tab) => setPortalTab(tab as any)}
             onOpenESignModal={() => onOpenESignModal?.()}
             onUpdateCase={onUpdateCase}
             onSendNotification={onSendNotification}
+            onOpenGuidedTour={onOpenGuidedTour}
           />
         )}
 
@@ -1117,15 +1334,658 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           />
         )}
 
-        {/* TAB: DIGITAL TRIBUTE & KEEPSAKE COFFEE TABLE VOLUME (Digi-Tribute 2.0) */}
+        {/* TAB: DIGITAL TRIBUTE & VOICE KEEPSAKES (matching tribute.html) */}
         {portalTab === 'tribute' && (
-          <DigitalTributeStudioView
-            activeCase={activeCase}
-            onUpdateCase={onUpdateCase}
-            onSendNotification={onSendNotification}
-            onOpenFamilyProofApproval={onOpenFamilyProofApproval}
-            isStaffUser={isStaffUser}
-          />
+          <div className="space-y-6">
+            
+            {/* Dignified Hero Banner */}
+            <div className="bg-gradient-to-br from-[#141b2b] via-[#1c2438] to-[#261e14] text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-amber-500/30">
+              <div className="max-w-3xl space-y-2 relative z-10">
+                <span className="inline-flex items-center space-x-1.5 bg-amber-400/20 border border-amber-400/50 text-amber-200 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                  <Headphones className="w-3.5 h-3.5 text-amber-300" />
+                  <span>360° Digi-Tribute Keepsake Audio & Voice Archive</span>
+                </span>
+                <h2 className="font-serif-title text-2xl sm:text-3xl font-bold text-white tracking-wide">
+                  Living Voice Memories for {activeCase.decedent.legalName}
+                </h2>
+                <p className="text-xs sm:text-sm text-neutral-300 font-light leading-relaxed">
+                  Hear their laughter, wisdom, and stories forever. Collect recorded audio tributes from family, lifelong friends, and church members worldwide, safely preserved in your family's permanent digital archive.
+                </p>
+              </div>
+              <div className="absolute right-6 -bottom-6 text-9xl text-white/5 font-serif select-none pointer-events-none">
+                🎙️
+              </div>
+            </div>
+
+            {/* Main Interactive Grid: Left Featured Player, Right Record & Share Studio */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              
+              {/* Left Column: Featured Digital Tribute Audio Player (matching tribute.html card) */}
+              <div className="lg:col-span-5 flex flex-col">
+                <div className="bg-white border-2 border-amber-400/60 rounded-3xl p-6 sm:p-8 shadow-xl text-center flex-1 flex flex-col justify-between space-y-5">
+                  
+                  <div className="space-y-3">
+                    {/* BFH Emblem */}
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#991b1b] to-[#b45309] text-white flex items-center justify-center font-serif-title font-bold text-2xl mx-auto shadow-md border-2 border-amber-300">
+                      BFH
+                    </div>
+
+                    <div className="inline-block bg-amber-50 border border-amber-300/80 text-[#b45309] text-[11px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                      🕊️ Digital Tribute Keepsake Audio
+                    </div>
+
+                    <h3 className="font-serif-title text-2xl font-bold text-neutral-900">
+                      In Loving Memory of {activeCase.decedent.legalName}
+                    </h3>
+                    <div className="text-xs text-neutral-500 italic">
+                      {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
+                    </div>
+                  </div>
+
+                  {/* Prompt Question Box (from tribute.html) */}
+                  <div className="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-4 text-xs font-semibold text-neutral-800 leading-relaxed">
+                    {activeVoiceTrack.promptQuestion}
+                  </div>
+
+                  {/* Black Audio Player Canvas */}
+                  <div className="bg-[#181614] rounded-2xl p-5 text-white shadow-inner space-y-3">
+                    <div className="flex justify-between items-center text-xs text-amber-400 font-mono tracking-wider">
+                      <span className="flex items-center space-x-1.5">
+                        <Radio className={`w-3.5 h-3.5 ${isPlayingAudio ? 'animate-pulse text-red-500' : ''}`} />
+                        <span>{isPlayingAudio ? 'NOW PLAYING' : 'AUDIO MEMORY'}</span>
+                      </span>
+                      <span>{activeVoiceTrack.audioDuration}</span>
+                    </div>
+
+                    {/* Waveform Bars (animated when playing) */}
+                    <div className="flex items-center justify-center gap-1.5 h-16 my-2">
+                      {activeVoiceTrack.audioWaveData.map((h, idx) => (
+                        <div
+                          key={idx}
+                          className={`w-1.5 bg-[#af893e] rounded-full transition-all duration-300 ${
+                            isPlayingAudio ? 'animate-pulse' : ''
+                          }`}
+                          style={{
+                            height: isPlayingAudio 
+                              ? `${Math.max(10, (h * ((idx % 3) + 1) * 0.7) % 52)}px` 
+                              : `${h}px`,
+                            animationDelay: `${idx * 0.1}s`
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Circular Gold Play Button */}
+                    <button
+                      onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+                      className="w-14 h-14 rounded-full bg-[#af893e] hover:bg-[#c59e4b] text-white flex items-center justify-center text-xl mx-auto shadow-lg shadow-amber-950/40 transition transform active:scale-95"
+                    >
+                      {isPlayingAudio ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-0.5" />}
+                    </button>
+                  </div>
+
+                  {/* Contributor Signature Tag */}
+                  <div className="text-xs text-neutral-600 border-t border-neutral-100 pt-3">
+                    Shared by <strong className="text-neutral-900 font-bold">{activeVoiceTrack.contributorName}</strong> ({activeVoiceTrack.contributorRelation})
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Right Column: Voice Recording Studio & Community Vault */}
+              <div className="lg:col-span-7 space-y-6">
+                
+                {/* Recording Studio Card */}
+                <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-5">
+                  <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center">
+                        <Mic className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-serif-title font-bold text-base text-neutral-900">
+                          Record a Voice Tribute
+                        </h4>
+                        <p className="text-[11px] text-neutral-500">
+                          Capture a story, prayer, or memory directly from your microphone
+                        </p>
+                      </div>
+                    </div>
+                    {isRecordingMic && (
+                      <span className="bg-red-500 text-white text-[11px] font-bold px-3 py-1 rounded-full animate-pulse flex items-center space-x-1.5">
+                        <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                        <span>RECORDING ({String(Math.floor(recordSeconds / 60)).padStart(2, '0')}:{String(recordSeconds % 60).padStart(2, '0')})</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-bold text-neutral-700 mb-1">
+                        Choose a Reflection Prompt Question
+                      </label>
+                      <select
+                        value={newPromptQuestion}
+                        onChange={(e) => setNewPromptQuestion(e.target.value)}
+                        className="w-full bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 font-medium outline-none focus:border-[#991b1b]"
+                      >
+                        <option value="“What was an adventure only the two of you knew about?”">“What was an adventure only the two of you knew about?”</option>
+                        <option value="“What was a signature piece of advice or saying they always shared with you?”">“What was a signature piece of advice or saying they always shared with you?”</option>
+                        <option value="“What is your favorite memory from Sunday dinners, music, or holidays?”">“What is your favorite memory from Sunday dinners, music, or holidays?”</option>
+                        <option value="“How did they guide and support you through a challenging time?”">“How did they guide and support you through a challenging time?”</option>
+                        <option value="“What made them laugh harder than anyone else?”">“What made them laugh harder than anyone else?”</option>
+                      </select>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 mb-1">Your Name</label>
+                        <input
+                          type="text"
+                          value={newContributorName}
+                          onChange={(e) => setNewContributorName(e.target.value)}
+                          placeholder="e.g. Eleanor Vance, Harold Williams"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 mb-1">Relationship to Loved One</label>
+                        <input
+                          type="text"
+                          value={newContributorRelation}
+                          onChange={(e) => setNewContributorRelation(e.target.value)}
+                          placeholder="e.g. Spouse, Granddaughter, Church Colleague"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Microphone Controls */}
+                    <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center space-x-3">
+                        {!isRecordingMic ? (
+                          <button
+                            onClick={() => setIsRecordingMic(true)}
+                            className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                          >
+                            <Mic className="w-4 h-4 text-amber-300" />
+                            <span>Start Microphone Recording</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setIsRecordingMic(false)}
+                            className="bg-neutral-800 hover:bg-neutral-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-2"
+                          >
+                            <Pause className="w-4 h-4 text-red-400" />
+                            <span>Stop Recording</span>
+                          </button>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={handleSaveVoiceRecording}
+                        className="bg-[#af893e] hover:bg-[#967432] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-amber-950/20"
+                      >
+                        <Upload className="w-4 h-4" />
+                        <span>Save to Memorial Archive</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Community Voice Memory Vault / Playlist */}
+                <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-4">
+                  <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
+                    <div className="flex items-center space-x-2">
+                      <Volume2 className="w-4 h-4 text-[#991b1b]" />
+                      <h4 className="font-serif-title font-bold text-base text-neutral-900">
+                        Family & Friends Memory Vault ({voiceTributes.length})
+                      </h4>
+                    </div>
+                    <span className="text-[11px] text-neutral-500 font-medium">
+                      Click any memory to listen
+                    </span>
+                  </div>
+
+                  <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+                    {voiceTributes.map((tribute) => {
+                      const isThisActive = activeVoiceTrack.id === tribute.id;
+
+                      return (
+                        <div
+                          key={tribute.id}
+                          onClick={() => {
+                            setActiveVoiceTrack(tribute);
+                            setIsPlayingAudio(true);
+                          }}
+                          className={`p-3.5 rounded-2xl border transition cursor-pointer flex items-center justify-between gap-3 ${
+                            isThisActive
+                              ? 'bg-amber-50/90 border-[#af893e] ring-2 ring-amber-400/20 shadow-sm'
+                              : 'bg-neutral-50/60 border-neutral-200 hover:bg-neutral-100'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                              isThisActive ? 'bg-[#af893e] text-white' : 'bg-neutral-200 text-neutral-700'
+                            }`}>
+                              {isThisActive && isPlayingAudio ? (
+                                <Pause className="w-4 h-4" />
+                              ) : (
+                                <Play className="w-4 h-4 ml-0.5" />
+                              )}
+                            </div>
+                            <div>
+                              <div className="text-xs font-bold text-neutral-900">
+                                {tribute.contributorName} <span className="font-normal text-neutral-500">({tribute.contributorRelation})</span>
+                              </div>
+                              <div className="text-[11px] text-neutral-600 line-clamp-1">
+                                {tribute.promptQuestion}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="text-right shrink-0">
+                            <span className="text-xs font-mono font-bold text-neutral-700">{tribute.audioDuration}</span>
+                            <div className="text-[10px] text-neutral-400">{tribute.recordedDate}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* DVD Integration Option */}
+                  <div className="bg-amber-50/60 border border-amber-200 p-3 rounded-xl flex items-center justify-between text-xs">
+                    <label className="flex items-center space-x-2 text-neutral-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={includeInMemorialDVD}
+                        onChange={(e) => setIncludeInMemorialDVD(e.target.checked)}
+                        className="accent-[#991b1b] w-4 h-4"
+                      />
+                      <span><strong>Include in Memorial DVD & Prelude Audio:</strong> Sync top voice memories into chapel slideshow.</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Shareable Guest Link & QR Code Card */}
+                <div className="bg-gradient-to-r from-red-50 via-amber-50 to-orange-50 border-2 border-amber-300/80 rounded-3xl p-6 shadow-md space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-amber-200/80 pb-4">
+                    <div className="space-y-1 max-w-md">
+                      <div className="flex items-center space-x-2">
+                        <Share2 className="w-5 h-5 text-[#991b1b]" />
+                        <strong className="text-sm font-bold text-neutral-900 font-serif-title">
+                          Share Digital Tribute with Family & Friends
+                        </strong>
+                      </div>
+                      <p className="text-xs text-neutral-600">
+                        Invite relatives, lifelong friends, church members, and coworkers worldwide to listen to memories and record their own voice tributes.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        onClick={() => handleCopyText(`https://e-bfh.com/tribute/${activeCase.caseNumber}`, 'Guest Tribute Link')}
+                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>Copy Tribute Link</span>
+                      </button>
+                      <button
+                        onClick={() => setIsQRModalOpen(true)}
+                        className="bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm"
+                      >
+                        <QrCode className="w-3.5 h-3.5 text-[#b45309]" />
+                        <span>Print 4-Up QR Cards</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 1-Click Social Quick Links */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 text-xs bg-white/80 p-3 rounded-2xl border border-amber-200/60">
+                    <span className="font-bold text-neutral-700 flex items-center space-x-1.5">
+                      <Smartphone className="w-4 h-4 text-emerald-600" />
+                      <span>Instant 1-Click Share:</span>
+                    </span>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <a
+                        href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Please join our family in celebrating the life of ${activeCase.decedent.legalName}. Listen and record your voice memory on our Digital Tribute Archive: https://e-bfh.com/tribute/${activeCase.caseNumber}`)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg font-bold text-[11px] transition flex items-center space-x-1"
+                      >
+                        <span>WhatsApp</span>
+                      </a>
+
+                      <a
+                        href={`sms:?&body=${encodeURIComponent(`Please join our family in celebrating the life of ${activeCase.decedent.legalName}. Listen and record your voice memory: https://e-bfh.com/tribute/${activeCase.caseNumber}`)}`}
+                        className="bg-sky-600 hover:bg-sky-700 text-white px-3 py-1.5 rounded-lg font-bold text-[11px] transition flex items-center space-x-1"
+                      >
+                        <span>iMessage / SMS</span>
+                      </a>
+
+                      <a
+                        href={`mailto:?subject=${encodeURIComponent(`Digital Tribute & Living Voice Archive for ${activeCase.decedent.legalName}`)}&body=${encodeURIComponent(`Dear Family & Friends,\n\nWe invite you to listen to living voice memories and record your own reflection or prayer for ${activeCase.decedent.legalName}'s digital keepsake archive.\n\nListen and record your tribute here:\nhttps://e-bfh.com/tribute/${activeCase.caseNumber}\n\nWith love,\nThe ${activeCase.decedent.legalName.split(' ').slice(-1)[0]} Family`)}`}
+                        className="bg-neutral-800 hover:bg-neutral-900 text-white px-3 py-1.5 rounded-lg font-bold text-[11px] transition flex items-center space-x-1"
+                      >
+                        <Mail className="w-3 h-3" />
+                        <span>Email Client</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* FULL-WIDTH SECTION: DIRECT FRIEND DISPATCH & INVITATION TRACKER */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+              
+              {/* Left Column: Direct Friend Tribute SMS / Email Dispatch Form */}
+              <div className="lg:col-span-5 bg-white border border-neutral-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-5">
+                <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-amber-50 text-[#b45309] flex items-center justify-center">
+                      <Send className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif-title font-bold text-base text-neutral-900">
+                        Dispatch Personalized Invite
+                      </h4>
+                      <p className="text-[11px] text-neutral-500">
+                        Send a private link directly to a friend's phone or email
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Channel Toggle */}
+                  <div className="flex bg-neutral-100 p-0.5 rounded-lg text-xs font-bold">
+                    <button
+                      type="button"
+                      onClick={() => setShareChannel('sms')}
+                      className={`px-3 py-1 rounded-md transition flex items-center space-x-1 ${
+                        shareChannel === 'sms'
+                          ? 'bg-[#991b1b] text-white shadow-sm'
+                          : 'text-neutral-600 hover:text-neutral-900'
+                      }`}
+                    >
+                      <Smartphone className="w-3 h-3" />
+                      <span>SMS Text</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShareChannel('email')}
+                      className={`px-3 py-1 rounded-md transition flex items-center space-x-1 ${
+                        shareChannel === 'email'
+                          ? 'bg-[#991b1b] text-white shadow-sm'
+                          : 'text-neutral-600 hover:text-neutral-900'
+                      }`}
+                    >
+                      <Mail className="w-3 h-3" />
+                      <span>Email</span>
+                    </button>
+                  </div>
+                </div>
+
+                {inviteSuccessToast && (
+                  <div className="bg-emerald-50 border border-emerald-300 text-emerald-900 px-4 py-3 rounded-xl text-xs font-bold flex items-center space-x-2 animate-fadeIn">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>{inviteSuccessToast}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleSendFriendInvite} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
+                      Friend / Relative Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={shareRecipientName}
+                      onChange={(e) => setShareRecipientName(e.target.value)}
+                      placeholder="e.g. Aunt Gloria, Pastor Williams, Dr. Hayes"
+                      className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-neutral-700 mb-1">
+                      {shareChannel === 'sms' ? 'Mobile Phone Number (for SMS Link)' : 'Email Address'} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type={shareChannel === 'sms' ? 'tel' : 'email'}
+                      value={shareRecipientContact}
+                      onChange={(e) => setShareRecipientContact(e.target.value)}
+                      placeholder={shareChannel === 'sms' ? '(212) 555-0199' : 'name@example.com'}
+                      className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                    />
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="text-xs font-bold text-neutral-700">
+                        Personal Note & Memory Request
+                      </label>
+                      <span className="text-[10px] text-neutral-400">Quick Templates:</span>
+                    </div>
+
+                    {/* Quick Template Chips */}
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      <button
+                        type="button"
+                        onClick={() => setSharePersonalNote(`Dear friend, we are gathering living voice memories, prayers, and reflections for ${activeCase.decedent.legalName}'s digital keepsake archive. Please tap the link to listen and record your own reflection:`)}
+                        className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[10px] font-semibold px-2 py-1 rounded-md transition"
+                      >
+                        General Friend
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSharePersonalNote(`Dear Church Family, Arthur always treasured our Sunday worship together. We would be deeply blessed if you could share a prayer or favorite memory on his digital tribute audio archive:`)}
+                        className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[10px] font-semibold px-2 py-1 rounded-md transition"
+                      >
+                        Church & Choir
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSharePersonalNote(`Dear Colleague, Arthur's legacy in education and community leadership touched so many. Please record a short story or memory for our permanent family keepsake archive:`)}
+                        className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[10px] font-semibold px-2 py-1 rounded-md transition"
+                      >
+                        Colleague
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSharePersonalNote(`Dear Family, we're gathering stories, laughter, and wisdom from everyone who loved Arthur. Tap below to listen to what others shared and add your voice:`)}
+                        className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[10px] font-semibold px-2 py-1 rounded-md transition"
+                      >
+                        Extended Family
+                      </button>
+                    </div>
+
+                    <textarea
+                      rows={3}
+                      value={sharePersonalNote}
+                      onChange={(e) => setSharePersonalNote(e.target.value)}
+                      className="w-full bg-neutral-50 border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 outline-none focus:border-[#991b1b] resize-none"
+                    />
+                  </div>
+
+                  {/* Live Preview Bubble */}
+                  <div className="bg-neutral-100 border border-neutral-200 rounded-2xl p-3 text-[11px] space-y-1">
+                    <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider block">
+                      {shareChannel === 'sms' ? '📱 Recipient SMS Bubble Preview:' : '📧 Recipient Email Preview:'}
+                    </span>
+                    <p className="text-neutral-800 italic">
+                      "{sharePersonalNote} https://e-bfh.com/tribute/{activeCase.caseNumber}"
+                    </p>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSendingInvite}
+                    className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-3 rounded-xl transition flex items-center justify-center space-x-2 shadow-md shadow-red-950/20"
+                  >
+                    {isSendingInvite ? (
+                      <RefreshCw className="w-4 h-4 animate-spin text-amber-300" />
+                    ) : (
+                      <Send className="w-4 h-4 text-amber-300" />
+                    )}
+                    <span>{isSendingInvite ? 'Dispatching...' : `Send Tribute Invite via ${shareChannel === 'sms' ? 'SMS Text' : 'Email'}`}</span>
+                  </button>
+                </form>
+              </div>
+
+              {/* Right Column: Community Invitation Status & Voice Tracker */}
+              <div className="lg:col-span-7 bg-white border border-neutral-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-4 flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center">
+                        <Users className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-serif-title font-bold text-base text-neutral-900">
+                          Tribute Invitations & Activity Tracker ({friendShares.length})
+                        </h4>
+                        <p className="text-[11px] text-neutral-500">
+                          Real-time delivery status, friend listening sessions, and new voice recordings
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        handleCopyText(
+                          friendShares.map(s => `${s.recipientName} (${s.recipientContact}) - ${s.status}`).join('\n'),
+                          'Invitation Activity Log'
+                        );
+                      }}
+                      className="text-xs text-neutral-500 hover:text-neutral-800 flex items-center space-x-1"
+                    >
+                      <Copy className="w-3 h-3" />
+                      <span>Export List</span>
+                    </button>
+                  </div>
+
+                  {friendShares.length === 0 ? (
+                    <div className="text-center py-12 text-neutral-400 space-y-2">
+                      <Mail className="w-8 h-8 mx-auto text-neutral-300" />
+                      <p className="text-xs">No invitations sent yet. Use the form on the left to invite friends!</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3 mt-4 max-h-96 overflow-y-auto pr-1">
+                      {friendShares.map((share) => {
+                        return (
+                          <div
+                            key={share.id}
+                            className="bg-neutral-50/80 border border-neutral-200 rounded-2xl p-3.5 space-y-2 hover:border-amber-300 transition"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div className="flex items-center space-x-2.5">
+                                <div className="w-7 h-7 rounded-lg bg-neutral-200 flex items-center justify-center text-xs font-bold text-neutral-700 uppercase">
+                                  {share.recipientName.charAt(0)}
+                                </div>
+                                <div>
+                                  <strong className="text-xs font-bold text-neutral-900 block">
+                                    {share.recipientName}
+                                  </strong>
+                                  <span className="text-[11px] text-neutral-500 flex items-center space-x-1">
+                                    <span>{share.channel === 'sms' ? '📱 SMS:' : '📧 Email:'}</span>
+                                    <span className="font-mono text-neutral-700">{share.recipientContact}</span>
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Status Badge */}
+                              <div className="flex items-center space-x-2">
+                                {share.status === 'sent' && (
+                                  <span className="bg-sky-50 text-sky-800 border border-sky-200 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1">
+                                    <Clock className="w-3 h-3 text-sky-600" />
+                                    <span>Invite Sent</span>
+                                  </span>
+                                )}
+                                {share.status === 'opened' && (
+                                  <span className="bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1">
+                                    <Eye className="w-3 h-3 text-amber-600" />
+                                    <span>Opened • Listening</span>
+                                  </span>
+                                )}
+                                {share.status === 'voice_recorded' && (
+                                  <span className="bg-emerald-50 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center space-x-1 shadow-sm">
+                                    <Check className="w-3 h-3 text-emerald-600" />
+                                    <span>Voice Memory Recorded</span>
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Note snippet */}
+                            {share.personalNote && (
+                              <p className="text-[11px] text-neutral-600 bg-white p-2 rounded-xl border border-neutral-200/60 line-clamp-1 italic">
+                                "{share.personalNote}"
+                              </p>
+                            )}
+
+                            {/* Action Row & Interactive Simulation Bar */}
+                            <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-neutral-200/60 text-[11px]">
+                              <span className="text-neutral-400 text-[10px]">{share.sentAt}</span>
+
+                              <div className="flex items-center space-x-1.5">
+                                {share.status === 'voice_recorded' ? (
+                                  <button
+                                    onClick={() => {
+                                      const found = voiceTributes.find(v => v.contributorName.toLowerCase().includes(share.recipientName.toLowerCase()));
+                                      if (found) {
+                                        setActiveVoiceTrack(found);
+                                        setIsPlayingAudio(true);
+                                      } else {
+                                        setIsPlayingAudio(true);
+                                      }
+                                      window.scrollTo({ top: 400, behavior: 'smooth' });
+                                    }}
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] px-2.5 py-1 rounded-lg transition flex items-center space-x-1"
+                                  >
+                                    <Play className="w-3 h-3 ml-0.5" />
+                                    <span>🎧 Listen to Memory</span>
+                                  </button>
+                                ) : (
+                                  <>
+                                    <button
+                                      onClick={() => handleSimulateShareStatus(share.id, share.status === 'sent' ? 'opened' : 'voice_recorded')}
+                                      className="bg-neutral-200 hover:bg-neutral-300 text-neutral-800 font-semibold text-[10px] px-2 py-1 rounded-lg transition"
+                                      title="Simulate friend receiving, opening, and recording"
+                                    >
+                                      {share.status === 'sent' ? 'Simulate Opened' : 'Simulate Voice Record'}
+                                    </button>
+                                    <button
+                                      onClick={() => handleResendInvite(share)}
+                                      className="text-neutral-600 hover:text-[#991b1b] font-semibold text-[10px] px-2 py-1 transition"
+                                    >
+                                      Resend
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Permanent Family Keepsake Note */}
+                <div className="bg-amber-50/70 border border-amber-200/80 p-3 rounded-2xl flex items-center justify-between text-xs text-neutral-700 mt-3">
+                  <div className="flex items-center space-x-2">
+                    <ShieldCheck className="w-4 h-4 text-[#b45309]" />
+                    <span><strong>Permanent Benta Archive:</strong> All audio memories are stored indefinitely and available for download.</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
         )}
 
         {/* TAB 1: OBITUARY & STORY STUDIO (The 9-Part Trauma-Informed Method) */}
@@ -1993,34 +2853,6 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           </div>
         )}
 
-        {/* TAB: DAY-OF-SERVICE VIP ITINERARY */}
-        {portalTab === 'itinerary' && (
-          <DayOfServiceVIPItineraryModal
-            isOpen={true}
-            onClose={() => setPortalTab('home')}
-            caseData={activeCase}
-            onUpdateCase={onUpdateCase}
-            isStaffMode={isStaffUser}
-          />
-        )}
-
-        {/* TAB: COLLABORATIVE FAMILY SPLIT-PAY & CONTRIBUTIONS */}
-        {portalTab === 'split_pay' && (
-          <FamilySplitPaymentPortal
-            caseData={activeCase}
-            onUpdateCase={onUpdateCase}
-            onUpdateBilling={(updatedBilling) => {
-              if (onUpdateCase) {
-                onUpdateCase({
-                  ...activeCase,
-                  splitBilling: updatedBilling
-                });
-              }
-            }}
-            isStaffMode={isStaffUser}
-          />
-        )}
-
         {/* TAB 2: ARRANGEMENT & VITAL SUMMARY */}
         {portalTab === 'arrangements' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2455,82 +3287,6 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       </div>
                     </div>
 
-                    {/* Content Fit & Canvas Spacing Control Panel */}
-                    <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
-                          <SlidersHorizontal className="w-3.5 h-3.5 text-[#991b1b]" />
-                          Content Fit & Spacing Settings:
-                        </label>
-                        <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
-                          Zero Clipping Mode
-                        </span>
-                      </div>
-
-                      {/* Density Presets */}
-                      <div className="grid grid-cols-3 gap-1.5 text-xs">
-                        {[
-                          { id: 'smart_fit', label: '✨ Auto-Fit', desc: 'Optimal proportion' },
-                          { id: 'compact', label: '📐 Compact', desc: 'More content room' },
-                          { id: 'comfortable', label: '🌿 Spacious', desc: 'Generous margins' }
-                        ].map((fit) => (
-                          <button
-                            key={fit.id}
-                            type="button"
-                            onClick={() => setAnnouncementFitMode(fit.id as any)}
-                            className={`p-2 rounded-xl border text-center transition flex flex-col items-center gap-0.5 ${
-                              announcementFitMode === fit.id
-                                ? 'bg-red-50 border-[#991b1b] text-[#991b1b] font-bold shadow-2xs'
-                                : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-100'
-                            }`}
-                          >
-                            <span className="text-[10.5px] font-bold leading-tight">{fit.label}</span>
-                            <span className="text-[9px] text-neutral-500 font-normal">{fit.desc}</span>
-                          </button>
-                        ))}
-                      </div>
-
-                      {/* Content Element Toggles */}
-                      <div className="pt-2 border-t border-neutral-200 grid grid-cols-2 gap-2 text-[11px]">
-                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={showWebcastInAnnouncement}
-                            onChange={(e) => setShowWebcastInAnnouncement(e.target.checked)}
-                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
-                          />
-                          <span className="font-medium">4K Webcast & PIN</span>
-                        </label>
-                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={showCommittalInAnnouncement}
-                            onChange={(e) => setShowCommittalInAnnouncement(e.target.checked)}
-                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
-                          />
-                          <span className="font-medium">Witness Committal</span>
-                        </label>
-                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={showOfficiantInAnnouncement}
-                            onChange={(e) => setShowOfficiantInAnnouncement(e.target.checked)}
-                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
-                          />
-                          <span className="font-medium">Officiating Clergy</span>
-                        </label>
-                        <label className="flex items-center space-x-2 text-neutral-700 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={showFamilyNoteInAnnouncement}
-                            onChange={(e) => setShowFamilyNoteInAnnouncement(e.target.checked)}
-                            className="w-3.5 h-3.5 text-[#991b1b] rounded focus:ring-red-500"
-                          />
-                          <span className="font-medium">Family Note</span>
-                        </label>
-                      </div>
-                    </div>
-
                     {/* Portrait Photo Selector & Frame Picker */}
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
                       <div className="flex items-center justify-between">
@@ -2778,38 +3534,14 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     {/* LIVE RENDERED ANNOUNCEMENT CARD */}
                     <div
                       id="funeral-announcement-card"
-                      className={`w-full rounded-3xl transition-all duration-300 shadow-2xl relative overflow-hidden flex flex-col justify-between ${
+                      className={`w-full rounded-3xl p-6 sm:p-8 transition-all duration-300 shadow-2xl relative overflow-hidden flex flex-col justify-between text-center ${
                         announcementAspectRatio === 'mobile_story_9_16'
-                          ? `max-w-sm aspect-[9/16] ${
-                              announcementFitMode === 'compact'
-                                ? 'min-h-[620px] p-4 sm:p-5'
-                                : announcementFitMode === 'comfortable'
-                                ? 'min-h-[720px] p-6'
-                                : 'min-h-[660px] p-5 sm:p-6'
-                            } text-center`
+                          ? 'max-w-sm aspect-[9/16] min-h-[660px]'
                           : announcementAspectRatio === 'social_square_1_1'
-                          ? `max-w-md w-full aspect-square ${
-                              announcementFitMode === 'compact'
-                                ? 'min-h-[440px] p-3 sm:p-3.5'
-                                : announcementFitMode === 'comfortable'
-                                ? 'min-h-[520px] p-5 sm:p-6'
-                                : 'min-h-[470px] p-4 sm:p-4.5'
-                            } text-center`
+                          ? 'max-w-md aspect-square'
                           : announcementAspectRatio === 'landscape_banner_16_9'
-                          ? `max-w-2xl w-full aspect-[16/9] ${
-                              announcementFitMode === 'compact'
-                                ? 'min-h-[350px] p-3'
-                                : announcementFitMode === 'comfortable'
-                                ? 'min-h-[420px] p-5'
-                                : 'min-h-[375px] p-3.5 sm:p-4'
-                            }`
-                          : `max-w-md w-full aspect-[8.5/11] ${
-                              announcementFitMode === 'compact'
-                                ? 'min-h-[580px] p-4 sm:p-4.5'
-                                : announcementFitMode === 'comfortable'
-                                ? 'min-h-[680px] p-6'
-                                : 'min-h-[630px] p-5 sm:p-5.5'
-                            } text-center`
+                          ? 'max-w-xl aspect-[16/9]'
+                          : 'max-w-md aspect-[8.5/11]'
                       } ${
                         announcementTheme === 'harlem_obsidian_gold'
                           ? 'bg-[#0f1523] text-white border-2 border-amber-400 shadow-amber-950/40'
@@ -2821,305 +3553,136 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       }`}
                     >
                       {/* Top Gold / Crimson Foil Filigree Accent */}
-                      <div className="absolute top-0 inset-x-0 h-1.5 sm:h-2 bg-gradient-to-r from-[#991b1b] via-[#d4af37] to-[#991b1b]" />
+                      <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#991b1b] via-[#d4af37] to-[#991b1b]" />
 
-                      {/* --- CONDITIONAL LAYOUT: 16:9 LANDSCAPE BANNER (SPLIT 2-COLUMN) VS VERTICAL RATIOS --- */}
-                      {announcementAspectRatio === 'landscape_banner_16_9' ? (
-                        /* LANDSCAPE BANNER (16:9) HORIZONTAL 2-COLUMN SPLIT */
-                        <div className="w-full flex-1 grid grid-cols-12 gap-3 sm:gap-4 items-center pt-1.5">
-                          {/* Left Column (5 Cols): Decedent Info & Portrait */}
-                          <div className="col-span-5 flex flex-col items-center justify-between h-full text-center py-0.5">
-                            <div className="space-y-0.5">
-                              <div className="flex items-center justify-center space-x-1 text-[7.5px] font-bold uppercase tracking-widest text-amber-400 font-mono">
-                                <span>✦</span>
-                                <span>BENTA'S HARLEM · EST. 1928</span>
-                                <span>✦</span>
-                              </div>
-                              <h4 className={`font-serif-title font-bold text-[9.5px] sm:text-[10px] tracking-wider uppercase leading-tight ${
-                                announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                                  ? 'text-[#991b1b]'
-                                  : 'text-amber-300'
-                              }`}>
-                                {announcementHeadline}
-                              </h4>
-                              <h2 className="font-serif-title font-bold text-xs sm:text-sm leading-snug text-current">
-                                {activeCase.decedent.legalName}
-                              </h2>
-                              <div className={`text-[8.5px] font-light italic font-serif ${
-                                announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                                  ? 'text-neutral-600'
-                                  : 'text-neutral-300'
-                              }`}>
-                                {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
-                              </div>
-                            </div>
+                      {/* Header Section */}
+                      <div className="space-y-1.5 pt-2">
+                        <div className="flex items-center justify-center space-x-1.5 text-[9px] font-bold uppercase tracking-widest text-amber-400 font-mono">
+                          <span>✦</span>
+                          <span>BENTA'S FUNERAL HOME · HARLEM, NYC · EST. 1928</span>
+                          <span>✦</span>
+                        </div>
 
-                            {/* Photo Frame */}
-                            <div className="my-1 flex justify-center">
-                              <div className={`relative p-1 ${
-                                announcementFrameStyle === 'arched_gold_foil'
-                                  ? 'rounded-t-full rounded-b-xl border border-amber-400 shadow-md bg-gradient-to-b from-amber-300/30 to-transparent'
-                                  : announcementFrameStyle === 'oval_classic'
-                                  ? 'rounded-full border border-amber-400 shadow-md'
-                                  : 'rounded-xl border border-amber-400 shadow-md'
-                              }`}>
-                                <div className={`overflow-hidden bg-neutral-800 ${
-                                  announcementFrameStyle === 'arched_gold_foil'
-                                    ? 'w-16 h-20 sm:w-18 sm:h-22 rounded-t-full rounded-b-lg'
-                                    : announcementFrameStyle === 'oval_classic'
-                                    ? 'w-16 h-20 sm:w-18 sm:h-22 rounded-full'
-                                    : 'w-16 h-20 sm:w-18 sm:h-22 rounded-lg'
-                                }`}>
-                                  <img
-                                    src={announcementPortraitUrl}
-                                    alt={activeCase.decedent.legalName}
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                                <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#991b1b] border border-amber-400 flex items-center justify-center text-white text-[8px] shadow-xs">
-                                  🕊️
-                                </div>
-                              </div>
-                            </div>
+                        <h4 className={`font-serif-title font-bold text-xs sm:text-sm tracking-wider uppercase ${
+                          announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                            ? 'text-[#991b1b]'
+                            : 'text-amber-300'
+                        }`}>
+                          {announcementHeadline}
+                        </h4>
 
-                            {/* Family Note */}
-                            {showFamilyNoteInAnnouncement && (
-                              <div className="text-[7.5px] italic opacity-75 line-clamp-1 max-w-full px-1">
-                                {announcementFamilyMessage}
-                              </div>
-                            )}
+                        <h2 className="font-serif-title font-bold text-lg sm:text-2xl leading-tight text-current">
+                          {activeCase.decedent.legalName}
+                        </h2>
+
+                        <div className={`text-[11px] font-light italic font-serif ${
+                          announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                            ? 'text-neutral-600'
+                            : 'text-neutral-300'
+                        }`}>
+                          {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
+                        </div>
+                      </div>
+
+                      {/* Center Portrait with Selected Frame Style */}
+                      <div className="my-3 flex justify-center">
+                        <div className={`relative p-1.5 ${
+                          announcementFrameStyle === 'arched_gold_foil'
+                            ? 'rounded-t-full rounded-b-2xl border-2 border-amber-400 shadow-lg bg-gradient-to-b from-amber-300/30 to-transparent'
+                            : announcementFrameStyle === 'oval_classic'
+                            ? 'rounded-full border-2 border-amber-400 shadow-lg'
+                            : 'rounded-2xl border-2 border-amber-400 shadow-lg'
+                        }`}>
+                          <div className={`overflow-hidden bg-neutral-800 ${
+                            announcementFrameStyle === 'arched_gold_foil'
+                              ? 'w-28 h-36 sm:w-32 sm:h-40 rounded-t-full rounded-b-xl'
+                              : announcementFrameStyle === 'oval_classic'
+                              ? 'w-28 h-36 sm:w-32 sm:h-40 rounded-full'
+                              : 'w-28 h-36 sm:w-32 sm:h-40 rounded-xl'
+                          }`}>
+                            <img
+                              src={announcementPortraitUrl}
+                              alt={activeCase.decedent.legalName}
+                              className="w-full h-full object-cover"
+                            />
                           </div>
 
-                          {/* Right Column (7 Cols): Schedule, Webcast, Address */}
-                          <div className="col-span-7 flex flex-col justify-between h-full space-y-1.5 text-left py-0.5">
-                            {/* Ceremony Schedule Block */}
-                            <div className={`p-2 sm:p-2.5 rounded-xl border space-y-1 text-[9px] leading-tight ${
-                              announcementTheme === 'sanctuary_crimson_ivory'
-                                ? 'bg-neutral-50/90 border-neutral-200 text-neutral-800'
-                                : announcementTheme === 'serenity_white_silver'
-                                ? 'bg-slate-50 border-slate-200 text-slate-800'
-                                : 'bg-white/5 border-white/10 text-neutral-200'
-                            }`}>
-                              {/* Visitation */}
-                              <div className="space-y-0.5">
-                                <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                                  <Clock className="w-2.5 h-2.5 text-amber-400" />
-                                  <span>Viewing & Visitation:</span>
-                                </div>
-                                <div className="font-semibold text-current text-[9px]">{announcementWakeInfo}</div>
-                                <div className="text-[8px] opacity-75 truncate">{announcementWakeVenue}</div>
-                              </div>
-
-                              {/* Service */}
-                              <div className="space-y-0.5 pt-0.5 border-t border-white/10">
-                                <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                                  <Calendar className="w-2.5 h-2.5 text-amber-400" />
-                                  <span>Funeral Sanctuary Service:</span>
-                                </div>
-                                <div className="font-bold text-current text-[9px]">{announcementServiceInfo}</div>
-                                <div className="text-[8px] opacity-75 truncate">{announcementServiceVenue} • {announcementServiceAddress}</div>
-                                {showOfficiantInAnnouncement && announcementOfficiant && (
-                                  <div className="text-[8px] text-amber-300 font-medium italic truncate">{announcementOfficiant}</div>
-                                )}
-                              </div>
-
-                              {/* Committal */}
-                              {showCommittalInAnnouncement && announcementCommittal && (
-                                <div className="pt-0.5 border-t border-white/10 text-[8px]">
-                                  <div className="font-semibold text-current truncate">{announcementCommittal}</div>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* 4K Webcast Box */}
-                            {showWebcastInAnnouncement && (
-                              <div className={`p-1.5 rounded-lg border flex items-center justify-between text-left ${
-                                announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                                  ? 'bg-amber-50/80 border-amber-200 text-neutral-900'
-                                  : 'bg-amber-400/10 border-amber-400/30 text-amber-200'
-                              }`}>
-                                <div className="space-y-0.5 max-w-[70%]">
-                                  <div className="text-[8px] font-bold flex items-center gap-1 text-red-600">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
-                                    <span>Live 4K Webcast Available</span>
-                                  </div>
-                                  <div className="text-[7.5px] font-mono truncate text-current">
-                                    {announcementWebcastUrl}
-                                  </div>
-                                  <div className="text-[7.5px] font-medium opacity-80">
-                                    Security PIN: <strong>{announcementWebcastPin}</strong>
-                                  </div>
-                                </div>
-
-                                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white p-0.5 rounded border border-neutral-300 flex items-center justify-center shrink-0">
-                                  <QrCode className="w-full h-full text-neutral-900" />
-                                </div>
-                              </div>
-                            )}
-
-                            {/* BFH Contact Line */}
-                            <div className="text-[7px] font-mono uppercase tracking-widest text-amber-400/90 text-center truncate">
-                              630 St. Nicholas Ave, Harlem, NY 10030 · (212) 281-8850
-                            </div>
+                          {/* Dove / Gold Crest Badge */}
+                          <div className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-[#991b1b] border-2 border-amber-400 flex items-center justify-center text-white text-xs shadow-md">
+                            🕊️
                           </div>
                         </div>
-                      ) : (
-                        /* VERTICAL LAYOUT (SOCIAL SQUARE, PRINTABLE FLYER, MOBILE STORY) */
-                        <>
-                          {/* Header Section */}
-                          <div className={`pt-0.5 ${announcementAspectRatio === 'social_square_1_1' ? 'space-y-0.5' : 'space-y-1'}`}>
-                            <div className="flex items-center justify-center space-x-1.5 text-[8px] sm:text-[8.5px] font-bold uppercase tracking-widest text-amber-400 font-mono">
-                              <span>✦</span>
-                              <span>BENTA'S FUNERAL HOME · HARLEM, NYC · EST. 1928</span>
-                              <span>✦</span>
-                            </div>
+                      </div>
 
-                            <h4 className={`font-serif-title font-bold tracking-wider uppercase ${
-                              announcementAspectRatio === 'social_square_1_1' ? 'text-[9.5px] sm:text-[10.5px]' : 'text-xs sm:text-sm'
-                            } ${
-                              announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                                ? 'text-[#991b1b]'
-                                : 'text-amber-300'
-                            }`}>
-                              {announcementHeadline}
-                            </h4>
-
-                            <h2 className={`font-serif-title font-bold leading-tight text-current ${
-                              announcementAspectRatio === 'social_square_1_1' ? 'text-sm sm:text-base' : 'text-base sm:text-xl'
-                            }`}>
-                              {activeCase.decedent.legalName}
-                            </h2>
-
-                            <div className={`font-light italic font-serif ${
-                              announcementAspectRatio === 'social_square_1_1' ? 'text-[9px]' : 'text-[10px] sm:text-[11px]'
-                            } ${
-                              announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                                ? 'text-neutral-600'
-                                : 'text-neutral-300'
-                            }`}>
-                              {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
-                            </div>
+                      {/* Ceremony Schedule Block */}
+                      <div className={`p-3.5 rounded-2xl border space-y-2 text-left text-[11px] ${
+                        announcementTheme === 'sanctuary_crimson_ivory'
+                          ? 'bg-neutral-50/90 border-neutral-200 text-neutral-800'
+                          : announcementTheme === 'serenity_white_silver'
+                          ? 'bg-slate-50 border-slate-200 text-slate-800'
+                          : 'bg-white/5 border-white/10 text-neutral-200'
+                      }`}>
+                        
+                        {/* Visitation / Wake */}
+                        <div className="space-y-0.5">
+                          <div className="font-bold text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-amber-400" />
+                            <span>Public Viewing & Visitation:</span>
                           </div>
+                          <div className="font-semibold text-current">{announcementWakeInfo}</div>
+                          <div className="text-[10px] opacity-75">{announcementWakeVenue}</div>
+                        </div>
 
-                          {/* Center Portrait with Selected Frame Style */}
-                          <div className={`flex justify-center ${announcementAspectRatio === 'social_square_1_1' ? 'my-1' : 'my-2 sm:my-2.5'}`}>
-                            <div className={`relative p-1 ${
-                              announcementFrameStyle === 'arched_gold_foil'
-                                ? 'rounded-t-full rounded-b-xl border border-amber-400 shadow-md bg-gradient-to-b from-amber-300/30 to-transparent'
-                                : announcementFrameStyle === 'oval_classic'
-                                ? 'rounded-full border border-amber-400 shadow-md'
-                                : 'rounded-xl border border-amber-400 shadow-md'
-                            }`}>
-                              <div className={`overflow-hidden bg-neutral-800 ${
-                                announcementAspectRatio === 'social_square_1_1'
-                                  ? (announcementFrameStyle === 'arched_gold_foil'
-                                    ? 'w-18 h-22 sm:w-20 sm:h-24 rounded-t-full rounded-b-lg'
-                                    : announcementFrameStyle === 'oval_classic'
-                                    ? 'w-18 h-22 sm:w-20 sm:h-24 rounded-full'
-                                    : 'w-18 h-22 sm:w-20 sm:h-24 rounded-lg')
-                                  : (announcementFrameStyle === 'arched_gold_foil'
-                                    ? 'w-22 h-28 sm:w-26 sm:h-32 rounded-t-full rounded-b-xl'
-                                    : announcementFrameStyle === 'oval_classic'
-                                    ? 'w-22 h-28 sm:w-26 sm:h-32 rounded-full'
-                                    : 'w-22 h-28 sm:w-26 sm:h-32 rounded-xl')
-                              }`}>
-                                <img
-                                  src={announcementPortraitUrl}
-                                  alt={activeCase.decedent.legalName}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-
-                              {/* Dove Badge */}
-                              <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#991b1b] border border-amber-400 flex items-center justify-center text-white text-[9px] shadow-sm">
-                                🕊️
-                              </div>
-                            </div>
+                        {/* Funeral Sanctuary Service */}
+                        <div className="space-y-0.5 pt-1 border-t border-white/10">
+                          <div className="font-bold text-[10px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                            <Calendar className="w-3 h-3 text-amber-400" />
+                            <span>Funeral Sanctuary Service:</span>
                           </div>
-
-                          {/* Ceremony Schedule Block */}
-                          <div className={`rounded-xl border text-left leading-tight ${
-                            announcementAspectRatio === 'social_square_1_1' ? 'p-2 space-y-0.5 text-[9px]' : 'p-2.5 sm:p-3 space-y-1 text-[10px]'
-                          } ${
-                            announcementTheme === 'sanctuary_crimson_ivory'
-                              ? 'bg-neutral-50/90 border-neutral-200 text-neutral-800'
-                              : announcementTheme === 'serenity_white_silver'
-                              ? 'bg-slate-50 border-slate-200 text-slate-800'
-                              : 'bg-white/5 border-white/10 text-neutral-200'
-                          }`}>
-                            
-                            {/* Visitation / Wake */}
-                            <div className="space-y-0.5">
-                              <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                                <Clock className="w-2.5 h-2.5 text-amber-400" />
-                                <span>Public Viewing & Visitation:</span>
-                              </div>
-                              <div className="font-semibold text-current">{announcementWakeInfo}</div>
-                              <div className="text-[8px] opacity-75 truncate">{announcementWakeVenue}</div>
-                            </div>
-
-                            {/* Funeral Sanctuary Service */}
-                            <div className="space-y-0.5 pt-0.5 border-t border-white/10">
-                              <div className="font-bold text-[8px] uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                                <Calendar className="w-2.5 h-2.5 text-amber-400" />
-                                <span>Funeral Sanctuary Service:</span>
-                              </div>
-                              <div className="font-bold text-current">{announcementServiceInfo}</div>
-                              <div className="text-[8px] opacity-75 truncate">{announcementServiceVenue} • {announcementServiceAddress}</div>
-                              {showOfficiantInAnnouncement && announcementOfficiant && (
-                                <div className="text-[8px] text-amber-300 font-medium italic truncate">{announcementOfficiant}</div>
-                              )}
-                            </div>
-
-                            {/* Committal */}
-                            {showCommittalInAnnouncement && announcementCommittal && (
-                              <div className="space-y-0.5 pt-0.5 border-t border-white/10 text-[8px]">
-                                <div className="font-semibold text-current truncate">{announcementCommittal}</div>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* 4K Webcast & QR Code Banner */}
-                          {showWebcastInAnnouncement && (
-                            <div className={`rounded-lg border flex items-center justify-between text-left ${
-                              announcementAspectRatio === 'social_square_1_1' ? 'mt-1 p-1' : 'mt-1.5 p-1.5'
-                            } ${
-                              announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                                ? 'bg-amber-50/80 border-amber-200 text-neutral-900'
-                                : 'bg-amber-400/10 border-amber-400/30 text-amber-200'
-                            }`}>
-                              <div className="space-y-0.5 max-w-[75%]">
-                                <div className="text-[8.5px] font-bold flex items-center gap-1 text-red-600">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
-                                  <span>Live 4K Webcast Available</span>
-                                </div>
-                                <div className="text-[7.5px] font-mono truncate text-current">
-                                  {announcementWebcastUrl}
-                                </div>
-                                <div className="text-[7.5px] font-medium opacity-80">
-                                  Security PIN: <strong>{announcementWebcastPin}</strong>
-                                </div>
-                              </div>
-
-                              <div className={`bg-white p-0.5 rounded border border-neutral-300 flex items-center justify-center shrink-0 ${
-                                announcementAspectRatio === 'social_square_1_1' ? 'w-7 h-7' : 'w-8 h-8'
-                              }`}>
-                                <QrCode className="w-full h-full text-neutral-900" />
-                              </div>
-                            </div>
+                          <div className="font-bold text-current">{announcementServiceInfo}</div>
+                          <div className="text-[10px] opacity-75">{announcementServiceVenue} • {announcementServiceAddress}</div>
+                          {announcementOfficiant && (
+                            <div className="text-[10px] text-amber-300 font-medium italic">{announcementOfficiant}</div>
                           )}
+                        </div>
 
-                          {/* Footer Note & BFH Seal */}
-                          <div className={`text-[8px] space-y-0.5 opacity-80 font-light ${announcementAspectRatio === 'social_square_1_1' ? 'pt-0.5' : 'pt-1'}`}>
-                            {showFamilyNoteInAnnouncement && (
-                              <div className="italic line-clamp-1">{announcementFamilyMessage}</div>
-                            )}
-                            <div className="font-mono text-[7px] sm:text-[7.5px] uppercase tracking-widest text-amber-400">
-                              630 St. Nicholas Ave, New York, NY 10030 · (212) 281-8850
-                            </div>
+                        {/* Committal */}
+                        <div className="space-y-0.5 pt-1 border-t border-white/10 text-[10px]">
+                          <div className="font-semibold text-current">{announcementCommittal}</div>
+                        </div>
+                      </div>
+
+                      {/* 4K Webcast & QR Code Banner */}
+                      <div className={`mt-2 p-2 rounded-xl border flex items-center justify-between text-left ${
+                        announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
+                          ? 'bg-amber-50/80 border-amber-200 text-neutral-900'
+                          : 'bg-amber-400/10 border-amber-400/30 text-amber-200'
+                      }`}>
+                        <div className="space-y-0.5 max-w-[75%]">
+                          <div className="text-[10px] font-bold flex items-center gap-1 text-red-600">
+                            <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
+                            <span>Live 4K Webcast Available</span>
                           </div>
-                        </>
-                      )}
+                          <div className="text-[9px] font-mono truncate text-current">
+                            {announcementWebcastUrl}
+                          </div>
+                          <div className="text-[9px] font-medium opacity-80">
+                            Security PIN: <strong>{announcementWebcastPin}</strong>
+                          </div>
+                        </div>
+
+                        <div className="w-11 h-11 bg-white p-1 rounded-lg border border-neutral-300 flex items-center justify-center shrink-0">
+                          <QrCode className="w-full h-full text-neutral-900" />
+                        </div>
+                      </div>
+
+                      {/* Footer Note & BFH Seal */}
+                      <div className="pt-2 text-[9px] space-y-0.5 opacity-80 font-light">
+                        <div className="italic line-clamp-1">{announcementFamilyMessage}</div>
+                        <div className="font-mono text-[8px] uppercase tracking-widest text-amber-400">
+                          630 St. Nicholas Ave, New York, NY 10030 · (212) 281-8850
+                        </div>
+                      </div>
                     </div>
 
                     {/* PUBLIC SOCIAL MEDIA & SMS TEXT SHARING ACTION BAR */}
@@ -3414,14 +3977,9 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                 <div className="flex items-center space-x-2">
                   <Smartphone className="w-5 h-5 text-[#991b1b]" />
-                  <div>
-                    <h4 className="font-serif-title text-lg font-bold text-neutral-900">
-                      Dispatch Funeral Announcement via SMS
-                    </h4>
-                    <p className="text-[11px] text-neutral-500">
-                      Send formatted service details, live 4K webcast link, and condolence notes to family and community members.
-                    </p>
-                  </div>
+                  <h4 className="font-serif-title text-lg font-bold text-neutral-900">
+                    Dispatch Funeral Announcement via SMS
+                  </h4>
                 </div>
                 <button
                   onClick={() => setIsAnnouncementSMSModalOpen(false)}
@@ -3431,24 +3989,6 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </button>
               </div>
 
-              {/* System Activation & Delivery Mode Info */}
-              <div className="bg-amber-50 border border-amber-200 p-3 rounded-2xl text-[11px] space-y-1">
-                <div className="flex items-center justify-between text-amber-900 font-bold">
-                  <span className="flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-700" />
-                    How SMS Dispatch Works:
-                  </span>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-300 px-2 py-0.5 rounded-full font-mono">
-                    ● System Active
-                  </span>
-                </div>
-                <p className="text-amber-800 leading-relaxed text-[10.5px]">
-                  <strong>• Instant Phone / iMessage:</strong> Opens your device's Messages app with the phone number and formatted announcement ready to send in 1-tap.
-                  <br />
-                  <strong>• BFH Cloud Gateway:</strong> Dispatches via BFH's Twilio 10DLC Relay and logs the transaction directly to the case audit notes.
-                </p>
-              </div>
-
               <div className="space-y-3.5 text-xs">
                 <div>
                   <label className="text-xs font-bold text-neutral-700 block mb-1">Recipient Name / Community Group:</label>
@@ -3456,7 +3996,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     type="text"
                     value={announcementSMSRecipientName}
                     onChange={(e) => setAnnouncementSMSRecipientName(e.target.value)}
-                    placeholder="e.g. Jason Benta / Harlem Church Deacons / Family Circle"
+                    placeholder="e.g. Harlem Church Deacons / Cousin Michael"
                     className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
                   />
                 </div>
@@ -3467,7 +4007,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     type="text"
                     value={announcementSMSRecipientPhone}
                     onChange={(e) => setAnnouncementSMSRecipientPhone(e.target.value)}
-                    placeholder="e.g. (917) 807-3995 or +19178073995"
+                    placeholder="e.g. (212) 555-0198"
                     className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] font-mono"
                   />
                 </div>
@@ -3478,23 +4018,16 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     type="text"
                     value={announcementSMSCustomNote}
                     onChange={(e) => setAnnouncementSMSCustomNote(e.target.value)}
-                    placeholder="e.g. Please join our family in celebrating Arthur's legacy."
+                    placeholder="e.g. Please join us in celebrating Arthur's legacy."
                     className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
                   />
                 </div>
 
                 {/* Live Carrier SMS Bubble Preview */}
-                <div className="bg-neutral-900 text-white p-4 rounded-2xl border border-amber-400/40 space-y-2 shadow-inner">
+                <div className="bg-neutral-900 text-white p-4 rounded-2xl border border-amber-400/40 space-y-1.5 shadow-inner">
                   <div className="flex items-center justify-between text-[10px] text-amber-400 font-mono">
                     <span>📱 CARRIER SMS PREVIEW</span>
-                    <button
-                      type="button"
-                      onClick={handleCopySMSBubbleText}
-                      className="text-[10px] bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded flex items-center gap-1 transition"
-                    >
-                      <Copy className="w-3 h-3" />
-                      <span>Copy Text</span>
-                    </button>
+                    <span>Carrier Delivered</span>
                   </div>
                   <p className="text-[11px] leading-relaxed text-neutral-200">
                     🕊️ <strong>BENTA'S FUNERAL ANNOUNCEMENT:</strong> {announcementHeadline} for <strong>{activeCase.decedent.legalName}</strong>.
@@ -3526,38 +4059,22 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 )}
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-neutral-200">
+              <div className="flex justify-end space-x-2 pt-2 border-t border-neutral-200">
                 <button
                   type="button"
                   onClick={() => setIsAnnouncementSMSModalOpen(false)}
-                  className="px-3 py-2 text-xs font-bold text-neutral-600 hover:bg-neutral-100 rounded-xl"
+                  className="px-4 py-2 text-xs font-bold text-neutral-600 hover:bg-neutral-100 rounded-xl"
                 >
                   Close
                 </button>
-
-                <div className="flex items-center space-x-2">
-                  {/* Option 1: Native Phone / iMessage App */}
-                  <button
-                    type="button"
-                    onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone, true)}
-                    className="px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 rounded-xl transition flex items-center space-x-1.5 shadow-2xs"
-                    title="Open on your phone or Mac Messages app with prefilled text"
-                  >
-                    <Smartphone className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>📱 Open in Messages / SMS</span>
-                  </button>
-
-                  {/* Option 2: Cloud Gateway Dispatch */}
-                  <button
-                    type="button"
-                    onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone, false)}
-                    className="px-4 py-2 text-xs font-bold text-white bg-[#991b1b] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20 flex items-center space-x-1.5"
-                  >
-                    <Send className="w-3.5 h-3.5 text-amber-300" />
-                    <span>⚡ Dispatch via BFH Gateway</span>
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone)}
+                  className="px-5 py-2 text-xs font-bold text-white bg-[#991b1b] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20 flex items-center space-x-1.5"
+                >
+                  <Send className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Dispatch SMS Announcement</span>
+                </button>
               </div>
 
             </div>
@@ -4434,6 +4951,16 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
           </div>
         </div>
       )}
+
+      {/* Harlem Florist Guild & Sympathy Boutique Modal */}
+      <FloralTributeShopModal
+        isOpen={isFloralShopModalOpen}
+        onClose={() => setIsFloralShopModalOpen(false)}
+        activeCase={activeCase}
+        onOrderPlaced={(order) => {
+          showToast(`🌸 Floral tribute "${order.item.name}" ordered and dispatched to ${order.floristName}!`);
+        }}
+      />
 
     </div>
   );

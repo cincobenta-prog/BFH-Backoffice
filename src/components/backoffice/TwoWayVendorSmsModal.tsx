@@ -6,6 +6,7 @@ import {
   VendorSmsThreadMessage,
   SimulatedNotification
 } from '../../lib/types/funeral';
+import { getTwilioConfig } from '../../lib/services/twilioService';
 import {
   Smartphone,
   Send,
@@ -26,7 +27,8 @@ import {
   Check,
   Activity,
   Server,
-  Phone
+  Phone,
+  Key
 } from 'lucide-react';
 
 interface TwoWayVendorSmsModalProps {
@@ -39,6 +41,7 @@ interface TwoWayVendorSmsModalProps {
   onAddRequest?: (newReq: PartnerScheduleRequest) => void;
   onSendNotification?: (notif: SimulatedNotification) => void;
   targetRequestId?: string | null;
+  onOpenTwilioGateway?: () => void;
 }
 
 export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
@@ -50,7 +53,8 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
   onUpdateRequest,
   onAddRequest: _onAddRequest,
   onSendNotification,
-  targetRequestId
+  targetRequestId,
+  onOpenTwilioGateway
 }) => {
   // Find initial request or default
   const caseRequests = requests.filter(r => r.caseId === activeCase.id);
@@ -69,6 +73,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
   const [phoneLogCaller, setPhoneLogCaller] = useState('Jason Benta, LFD #08850');
   const [toastFeedback, setToastFeedback] = useState<string | null>(null);
   const [copiedPayload, setCopiedPayload] = useState(false);
+  const twilioConfig = getTwilioConfig();
 
   if (!isOpen) return null;
 
@@ -386,6 +391,16 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
             </button>
           </div>
           <div className="hidden sm:flex items-center space-x-3 text-[11px] text-neutral-400 font-mono">
+            {onOpenTwilioGateway && (
+              <button
+                onClick={onOpenTwilioGateway}
+                className="text-amber-400 hover:text-amber-300 underline flex items-center gap-1 cursor-pointer font-sans text-xs mr-1"
+                title="Configure Twilio API Keys and Phone Number"
+              >
+                <Key className="w-3 h-3 text-amber-400" />
+                <span>Configure Keys</span>
+              </button>
+            )}
             <span className="flex items-center gap-1">
               <Server className="w-3 h-3 text-emerald-400" />
               <span>Twilio API v2010-04-01</span>
@@ -422,11 +437,21 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                   <span className="text-sm font-bold text-white">Twilio REST API Gateway & Webhook Pipeline</span>
                 </div>
                 <p className="text-neutral-400 text-xs mt-1 font-sans">
-                  Bi-directional carrier routing between Benta's Funeral Home (212-281-8850) and {currentRequest?.partnerName} ({currentRequest?.partnerPhone}).
+                  Bi-directional carrier routing between Benta's Funeral Home ({twilioConfig.fromPhoneNumber || '212-281-8850'}) and {currentRequest?.partnerName} ({currentRequest?.partnerPhone}).
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 font-sans">
+              <div className="flex items-center gap-2 font-sans flex-wrap">
+                {onOpenTwilioGateway && (
+                  <button
+                    onClick={onOpenTwilioGateway}
+                    className="px-3.5 py-1.5 bg-[#991b1b] hover:bg-[#7f1d1d] text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 border border-amber-300/40 shadow-xs cursor-pointer"
+                    title="Open Twilio Gateway Settings to enter Account SID and Auth Token"
+                  >
+                    <Key className="w-3.5 h-3.5 text-amber-300" />
+                    <span>Configure Twilio Keys & Number</span>
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     const lastMsg = currentRequest?.threadMessages && currentRequest.threadMessages.length > 0
@@ -434,10 +459,10 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                       : "YES, CONFIRMED";
                     const sampleWebhook = JSON.stringify({
                       event: "sms.inbound_received",
-                      AccountSid: "ACbfh9828472918402948201948201948",
+                      AccountSid: twilioConfig.accountSid || "ACbfh9828472918402948201948201948",
                       MessageSid: `SM${Date.now().toString(36)}`,
                       From: currentRequest?.partnerPhone,
-                      To: "+12122818850",
+                      To: twilioConfig.fromPhoneNumber || "+12122818850",
                       Body: lastMsg,
                       Carrier: "Verizon Wireless (NYC)",
                       SignatureValid: true
@@ -446,7 +471,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                     setCopiedPayload(true);
                     setTimeout(() => setCopiedPayload(false), 2000);
                   }}
-                  className="px-3.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 border border-neutral-700"
+                  className="px-3.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 border border-neutral-700 cursor-pointer"
                 >
                   {copiedPayload ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-amber-300" />}
                   <span>{copiedPayload ? 'Copied JSON!' : 'Copy Twilio Payload'}</span>

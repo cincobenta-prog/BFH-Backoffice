@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   getTwilioConfig, 
   saveTwilioConfig, 
@@ -36,6 +36,13 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
   const [isTesting, setIsTesting] = useState(false);
   const [testResult, setTestResult] = useState<{ success: boolean; message: string; sid?: string } | null>(null);
   const [saveSuccessToast, setSaveSuccessToast] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setConfig(getTwilioConfig());
+      setTestResult(null);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -104,8 +111,8 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fadeIn">
-      <div className="bg-neutral-900 text-white rounded-3xl max-w-2xl w-full border-2 border-amber-400 shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fadeIn font-sans">
+      <div className="bg-neutral-900 text-white rounded-3xl max-w-2xl w-full border-2 border-amber-400 shadow-2xl overflow-hidden flex flex-col my-4">
         
         {/* Top Header */}
         <div className="bg-neutral-950 p-5 px-6 border-b border-neutral-800 flex items-center justify-between">
@@ -134,7 +141,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
 
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white transition"
+            className="p-2 rounded-full hover:bg-neutral-800 text-neutral-400 hover:text-white transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -159,7 +166,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
             <div className="flex items-center justify-between text-[11px] font-bold text-amber-300">
               <span className="flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                Where to Find Your 3 Twilio Items:
+                Where to Find Your 3 Twilio Credentials:
               </span>
               <a
                 href="https://console.twilio.com"
@@ -172,9 +179,9 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
               </a>
             </div>
             <ol className="list-decimal list-inside space-y-1 text-neutral-300 text-[11px] leading-relaxed">
-              <li><strong>Account SID:</strong> Found on the top of your Twilio Console home page (starts with <code className="text-amber-300 font-mono">AC...</code>).</li>
-              <li><strong>Auth Token / API Key Secret:</strong> Found under "Auth Token" or "API Keys" (<code className="text-amber-300 font-mono">SK...</code> or token).</li>
-              <li><strong>Twilio Phone Number:</strong> Found under "Phone Numbers" $\to$ "Active Numbers" (e.g. <code className="text-amber-300 font-mono">+12122818850</code>) or Messaging Service SID (<code className="text-amber-300 font-mono">MG...</code>).</li>
+              <li><strong>Account SID:</strong> Found on the top of your Twilio Console dashboard (starts with <code className="text-amber-300 font-mono">AC...</code>).</li>
+              <li><strong>Auth Token / API Key Secret:</strong> Found under "Auth Token" or "API Keys" on Twilio Console (<code className="text-amber-300 font-mono">SK...</code> or token).</li>
+              <li><strong>Twilio Phone Number:</strong> Found under "Phone Numbers" &rarr; "Active Numbers" (e.g. <code className="text-amber-300 font-mono">+12122818850</code>) or Messaging Service SID (<code className="text-amber-300 font-mono">MG...</code>).</li>
             </ol>
           </div>
 
@@ -257,7 +264,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
                 type="button"
                 onClick={handleTestSms}
                 disabled={isTesting}
-                className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 shadow-sm disabled:opacity-50"
+                className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
               >
                 {isTesting ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
                 <span>{isTesting ? 'Sending...' : '⚡ Test SMS'}</span>
@@ -287,7 +294,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
         <div className="bg-neutral-950 p-4 px-6 border-t border-neutral-800 flex items-center justify-between">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-xs font-bold text-neutral-400 hover:text-white rounded-xl"
+            className="px-4 py-2 text-xs font-bold text-neutral-400 hover:text-white rounded-xl cursor-pointer"
           >
             Close
           </button>
@@ -295,7 +302,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
           <div className="flex items-center space-x-2">
             <button
               onClick={handleSave}
-              className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs transition shadow-md flex items-center space-x-1.5"
+              className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs transition shadow-md flex items-center space-x-1.5 cursor-pointer"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Save & Activate Twilio Gateway</span>
