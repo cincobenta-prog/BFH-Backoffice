@@ -5,7 +5,8 @@ import {
   ServiceTypeAP47,
   FloralArrangementItem,
   CustomLiveryVehicleItem,
-  ContractRevisionArchiveRecord
+  ContractRevisionArchiveRecord,
+  FullVitalRecordInformationSheet
 } from '../../lib/types/funeral';
 import { 
   BFH_GPL_2026, 
@@ -23,7 +24,11 @@ import {
 } from '../../lib/data/casketCatalog';
 import {
   BFH_FLORAL_CATALOG,
-  BFH_FLORAL_CATEGORIES,
+  DANIELAS_ORIGINAL_CATALOG,
+  OTHER_FLORAL_CATALOG,
+  DANIELAS_CATEGORIES,
+  OTHER_FLORAL_CATEGORIES,
+  FloralBookType,
   FloralCategory,
   FloralSize,
   getFloralByCode
@@ -141,18 +146,24 @@ export const ArrangementContractBuilderModal: React.FC<ArrangementContractBuilde
     return getDefaultStatementOfGoodsForCase(activeCase);
   });
 
+  // Vital Record Information Sheet Tab State
+  const [vitalSheetPage, setVitalSheetPage] = useState<'page1' | 'page2'>('page1');
+
   // Local Custom Builders in Step 3
   const [newCustomVehicleType, setNewCustomVehicleType] = useState('');
   const [newCustomVehicleCount, setNewCustomVehicleCount] = useState(1);
   const [newCustomVehiclePrice, setNewCustomVehiclePrice] = useState(650);
+  const [newVehicleEscortType, setNewVehicleEscortType] = useState<'with_family' | 'without_family' | 'none'>('with_family');
 
-  // BFH Catalog Floral Selection State
+  // Floral Catalog Book & Selection State
+  const [selectedFloralBook, setSelectedFloralBook] = useState<FloralBookType>('danielas_original');
   const [selectedFloralCategory, setSelectedFloralCategory] = useState<FloralCategory | 'all'>('all');
-  const [selectedFloralCode, setSelectedFloralCode] = useState<string>('BFH-CC-005');
+  const [selectedFloralCode, setSelectedFloralCode] = useState<string>('BFH-CC-001');
   const [selectedFloralSize, setSelectedFloralSize] = useState<FloralSize>('medium');
   const [selectedFloralRibbon, setSelectedFloralRibbon] = useState<string>('Loving Family');
   const [selectedFloralQty, setSelectedFloralQty] = useState<number>(1);
-  const [showVisualFloralGallery, setShowVisualFloralGallery] = useState<boolean>(false);
+  const [showVisualFloralGallery, setShowVisualFloralGallery] = useState<boolean>(true);
+  const [floralSearchQuery, setFloralSearchQuery] = useState<string>('');
 
   const [newCustomFlowerType, setNewCustomFlowerType] = useState<FloralArrangementItem['type']>('casket_spray');
   const [newCustomFlowerDesc, setNewCustomFlowerDesc] = useState('');
@@ -365,12 +376,34 @@ export const ArrangementContractBuilderModal: React.FC<ArrangementContractBuilde
   // HANDLERS FOR LIVERY, MERCHANDISE, FLOWERS, STATIONERY, CASH ADVANCES
   // -------------------------------------------------------------
 
+  // Vital Records Information Sheet Handlers
+  const updateVitalSheet = (fields: Partial<FullVitalRecordInformationSheet>) => {
+    setStatementData(prev => ({
+      ...prev,
+      vitalRecordsSheet: {
+        ...(prev.vitalRecordsSheet || {}),
+        ...fields
+      }
+    }));
+  };
+
+  const updateDispositionSchedule = (fields: any) => {
+    setStatementData(prev => ({
+      ...prev,
+      dispositionSchedule: {
+        ...(prev.dispositionSchedule || { sequence: 'same_day' }),
+        ...fields
+      }
+    }));
+  };
+
   const handleAddCustomVehicle = () => {
     if (!newCustomVehicleType.trim()) return;
     const newVehicle: CustomLiveryVehicleItem = {
       id: `veh-${Date.now()}`,
       vehicleType: newCustomVehicleType.trim(),
       rateType: 'custom',
+      escortType: newVehicleEscortType,
       count: newCustomVehicleCount,
       unitPrice: newCustomVehiclePrice,
       totalAmount: newCustomVehicleCount * newCustomVehiclePrice
@@ -380,6 +413,28 @@ export const ArrangementContractBuilderModal: React.FC<ArrangementContractBuilde
     setStatementData(calculateAP47Totals(updated));
     setNewCustomVehicleType('');
     showToast(`🚗 Added ${newVehicle.vehicleType} to livery lineup!`);
+  };
+
+  const handleAddPresetVehicle = (type: string, unitPrice: number, escortType: 'with_family' | 'without_family' | 'none' = 'none') => {
+    const existing = (statementData.sectionI.G_vehicles || []).find(v => v.vehicleType.toLowerCase().includes(type.toLowerCase().slice(0, 10)));
+    if (existing) {
+      handleUpdateVehicleCount(existing.id, existing.count + 1);
+      showToast(`🚗 Added another ${existing.vehicleType} (Count: ${existing.count + 1})`);
+      return;
+    }
+    const newV: CustomLiveryVehicleItem = {
+      id: `veh-${Date.now()}`,
+      vehicleType: type,
+      rateType: 'local_nyc',
+      escortType: escortType,
+      count: 1,
+      unitPrice: unitPrice,
+      totalAmount: unitPrice
+    };
+    const updated = { ...statementData };
+    updated.sectionI.G_vehicles = [...(updated.sectionI.G_vehicles || []), newV];
+    setStatementData(calculateAP47Totals(updated));
+    showToast(`🚗 Added ${type} ($${unitPrice.toFixed(2)}) to livery fleet!`);
   };
 
   const handleUpdateVehicleCount = (vehicleId: string, newCount: number) => {
@@ -400,10 +455,58 @@ export const ArrangementContractBuilderModal: React.FC<ArrangementContractBuilde
     setStatementData(calculateAP47Totals(updated));
   };
 
+  const handleUpdateVehicleEscortType = (vehicleId: string, escortType: 'with_family' | 'without_family' | 'none') => {
+    const updated = { ...statementData };
+    updated.sectionI.G_vehicles = (updated.sectionI.G_vehicles || []).map((v) =>
+      v.id === vehicleId ? { ...v, escortType } : v
+    );
+    setStatementData(calculateAP47Totals(updated));
+  };
+
   const handleRemoveVehicle = (vehicleId: string) => {
     const updated = { ...statementData };
     updated.sectionI.G_vehicles = (updated.sectionI.G_vehicles || []).filter(v => v.id !== vehicleId);
     setStatementData(calculateAP47Totals(updated));
+  };
+
+  // Register Book Handlers
+  const handleSelectRegisterBookOption = (type: 'standard' | 'deluxe') => {
+    const updated = { ...statementData };
+    const unit = type === 'deluxe' ? BFH_GPL_2026.stationery.registerBookDeluxe : BFH_GPL_2026.stationery.registerBookBase;
+    updated.sectionI.I8_registerBookType = type === 'deluxe' ? 'Deluxe Heirloom Memorial Register Book' : 'Standard Padded Leatherette Register Book';
+    updated.sectionI.I8_registerBookUnitPrice = unit;
+    if ((updated.sectionI.I8_registerBookQty || 0) === 0) {
+      updated.sectionI.I8_registerBookQty = 1;
+    }
+    updated.sectionI.I8_registerBookAmount = (updated.sectionI.I8_registerBookQty || 1) * unit;
+    setStatementData(calculateAP47Totals(updated));
+    showToast(`📜 Selected ${type === 'deluxe' ? 'Deluxe ($85/ea)' : 'Standard ($50/ea)'} Register Book`);
+  };
+
+  const handleUpdateRegisterBookQty = (qty: number) => {
+    const count = Math.max(0, qty);
+    const updated = { ...statementData };
+    const unit = updated.sectionI.I8_registerBookUnitPrice || BFH_GPL_2026.stationery.registerBookBase;
+    updated.sectionI.I8_registerBookQty = count;
+    updated.sectionI.I8_registerBookAmount = count * unit;
+    setStatementData(calculateAP47Totals(updated));
+  };
+
+  const handleUpdateRegisterBookUnitPrice = (price: number) => {
+    const unit = Math.max(0, price);
+    const updated = { ...statementData };
+    updated.sectionI.I8_registerBookUnitPrice = unit;
+    updated.sectionI.I8_registerBookAmount = (updated.sectionI.I8_registerBookQty || 0) * unit;
+    setStatementData(calculateAP47Totals(updated));
+  };
+
+  // Cash Advance Veteran Benefit Handler
+  const handleToggleVeteranDeathCertDiscount = (isVet: boolean) => {
+    const updated = { ...statementData };
+    updated.isVeteran = isVet;
+    updated.sectionII.isVeteranDiscountApplied = isVet;
+    setStatementData(calculateAP47Totals(updated));
+    showToast(isVet ? '🎖️ Applied 3 Free Death Certificates Veteran Benefit' : 'Removed Veteran Benefit');
   };
 
   const handleUpdateFlowerQuantity = (flowerId: string, newQty: number) => {
@@ -553,8 +656,8 @@ export const ArrangementContractBuilderModal: React.FC<ArrangementContractBuilde
   const handleSaveToGoldenRecord = () => {
     const calculated = calculateAP47Totals(statementData);
     
-    const effectiveVenue = scheduleServiceVenue === 'custom' 
-      ? (customVenueName.trim() || 'External Sanctuary / Church') 
+    const effectiveVenue = (scheduleServiceVenue === 'custom' || scheduleServiceVenue === 'other' || scheduleServiceVenue === 'Other')
+      ? (customVenueName.trim() || 'Other Church / Facility')
       : scheduleServiceVenue;
 
     // Check if contract adjustments occurred compared to latest snapshot
@@ -815,161 +918,1238 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
           {/* ------------------------------------------------------------- */}
           {/* STEP 1: LOVED ONE STORY & VITAL RECORDS INTERVIEW */}
           {/* ------------------------------------------------------------- */}
-          {currentStep === 1 && (
-            <div className="space-y-6 animate-fadeIn">
-              
-              {/* Vital Records Reference Card */}
-              <div className="bg-neutral-50 p-4 sm:p-5 rounded-2xl border border-neutral-200 space-y-3">
-                <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
-                  <h4 className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
-                    <ShieldCheck className="w-4 h-4 text-[#991b1b]" />
-                    <span>Vital Records Verification Sheet & Informant Record</span>
-                  </h4>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-mono px-2 py-0.5 rounded font-bold">
-                    EDRS #{activeCase.medicalCertifier.edrsPermitNumber || 'EDRS-PENDING'}
-                  </span>
+          {currentStep === 1 && (() => {
+            const vitals = statementData.vitalRecordsSheet || {};
+            return (
+              <div className="space-y-6 animate-fadeIn text-xs">
+                
+                {/* 2-Page Digital Vital Record Sheet Document Container */}
+                <div className="bg-white rounded-3xl border-2 border-neutral-300 shadow-xl overflow-hidden">
+                  
+                  {/* Top Header of Document */}
+                  <div className="bg-gradient-to-r from-neutral-900 via-[#1f1616] to-neutral-900 text-white p-5 border-b border-amber-400/40">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 rounded-2xl bg-[#991b1b] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-lg font-serif-title font-bold text-xl">
+                          BFH
+                        </div>
+                        <div>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
+                              NYS DOH / NYC EDRS GOLDEN RECORD
+                            </span>
+                            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-mono px-2 py-0.5 rounded border border-emerald-400/30 font-bold">
+                              EDRS #{activeCase.medicalCertifier.edrsPermitNumber || 'NYC-2026-EDRS-VERIFIED'}
+                            </span>
+                          </div>
+                          <h3 className="font-serif-title text-lg font-bold text-white tracking-wide mt-0.5">
+                            Benta's Funeral Home, Inc. • Vital Record Information Sheet
+                          </h3>
+                          <p className="text-[11px] text-neutral-300">
+                            630 St. Nicholas Avenue, New York, NY 10030 • (212) 281-8850 • Case #{activeCase.caseNumber}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Page Switcher Tabs */}
+                      <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/10 space-x-1">
+                        <button
+                          type="button"
+                          onClick={() => setVitalSheetPage('page1')}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                            vitalSheetPage === 'page1'
+                              ? 'bg-[#991b1b] text-white shadow-xs border border-amber-400/40'
+                              : 'text-neutral-400 hover:text-white'
+                          }`}
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          <span>Page 1: Decedent Vitals & Informant</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setVitalSheetPage('page2')}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                            vitalSheetPage === 'page2'
+                              ? 'bg-[#991b1b] text-white shadow-xs border border-amber-400/40'
+                              : 'text-neutral-400 hover:text-white'
+                          }`}
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          <span>Page 2: Authorizations, Director & Story</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Document Body */}
+                  <div className="p-6 sm:p-8 space-y-6">
+
+                    {/* ========================================================= */}
+                    {/* PAGE 1: VITAL RECORD INFORMATION */}
+                    {/* ========================================================= */}
+                    {vitalSheetPage === 'page1' && (
+                      <div className="space-y-6 animate-fadeIn">
+                        
+                        {/* Section 1: Decedent Identity */}
+                        <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
+                          <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] flex items-center gap-1.5">
+                              <ShieldCheck className="w-4 h-4" />
+                              <span>1. Name & Identity of Decedent</span>
+                            </h4>
+                            <span className="text-[10px] text-neutral-500 font-mono">EDRS Legal Identification</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">First Name:</label>
+                              <input
+                                type="text"
+                                value={vitals.decedentFirstName || ''}
+                                onChange={(e) => updateVitalSheet({ decedentFirstName: e.target.value })}
+                                placeholder="First Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Middle Name:</label>
+                              <input
+                                type="text"
+                                value={vitals.decedentMiddleName || ''}
+                                onChange={(e) => updateVitalSheet({ decedentMiddleName: e.target.value })}
+                                placeholder="Middle Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Last Name:</label>
+                              <input
+                                type="text"
+                                value={vitals.decedentLastName || ''}
+                                onChange={(e) => updateVitalSheet({ decedentLastName: e.target.value })}
+                                placeholder="Last Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="sm:col-span-2">
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Any Other Known Names of Deceased (Aliases / AKAs / Maiden):</label>
+                              <input
+                                type="text"
+                                value={vitals.otherKnownNames || ''}
+                                onChange={(e) => updateVitalSheet({ otherKnownNames: e.target.value })}
+                                placeholder="e.g. Marie 'Mimi' Brown, Maiden: Jenkins"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">
+                                Social Security Number <span className="text-[#991b1b] font-mono">(9 Digits for Death Cert)</span>:
+                              </label>
+                              <input
+                                type="text"
+                                maxLength={11}
+                                value={vitals.ssn || ''}
+                                onChange={(e) => {
+                                  const raw = e.target.value.replace(/\D/g, '').slice(0, 9);
+                                  let formatted = raw;
+                                  if (raw.length > 5) {
+                                    formatted = `${raw.slice(0, 3)}-${raw.slice(3, 5)}-${raw.slice(5)}`;
+                                  } else if (raw.length > 3) {
+                                    formatted = `${raw.slice(0, 3)}-${raw.slice(3)}`;
+                                  }
+                                  updateVitalSheet({ ssn: formatted });
+                                }}
+                                placeholder="123-45-6789"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Sex:</label>
+                              <div className="flex items-center space-x-2">
+                                {(['male', 'female'] as const).map((s) => (
+                                  <button
+                                    key={s}
+                                    type="button"
+                                    onClick={() => updateVitalSheet({ sex: s })}
+                                    className={`flex-1 py-1.5 px-3 rounded-xl font-bold uppercase text-[11px] border transition cursor-pointer ${
+                                      vitals.sex === s
+                                        ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                        : 'bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100'
+                                    }`}
+                                  >
+                                    {s}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Date of Birth:</label>
+                              <input
+                                type="date"
+                                value={vitals.dateOfBirth || ''}
+                                onChange={(e) => updateVitalSheet({ dateOfBirth: e.target.value })}
+                                className="w-full p-1.5 bg-white border border-neutral-300 rounded-xl font-mono text-xs text-neutral-900"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Age (Years):</label>
+                              <input
+                                type="number"
+                                min={0}
+                                max={130}
+                                value={vitals.age ?? ''}
+                                placeholder="e.g. 82"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => updateVitalSheet({ age: e.target.value === '' ? '' : (parseInt(e.target.value) || 0) })}
+                                className="w-full p-1.5 bg-white border border-neutral-300 rounded-xl font-mono font-bold text-neutral-900 text-center"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Race / Ethnicity:</label>
+                              <input
+                                type="text"
+                                value={vitals.race || ''}
+                                onChange={(e) => updateVitalSheet({ race: e.target.value })}
+                                placeholder="e.g. Black / African American"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Birth Place (City, State or Foreign Country):</label>
+                              <input
+                                type="text"
+                                value={vitals.birthPlaceCityStateCountry || ''}
+                                onChange={(e) => updateVitalSheet({ birthPlaceCityStateCountry: e.target.value })}
+                                placeholder="e.g. Harlem, New York, USA or Kingston, Jamaica"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Education Level:</label>
+                              <select
+                                value={vitals.educationLevel || "Master's Degree / Higher Education"}
+                                onChange={(e) => updateVitalSheet({ educationLevel: e.target.value })}
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900 font-semibold"
+                              >
+                                <option value="8th Grade or Less">8th Grade or Less</option>
+                                <option value="9th - 12th Grade (No Diploma)">9th - 12th Grade (No Diploma)</option>
+                                <option value="High School Graduate / GED">High School Graduate / GED</option>
+                                <option value="Some College Credit (No Degree)">Some College Credit (No Degree)</option>
+                                <option value="Associate Degree">Associate Degree (AA, AS)</option>
+                                <option value="Bachelor's Degree">Bachelor's Degree (BA, BS)</option>
+                                <option value="Master's Degree / Higher Education">Master's Degree (MA, MS, MEd)</option>
+                                <option value="Doctorate or Professional Degree">Doctorate or Professional Degree (PhD, EdD, MD, JD)</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 2: Residence & Place of Passing */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          
+                          {/* Residence of Loved One */}
+                          <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                              2. Residence of Loved One
+                            </h4>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Street & Number:</label>
+                              <input
+                                type="text"
+                                value={vitals.residenceStreet || ''}
+                                onChange={(e) => updateVitalSheet({ residenceStreet: e.target.value })}
+                                placeholder="e.g. 500 W 142nd St"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div className="grid grid-cols-3 gap-2">
+                              <div>
+                                <label className="text-[10px] font-bold text-neutral-600 block mb-1">Apt # / Other:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.residenceApt || ''}
+                                  onChange={(e) => updateVitalSheet({ residenceApt: e.target.value })}
+                                  placeholder="Apt 4B"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-neutral-600 block mb-1">City:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.residenceCity || ''}
+                                  onChange={(e) => updateVitalSheet({ residenceCity: e.target.value })}
+                                  placeholder="New York"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-neutral-600 block mb-1">State & Zip:</label>
+                                <div className="flex space-x-1">
+                                  <input
+                                    type="text"
+                                    value={vitals.residenceState || 'NY'}
+                                    onChange={(e) => updateVitalSheet({ residenceState: e.target.value })}
+                                    className="w-12 p-2 bg-white border border-neutral-300 rounded-xl text-center text-neutral-900 font-bold"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={vitals.residenceZip || '10030'}
+                                    onChange={(e) => updateVitalSheet({ residenceZip: e.target.value })}
+                                    className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Place of Death */}
+                          <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                              3. Date & Place of Passing
+                            </h4>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label className="text-[10px] font-bold text-neutral-600 block mb-1">Date of Passing:</label>
+                                <input
+                                  type="date"
+                                  value={vitals.dateOfDeath || ''}
+                                  onChange={(e) => updateVitalSheet({ dateOfDeath: e.target.value })}
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-xs text-neutral-900"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-neutral-600 block mb-1">City of Passing:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.placeOfDeathCity || 'New York'}
+                                  onChange={(e) => updateVitalSheet({ placeOfDeathCity: e.target.value })}
+                                  placeholder="New York"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Facility Name OR Exact Location:</label>
+                              <input
+                                type="text"
+                                value={vitals.placeOfDeathFacilityOrLocation || ''}
+                                onChange={(e) => updateVitalSheet({ placeOfDeathFacilityOrLocation: e.target.value })}
+                                placeholder="e.g. Mount Sinai Morningside or Residence"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">State or Foreign Country:</label>
+                              <input
+                                type="text"
+                                value={vitals.placeOfDeathStateOrCountry || 'New York, USA'}
+                                onChange={(e) => updateVitalSheet({ placeOfDeathStateOrCountry: e.target.value })}
+                                placeholder="New York, USA"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                        </div>
+
+                        {/* Section 3: Marital Status, Career & Military Service */}
+                        <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                            4. Marital Status, Career & Military Status
+                          </h4>
+
+                          {/* Marital Status Chips */}
+                          <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-neutral-600 block">Marital Status of Decedent:</label>
+                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                              {[
+                                { id: 'married', label: 'Married' },
+                                { id: 'separated', label: 'Separated' },
+                                { id: 'never_married', label: 'Never Married' },
+                                { id: 'widowed', label: 'Widow / Widower' },
+                                { id: 'divorced', label: 'Divorced' }
+                              ].map((m) => (
+                                <button
+                                  key={m.id}
+                                  type="button"
+                                  onClick={() => updateVitalSheet({ maritalStatus: m.id as any })}
+                                  className={`p-2 rounded-xl border text-center font-bold text-xs transition cursor-pointer ${
+                                    vitals.maritalStatus === m.id
+                                      ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                      : 'bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100'
+                                  }`}
+                                >
+                                  {m.label}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Occupation Title (Kind of Work):</label>
+                              <input
+                                type="text"
+                                value={vitals.occupationTitle || ''}
+                                onChange={(e) => updateVitalSheet({ occupationTitle: e.target.value })}
+                                placeholder="e.g. Dean of Humanities / Professor"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Type of Business or Industry:</label>
+                              <input
+                                type="text"
+                                value={vitals.typeOfBusiness || ''}
+                                onChange={(e) => updateVitalSheet({ typeOfBusiness: e.target.value })}
+                                placeholder="e.g. Higher Education & Research"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Military Service */}
+                          <div className="p-3.5 bg-blue-50/70 rounded-xl border border-blue-200 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="font-bold text-blue-950 text-xs flex items-center gap-1.5">
+                                <span>🎖️ Military Status:</span>
+                              </span>
+                              <div className="flex items-center space-x-2">
+                                {[
+                                  { id: 'none', label: 'Non-Veteran' },
+                                  { id: 'veteran', label: 'Veteran (Honorable)' },
+                                  { id: 'active', label: 'Active Duty' }
+                                ].map((mil) => (
+                                  <button
+                                    key={mil.id}
+                                    type="button"
+                                    onClick={() => {
+                                      updateVitalSheet({ militaryStatus: mil.id as any });
+                                      handleToggleVeteranDeathCertDiscount(mil.id === 'veteran' || mil.id === 'active');
+                                    }}
+                                    className={`px-3 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
+                                      vitals.militaryStatus === mil.id
+                                        ? 'bg-blue-900 text-white border-blue-900 shadow-2xs'
+                                        : 'bg-white text-blue-900 border-blue-300 hover:bg-blue-100'
+                                    }`}
+                                  >
+                                    {mil.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {(vitals.militaryStatus === 'veteran' || vitals.militaryStatus === 'active') && (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                <div>
+                                  <label className="text-[10px] font-bold text-blue-900 block mb-1">Branch of Service:</label>
+                                  <select
+                                    value={vitals.militaryBranch || 'U.S. Army'}
+                                    onChange={(e) => updateVitalSheet({ militaryBranch: e.target.value })}
+                                    className="w-full p-1.5 bg-white border border-blue-300 rounded-lg text-blue-950 font-bold"
+                                  >
+                                    <option value="U.S. Army">U.S. Army</option>
+                                    <option value="U.S. Navy">U.S. Navy</option>
+                                    <option value="U.S. Air Force">U.S. Air Force</option>
+                                    <option value="U.S. Marine Corps">U.S. Marine Corps</option>
+                                    <option value="U.S. Coast Guard">U.S. Coast Guard</option>
+                                    <option value="U.S. Space Force">U.S. Space Force</option>
+                                    <option value="National Guard">National Guard</option>
+                                  </select>
+                                </div>
+                                <div className="flex items-center text-[11px] text-blue-900 font-medium">
+                                  <span>✓ Eligible for <strong>3 Free Official Death Certificates</strong>, VA Burial Allowance &amp; Presidential Flag.</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                        </div>
+
+                        {/* Section 4: Parents & Spouse */}
+                        <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                            5. Parents &amp; Spouse Information
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Father's Name (First, Middle, Last):</label>
+                              <input
+                                type="text"
+                                value={vitals.fatherName || ''}
+                                onChange={(e) => updateVitalSheet({ fatherName: e.target.value })}
+                                placeholder="Father's Full Legal Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Mother's Name (First and Maiden):</label>
+                              <input
+                                type="text"
+                                value={vitals.motherFirstAndMaidenName || ''}
+                                onChange={(e) => updateVitalSheet({ motherFirstAndMaidenName: e.target.value })}
+                                placeholder="Mother's First and Maiden Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                            <div className="sm:col-span-2">
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Name of Surviving / Predeceased Spouse (First, Maiden):</label>
+                              <input
+                                type="text"
+                                value={vitals.spouseFirstAndMaidenName || ''}
+                                onChange={(e) => updateVitalSheet({ spouseFirstAndMaidenName: e.target.value })}
+                                placeholder="Spouse Full Name & Maiden Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Spouse Date of Birth:</label>
+                              <input
+                                type="date"
+                                value={vitals.spouseDateOfBirth || ''}
+                                onChange={(e) => updateVitalSheet({ spouseDateOfBirth: e.target.value })}
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-xs text-neutral-900"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 5: Informant (Legal Next of Kin) */}
+                        <div className="bg-amber-50/60 p-5 rounded-2xl border-2 border-amber-300/80 space-y-4 shadow-xs">
+                          <div className="flex items-center justify-between border-b border-amber-200 pb-2">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-amber-950 flex items-center gap-1.5 font-serif-title text-sm">
+                              <span>6. Authorized Informant (Legal Next of Kin / PHL § 4201 Priority)</span>
+                            </h4>
+                            <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
+                              Primary Purchaser &amp; Signatory
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Full Name of Informant:</label>
+                              <input
+                                type="text"
+                                value={vitals.informantName || ''}
+                                onChange={(e) => updateVitalSheet({ informantName: e.target.value })}
+                                placeholder="Informant Full Legal Name"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-bold text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Relationship to Decedent:</label>
+                              <input
+                                type="text"
+                                value={vitals.informantRelationship || ''}
+                                onChange={(e) => updateVitalSheet({ informantRelationship: e.target.value })}
+                                placeholder="e.g. Surviving Spouse, Adult Daughter, Son, Sister"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Telephone (Cell):</label>
+                              <input
+                                type="text"
+                                value={vitals.informantPhoneCell || ''}
+                                onChange={(e) => updateVitalSheet({ informantPhoneCell: e.target.value })}
+                                placeholder="(212) 555-0192"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Telephone (Home):</label>
+                              <input
+                                type="text"
+                                value={vitals.informantPhoneHome || ''}
+                                onChange={(e) => updateVitalSheet({ informantPhoneHome: e.target.value })}
+                                placeholder="(212) 555-0100"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Telephone (Alternate):</label>
+                              <input
+                                type="text"
+                                value={vitals.informantPhoneAlt || ''}
+                                onChange={(e) => updateVitalSheet({ informantPhoneAlt: e.target.value })}
+                                placeholder="Work / Work Ext"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Email Address:</label>
+                              <input
+                                type="email"
+                                value={vitals.informantEmail || ''}
+                                onChange={(e) => updateVitalSheet({ informantEmail: e.target.value })}
+                                placeholder="name@domain.com"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                            <div className="sm:col-span-2">
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Informant Street Address:</label>
+                              <input
+                                type="text"
+                                value={vitals.informantAddressStreet || ''}
+                                onChange={(e) => updateVitalSheet({ informantAddressStreet: e.target.value })}
+                                placeholder="Street Address"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">Apt #:</label>
+                              <input
+                                type="text"
+                                value={vitals.informantAddressApt || ''}
+                                onChange={(e) => updateVitalSheet({ informantAddressApt: e.target.value })}
+                                placeholder="Apt 6B"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-700 block mb-1">City, State, Zip:</label>
+                              <input
+                                type="text"
+                                value={`${vitals.informantAddressCityStateCountry || 'New York, NY'} ${vitals.informantAddressZip || '10032'}`.trim()}
+                                onChange={(e) => updateVitalSheet({ informantAddressCityStateCountry: e.target.value })}
+                                placeholder="New York, NY 10032"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 6: Cemetery Deed & Previous Interment */}
+                        <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                            7. Cemetery Deed &amp; Previous Grave Interment Record
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Cemetery Deed Owner Name:</label>
+                              <input
+                                type="text"
+                                value={vitals.deedOwnerName || ''}
+                                onChange={(e) => updateVitalSheet({ deedOwnerName: e.target.value })}
+                                placeholder="e.g. Eleanor Davis Brown"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Deed Owner Address:</label>
+                              <input
+                                type="text"
+                                value={vitals.deedOwnerAddress || ''}
+                                onChange={(e) => updateVitalSheet({ deedOwnerAddress: e.target.value })}
+                                placeholder="Deed Owner Street Address, City, State"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">Previous Interment in Grave (Who):</label>
+                              <input
+                                type="text"
+                                value={vitals.previousIntermentWho || ''}
+                                onChange={(e) => updateVitalSheet({ previousIntermentWho: e.target.value })}
+                                placeholder="e.g. John W. Davis or None / New Grave"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">When (Date / Year of Burial):</label>
+                              <input
+                                type="text"
+                                value={vitals.previousIntermentWhen || ''}
+                                onChange={(e) => updateVitalSheet({ previousIntermentWhen: e.target.value })}
+                                placeholder="e.g. October 1998"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">How Related to Current Decedent:</label>
+                              <input
+                                type="text"
+                                value={vitals.previousIntermentRelation || ''}
+                                onChange={(e) => updateVitalSheet({ previousIntermentRelation: e.target.value })}
+                                placeholder="e.g. Father-in-Law"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 7: Verification & Attestation */}
+                        <div className="p-4 bg-amber-50 rounded-2xl border border-amber-300 space-y-2">
+                          <div className="font-bold text-neutral-900 text-xs flex items-center gap-1.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                            <span>8. Verification &amp; Review Sign-Off</span>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">The above vital information was reviewed or provided by:</label>
+                              <input
+                                type="text"
+                                value={vitals.reviewedOrProvidedBy || ''}
+                                onChange={(e) => updateVitalSheet({ reviewedOrProvidedBy: e.target.value })}
+                                placeholder="Name of Person Providing Vitals"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900 font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-neutral-600 block mb-1">And verified on (Date):</label>
+                              <input
+                                type="date"
+                                value={vitals.verifiedOnDate || ''}
+                                onChange={(e) => updateVitalSheet({ verifiedOnDate: e.target.value })}
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-xs text-neutral-900"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    )}
+
+                    {/* ========================================================= */}
+                    {/* PAGE 2: AUTHORIZATIONS, DIRECTOR & LEGACY STORIES */}
+                    {/* ========================================================= */}
+                    {vitalSheetPage === 'page2' && (
+                      <div className="space-y-6 animate-fadeIn">
+                        
+                        {/* 1. Authorizations & Consents */}
+                        <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                            1. Family Authorizations &amp; Webcast Consents
+                          </h4>
+
+                          {/* Question 1: Website Obituary */}
+                          <div className="p-3.5 bg-white rounded-xl border border-neutral-200 flex flex-wrap items-center justify-between gap-3">
+                            <div className="max-w-xl">
+                              <strong className="text-neutral-900 block text-xs">
+                                1) Do you authorize Benta's Funeral Home to post the obituary and/or service information on our website?
+                              </strong>
+                              <span className="text-[10px] text-neutral-500">
+                                Official digital tribute on www.e-bfh.com with guestbook and flower orders.
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              {[true, false].map((val) => (
+                                <button
+                                  key={String(val)}
+                                  type="button"
+                                  onClick={() => updateVitalSheet({ authPostObituaryWebsite: val })}
+                                  className={`px-4 py-1.5 rounded-xl font-bold text-xs border transition cursor-pointer ${
+                                    vitals.authPostObituaryWebsite === val
+                                      ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                      : 'bg-neutral-100 text-neutral-700 border-neutral-300 hover:bg-neutral-200'
+                                  }`}
+                                >
+                                  {val ? '✓ Yes (Authorized)' : '✗ No (Do Not Post)'}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Question 2: Live Stream Webcasting */}
+                          <div className="p-3.5 bg-white rounded-xl border border-neutral-200 space-y-3">
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                              <div className="max-w-xl">
+                                <strong className="text-neutral-900 block text-xs">
+                                  2) Do you wish to have services live streamed?
+                                </strong>
+                                <span className="text-[10px] text-neutral-500">
+                                  HD sanctuary camera broadcast for out-of-town relatives and elders.
+                                </span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                {[true, false].map((val) => (
+                                  <button
+                                    key={String(val)}
+                                    type="button"
+                                    onClick={() => updateVitalSheet({ authLiveStreamService: val })}
+                                    className={`px-4 py-1.5 rounded-xl font-bold text-xs border transition cursor-pointer ${
+                                      vitals.authLiveStreamService === val
+                                        ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                        : 'bg-neutral-100 text-neutral-700 border-neutral-300 hover:bg-neutral-200'
+                                    }`}
+                                  >
+                                    {val ? '✓ Yes' : '✗ No'}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {vitals.authLiveStreamService && (
+                              <div className="pt-2 border-t border-neutral-100 flex items-center justify-between">
+                                <span className="text-[11px] font-bold text-neutral-700">If answered 'YES', select privacy type:</span>
+                                <div className="flex items-center space-x-2">
+                                  {[
+                                    { id: 'public', label: '🌐 Public (Visible on Website)' },
+                                    { id: 'private', label: '🔒 Private (Family Link & PIN Protected)' }
+                                  ].map((p) => (
+                                    <button
+                                      key={p.id}
+                                      type="button"
+                                      onClick={() => updateVitalSheet({ authLiveStreamType: p.id as any })}
+                                      className={`px-3 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
+                                        vitals.authLiveStreamType === p.id
+                                          ? 'bg-amber-600 text-white border-amber-600 shadow-2xs'
+                                          : 'bg-neutral-100 text-neutral-700 border-neutral-300 hover:bg-neutral-200'
+                                      }`}
+                                    >
+                                      {p.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* 2. Section To Be Completed By Funeral Director */}
+                        <div className="bg-gradient-to-br from-neutral-900 via-[#181414] to-neutral-900 text-white p-5 rounded-2xl border-2 border-amber-400/60 space-y-4 shadow-xl">
+                          <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-amber-300 flex items-center gap-1.5 font-serif-title">
+                              <span>⭐ THIS SECTION TO BE COMPLETED BY FUNERAL DIRECTOR ⭐</span>
+                            </h4>
+                            <span className="text-[10px] text-neutral-400 font-mono">Official NYS LFD Protocols</span>
+                          </div>
+
+                          {/* Viewing & Wake Details */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Date of First Viewing:</label>
+                              <input
+                                type="date"
+                                value={vitals.directorViewingDate || ''}
+                                onChange={(e) => updateVitalSheet({ directorViewingDate: e.target.value })}
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Viewing Time:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorViewingTime || ''}
+                                onChange={(e) => updateVitalSheet({ directorViewingTime: e.target.value })}
+                                placeholder="10:00 AM – 11:00 AM"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Viewing Place / Parlor:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorViewingPlace || ''}
+                                onChange={(e) => updateVitalSheet({ directorViewingPlace: e.target.value })}
+                                placeholder="Chapel 1 (Main Sanctuary)"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Wake Details */}
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Date of Wake:</label>
+                              <input
+                                type="date"
+                                value={vitals.directorWakeDate || ''}
+                                onChange={(e) => updateVitalSheet({ directorWakeDate: e.target.value })}
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Hour From:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorWakeHoursFrom || ''}
+                                onChange={(e) => updateVitalSheet({ directorWakeHoursFrom: e.target.value })}
+                                placeholder="04:00 PM"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Hour To:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorWakeHoursTo || ''}
+                                onChange={(e) => updateVitalSheet({ directorWakeHoursTo: e.target.value })}
+                                placeholder="08:00 PM"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Wake Location:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorWakeLocation || ''}
+                                onChange={(e) => updateVitalSheet({ directorWakeLocation: e.target.value })}
+                                placeholder="Chapel 1 / Parlor A"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Funeral Service Details */}
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Date of Funeral:</label>
+                              <input
+                                type="date"
+                                value={vitals.directorFuneralDate || ''}
+                                onChange={(e) => updateVitalSheet({ directorFuneralDate: e.target.value })}
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Hour of Service:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorFuneralHour || ''}
+                                onChange={(e) => updateVitalSheet({ directorFuneralHour: e.target.value })}
+                                placeholder="11:00 AM"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Funeral Location:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorFuneralLocation || ''}
+                                onChange={(e) => updateVitalSheet({ directorFuneralLocation: e.target.value })}
+                                placeholder="Benta's Funeral Home - Chapel 1"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold text-amber-400 block mb-1">Location Address:</label>
+                              <input
+                                type="text"
+                                value={vitals.directorFuneralAddress || ''}
+                                onChange={(e) => updateVitalSheet({ directorFuneralAddress: e.target.value })}
+                                placeholder="630 St. Nicholas Ave"
+                                className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Final Disposition & Cemetery/Crematory Logistics */}
+                          <div className="p-3.5 bg-black/40 rounded-xl border border-white/10 space-y-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              <div>
+                                <label className="text-[10px] font-bold text-amber-400 block mb-1">Date of Final Disposition:</label>
+                                <input
+                                  type="date"
+                                  value={vitals.directorDispositionDate || ''}
+                                  onChange={(e) => {
+                                    updateVitalSheet({ directorDispositionDate: e.target.value });
+                                    updateDispositionSchedule({ dateOfDisposition: e.target.value });
+                                  }}
+                                  className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-amber-400 block mb-1">Due Time for Disposition:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorDispositionDueTime || ''}
+                                  onChange={(e) => {
+                                    updateVitalSheet({ directorDispositionDueTime: e.target.value });
+                                    updateDispositionSchedule({ dueTimeForDisposition: e.target.value });
+                                  }}
+                                  placeholder="01:30 PM (Woodlawn Cutoff)"
+                                  className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-mono"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-amber-400 block mb-1">Mode of Disposition:</label>
+                                <div className="flex space-x-1">
+                                  {[
+                                    { id: 'burial', label: 'Burial' },
+                                    { id: 'cremation', label: 'Cremation' },
+                                    { id: 'entombment', label: 'Entombment' }
+                                  ].map((mode) => (
+                                    <button
+                                      key={mode.id}
+                                      type="button"
+                                      onClick={() => {
+                                        updateVitalSheet({ directorDispositionMode: mode.id as any });
+                                        updateDispositionSchedule({ modeOfDisposition: mode.id as any });
+                                      }}
+                                      className={`flex-1 py-1.5 px-2 rounded-lg font-bold text-[11px] border transition cursor-pointer ${
+                                        vitals.directorDispositionMode === mode.id
+                                          ? 'bg-[#991b1b] text-white border-amber-400 shadow-2xs'
+                                          : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'
+                                      }`}
+                                    >
+                                      {mode.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div>
+                                <label className="text-[10px] font-bold text-amber-400 block mb-1">Cemetery / Crematory Destination:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorCemeteryCrematory || ''}
+                                  onChange={(e) => updateVitalSheet({ directorCemeteryCrematory: e.target.value })}
+                                  placeholder="The Woodlawn Cemetery & Crematory"
+                                  className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white font-semibold"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[10px] font-bold text-amber-400 block mb-1">Location (City, State or Country):</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorCemeteryLocation || ''}
+                                  onChange={(e) => updateVitalSheet({ directorCemeteryLocation: e.target.value })}
+                                  placeholder="Bronx, New York, USA"
+                                  className="w-full p-2 bg-neutral-900 border border-neutral-700 rounded-xl text-white"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Grave Location Coordinates */}
+                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+                              <div>
+                                <label className="text-[9px] font-bold text-neutral-400 block mb-1">Section:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorSection || ''}
+                                  onChange={(e) => updateVitalSheet({ directorSection: e.target.value })}
+                                  placeholder="Sec 44"
+                                  className="w-full p-1.5 bg-neutral-900 border border-neutral-700 rounded-lg text-amber-300 font-mono text-center"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[9px] font-bold text-neutral-400 block mb-1">Plot:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorPlot || ''}
+                                  onChange={(e) => updateVitalSheet({ directorPlot: e.target.value })}
+                                  placeholder="Plot 102"
+                                  className="w-full p-1.5 bg-neutral-900 border border-neutral-700 rounded-lg text-amber-300 font-mono text-center"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[9px] font-bold text-neutral-400 block mb-1">Range:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorRange || ''}
+                                  onChange={(e) => updateVitalSheet({ directorRange: e.target.value })}
+                                  placeholder="Range C"
+                                  className="w-full p-1.5 bg-neutral-900 border border-neutral-700 rounded-lg text-amber-300 font-mono text-center"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[9px] font-bold text-neutral-400 block mb-1">Grave #:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorGraveNum || ''}
+                                  onChange={(e) => updateVitalSheet({ directorGraveNum: e.target.value })}
+                                  placeholder="Gr. 18"
+                                  className="w-full p-1.5 bg-neutral-900 border border-neutral-700 rounded-lg text-amber-300 font-mono text-center"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[9px] font-bold text-neutral-400 block mb-1">Lot:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.directorLot || ''}
+                                  onChange={(e) => updateVitalSheet({ directorLot: e.target.value })}
+                                  placeholder="Lot 5"
+                                  className="w-full p-1.5 bg-neutral-900 border border-neutral-700 rounded-lg text-amber-300 font-mono text-center"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 3. Additional Information & Story Questions */}
+                        <div className="bg-amber-50/60 p-5 rounded-2xl border-2 border-amber-300/80 space-y-4">
+                          <div className="flex items-center space-x-2 text-[#991b1b]">
+                            <Heart className="w-5 h-5 text-red-600 fill-red-100" />
+                            <h4 className="font-serif-title font-bold text-base text-neutral-900">
+                              3. Additional Story Information &amp; Celebration DNA
+                            </h4>
+                          </div>
+                          <p className="text-xs text-neutral-600">
+                            These biographical details shape the eulogy, floral symbolism, obituary draft, and customized memorial programs.
+                          </p>
+
+                          <div className="space-y-3">
+                            <div>
+                              <label className="font-bold text-neutral-800 block mb-1">
+                                Organizations / Associations / Fraternities / Sororities:
+                              </label>
+                              <input
+                                type="text"
+                                value={vitals.organizationsAssociations || ''}
+                                onChange={(e) => updateVitalSheet({ organizationsAssociations: e.target.value })}
+                                placeholder="e.g. NAACP Harlem Branch, Alpha Kappa Alpha Sorority, Abyssinian Senior Choir, Masonic Lodge"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                              />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div>
+                                <label className="font-bold text-neutral-800 block mb-1">Favorite Color:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.favoriteColor || ''}
+                                  onChange={(e) => updateVitalSheet({ favoriteColor: e.target.value })}
+                                  placeholder="e.g. Royal Purple & Gold"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                              <div>
+                                <label className="font-bold text-neutral-800 block mb-1">Favorite Type of Music:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.favoriteMusicType || ''}
+                                  onChange={(e) => updateVitalSheet({ favoriteMusicType: e.target.value })}
+                                  placeholder="e.g. Traditional Gospel, Duke Ellington Jazz, Hymn #45"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div>
+                                <label className="font-bold text-neutral-800 block mb-1">Interests &amp; Passions:</label>
+                                <input
+                                  type="text"
+                                  value={vitals.interests || ''}
+                                  onChange={(e) => updateVitalSheet({ interests: e.target.value })}
+                                  placeholder="e.g. Harlem history preservation, gardening, baking sweet potato pies"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                              <div>
+                                <label className="font-bold text-neutral-800 block mb-1">Known For (Defining Personality Traits):</label>
+                                <input
+                                  type="text"
+                                  value={vitals.knownFor || ''}
+                                  onChange={(e) => updateVitalSheet({ knownFor: e.target.value })}
+                                  placeholder="e.g. Unconditional generosity, stylish Sunday church hats, sharp humor"
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="font-bold text-neutral-800 block mb-1">Favorite Quote / Motto:</label>
+                              <input
+                                type="text"
+                                value={vitals.favoriteQuote || ''}
+                                onChange={(e) => updateVitalSheet({ favoriteQuote: e.target.value })}
+                                placeholder='e.g. "To whom much is given, much is required."'
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900 italic"
+                              />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div>
+                                <label className="font-bold text-neutral-800 block mb-1">Proudest Accomplishment:</label>
+                                <textarea
+                                  rows={2}
+                                  value={vitals.proudestAccomplishment || ''}
+                                  onChange={(e) => updateVitalSheet({ proudestAccomplishment: e.target.value })}
+                                  placeholder="e.g. First in family to graduate from college; putting 3 children through higher education."
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                              <div>
+                                <label className="font-bold text-neutral-800 block mb-1">What Historical Milestone Did They Witness?</label>
+                                <textarea
+                                  rows={2}
+                                  value={vitals.historicalMilestoneWitnessed || ''}
+                                  onChange={(e) => updateVitalSheet({ historicalMilestoneWitnessed: e.target.value })}
+                                  placeholder="e.g. March on Washington 1963, inauguration of first Black mayor of NYC, Apollo Theater opening."
+                                  className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900"
+                                />
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+
+                      </div>
+                    )}
+
+                  </div>
+
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                  <div>
-                    <span className="text-[10px] text-neutral-500 block">Full Legal Name:</span>
-                    <strong className="text-neutral-900">{activeCase.decedent.legalName}</strong>
+                {/* Step 1 Navigation Bar */}
+                <div className="flex justify-between items-center pt-2">
+                  <div className="text-[11px] text-neutral-500 font-mono">
+                    Vital Records Sheet: {vitalSheetPage === 'page1' ? 'Viewing Page 1 of 2' : 'Viewing Page 2 of 2'}
                   </div>
-                  <div>
-                    <span className="text-[10px] text-neutral-500 block">Dates of Life:</span>
-                    <strong className="text-neutral-900">{activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}</strong>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-neutral-500 block">Place of Passing:</span>
-                    <strong className="text-neutral-900 truncate block">{activeCase.decedent.placeOfDeath}</strong>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-neutral-500 block">Authorized Informant (NOK):</span>
-                    <strong className="text-neutral-900">{activeCase.informant.fullName} ({activeCase.informant.relationship})</strong>
+
+                  <div className="flex items-center space-x-2">
+                    {vitalSheetPage === 'page1' ? (
+                      <button
+                        type="button"
+                        onClick={() => setVitalSheetPage('page2')}
+                        className="bg-neutral-800 hover:bg-neutral-900 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-xs cursor-pointer"
+                      >
+                        <span>View Page 2: Authorizations &amp; Story</span>
+                        <ChevronRight className="w-4 h-4 text-amber-400" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setVitalSheetPage('page1')}
+                        className="bg-neutral-200 hover:bg-neutral-300 text-neutral-800 font-bold text-xs px-4 py-2.5 rounded-xl transition cursor-pointer"
+                      >
+                        <span>← Back to Page 1</span>
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => setCurrentStep(2)}
+                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer"
+                    >
+                      <span>Proceed to Step 2: Select Service Type</span>
+                      <ChevronRight className="w-4 h-4 text-amber-300" />
+                    </button>
                   </div>
                 </div>
 
-                {activeCase.decedent.veteran && (
-                  <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-xs flex items-center space-x-2">
-                    <span className="font-bold">🎖️ Honorable Veteran:</span>
-                    <span>{activeCase.decedent.branchOfService || 'U.S. Armed Forces'}. Eligible for Presidential Memorial Certificate, US Flag, and VA Plot Allowance.</span>
-                  </div>
-                )}
               </div>
-
-              {/* Loved One Biography Interview ("Who Were They?") */}
-              <div className="bg-white p-5 rounded-2xl border-2 border-amber-200 shadow-xs space-y-4">
-                <div className="flex items-center space-x-2 text-[#991b1b]">
-                  <Heart className="w-5 h-5 text-red-600 fill-red-100" />
-                  <h4 className="font-serif-title font-bold text-base text-neutral-900">
-                    Arrangement Inquiry: "Who Were They?" (Life Story & Traditions)
-                  </h4>
-                </div>
-                <p className="text-xs text-neutral-600">
-                  After reviewing vital records, the director asks the family about their loved one to tailor every detail of the celebration of life, scripture selections, musical liturgy, and memorial tributes.
-                </p>
-
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="font-bold text-neutral-800 block mb-1">
-                      Who was {activeCase.decedent.legalName}? (Core Character & Life Philosophy):
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={statementData.lovedOneBiography.whoWereThey}
-                      onChange={(e) => setStatementData({
-                        ...statementData,
-                        lovedOneBiography: { ...statementData.lovedOneBiography, whoWereThey: e.target.value }
-                      })}
-                      className="w-full p-2.5 text-xs bg-neutral-50 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#991b1b]"
-                      placeholder="e.g. A dedicated mentor, loving father, Columbia University educator, and neighborhood anchor in Central Harlem."
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="font-bold text-neutral-800 block mb-1">
-                        Passions, Hobbies & Music:
-                      </label>
-                      <input
-                        type="text"
-                        value={statementData.lovedOneBiography.passionsAndHobbies}
-                        onChange={(e) => setStatementData({
-                          ...statementData,
-                          lovedOneBiography: { ...statementData.lovedOneBiography, passionsAndHobbies: e.target.value }
-                        })}
-                        className="w-full p-2 text-xs bg-neutral-50 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#991b1b]"
-                        placeholder="e.g. Jazz concerts at Apollo Theater, classic literature, church choir."
-                      />
-                    </div>
-
-                    <div>
-                      <label className="font-bold text-neutral-800 block mb-1">
-                        Faith Tradition & Spiritual Heritage:
-                      </label>
-                      <input
-                        type="text"
-                        value={statementData.lovedOneBiography.faithAndSpiritualTradition}
-                        onChange={(e) => setStatementData({
-                          ...statementData,
-                          lovedOneBiography: { ...statementData.lovedOneBiography, faithAndSpiritualTradition: e.target.value }
-                        })}
-                        className="w-full p-2 text-xs bg-neutral-50 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#991b1b]"
-                        placeholder="e.g. Baptist (Abyssinian Baptist Church tradition), reading of Psalm 23."
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="font-bold text-neutral-800 block mb-1">
-                        Notable Civic & Career Accomplishments:
-                      </label>
-                      <input
-                        type="text"
-                        value={statementData.lovedOneBiography.specialAccomplishments}
-                        onChange={(e) => setStatementData({
-                          ...statementData,
-                          lovedOneBiography: { ...statementData.lovedOneBiography, specialAccomplishments: e.target.value }
-                        })}
-                        className="w-full p-2 text-xs bg-neutral-50 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#991b1b]"
-                        placeholder="e.g. Retired Dean of Humanities, Columbia University; Lifetime Member NAACP."
-                      />
-                    </div>
-
-                    <div>
-                      <label className="font-bold text-neutral-800 block mb-1">
-                        Family Legacy & Surviving Generations:
-                      </label>
-                      <input
-                        type="text"
-                        value={statementData.lovedOneBiography.familyLegacyNotes}
-                        onChange={(e) => setStatementData({
-                          ...statementData,
-                          lovedOneBiography: { ...statementData.lovedOneBiography, familyLegacyNotes: e.target.value }
-                        })}
-                        className="w-full p-2 text-xs bg-neutral-50 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-[#991b1b]"
-                        placeholder="e.g. Surviving spouse Eleanor, 3 children, and 6 grandchildren."
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 1 Navigation Button */}
-              <div className="flex justify-end pt-2">
-                <button
-                  type="button"
-                  onClick={() => setCurrentStep(2)}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
-                >
-                  <span>Proceed to Step 2: Select Service Type</span>
-                  <ChevronRight className="w-4 h-4 text-amber-300" />
-                </button>
-              </div>
-
-            </div>
-          )}
+            );
+          })()}
 
           {/* ------------------------------------------------------------- */}
           {/* STEP 2: SERVICE TYPE & BASELINE GENERAL PRICE LIST OPTIONS */}
@@ -1065,9 +2245,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     Direct cremation baseline with chapel facility & supervision for memorial celebration. Variables: programs, prayer cards, officiant, organist, limousine, repast.
                   </p>
                   <div className="text-xs font-mono text-neutral-700 pt-1 border-t border-neutral-200 space-y-0.5">
-                    <div>• Direct Cremation Base: <strong>$2,084.00</strong></div>
-                    <div>• Memorial Supervision & Facility: <strong>$1,100.00</strong></div>
-                    <div>• Handcrafted Keepsake Urn Display</div>
+                    <div>• Basic Arrangements: <strong>$950.00</strong></div>
+                    <div>• Local Transfer: <strong>$750.00</strong> | Shelter / Prep: <strong>$384.00</strong></div>
+                    <div>• Memorial Supervision & Facilities: <strong>$1,100.00</strong></div>
                   </div>
                 </div>
 
@@ -1392,19 +2572,92 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         <option value="Graveside Direct (At Cemetery Gate Only)">
                           🌿 Graveside Committal Direct (At Cemetery Gate Only)
                         </option>
+                        <option value="other">
+                          ⛪ Other Church / Facility (Enter Below)
+                        </option>
                         <option value="custom">
                           ✏️ Custom External Sanctuary / Church (Enter Below)
                         </option>
                       </select>
 
-                      {scheduleServiceVenue === 'custom' && (
-                        <input
-                          type="text"
-                          value={customVenueName}
-                          onChange={(e) => setCustomVenueName(e.target.value)}
-                          placeholder="Enter Church Name & Street Address..."
-                          className="w-full bg-neutral-900 border border-amber-400 text-white rounded-xl px-3.5 py-2 text-xs font-semibold focus:outline-hidden"
-                        />
+                      {(scheduleServiceVenue === 'other' || scheduleServiceVenue === 'custom' || scheduleServiceVenue === 'Other') && (
+                        <div className="space-y-2 pt-1 border-t border-amber-400/20">
+                          <div>
+                            <label className="text-[11px] font-bold text-amber-300 block mb-1">
+                              Church / Facility Name &amp; Street Address:
+                            </label>
+                            <input
+                              type="text"
+                              value={customVenueName}
+                              onChange={(e) => {
+                                setCustomVenueName(e.target.value);
+                                const updated = { ...statementData };
+                                updated.sectionI.F3_otherFacilitiesSpecify = e.target.value;
+                                updated.sectionI.F_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              placeholder="Enter Church or Facility Name &amp; Street Address..."
+                              className="w-full bg-neutral-900 border border-amber-400 text-white rounded-xl px-3.5 py-2 text-xs font-semibold focus:outline-hidden"
+                            />
+                          </div>
+
+                          <div>
+                            <div className="flex justify-between items-center mb-1">
+                              <label className="text-[11px] font-bold text-amber-300">
+                                Church / Facility Fee ($):
+                              </label>
+                              <span className="text-[10px] text-neutral-400">Section I.F Facility Line Item</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="relative flex-1">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={(statementData.sectionI.F3_otherFacilitiesAmount || statementData.sectionI.F_otherAmount) === 0 ? '' : (statementData.sectionI.F3_otherFacilitiesAmount || statementData.sectionI.F_otherAmount)}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionI.F3_otherFacilitiesAmount = val;
+                                    updated.sectionI.F_otherAmount = val;
+                                    if (customVenueName && !updated.sectionI.F3_otherFacilitiesSpecify) {
+                                      updated.sectionI.F3_otherFacilitiesSpecify = customVenueName;
+                                      updated.sectionI.F_otherSpecify = customVenueName;
+                                    }
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-7 pr-3 py-1.5 bg-neutral-900 border border-amber-400/80 focus:border-amber-300 text-white rounded-lg text-xs font-mono font-bold"
+                                />
+                              </div>
+                              <div className="flex gap-1">
+                                {[0, 350, 500, 750].map((preset) => (
+                                  <button
+                                    key={preset}
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = { ...statementData };
+                                      updated.sectionI.F3_otherFacilitiesAmount = preset;
+                                      updated.sectionI.F_otherAmount = preset;
+                                      if (customVenueName && !updated.sectionI.F3_otherFacilitiesSpecify) {
+                                        updated.sectionI.F3_otherFacilitiesSpecify = customVenueName;
+                                        updated.sectionI.F_otherSpecify = customVenueName;
+                                      }
+                                      setStatementData(calculateAP47Totals(updated));
+                                    }}
+                                    className="px-2 py-1 bg-white/5 hover:bg-white/15 border border-white/10 rounded text-[10px] text-neutral-300 font-mono"
+                                  >
+                                    {preset === 0 ? 'Free' : `${preset}`}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                            <span className="text-[10px] text-neutral-400 mt-0.5 block">
+                              Automatically syncs to Form AP-47 facilities allocation &amp; contract totals.
+                            </span>
+                          </div>
+                        </div>
                       )}
                     </div>
 
@@ -1543,61 +2796,172 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   )}
                 </div>
 
-                {/* Section 3: Cortege Departure & Cemetery Committal Cutoff Coordinator */}
+                {/* Section 3: Disposition Sequence, Cortege & Committal Timetable Coordinator */}
                 <div className="bg-white/5 p-4 rounded-xl border border-white/10 space-y-4">
                   <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
                     <span className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                      <span>🚘 Cortege Departure & Cemetery Committal Timetable</span>
+                      <span>🚘 Disposition Sequence &amp; Cemetery Committal Timetable</span>
                     </span>
                     <span className="text-[11px] text-emerald-400 flex items-center gap-1 font-mono">
                       <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Compliant with Tri-State Cemetery Bylaws</span>
+                      <span>Compliant with Tri-State Cemetery Bylaws &amp; Flexible Multi-Day Scheduling</span>
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-                    <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5">
-                      <span className="text-[10px] text-neutral-400 font-bold uppercase block">1. Cortege Lineup:</span>
-                      <input
-                        type="text"
-                        value={scheduleCortegeLineupTime}
-                        onChange={(e) => setScheduleCortegeLineupTime(e.target.value)}
-                        className="w-full bg-neutral-900 border border-neutral-700 text-amber-300 rounded px-2 py-1 font-mono font-bold"
-                      />
-                      <span className="text-[10px] text-neutral-400">At Chapel / Church Entrance</span>
-                    </div>
-
-                    <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5">
-                      <span className="text-[10px] text-neutral-400 font-bold uppercase block">2. Cortege Departure:</span>
-                      <input
-                        type="text"
-                        value={scheduleCortegeDepartureTime}
-                        onChange={(e) => setScheduleCortegeDepartureTime(e.target.value)}
-                        className="w-full bg-neutral-900 border border-neutral-700 text-amber-300 rounded px-2 py-1 font-mono font-bold"
-                      />
-                      <span className="text-[10px] text-neutral-400">Lead Car & Hearse Escort</span>
-                    </div>
-
-                    <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5">
-                      <span className="text-[10px] text-neutral-400 font-bold uppercase block">3. Cemetery Gate Arrival:</span>
-                      <input
-                        type="text"
-                        value={scheduleCommittalArrivalTime}
-                        onChange={(e) => setScheduleCommittalArrivalTime(e.target.value)}
-                        className="w-full bg-neutral-900 border border-neutral-700 text-amber-300 rounded px-2 py-1 font-mono font-bold"
-                      />
-                      <span className="text-[10px] text-neutral-400">Committal Service at Graveside</span>
-                    </div>
-
-                    <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5 flex flex-col justify-between">
-                      <span className="text-[10px] text-neutral-400 font-bold uppercase block">4. Gate Cutoff Check:</span>
-                      <div className="text-[11px] font-bold text-emerald-300 flex items-center gap-1">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span>Woodlawn/Ferncliff Cutoff: 2:30 PM (OK)</span>
-                      </div>
-                      <span className="text-[9px] text-neutral-400 font-mono">10 NYCRR Pass-Through Certified</span>
+                  {/* Disposition Sequence Selector */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-neutral-300 uppercase tracking-wider block">
+                      Select Disposition Sequence &amp; Logistics Workflow:
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {[
+                        { 
+                          id: 'same_day', 
+                          icon: '🌅', 
+                          title: 'Same-Day Immediate Disposition', 
+                          desc: 'Cortege motorcade leaves sanctuary directly to cemetery / crematory on day of service.' 
+                        },
+                        { 
+                          id: 'prior_to_service', 
+                          icon: '🕊️', 
+                          title: 'Disposition Prior to Service', 
+                          desc: 'Direct cremation or private interment occurs first; memorial celebration held afterward with urn present.' 
+                        },
+                        { 
+                          id: 'separate_day', 
+                          icon: '📅', 
+                          title: 'Separate-Day / Delayed Committal', 
+                          desc: 'Funeral service occurs on one day; cemetery burial / crematory transfer occurs on a later day (e.g. Monday).' 
+                        }
+                      ].map((seq) => {
+                        const isCurrent = (statementData.dispositionSchedule?.sequence || 'same_day') === seq.id;
+                        return (
+                          <button
+                            key={seq.id}
+                            type="button"
+                            onClick={() => {
+                              updateDispositionSchedule({ sequence: seq.id });
+                              showToast(`📅 Disposition sequence set to: ${seq.title}`);
+                            }}
+                            className={`p-3 rounded-xl border text-left transition cursor-pointer flex flex-col justify-between space-y-1 ${
+                              isCurrent
+                                ? 'bg-[#991b1b] text-white border-amber-400 shadow-md font-bold'
+                                : 'bg-neutral-900 text-neutral-300 border-neutral-700 hover:bg-neutral-800'
+                            }`}
+                          >
+                            <div className="flex items-center space-x-1.5 text-xs">
+                              <span>{seq.icon}</span>
+                              <span className="font-bold">{seq.title}</span>
+                            </div>
+                            <p className="text-[10px] opacity-80 leading-relaxed font-normal">{seq.desc}</p>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
+
+                  {/* Conditional Timetable Controls based on Sequence */}
+                  {(statementData.dispositionSchedule?.sequence || 'same_day') === 'same_day' ? (
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs pt-1">
+                      <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5">
+                        <span className="text-[10px] text-neutral-400 font-bold uppercase block">1. Cortege Lineup:</span>
+                        <input
+                          type="text"
+                          value={scheduleCortegeLineupTime}
+                          onChange={(e) => setScheduleCortegeLineupTime(e.target.value)}
+                          className="w-full bg-neutral-900 border border-neutral-700 text-amber-300 rounded px-2 py-1 font-mono font-bold"
+                        />
+                        <span className="text-[10px] text-neutral-400">At Chapel / Church Entrance</span>
+                      </div>
+
+                      <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5">
+                        <span className="text-[10px] text-neutral-400 font-bold uppercase block">2. Cortege Departure:</span>
+                        <input
+                          type="text"
+                          value={scheduleCortegeDepartureTime}
+                          onChange={(e) => setScheduleCortegeDepartureTime(e.target.value)}
+                          className="w-full bg-neutral-900 border border-neutral-700 text-amber-300 rounded px-2 py-1 font-mono font-bold"
+                        />
+                        <span className="text-[10px] text-neutral-400">Lead Car &amp; Hearse Escort</span>
+                      </div>
+
+                      <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5">
+                        <span className="text-[10px] text-neutral-400 font-bold uppercase block">3. Cemetery Gate Arrival:</span>
+                        <input
+                          type="text"
+                          value={scheduleCommittalArrivalTime}
+                          onChange={(e) => setScheduleCommittalArrivalTime(e.target.value)}
+                          className="w-full bg-neutral-900 border border-neutral-700 text-amber-300 rounded px-2 py-1 font-mono font-bold"
+                        />
+                        <span className="text-[10px] text-neutral-400">Committal Service at Graveside</span>
+                      </div>
+
+                      <div className="space-y-1 bg-black/40 p-2.5 rounded-lg border border-white/5 flex flex-col justify-between">
+                        <span className="text-[10px] text-neutral-400 font-bold uppercase block">4. Gate Cutoff Check:</span>
+                        <div className="text-[11px] font-bold text-emerald-300 flex items-center gap-1">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span>Woodlawn/Ferncliff Cutoff: 2:30 PM (OK)</span>
+                        </div>
+                        <span className="text-[9px] text-neutral-400 font-mono">10 NYCRR Pass-Through Certified</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="bg-black/50 p-3.5 rounded-xl border border-amber-400/40 space-y-3 pt-2">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-amber-300 flex items-center gap-1.5">
+                          <span>📅 Independent Disposition Logistics Schedule:</span>
+                        </span>
+                        <span className="text-[10px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded font-mono">
+                          {(statementData.dispositionSchedule?.sequence === 'prior_to_service') ? 'Disposition Prior to Ceremony' : 'Separate-Day Cemetery Committal'}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div>
+                          <label className="text-[10px] font-bold text-neutral-300 block mb-1">Confirmed Date of Final Disposition:</label>
+                          <input
+                            type="date"
+                            value={statementData.dispositionSchedule?.dateOfDisposition || getQuickServiceDate(2)}
+                            onChange={(e) => {
+                              updateDispositionSchedule({ dateOfDisposition: e.target.value });
+                              updateVitalSheet({ directorDispositionDate: e.target.value });
+                            }}
+                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg p-2 text-white font-mono font-bold"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-neutral-300 block mb-1">Due Time for Disposition:</label>
+                          <input
+                            type="text"
+                            value={statementData.dispositionSchedule?.dueTimeForDisposition || '10:30 AM'}
+                            onChange={(e) => {
+                              updateDispositionSchedule({ dueTimeForDisposition: e.target.value });
+                              updateVitalSheet({ directorDispositionDueTime: e.target.value });
+                            }}
+                            placeholder="e.g. 10:30 AM"
+                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg p-2 text-white font-mono font-bold"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-neutral-300 block mb-1">Mode of Disposition:</label>
+                          <select
+                            value={statementData.dispositionSchedule?.modeOfDisposition || 'burial'}
+                            onChange={(e) => {
+                              updateDispositionSchedule({ modeOfDisposition: e.target.value as any });
+                              updateVitalSheet({ directorDispositionMode: e.target.value as any });
+                            }}
+                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg p-2 text-white font-bold"
+                          >
+                            <option value="burial">Burial (Cemetery Committal)</option>
+                            <option value="cremation">Cremation (Crematory Retort)</option>
+                            <option value="entombment">Entombment (Mausoleum Crypt)</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Repast Gathering Toggle */}
                   <div className="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
@@ -1656,7 +3020,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <div className="p-2 rounded-lg bg-white/5 border border-white/10 space-y-0.5">
                       <div className="text-[10px] text-amber-400 font-bold uppercase">2. Ceremony</div>
                       <div className="font-bold text-white text-[11px] truncate">{formatDisplayDate(scheduleServiceDate)} • {scheduleServiceTime}</div>
-                      <div className="text-[10px] text-neutral-400 truncate">{scheduleServiceVenue === 'custom' ? customVenueName : scheduleServiceVenue}</div>
+                      <div className="text-[10px] text-neutral-400 truncate">{(scheduleServiceVenue === 'custom' || scheduleServiceVenue === 'other' || scheduleServiceVenue === 'Other') ? (customVenueName || 'Other Church / Facility') : scheduleServiceVenue}</div>
                     </div>
 
                     <div className="p-2 rounded-lg bg-white/5 border border-white/10 space-y-0.5">
@@ -1796,6 +3160,223 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 </div>
               </div>
 
+              {/* ------------------------------------------------------------- */}
+              {/* STEP 2.C: SUBSECTION BASELINE & OTHER SERVICES (A THROUGH E) */}
+              {/* ------------------------------------------------------------- */}
+              <div className="bg-white p-5 rounded-2xl border-2 border-neutral-200 shadow-sm space-y-4">
+                <div className="border-b border-neutral-200 pb-2">
+                  <div className="flex items-center space-x-2">
+                    <span className="p-1.5 bg-red-100 text-[#991b1b] rounded-lg font-bold text-xs">
+                      ✍️
+                    </span>
+                    <h4 className="font-serif-title text-base font-bold text-neutral-900">
+                      Baseline Services &amp; Subsection Other Entries (Subsections A – E)
+                    </h4>
+                  </div>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Specify custom line items and numerical dollar figures for any subsection under Section I Funeral Home Charges.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 text-xs">
+                  
+                  {/* Subsection A: Alternative Services Other */}
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2 flex flex-col justify-between">
+                    <div>
+                      <span className="font-bold text-neutral-800 block">A. Other Alternative Services</span>
+                      <span className="text-[10px] text-neutral-500">Custom flat-rate or special disposition package</span>
+                    </div>
+                    <div className="space-y-1.5 pt-1">
+                      <input
+                        type="text"
+                        value={statementData.sectionI.A_otherSpecify || ''}
+                        placeholder="Item description..."
+                        onChange={(e) => {
+                          const updated = { ...statementData };
+                          updated.sectionI.A_otherSpecify = e.target.value;
+                          setStatementData(calculateAP47Totals(updated));
+                        }}
+                        className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                      />
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={statementData.sectionI.A_otherAmount === 0 ? '' : statementData.sectionI.A_otherAmount}
+                          placeholder="0.00"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => {
+                            const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                            const updated = { ...statementData };
+                            updated.sectionI.A_otherAmount = val;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsection B: Transfer of Remains Other */}
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2 flex flex-col justify-between">
+                    <div>
+                      <span className="font-bold text-neutral-800 block">B. Other Transfer / Extra Mileage</span>
+                      <span className="text-[10px] text-neutral-500">Beyond 25-mile local radius, airport, or special transfer</span>
+                    </div>
+                    <div className="space-y-1.5 pt-1">
+                      <input
+                        type="text"
+                        value={statementData.sectionI.B_otherSpecify || ''}
+                        placeholder="Item description..."
+                        onChange={(e) => {
+                          const updated = { ...statementData };
+                          updated.sectionI.B_otherSpecify = e.target.value;
+                          setStatementData(calculateAP47Totals(updated));
+                        }}
+                        className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                      />
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={statementData.sectionI.B_otherAmount === 0 ? '' : statementData.sectionI.B_otherAmount}
+                          placeholder="0.00"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => {
+                            const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                            const updated = { ...statementData };
+                            updated.sectionI.B_otherAmount = val;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsection C: Preparation of Remains Other */}
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2 flex flex-col justify-between">
+                    <div>
+                      <span className="font-bold text-neutral-800 block">C. Other Preparation</span>
+                      <span className="text-[10px] text-neutral-500">Specialized restoration, hair styling, or autopsy care</span>
+                    </div>
+                    <div className="space-y-1.5 pt-1">
+                      <input
+                        type="text"
+                        value={statementData.sectionI.C_otherSpecify || statementData.sectionI.C2_otherSpecify || ''}
+                        placeholder="Item description..."
+                        onChange={(e) => {
+                          const updated = { ...statementData };
+                          updated.sectionI.C_otherSpecify = e.target.value;
+                          updated.sectionI.C2_otherSpecify = e.target.value;
+                          setStatementData(calculateAP47Totals(updated));
+                        }}
+                        className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                      />
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={(statementData.sectionI.C_otherAmount || statementData.sectionI.C2_otherAmount) === 0 ? '' : (statementData.sectionI.C_otherAmount || statementData.sectionI.C2_otherAmount)}
+                          placeholder="0.00"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => {
+                            const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                            const updated = { ...statementData };
+                            updated.sectionI.C_otherAmount = val;
+                            updated.sectionI.C2_otherAmount = val;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsection D: Arrangements Other */}
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2 flex flex-col justify-between">
+                    <div>
+                      <span className="font-bold text-neutral-800 block">D. Other Arrangements / Consultation</span>
+                      <span className="text-[10px] text-neutral-500">Extended arrangement conference or consular paperwork</span>
+                    </div>
+                    <div className="space-y-1.5 pt-1">
+                      <input
+                        type="text"
+                        value={statementData.sectionI.D_otherSpecify || ''}
+                        placeholder="Item description..."
+                        onChange={(e) => {
+                          const updated = { ...statementData };
+                          updated.sectionI.D_otherSpecify = e.target.value;
+                          setStatementData(calculateAP47Totals(updated));
+                        }}
+                        className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                      />
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={statementData.sectionI.D_otherAmount === 0 ? '' : statementData.sectionI.D_otherAmount}
+                          placeholder="0.00"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => {
+                            const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                            const updated = { ...statementData };
+                            updated.sectionI.D_otherAmount = val;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsection E: Supervision Other */}
+                  <div className="p-3.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2 flex flex-col justify-between">
+                    <div>
+                      <span className="font-bold text-neutral-800 block">E. Other Supervision</span>
+                      <span className="text-[10px] text-neutral-500">Out-of-town committal, disinterment, or solemn mass staff</span>
+                    </div>
+                    <div className="space-y-1.5 pt-1">
+                      <input
+                        type="text"
+                        value={statementData.sectionI.E_otherSpecify || statementData.sectionI.E3_otherSupervisionSpecify || ''}
+                        placeholder="Item description..."
+                        onChange={(e) => {
+                          const updated = { ...statementData };
+                          updated.sectionI.E_otherSpecify = e.target.value;
+                          updated.sectionI.E3_otherSupervisionSpecify = e.target.value;
+                          setStatementData(calculateAP47Totals(updated));
+                        }}
+                        className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                      />
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={(statementData.sectionI.E_otherAmount || statementData.sectionI.E3_otherSupervisionAmount) === 0 ? '' : (statementData.sectionI.E_otherAmount || statementData.sectionI.E3_otherSupervisionAmount)}
+                          placeholder="0.00"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => {
+                            const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                            const updated = { ...statementData };
+                            updated.sectionI.E_otherAmount = val;
+                            updated.sectionI.E3_otherSupervisionAmount = val;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
               {/* Automatic Baseline Breakdown Notification */}
               <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div>
@@ -1871,14 +3452,51 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               {/* 3.A LIVERY FLEET & CUSTOM VEHICLE BUILDER */}
               {activeVariablesCategory === 'livery' && (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-wrap justify-between items-center gap-2">
                     <div>
-                      <h4 className="font-bold text-sm text-neutral-900">Livery Fleet & Motorcade Vehicle Allocation</h4>
-                      <p className="text-xs text-neutral-500">Standard rates per BFH General Price List (NYC Local vs Calverton National Cemetery).</p>
+                      <h4 className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
+                        <span>🚗 Livery Fleet &amp; Motorcade Vehicle Allocation</span>
+                        <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-full border border-amber-300">
+                          Sprinter &amp; Escorted Vans Available
+                        </span>
+                      </h4>
+                      <p className="text-xs text-neutral-500">Standard rates per BFH General Price List (NYC Local vs Calverton National Cemetery). Notation for escorted with or without family.</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-[#991b1b]">
+                    <span className="text-xs font-mono font-bold text-[#991b1b] bg-red-50 border border-red-200 px-3 py-1.5 rounded-xl">
                       Total Livery: ${statementData.sectionI.G_totalLiveryAmount.toFixed(2)}
                     </span>
+                  </div>
+
+                  {/* 1-Click Fleet Quick-Add Preset Buttons */}
+                  <div className="bg-neutral-50 p-3.5 rounded-2xl border border-neutral-200 space-y-2">
+                    <span className="text-[10px] font-bold text-neutral-600 block uppercase tracking-wider">
+                      Quick-Add BFH Fleet Vehicles:
+                    </span>
+                    <div className="flex flex-wrap gap-2 text-xs">
+                      {[
+                        { type: 'Cadillac Professional Funeral Hearse', price: BFH_GPL_2026.livery.hearseLocalNYC, label: 'Hearse ($655)', icon: '🚗', escort: 'none' as const },
+                        { type: '7-Passenger Cadillac Family Limousine', price: BFH_GPL_2026.livery.limousine7PaxLocal, label: '7-Pax Limo ($715)', icon: '🚙', escort: 'with_family' as const },
+                        { type: 'Mercedes Sprinter Van (14-Passenger)', price: BFH_GPL_2026.livery.sprinterVan, label: '🚐 Mercedes Sprinter Van ($1,300)', icon: '🚐', escort: 'with_family' as const, highlight: true },
+                        { type: 'Transfer / Utility Van (Escorted with Family)', price: BFH_GPL_2026.livery.utilityVanEscortedWithFamily, label: 'Van (Escorted w/ Family - $650)', icon: '🚐', escort: 'with_family' as const },
+                        { type: 'Transfer / Utility Van (Escorted without Family)', price: BFH_GPL_2026.livery.utilityVanEscortedWithoutFamily, label: 'Van (Escorted w/o Family - $484)', icon: '🚐', escort: 'without_family' as const },
+                        { type: 'Lead Director / NYPD Escort Vehicle', price: BFH_GPL_2026.livery.alternativeVehicleLocal, label: 'Lead Escort Car ($484)', icon: '🚓', escort: 'none' as const },
+                        { type: 'Flower Vehicle / Basket Transport', price: BFH_GPL_2026.livery.flowerVehicleLocal, label: 'Flower Car ($655)', icon: '🌸', escort: 'none' as const }
+                      ].map((preset) => (
+                        <button
+                          key={preset.label}
+                          type="button"
+                          onClick={() => handleAddPresetVehicle(preset.type, preset.price, preset.escort)}
+                          className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer shadow-2xs ${
+                            preset.highlight
+                              ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-400 font-extrabold ring-1 ring-amber-400/50'
+                              : 'bg-white hover:bg-neutral-100 text-neutral-800 border-neutral-300'
+                          }`}
+                        >
+                          <span>{preset.icon}</span>
+                          <span>{preset.label}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Active Vehicle Roster Table */}
@@ -1887,73 +3505,98 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <thead className="bg-neutral-100 border-b border-neutral-200 text-neutral-700 font-bold">
                         <tr>
                           <th className="p-3">Vehicle Description</th>
-                          <th className="p-3">Rate Category</th>
+                          <th className="p-3">Escort Notation</th>
                           <th className="p-3 text-center">Count / Qty</th>
-                          <th className="p-3 text-right">Unit Rate</th>
+                          <th className="p-3 text-right">Unit Rate ($)</th>
                           <th className="p-3 text-right">Line Total</th>
                           <th className="p-3 text-center">Action</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-neutral-100">
-                        {(statementData.sectionI.G_vehicles || []).map((v) => (
-                          <tr key={v.id} className="hover:bg-neutral-50 transition">
-                            <td className="p-3 font-semibold text-neutral-900">{v.vehicleType}</td>
-                            <td className="p-3 text-neutral-600 uppercase font-mono text-[10px]">{v.rateType.replace(/_/g, ' ')}</td>
-                            <td className="p-3 text-center">
-                              <div className="inline-flex items-center space-x-1 bg-white border border-neutral-300 rounded-xl p-0.5 shadow-2xs">
-                                <button
-                                  type="button"
-                                  onClick={() => handleUpdateVehicleCount(v.id, Math.max(0, v.count - 1))}
-                                  className="w-6 h-6 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center transition cursor-pointer"
-                                  title="Decrease vehicle count"
-                                >
-                                  -
-                                </button>
-                                <input
-                                  type="number"
-                                  min={0}
-                                  max={20}
-                                  value={v.count}
-                                  onChange={(e) => handleUpdateVehicleCount(v.id, parseInt(e.target.value) || 0)}
-                                  className="w-10 text-center font-mono font-bold text-xs bg-transparent border-none p-0 focus:ring-0 text-neutral-900"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => handleUpdateVehicleCount(v.id, v.count + 1)}
-                                  className="w-6 h-6 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center transition cursor-pointer"
-                                  title="Increase vehicle count"
-                                >
-                                  +
-                                </button>
-                              </div>
-                            </td>
-                            <td className="p-3 text-right">
-                              <div className="inline-flex items-center justify-end space-x-1">
-                                <span className="text-neutral-400 font-mono text-xs">$</span>
-                                <input
-                                  type="number"
-                                  step="0.01"
-                                  value={v.unitPrice}
-                                  onChange={(e) => handleUpdateVehicleUnitPrice(v.id, parseFloat(e.target.value) || 0)}
-                                  className="w-20 text-right font-mono text-xs p-1 bg-white border border-neutral-300 rounded-lg focus:border-[#991b1b] focus:ring-1 focus:ring-[#991b1b]"
-                                />
-                              </div>
-                            </td>
-                            <td className="p-3 text-right font-mono font-bold text-[#991b1b]">
-                              ${(v.count * v.unitPrice).toFixed(2)}
-                            </td>
-                            <td className="p-3 text-center">
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveVehicle(v.id)}
-                                className="p-1.5 text-neutral-400 hover:text-red-700 transition cursor-pointer"
-                                title="Remove vehicle"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
+                        {(statementData.sectionI.G_vehicles || []).length === 0 ? (
+                          <tr>
+                            <td colSpan={6} className="p-6 text-center text-neutral-500 italic">
+                              No livery vehicles selected. Use the quick-add buttons above or custom builder below to allocate motorcade vehicles.
                             </td>
                           </tr>
-                        ))}
+                        ) : (
+                          (statementData.sectionI.G_vehicles || []).map((v) => (
+                            <tr key={v.id} className="hover:bg-neutral-50 transition">
+                              <td className="p-3">
+                                <div className="font-semibold text-neutral-900">{v.vehicleType}</div>
+                                <div className="text-[10px] text-neutral-500 font-mono">{v.rateType.replace(/_/g, ' ').toUpperCase()}</div>
+                              </td>
+                              <td className="p-3">
+                                <select
+                                  value={v.escortType || 'none'}
+                                  onChange={(e) => handleUpdateVehicleEscortType(v.id, e.target.value as any)}
+                                  className="text-xs p-1.5 bg-white border border-neutral-300 rounded-lg font-semibold text-neutral-800"
+                                >
+                                  <option value="with_family">👨‍👩‍👧 Escorted with Family</option>
+                                  <option value="without_family">📦 Escorted without Family</option>
+                                  <option value="none">➖ Standard / No Escort</option>
+                                </select>
+                              </td>
+                              <td className="p-3 text-center">
+                                <div className="inline-flex items-center space-x-1 bg-white border border-neutral-300 rounded-xl p-0.5 shadow-2xs">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUpdateVehicleCount(v.id, Math.max(0, v.count - 1))}
+                                    className="w-6 h-6 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center transition cursor-pointer"
+                                    title="Decrease vehicle count"
+                                  >
+                                    -
+                                  </button>
+                                  <input
+                                    type="number"
+                                    min={0}
+                                    max={20}
+                                    value={v.count === 0 ? '' : v.count}
+                                    placeholder="0"
+                                    onFocus={(e) => e.target.select()}
+                                    onChange={(e) => handleUpdateVehicleCount(v.id, e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value) || 0))}
+                                    className="w-12 text-center font-mono font-bold text-xs bg-transparent border-none p-1 focus:ring-0 text-neutral-900"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUpdateVehicleCount(v.id, v.count + 1)}
+                                    className="w-6 h-6 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center transition cursor-pointer"
+                                    title="Increase vehicle count"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="p-3 text-right">
+                                <div className="inline-flex items-center justify-end space-x-1">
+                                  <span className="text-neutral-400 font-mono text-xs">$</span>
+                                  <input
+                                    type="number"
+                                    step="0.01"
+                                    value={v.unitPrice === 0 ? '' : v.unitPrice}
+                                    placeholder="0.00"
+                                    onFocus={(e) => e.target.select()}
+                                    onChange={(e) => handleUpdateVehicleUnitPrice(v.id, e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
+                                    className="w-24 text-right font-mono text-xs p-1.5 bg-white border border-neutral-300 rounded-lg focus:border-[#991b1b] focus:ring-1 focus:ring-[#991b1b]"
+                                  />
+                                </div>
+                              </td>
+                              <td className="p-3 text-right font-mono font-bold text-[#991b1b]">
+                                ${(v.count * v.unitPrice).toFixed(2)}
+                              </td>
+                              <td className="p-3 text-center">
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveVehicle(v.id)}
+                                  className="p-1.5 text-neutral-400 hover:text-red-700 transition cursor-pointer"
+                                  title="Remove vehicle"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        )}
                       </tbody>
                     </table>
                   </div>
@@ -1962,18 +3605,30 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
                     <span className="font-bold text-xs text-neutral-800 block flex items-center gap-1.5">
                       <Plus className="w-4 h-4 text-[#991b1b]" />
-                      <span>Add / Custom Enter Vehicle Line Item:</span>
+                      <span>Custom Vehicle / Fleet Allocation Builder:</span>
                     </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs">
                       <div className="sm:col-span-2">
-                        <label className="text-[10px] text-neutral-500 block mb-1">Vehicle Type / Name:</label>
+                        <label className="text-[10px] text-neutral-500 block mb-1">Vehicle Description / Name:</label>
                         <input
                           type="text"
                           value={newCustomVehicleType}
                           onChange={(e) => setNewCustomVehicleType(e.target.value)}
                           placeholder="e.g. Mercedes Sprinter Van (14-Pax) or Flower Car"
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-neutral-900"
                         />
+                      </div>
+                      <div>
+                        <label className="text-[10px] text-neutral-500 block mb-1">Escort Notation:</label>
+                        <select
+                          value={newVehicleEscortType}
+                          onChange={(e) => setNewVehicleEscortType(e.target.value as any)}
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-neutral-800 text-xs font-semibold"
+                        >
+                          <option value="with_family">Escorted with Family</option>
+                          <option value="without_family">Escorted without Family</option>
+                          <option value="none">No Escort</option>
+                        </select>
                       </div>
                       <div>
                         <label className="text-[10px] text-neutral-500 block mb-1">Quantity:</label>
@@ -1981,28 +3636,74 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           type="number"
                           min={1}
                           max={10}
-                          value={newCustomVehicleCount}
-                          onChange={(e) => setNewCustomVehicleCount(parseInt(e.target.value) || 1)}
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono"
+                          value={newCustomVehicleCount === 0 ? '' : newCustomVehicleCount}
+                          placeholder="1"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => setNewCustomVehicleCount(e.target.value === '' ? 1 : Math.max(1, parseInt(e.target.value) || 1))}
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-center"
                         />
                       </div>
                       <div>
                         <label className="text-[10px] text-neutral-500 block mb-1">Unit Price ($):</label>
                         <input
                           type="number"
-                          value={newCustomVehiclePrice}
-                          onChange={(e) => setNewCustomVehiclePrice(parseFloat(e.target.value) || 0)}
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono"
+                          value={newCustomVehiclePrice === 0 ? '' : newCustomVehiclePrice}
+                          placeholder="0.00"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => setNewCustomVehiclePrice(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-[#991b1b]"
                         />
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={handleAddCustomVehicle}
-                      className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-xs"
+                      className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
                     >
-                      + Add Vehicle to Contract
+                      + Add Custom Vehicle to Fleet Lineup
                     </button>
+                  </div>
+
+                  {/* Other Livery / Special Transportation */}
+                  <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
+                    <div>
+                      <span className="font-bold text-neutral-800 block text-xs">G. Other Livery / Special Transportation:</span>
+                      <span className="text-[10px] text-neutral-500">Custom motorcade escort, out-of-area coach, motorcycle cortege, or horse-drawn carriage</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <div className="sm:col-span-2">
+                        <input
+                          type="text"
+                          value={statementData.sectionI.G_otherSpecify || ''}
+                          onChange={(e) => {
+                            const updated = { ...statementData };
+                            updated.sectionI.G_otherSpecify = e.target.value;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          placeholder="e.g. NYPD Highway Patrol Escort or Horse-Drawn Glass Coach"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                        />
+                      </div>
+                      <div>
+                        <div className="relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={statementData.sectionI.G_otherAmount === 0 ? '' : statementData.sectionI.G_otherAmount}
+                            placeholder="0.00"
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => {
+                              const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                              const updated = { ...statementData };
+                              updated.sectionI.G_otherAmount = val;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
@@ -2369,10 +4070,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               <span className="font-mono text-xs font-bold text-neutral-500">$</span>
                               <input
                                 type="number"
-                                value={statementData.sectionI.H1_casketAmount}
+                                value={statementData.sectionI.H1_casketAmount === 0 ? '' : statementData.sectionI.H1_casketAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
                                 onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                                   const updated = { ...statementData };
-                                  updated.sectionI.H1_casketAmount = parseFloat(e.target.value) || 0;
+                                  updated.sectionI.H1_casketAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
                                 className="w-36 p-2 bg-white border border-red-300 rounded-lg text-sm font-mono font-bold text-[#991b1b] text-right focus:ring-2 focus:ring-[#991b1b]"
@@ -2468,10 +4172,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <label className="text-[10px] text-neutral-500 block mb-1">Vault Price ($):</label>
                             <input
                               type="number"
-                              value={statementData.sectionI.H2_outerReceptacleAmount}
+                              value={statementData.sectionI.H2_outerReceptacleAmount === 0 ? '' : statementData.sectionI.H2_outerReceptacleAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
                               onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                                 const updated = { ...statementData };
-                                updated.sectionI.H2_outerReceptacleAmount = parseFloat(e.target.value) || 0;
+                                updated.sectionI.H2_outerReceptacleAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
                               className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
@@ -2634,10 +4341,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <label className="text-[10px] text-neutral-500 block mb-1">Urn Price ($):</label>
                             <input
                               type="number"
-                              value={statementData.sectionI.H3_urnAmount}
+                              value={statementData.sectionI.H3_urnAmount === 0 ? '' : statementData.sectionI.H3_urnAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
                               onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                                 const updated = { ...statementData };
-                                updated.sectionI.H3_urnAmount = parseFloat(e.target.value) || 0;
+                                updated.sectionI.H3_urnAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
                               className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
@@ -2647,6 +4357,48 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                       </div>
                     )}
+                  </div>
+
+                  {/* Other Merchandise Section */}
+                  <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
+                    <div>
+                      <span className="font-bold text-neutral-800 block text-xs">H. Other Merchandise:</span>
+                      <span className="text-[10px] text-neutral-500">Keepsake jewelry, crucifix, thumbies, vault seal warranty, flag case, or specialty goods</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <div className="sm:col-span-2">
+                        <input
+                          type="text"
+                          value={statementData.sectionI.H_otherSpecify || ''}
+                          onChange={(e) => {
+                            const updated = { ...statementData };
+                            updated.sectionI.H_otherSpecify = e.target.value;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          placeholder="e.g. Sterling Silver Fingerprint Keepsake Pendant & Chain"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                        />
+                      </div>
+                      <div>
+                        <div className="relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={statementData.sectionI.H_otherAmount === 0 ? '' : statementData.sectionI.H_otherAmount}
+                            placeholder="0.00"
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => {
+                              const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                              const updated = { ...statementData };
+                              updated.sectionI.H_otherAmount = val;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -2692,122 +4444,292 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       
                       {/* BFH Floral Arrangement Selector Box */}
                       <div className="bg-gradient-to-br from-amber-50/50 via-white to-neutral-50 p-5 rounded-2xl border-2 border-amber-300/70 shadow-xs space-y-4">
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200/80 pb-3">
+                        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200/80 pb-3">
                           <div className="flex items-center space-x-2">
                             <span className="px-2.5 py-0.5 bg-amber-200/70 text-amber-900 border border-amber-300 rounded-md text-[11px] font-bold uppercase tracking-wider">
                               BFH Florist Studio
                             </span>
                             <span className="text-xs font-bold text-neutral-800">
-                              Official BFH Floral Catalog (24 Handcrafted Designs)
+                              {selectedFloralBook === 'danielas_original' 
+                                ? `Daniela's. Original Catalog (${DANIELAS_ORIGINAL_CATALOG.length} Handcrafted Designs, #1–#192)`
+                                : `Other Floral Book (${OTHER_FLORAL_CATALOG.length} General Sympathy Designs)`}
                             </span>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => setShowVisualFloralGallery(!showVisualFloralGallery)}
-                            className="inline-flex items-center space-x-1 px-3 py-1 bg-white hover:bg-neutral-100 border border-neutral-300 text-neutral-700 rounded-lg text-xs font-semibold transition cursor-pointer"
-                          >
-                            <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
-                            <span>{showVisualFloralGallery ? 'Hide Photo Gallery' : 'Browse Visual Photo Gallery (24)'}</span>
-                          </button>
+                          
+                          {/* Dual Catalog Toggle Tabs */}
+                          <div className="flex items-center bg-neutral-100 p-1 rounded-xl border border-neutral-200">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedFloralBook('danielas_original');
+                                setSelectedFloralCategory('all');
+                                setSelectedFloralCode('BFH-CC-001');
+                              }}
+                              className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                                selectedFloralBook === 'danielas_original'
+                                  ? 'bg-[#991b1b] text-white shadow-xs'
+                                  : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
+                              }`}
+                            >
+                              <span>🌸</span>
+                              <span>Daniela&apos;s. Original ({DANIELAS_ORIGINAL_CATALOG.length})</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedFloralBook('other_floral_book');
+                                setSelectedFloralCategory('all');
+                                setSelectedFloralCode('BFH-CS-001');
+                              }}
+                              className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                                selectedFloralBook === 'other_floral_book'
+                                  ? 'bg-[#991b1b] text-white shadow-xs'
+                                  : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
+                              }`}
+                            >
+                              <span>🌿</span>
+                              <span>Other Floral Book ({OTHER_FLORAL_CATALOG.length})</span>
+                            </button>
+                          </div>
+
+                          <div className="flex items-center space-x-2">
+                            <button
+                              type="button"
+                              onClick={() => setShowVisualFloralGallery(!showVisualFloralGallery)}
+                              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white hover:bg-amber-50 border border-amber-300 text-amber-900 rounded-xl text-xs font-bold transition shadow-2xs cursor-pointer"
+                            >
+                              <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
+                              <span>{showVisualFloralGallery ? 'Hide Photo Gallery' : 'Browse Visual Photo Gallery'}</span>
+                            </button>
+                          </div>
                         </div>
 
                         {/* Interactive Photo Gallery Drawer */}
                         {showVisualFloralGallery && (
-                          <div className="bg-white p-4 rounded-xl border border-amber-200 space-y-3">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
-                                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                                <span>Click any arrangement below to configure size &amp; add to contract:</span>
-                              </span>
-                              <span className="text-[11px] text-neutral-500 font-mono">24 Floral Items</span>
+                          <div className="bg-white p-4 sm:p-5 rounded-2xl border-2 border-amber-300/80 space-y-3.5 shadow-sm">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-100 pb-3">
+                              <div>
+                                <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5">
+                                  <Sparkles className="w-4 h-4 text-amber-600" />
+                                  <span>
+                                    {selectedFloralBook === 'danielas_original' ? "Daniela's. Original Gallery (192 Handcrafted Pieces)" : "Other Floral Book Gallery"}
+                                  </span>
+                                </span>
+                                <p className="text-[11px] text-neutral-500 mt-0.5">
+                                  Click any floral arrangement to view high-resolution details, select sizing tier, customize ribbon sash, and load into Form AP-47.
+                                </p>
+                              </div>
+                              <div className="relative w-full sm:w-64">
+                                <Search className="w-3.5 h-3.5 text-neutral-400 absolute left-3 top-2.5" />
+                                <input
+                                  type="text"
+                                  value={floralSearchQuery}
+                                  onChange={(e) => setFloralSearchQuery(e.target.value)}
+                                  placeholder="Search by catalog #, code, name..."
+                                  className="w-full pl-8 pr-3 py-1.5 bg-neutral-50 border border-neutral-300 rounded-xl text-xs outline-none focus:border-amber-400 focus:bg-white"
+                                />
+                                {floralSearchQuery && (
+                                  <button
+                                    type="button"
+                                    onClick={() => setFloralSearchQuery('')}
+                                    className="absolute right-2.5 top-2 text-neutral-400 hover:text-neutral-700 text-xs"
+                                  >
+                                    ✕
+                                  </button>
+                                )}
+                              </div>
                             </div>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2.5 max-h-72 overflow-y-auto p-1">
-                              {BFH_FLORAL_CATALOG.map((item) => {
-                                const isSelected = selectedFloralCode === item.code;
+
+                            {/* Category Filter Pills */}
+                            <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 text-xs">
+                              {(selectedFloralBook === 'danielas_original' ? DANIELAS_CATEGORIES : OTHER_FLORAL_CATEGORIES).map((cat) => {
+                                const currentBookCatalog = selectedFloralBook === 'danielas_original' ? DANIELAS_ORIGINAL_CATALOG : OTHER_FLORAL_CATALOG;
+                                const count = cat.id === 'all' 
+                                  ? currentBookCatalog.length 
+                                  : currentBookCatalog.filter(f => f.category === cat.id).length;
+                                const isCatActive = selectedFloralCategory === cat.id;
                                 return (
                                   <button
-                                    key={item.code}
+                                    key={cat.id}
                                     type="button"
-                                    onClick={() => {
-                                      setSelectedFloralCode(item.code);
-                                      if (selectedFloralCategory !== 'all' && selectedFloralCategory !== item.category) {
-                                        setSelectedFloralCategory('all');
-                                      }
-                                    }}
-                                    className={`p-2 rounded-xl border text-left transition relative group overflow-hidden cursor-pointer ${
-                                      isSelected 
-                                        ? 'border-[#991b1b] bg-rose-50/50 ring-2 ring-[#991b1b]/20 shadow-sm' 
-                                        : 'border-neutral-200 bg-neutral-50 hover:border-amber-400 hover:bg-white'
+                                    onClick={() => setSelectedFloralCategory(cat.id)}
+                                    className={`px-3 py-1 rounded-xl font-bold whitespace-nowrap transition cursor-pointer flex items-center gap-1.5 ${
+                                      isCatActive
+                                        ? 'bg-[#991b1b] text-white shadow-xs'
+                                        : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
                                     }`}
                                   >
-                                    <div className="aspect-square w-full rounded-lg overflow-hidden bg-neutral-100 mb-1.5 relative">
-                                      <img
-                                        src={item.imageUrl}
-                                        alt={item.name}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                      />
-                                      <span className="absolute bottom-1 left-1 px-1.5 py-0.5 bg-black/75 text-white text-[9px] font-mono rounded">
-                                        {item.code}
-                                      </span>
-                                    </div>
-                                    <div className="text-[10px] font-bold text-neutral-900 truncate leading-tight">
-                                      {item.name}
-                                    </div>
-                                    <div className="text-[10px] font-mono text-[#991b1b] font-bold mt-0.5">
-                                      ${item.pricing.small} — ${item.pricing.large}
-                                    </div>
+                                    <span>{cat.label.split('(')[0].trim()}</span>
+                                    <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+                                      isCatActive ? 'bg-white/20 text-white' : 'bg-neutral-200 text-neutral-700'
+                                    }`}>
+                                      {count}
+                                    </span>
                                   </button>
                                 );
                               })}
                             </div>
+
+                            {/* Gallery Image Grid with Clean Professional Price Stickers */}
+                            {(() => {
+                              const currentBookCatalog = selectedFloralBook === 'danielas_original' ? DANIELAS_ORIGINAL_CATALOG : OTHER_FLORAL_CATALOG;
+                              const galleryList = currentBookCatalog.filter(f => {
+                                const matchCat = selectedFloralCategory === 'all' || f.category === selectedFloralCategory;
+                                const q = floralSearchQuery.toLowerCase().trim();
+                                const matchSearch = !q 
+                                  || f.name.toLowerCase().includes(q) 
+                                  || f.code.toLowerCase().includes(q) 
+                                  || (f.catalogNumber && String(f.catalogNumber).includes(q))
+                                  || f.description.toLowerCase().includes(q) 
+                                  || f.categoryLabel.toLowerCase().includes(q) 
+                                  || (f.floristPartner && f.floristPartner.toLowerCase().includes(q));
+                                return matchCat && matchSearch;
+                              });
+
+                              if (galleryList.length === 0) {
+                                return (
+                                  <div className="py-8 text-center text-xs text-neutral-400">
+                                    No floral arrangements match your filter query. Try clearing the search.
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5 max-h-96 overflow-y-auto p-1">
+                                  {galleryList.map((item) => {
+                                    const isSelected = selectedFloralCode === item.code;
+                                    const isFixedPrice = item.pricing.small === item.pricing.large;
+                                    return (
+                                      <button
+                                        key={item.code}
+                                        type="button"
+                                        onClick={() => {
+                                          setSelectedFloralCode(item.code);
+                                        }}
+                                        className={`p-2 rounded-xl border text-left transition relative group overflow-hidden cursor-pointer flex flex-col justify-between ${
+                                          isSelected 
+                                            ? 'border-[#991b1b] bg-rose-50/80 ring-2 ring-[#991b1b]/30 shadow-md' 
+                                            : 'border-neutral-200 bg-neutral-50 hover:border-amber-400 hover:bg-white hover:shadow-xs'
+                                        }`}
+                                      >
+                                        <div className="aspect-square w-full rounded-lg overflow-hidden bg-white mb-1.5 relative border border-neutral-100 shadow-2xs">
+                                          <img
+                                            src={item.imageUrl}
+                                            alt={item.name}
+                                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                            loading="lazy"
+                                          />
+                                          {/* Catalog Number Badge */}
+                                          {item.catalogNumber && (
+                                            <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-[#991b1b] text-white text-[9px] font-bold font-mono rounded shadow-xs">
+                                              #{item.catalogNumber}
+                                            </span>
+                                          )}
+                                          
+                                          {/* Professional Cleaned-up Price Sticker */}
+                                          <span className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white text-[9px] font-bold font-mono rounded shadow-xs border border-amber-400/40">
+                                            {isFixedPrice ? `$${item.pricing.medium}` : `$${item.pricing.small}–$${item.pricing.large}`}
+                                          </span>
+                                        </div>
+                                        <div>
+                                          <div className="text-[10px] font-bold text-neutral-900 line-clamp-1 leading-tight">
+                                            {item.name}
+                                          </div>
+                                          <div className="flex items-center justify-between text-[9px] text-neutral-500 mt-0.5">
+                                            <span className="font-mono font-bold text-neutral-700">{item.code}</span>
+                                            <span className="font-bold text-[#991b1b]">
+                                              ${item.pricing.medium}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              );
+                            })()}
                           </div>
                         )}
 
                         {/* Dropdown Filters & Size Selector Grid */}
                         {(() => {
-                          const activeProduct = getFloralByCode(selectedFloralCode) || BFH_FLORAL_CATALOG[0];
-                          const filteredCatalog = selectedFloralCategory === 'all'
-                            ? BFH_FLORAL_CATALOG
-                            : BFH_FLORAL_CATALOG.filter(f => f.category === selectedFloralCategory);
-                          const currentUnitPrice = activeProduct.pricing[selectedFloralSize] || 350;
+                          const activeProduct = getFloralByCode(selectedFloralCode, selectedFloralBook) 
+                            || (selectedFloralBook === 'danielas_original' ? DANIELAS_ORIGINAL_CATALOG[0] : OTHER_FLORAL_CATALOG[0]);
+                          const currentBookCatalog = selectedFloralBook === 'danielas_original' ? DANIELAS_ORIGINAL_CATALOG : OTHER_FLORAL_CATALOG;
+                          const filteredCatalog = currentBookCatalog.filter(f => {
+                            const matchCat = selectedFloralCategory === 'all' || f.category === selectedFloralCategory;
+                            const q = floralSearchQuery.toLowerCase().trim();
+                            const matchSearch = !q 
+                              || f.name.toLowerCase().includes(q) 
+                              || f.code.toLowerCase().includes(q) 
+                              || (f.catalogNumber && String(f.catalogNumber).includes(q))
+                              || f.description.toLowerCase().includes(q) 
+                              || f.categoryLabel.toLowerCase().includes(q) 
+                              || (f.floristPartner && f.floristPartner.toLowerCase().includes(q));
+                            return matchCat && matchSearch;
+                          });
+
+                          const currentUnitPrice = activeProduct.pricing[selectedFloralSize] || activeProduct.pricing.medium || 350;
                           const currentTotal = currentUnitPrice * selectedFloralQty;
+                          const isFixedPrice = activeProduct.pricing.small === activeProduct.pricing.large;
 
                           return (
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                               {/* Left Controls */}
                               <div className="lg:col-span-7 space-y-3.5 text-xs">
                                 
-                                {/* 1. Category Dropdown */}
-                                <div>
-                                  <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1 flex items-center gap-1">
-                                    <Layers className="w-3.5 h-3.5 text-amber-600" />
-                                    <span>1. Select Floral Category:</span>
-                                  </label>
-                                  <select
-                                    value={selectedFloralCategory}
-                                    onChange={(e) => {
-                                      const newCat = e.target.value as FloralCategory | 'all';
-                                      setSelectedFloralCategory(newCat);
-                                      if (newCat !== 'all') {
-                                        const inCat = BFH_FLORAL_CATALOG.filter(f => f.category === newCat);
-                                        if (inCat.length > 0 && !inCat.some(f => f.code === selectedFloralCode)) {
-                                          setSelectedFloralCode(inCat[0].code);
+                                {/* 1. Category Dropdown & Quick Search Bar */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                      <Layers className="w-3.5 h-3.5 text-amber-600" />
+                                      <span>1. Floral Category:</span>
+                                    </label>
+                                    <select
+                                      value={selectedFloralCategory}
+                                      onChange={(e) => {
+                                        const newCat = e.target.value as FloralCategory | 'all';
+                                        setSelectedFloralCategory(newCat);
+                                        if (newCat !== 'all') {
+                                          const inCat = currentBookCatalog.filter(f => f.category === newCat);
+                                          if (inCat.length > 0 && !inCat.some(f => f.code === selectedFloralCode)) {
+                                            setSelectedFloralCode(inCat[0].code);
+                                          }
                                         }
-                                      }
-                                    }}
-                                    className="w-full p-2.5 bg-white border border-neutral-300 rounded-xl text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none"
-                                  >
-                                    {BFH_FLORAL_CATEGORIES.map(c => (
-                                      <option key={c.id} value={c.id}>{c.label}</option>
-                                    ))}
-                                  </select>
+                                      }}
+                                      className="w-full p-2.5 bg-white border border-neutral-300 rounded-xl text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none"
+                                    >
+                                      {(selectedFloralBook === 'danielas_original' ? DANIELAS_CATEGORIES : OTHER_FLORAL_CATEGORIES).map(c => (
+                                        <option key={c.id} value={c.id}>{c.label}</option>
+                                      ))}
+                                    </select>
+                                  </div>
+
+                                  <div>
+                                    <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                      <Search className="w-3.5 h-3.5 text-amber-600" />
+                                      <span>Filter / Search Catalog:</span>
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={floralSearchQuery}
+                                      onChange={(e) => setFloralSearchQuery(e.target.value)}
+                                      placeholder="e.g. #42, Casket, Spray, Heart, Cross..."
+                                      className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-xs text-neutral-900 outline-none focus:ring-2 focus:ring-amber-400"
+                                    />
+                                  </div>
                                 </div>
 
                                 {/* 2. Arrangement Dropdown */}
                                 <div>
-                                  <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1 flex items-center gap-1">
-                                    <Tag className="w-3.5 h-3.5 text-amber-600" />
-                                    <span>2. Select Floral Arrangement ({filteredCatalog.length} available):</span>
+                                  <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1 flex items-center justify-between">
+                                    <span className="flex items-center gap-1">
+                                      <Tag className="w-3.5 h-3.5 text-amber-600" />
+                                      <span>2. Select Floral Arrangement ({filteredCatalog.length} available):</span>
+                                    </span>
+                                    <span className="text-[10px] text-amber-900 font-bold bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
+                                      {activeProduct.bookSource || "Daniela's. Original"}
+                                    </span>
                                   </label>
                                   <select
                                     value={selectedFloralCode}
@@ -2816,7 +4738,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   >
                                     {filteredCatalog.map(item => (
                                       <option key={item.code} value={item.code}>
-                                        [{item.code}] {item.name} — ({item.categoryLabel})
+                                        {item.catalogNumber ? `#${item.catalogNumber} ` : ''}[{item.code}] {item.name} — (${item.categoryLabel}) — ${item.pricing.medium ? `$${item.pricing.medium}` : `$${item.pricing.small}`}
                                       </option>
                                     ))}
                                   </select>
@@ -2826,11 +4748,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 <div>
                                   <label className="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider mb-1 flex items-center justify-between">
                                     <span>3. Select Size (Creates Total Price):</span>
-                                    <span className="text-[10px] text-neutral-500 font-normal">Pricing based on BFH Florist scale</span>
+                                    <span className="text-[10px] text-neutral-500 font-normal">
+                                      {isFixedPrice ? 'Fixed Price Tribute' : 'Standard Tier Pricing (Small $300 / Med $350 / Lrg $400)'}
+                                    </span>
                                   </label>
                                   <div className="grid grid-cols-3 gap-2">
                                     {(['small', 'medium', 'large'] as FloralSize[]).map((sizeKey) => {
-                                      const price = activeProduct.pricing[sizeKey];
+                                      const price = activeProduct.pricing[sizeKey] ?? activeProduct.pricing.medium;
                                       const dim = activeProduct.dimensions[sizeKey];
                                       const isSelected = selectedFloralSize === sizeKey;
                                       return (
@@ -2867,7 +4791,19 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                       className="w-full p-2.5 bg-white border border-neutral-300 rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-400"
                                     />
                                     <div className="flex flex-wrap gap-1 mt-1.5">
-                                      {['Loving Family', 'Beloved Mother', 'Beloved Father', 'To Our Beloved Papa', 'Forever in Our Hearts'].map((phrase) => (
+                                      {[
+                                        'Loving Family',
+                                        'Beloved Mother',
+                                        'Beloved Father',
+                                        'To Our Beloved Papa',
+                                        'Beloved Grandmother',
+                                        'Beloved Grandfather',
+                                        'Forever in Our Hearts',
+                                        'Rest in Peace',
+                                        "In God's Eternal Care",
+                                        'Beloved Sister',
+                                        'Beloved Brother'
+                                      ].map((phrase) => (
                                         <button
                                           key={phrase}
                                           type="button"
@@ -2895,8 +4831,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                       <input
                                         type="number"
                                         min={1}
-                                        value={selectedFloralQty}
-                                        onChange={(e) => setSelectedFloralQty(Math.max(1, parseInt(e.target.value) || 1))}
+                                        value={selectedFloralQty === 0 ? '' : selectedFloralQty}
+                                        placeholder="1"
+                                        onFocus={(e) => e.target.select()}
+                                        onChange={(e) => setSelectedFloralQty(e.target.value === '' ? 1 : Math.max(1, parseInt(e.target.value) || 1))}
                                         className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-center"
                                       />
                                       <button
@@ -2912,30 +4850,39 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                               </div>
 
-                              {/* Right Live Preview Card (Matching Director & Family Expectation) */}
+                              {/* Right Live Preview Card with Clean Price Sticker Seal */}
                               <div className="lg:col-span-5 bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-col justify-between">
                                 <div>
                                   <div className="flex items-center justify-between mb-2">
-                                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-100 px-2 py-0.5 rounded">
-                                      Visual Order Verification
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
+                                      {activeProduct.bookSource || "Daniela's. Original"}
                                     </span>
-                                    <span className="font-mono text-[11px] font-bold text-neutral-600">
-                                      {activeProduct.code}
+                                    <span className="font-mono text-[11px] font-bold text-neutral-700">
+                                      {activeProduct.catalogNumber ? `#${activeProduct.catalogNumber} • ` : ''}{activeProduct.code}
                                     </span>
                                   </div>
 
-                                  {/* Small Image Preview That Follows The Order */}
-                                  <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-neutral-100 border border-neutral-200 mb-3 shadow-inner">
+                                  {/* Cropped Image Preview & Clean Price Badge */}
+                                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-white border border-neutral-200 mb-3 shadow-inner flex items-center justify-center p-2">
                                     <img
                                       src={activeProduct.imageUrl}
                                       alt={activeProduct.name}
-                                      className="w-full h-full object-cover"
+                                      className="max-h-full max-w-full object-contain"
                                     />
-                                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-neutral-900/80 backdrop-blur-md text-amber-300 text-[10px] font-mono font-bold rounded-md">
+                                    
+                                    {/* Category tag */}
+                                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-neutral-900/85 backdrop-blur-md text-amber-300 text-[10px] font-mono font-bold rounded-md">
                                       {activeProduct.categoryLabel}
                                     </div>
+
+                                    {/* Professional Cleaned-up Price Sticker Badge */}
+                                    <div className="absolute top-2 right-2 px-2.5 py-1 bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 text-white text-xs font-mono font-bold rounded-lg shadow-md border border-amber-300/50 flex items-center gap-1">
+                                      <span className="text-[10px] uppercase font-sans tracking-wider opacity-80">PRICE:</span>
+                                      <span>${currentUnitPrice.toFixed(2)}</span>
+                                    </div>
+
                                     {selectedFloralRibbon.trim() && (
-                                      <div className="absolute bottom-2 left-2 right-2 bg-[#991b1b]/90 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[10px] font-bold text-center truncate shadow-md border border-amber-300/40">
+                                      <div className="absolute bottom-2 left-2 right-2 bg-[#991b1b]/95 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[10px] font-bold text-center truncate shadow-md border border-amber-300/40">
                                         🎗️ Ribbon Sash: &quot;{selectedFloralRibbon.trim()}&quot;
                                       </div>
                                     )}
@@ -2948,7 +4895,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     <span className="text-neutral-500 font-medium">
                                       Size: <strong className="text-neutral-800 uppercase">{selectedFloralSize}</strong> ({activeProduct.dimensions[selectedFloralSize]})
                                     </span>
-                                    <span className="font-mono text-neutral-600">
+                                    <span className="font-mono text-neutral-700 font-bold">
                                       ${currentUnitPrice.toFixed(2)} &times; {selectedFloralQty}
                                     </span>
                                   </div>
@@ -2964,10 +4911,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   <button
                                     type="button"
                                     onClick={handleAddBFHFloral}
-                                    className="w-full py-2.5 px-4 bg-gradient-to-r from-[#991b1b] to-red-800 hover:from-red-800 hover:to-[#991b1b] text-white font-bold rounded-xl text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer"
+                                    className="w-full py-2.5 bg-[#991b1b] hover:bg-[#7f1d1d] text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
                                   >
                                     <Plus className="w-4 h-4" />
-                                    <span>Add Floral Tribute to Contract</span>
+                                    <span>Add to Form AP-47 Contract &amp; Merchandise Schedule</span>
                                   </button>
                                 </div>
                               </div>
@@ -3064,8 +5011,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                         type="number"
                                         min={1}
                                         max={50}
-                                        value={f.quantity}
-                                        onChange={(e) => handleUpdateFlowerQuantity(f.id, parseInt(e.target.value) || 1)}
+                                        value={f.quantity === 0 ? '' : f.quantity}
+                                        placeholder="1"
+                                        onFocus={(e) => e.target.select()}
+                                        onChange={(e) => handleUpdateFlowerQuantity(f.id, e.target.value === '' ? 1 : Math.max(1, parseInt(e.target.value) || 1))}
                                         className="w-10 text-center font-mono font-bold text-xs bg-transparent border-none p-0 focus:ring-0 text-neutral-900"
                                       />
                                       <button
@@ -3084,8 +5033,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                       <input
                                         type="number"
                                         step="0.01"
-                                        value={f.unitPrice}
-                                        onChange={(e) => handleUpdateFlowerUnitPrice(f.id, parseFloat(e.target.value) || 0)}
+                                        value={f.unitPrice === 0 ? '' : f.unitPrice}
+                                        placeholder="0.00"
+                                        onFocus={(e) => e.target.select()}
+                                        onChange={(e) => handleUpdateFlowerUnitPrice(f.id, e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
                                         className="w-20 text-right font-mono text-xs p-1 bg-white border border-neutral-300 rounded-lg focus:border-[#991b1b] focus:ring-1 focus:ring-[#991b1b]"
                                       />
                                     </div>
@@ -3147,18 +5098,22 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <input
                               type="number"
                               min={1}
-                              value={newCustomFlowerQty}
-                              onChange={(e) => setNewCustomFlowerQty(parseInt(e.target.value) || 1)}
-                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono"
+                              value={newCustomFlowerQty === 0 ? '' : newCustomFlowerQty}
+                              placeholder="1"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => setNewCustomFlowerQty(e.target.value === '' ? 1 : Math.max(1, parseInt(e.target.value) || 1))}
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-center"
                             />
                           </div>
                           <div>
                             <label className="text-[10px] text-neutral-500 block mb-1">Unit Price ($):</label>
                             <input
                               type="number"
-                              value={newCustomFlowerPrice}
-                              onChange={(e) => setNewCustomFlowerPrice(parseFloat(e.target.value) || 0)}
-                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono"
+                              value={newCustomFlowerPrice === 0 ? '' : newCustomFlowerPrice}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => setNewCustomFlowerPrice(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
                             />
                           </div>
                         </div>
@@ -3210,7 +5165,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.I10_programsMatrix.unitPrice = p.price;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className={`p-3 rounded-xl border text-left transition ${
+                          className={`p-3 rounded-xl border text-left transition cursor-pointer ${
                             statementData.sectionI.I10_programsMatrix.programType === p.id
                               ? 'bg-red-50 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
                               : 'bg-white border-neutral-200 hover:bg-neutral-100'
@@ -3260,10 +5215,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             type="number"
                             min={0}
                             step={25}
-                            value={statementData.sectionI.I10_programsMatrix.quantity}
+                            value={statementData.sectionI.I10_programsMatrix.quantity === 0 ? '' : statementData.sectionI.I10_programsMatrix.quantity}
+                            placeholder="0"
+                            onFocus={(e) => e.target.select()}
                             onChange={(e) => {
+                              const val = e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value) || 0);
                               const updated = { ...statementData };
-                              updated.sectionI.I10_programsMatrix.quantity = Math.max(0, parseInt(e.target.value) || 0);
+                              updated.sectionI.I10_programsMatrix.quantity = val;
                               setStatementData(calculateAP47Totals(updated));
                             }}
                             className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-center"
@@ -3285,10 +5243,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         <label className="text-[10px] text-neutral-500 block mb-1">Unit Price ($):</label>
                         <input
                           type="number"
-                          value={statementData.sectionI.I10_programsMatrix.unitPrice}
+                          value={statementData.sectionI.I10_programsMatrix.unitPrice === 0 ? '' : statementData.sectionI.I10_programsMatrix.unitPrice}
+                          placeholder="0"
+                          onFocus={(e) => e.target.select()}
                           onChange={(e) => {
+                            const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                             const updated = { ...statementData };
-                            updated.sectionI.I10_programsMatrix.unitPrice = parseFloat(e.target.value) || 0;
+                            updated.sectionI.I10_programsMatrix.unitPrice = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
                           className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-[#991b1b]"
@@ -3315,6 +5276,128 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                   </div>
 
+                  {/* Register Books (Memorial Guest Books) Selection Card */}
+                  <div className="bg-[#fbf9f6] p-5 rounded-2xl border-2 border-amber-300/80 shadow-xs space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/60 pb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="p-1.5 bg-amber-100 text-amber-900 rounded-lg font-bold text-sm">
+                          📖
+                        </span>
+                        <div>
+                          <h4 className="font-serif-title font-bold text-sm sm:text-base text-neutral-900">
+                            Register Books (Memorial Guest Attendance Logs)
+                          </h4>
+                          <p className="text-[11px] text-neutral-600">
+                            Official Benta commemorative register book with embossed gold foil crest, attendee registry pages, family history record, and condolence log.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[10px] text-neutral-500 block">Register Books Line Total</span>
+                        <span className="font-mono font-bold text-sm text-[#991b1b]">
+                          ${statementData.sectionI.I8_registerBookAmount.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Book Type Selection Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => handleSelectRegisterBookOption('standard')}
+                        className={`p-3.5 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
+                          statementData.sectionI.I8_registerBookUnitPrice === BFH_GPL_2026.stationery.registerBookBase && (statementData.sectionI.I8_registerBookQty || 0) > 0
+                            ? 'bg-amber-50/90 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
+                            : 'bg-white border-neutral-200 hover:bg-neutral-50'
+                        }`}
+                      >
+                        <div>
+                          <div className="font-bold text-neutral-900 text-xs">Standard Padded Leatherette Book</div>
+                          <div className="text-[10px] text-neutral-500 mt-0.5">Gold foil Benta crest • Padded vinyl cover</div>
+                        </div>
+                        <div className="text-right font-mono font-bold text-sm text-[#991b1b]">
+                          ${BFH_GPL_2026.stationery.registerBookBase.toFixed(2)} / book
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => handleSelectRegisterBookOption('deluxe')}
+                        className={`p-3.5 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
+                          statementData.sectionI.I8_registerBookUnitPrice === BFH_GPL_2026.stationery.registerBookDeluxe && (statementData.sectionI.I8_registerBookQty || 0) > 0
+                            ? 'bg-amber-50/90 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
+                            : 'bg-white border-neutral-200 hover:bg-neutral-50'
+                        }`}
+                      >
+                        <div>
+                          <div className="font-bold text-neutral-900 text-xs">Deluxe Heirloom Hardbound Book</div>
+                          <div className="text-[10px] text-neutral-500 mt-0.5">Hand-stitched leather • Gold gilded page edges</div>
+                        </div>
+                        <div className="text-right font-mono font-bold text-sm text-[#991b1b]">
+                          ${BFH_GPL_2026.stationery.registerBookDeluxe.toFixed(2)} / book
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* Quantity and Price Inputs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-amber-200/60 items-center">
+                      <div>
+                        <label className="text-[10px] text-neutral-600 font-bold block mb-1">
+                          Book Quantity (Direct Input or Stepper):
+                        </label>
+                        <div className="flex items-center space-x-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateRegisterBookQty(Math.max(0, (statementData.sectionI.I8_registerBookQty || 0) - 1))}
+                            className="w-9 h-9 bg-neutral-200 hover:bg-neutral-300 rounded-lg font-bold text-sm flex items-center justify-center cursor-pointer"
+                          >
+                            -
+                          </button>
+                          <input
+                            type="number"
+                            min={0}
+                            value={statementData.sectionI.I8_registerBookQty === 0 ? '' : statementData.sectionI.I8_registerBookQty}
+                            placeholder="0"
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => handleUpdateRegisterBookQty(e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value) || 0))}
+                            className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-center text-sm"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateRegisterBookQty((statementData.sectionI.I8_registerBookQty || 0) + 1)}
+                            className="w-9 h-9 bg-neutral-200 hover:bg-neutral-300 rounded-lg font-bold text-sm flex items-center justify-center cursor-pointer"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] text-neutral-600 font-bold block mb-1">
+                          Rate per Book ($):
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-bold text-xs">$</span>
+                          <input
+                            type="number"
+                            value={statementData.sectionI.I8_registerBookUnitPrice === 0 ? '' : statementData.sectionI.I8_registerBookUnitPrice}
+                            placeholder="50.00"
+                            onFocus={(e) => e.target.select()}
+                            onChange={(e) => handleUpdateRegisterBookUnitPrice(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
+                            className="w-full pl-6 pr-3 p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-xs text-[#991b1b]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-white rounded-xl border border-amber-200">
+                        <span className="text-[10px] text-neutral-500 block">Calculation Preview:</span>
+                        <div className="font-mono text-xs font-bold text-neutral-900 mt-0.5">
+                          {statementData.sectionI.I8_registerBookQty || 0} books × ${(statementData.sectionI.I8_registerBookUnitPrice || 50).toFixed(2)} = <span className="text-[#991b1b]">${statementData.sectionI.I8_registerBookAmount.toFixed(2)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Prayer Cards, Cards & Keepsakes */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     
@@ -3330,14 +5413,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.I1_memorialCardsAmount = BFH_GPL_2026.stationery.memorialCardsPlain50;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className={`p-2 rounded-lg border text-left ${
+                          className={`p-2 rounded-lg border text-left cursor-pointer transition ${
                             statementData.sectionI.I1_memorialCardsType === 'plain_50'
                               ? 'bg-[#991b1b] text-white font-bold'
-                              : 'bg-white'
+                              : 'bg-white hover:bg-neutral-100'
                           }`}
                         >
                           <div>Plain Text (50 pk)</div>
-                          <div className="font-mono text-xs">$145.00</div>
+                          <div className={`font-mono text-xs ${statementData.sectionI.I1_memorialCardsType === 'plain_50' ? 'text-amber-300' : 'text-[#991b1b]'}`}>$145.00</div>
                         </button>
 
                         <button
@@ -3348,14 +5431,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.I1_memorialCardsAmount = BFH_GPL_2026.stationery.memorialCardsWithPhoto50;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className={`p-2 rounded-lg border text-left ${
+                          className={`p-2 rounded-lg border text-left cursor-pointer transition ${
                             statementData.sectionI.I1_memorialCardsType === 'with_photo_50'
                               ? 'bg-[#991b1b] text-white font-bold'
-                              : 'bg-white'
+                              : 'bg-white hover:bg-neutral-100'
                           }`}
                         >
                           <div>With Photo (50 pk)</div>
-                          <div className="font-mono text-xs">$200.00</div>
+                          <div className={`font-mono text-xs ${statementData.sectionI.I1_memorialCardsType === 'with_photo_50' ? 'text-amber-300' : 'text-[#991b1b]'}`}>$200.00</div>
                         </button>
                       </div>
                     </div>
@@ -3381,9 +5464,11 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           type="number"
                           min={0}
                           step={25}
-                          value={statementData.sectionI.I2_acknowledgementCardsQty}
+                          value={statementData.sectionI.I2_acknowledgementCardsQty === 0 ? '' : statementData.sectionI.I2_acknowledgementCardsQty}
+                          placeholder="0"
+                          onFocus={(e) => e.target.select()}
                           onChange={(e) => {
-                            const qty = Math.max(0, parseInt(e.target.value) || 0);
+                            const qty = e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value) || 0);
                             const updated = { ...statementData };
                             updated.sectionI.I2_acknowledgementCardsQty = qty;
                             updated.sectionI.I2_acknowledgementCardsAmount = (qty / 25) * BFH_GPL_2026.stationery.stockThankYouCards25;
@@ -3408,6 +5493,142 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       </div>
                     </div>
 
+                  </div>
+
+                  {/* Other Additional Services & Merchandise Section (3 Lines) */}
+                  <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <span className="font-bold text-neutral-800 block text-xs">I. Other Additional Services &amp; Merchandise (3 Lines Available):</span>
+                        <span className="text-[10px] text-neutral-500">Custom portrait canvas, digital livestream recording, bookmark keepsakes, crucifix, or specialty tribute items</span>
+                      </div>
+                      <span className="font-mono font-bold text-xs text-[#991b1b]">
+                        ${((statementData.sectionI.I_otherAmount || 0) + (statementData.sectionI.I_other2Amount || 0) + (statementData.sectionI.I_other3Amount || 0)).toFixed(2)}
+                      </span>
+                    </div>
+
+                    {/* Line 1 */}
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-neutral-700 block">Line 1: Item Specification &amp; Dollar Value</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="sm:col-span-2">
+                          <input
+                            type="text"
+                            value={statementData.sectionI.I_otherSpecify || statementData.sectionI.I12_otherSpecify || ''}
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionI.I_otherSpecify = e.target.value;
+                              updated.sectionI.I12_otherSpecify = e.target.value;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            placeholder="e.g. 24x36 Framed Memorial Canvas Portrait & Easel Stand"
+                            className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <div className="relative">
+                            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={(statementData.sectionI.I_otherAmount || statementData.sectionI.I12_otherAmount) === 0 ? '' : (statementData.sectionI.I_otherAmount || statementData.sectionI.I12_otherAmount)}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.I_otherAmount = val;
+                                updated.sectionI.I12_otherAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Line 2 */}
+                    <div className="space-y-1 pt-2 border-t border-neutral-200/80">
+                      <label className="text-[11px] font-semibold text-neutral-700 block">Line 2: Item Specification &amp; Dollar Value</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="sm:col-span-2">
+                          <input
+                            type="text"
+                            value={statementData.sectionI.I_other2Specify || statementData.sectionI.I12_other2Specify || ''}
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionI.I_other2Specify = e.target.value;
+                              updated.sectionI.I12_other2Specify = e.target.value;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            placeholder="e.g. Laminated Prayer Bookmarks (Pack of 100)"
+                            className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <div className="relative">
+                            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={(statementData.sectionI.I_other2Amount || statementData.sectionI.I12_other2Amount) === 0 ? '' : (statementData.sectionI.I_other2Amount || statementData.sectionI.I12_other2Amount)}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.I_other2Amount = val;
+                                updated.sectionI.I12_other2Amount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Line 3 */}
+                    <div className="space-y-1 pt-2 border-t border-neutral-200/80">
+                      <label className="text-[11px] font-semibold text-neutral-700 block">Line 3: Item Specification &amp; Dollar Value</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="sm:col-span-2">
+                          <input
+                            type="text"
+                            value={statementData.sectionI.I_other3Specify || statementData.sectionI.I12_other3Specify || ''}
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionI.I_other3Specify = e.target.value;
+                              updated.sectionI.I12_other3Specify = e.target.value;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            placeholder="e.g. Traditional Solid Brass Crucifix / Keepsake Emblem"
+                            className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                          />
+                        </div>
+                        <div>
+                          <div className="relative">
+                            <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={(statementData.sectionI.I_other3Amount || statementData.sectionI.I12_other3Amount) === 0 ? '' : (statementData.sectionI.I_other3Amount || statementData.sectionI.I12_other3Amount)}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.I_other3Amount = val;
+                                updated.sectionI.I12_other3Amount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                 </div>
@@ -3474,102 +5695,412 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                   {/* Chapel & Visitation Facilities Breakdown */}
                   <div className="bg-white p-5 rounded-2xl border border-neutral-200 space-y-4">
-                    <h4 className="font-bold text-sm text-neutral-900 border-b border-neutral-200 pb-2">
-                      Chapel Gathering & Ceremony Facility Allocation
-                    </h4>
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-neutral-200 pb-3 gap-2">
+                      <div>
+                        <h4 className="font-bold text-sm text-neutral-900">
+                          Chapel Gathering, Ceremony &amp; Staff Supervision Allocation
+                        </h4>
+                        <p className="text-[11px] text-neutral-500">
+                          Manage facility usage and licensed staff supervision line items for visitations, wakes, funeral ceremonies, and memorial services.
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#991b1b] bg-red-50 border border-red-200 px-3 py-1 rounded-lg shrink-0">
+                        <span>Combined Subtotal:</span>
+                        <span>
+                          ${(
+                            (statementData.sectionI.F1_facilitiesVisitationAmount || 0) +
+                            (statementData.sectionI.E1_supervisionVisitationAmount || 0) +
+                            (statementData.sectionI.F2_facilitiesFuneralServiceAmount || 0) +
+                            (statementData.sectionI.E2_supervisionFuneralServiceAmount || 0) +
+                            (statementData.sectionI.F3_facilitiesMemorialServiceAmount || 0) +
+                            (statementData.sectionI.E3_supervisionMemorialAmount || 0) +
+                            (statementData.sectionI.E3_otherSupervisionAmount || 0) +
+                            (statementData.sectionI.E_otherAmount || 0)
+                          ).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       
-                      {/* Memorial Service Facilities */}
+                      {/* 1. Visitation / Viewing Facilities */}
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
-                          <strong className="text-neutral-900">Memorial Service Facilities (Chapel)</strong>
+                          <strong className="text-neutral-900 text-xs">Visitation / Viewing Facilities</strong>
+                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F1_facilitiesVisitationAmount.toFixed(2)}</span>
+                        </div>
+                        <p className="text-[11px] text-neutral-600">
+                          Use of funeral home viewing parlor / chapel facilities for family viewing, wake, or public visitation gathering.
+                        </p>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="number"
+                              value={statementData.sectionI.F1_facilitiesVisitationAmount === 0 ? '' : statementData.sectionI.F1_facilitiesVisitationAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.F1_facilitiesVisitationAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                            />
+                            <span className="text-[10px] text-neutral-500">Facility ($)</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = { ...statementData };
+                              updated.sectionI.F1_facilitiesVisitationAmount = BFH_GPL_2026.facilitiesVisitation || 550;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                          >
+                            Set $550 GPL
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 2. Supervision for Visitation / Viewing */}
+                      <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-center">
+                          <strong className="text-neutral-900 text-xs">Supervision for Visitation / Viewing</strong>
+                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.E1_supervisionVisitationAmount.toFixed(2)}</span>
+                        </div>
+                        <p className="text-[11px] text-neutral-600">
+                          Licensed Funeral Director supervision and staff ushering during viewings, wakes, or visitations.
+                        </p>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="number"
+                              value={statementData.sectionI.E1_supervisionVisitationAmount === 0 ? '' : statementData.sectionI.E1_supervisionVisitationAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.E1_supervisionVisitationAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                            />
+                            <span className="text-[10px] text-neutral-500">Supervision ($)</span>
+                          </div>
+                          <div className="flex gap-1">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = { ...statementData };
+                                updated.sectionI.E1_supervisionVisitationAmount = BFH_GPL_2026.supervisionVisitation || 550;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                            >
+                              $550
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = { ...statementData };
+                                updated.sectionI.E1_supervisionVisitationAmount = BFH_GPL_2026.supervisionVisitationAfterHours || 750;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                              title="After Hours Rate"
+                            >
+                              $750 (Eve)
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 3. Funeral Service Facilities */}
+                      <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-center">
+                          <strong className="text-neutral-900 text-xs">Funeral Service Facilities</strong>
+                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</span>
+                        </div>
+                        <p className="text-[11px] text-neutral-600">
+                          Use of Chapel A (120 seats), Chapel B, or sanctuary facilities for funeral ceremony celebration.
+                        </p>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="number"
+                              value={statementData.sectionI.F2_facilitiesFuneralServiceAmount === 0 ? '' : statementData.sectionI.F2_facilitiesFuneralServiceAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.F2_facilitiesFuneralServiceAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                            />
+                            <span className="text-[10px] text-neutral-500">Facility ($)</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = { ...statementData };
+                              updated.sectionI.F2_facilitiesFuneralServiceAmount = BFH_GPL_2026.facilitiesFuneralService || 550;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                          >
+                            Set $550 GPL
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 4. Supervision for Funeral Service */}
+                      <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-center">
+                          <strong className="text-neutral-900 text-xs">Supervision for Funeral Service</strong>
+                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.E2_supervisionFuneralServiceAmount.toFixed(2)}</span>
+                        </div>
+                        <p className="text-[11px] text-neutral-600">
+                          Licensed Funeral Director supervision and ceremonial staff direction for funeral service.
+                        </p>
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="number"
+                              value={statementData.sectionI.E2_supervisionFuneralServiceAmount === 0 ? '' : statementData.sectionI.E2_supervisionFuneralServiceAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.E2_supervisionFuneralServiceAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                            />
+                            <span className="text-[10px] text-neutral-500">Supervision ($)</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = { ...statementData };
+                              updated.sectionI.E2_supervisionFuneralServiceAmount = BFH_GPL_2026.supervisionFuneralService || 550;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                          >
+                            Set $550 GPL
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* 5. Memorial Service Facilities */}
+                      <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-center">
+                          <strong className="text-neutral-900 text-xs">Memorial Service Facilities (Chapel)</strong>
                           <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F3_facilitiesMemorialServiceAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Use of Chapel A (120 seats) or Chapel B (110 seats) for memorial service celebration.
                         </p>
-                        <div className="flex items-center space-x-2 pt-1">
-                          <input
-                            type="number"
-                            value={statementData.sectionI.F3_facilitiesMemorialServiceAmount}
-                            onChange={(e) => {
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="number"
+                              value={statementData.sectionI.F3_facilitiesMemorialServiceAmount === 0 ? '' : statementData.sectionI.F3_facilitiesMemorialServiceAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.F3_facilitiesMemorialServiceAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                            />
+                            <span className="text-[10px] text-neutral-500">Facility ($)</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.F3_facilitiesMemorialServiceAmount = parseFloat(e.target.value) || 0;
+                              updated.sectionI.F3_facilitiesMemorialServiceAmount = BFH_GPL_2026.facilitiesMemorialService || 550;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono"
-                          />
-                          <span className="text-[10px] text-neutral-500">Facility line item ($)</span>
+                            className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                          >
+                            Set $550 GPL
+                          </button>
                         </div>
                       </div>
 
-                      {/* Memorial Service Supervision */}
+                      {/* 6. Memorial Service Staff Supervision */}
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
-                          <strong className="text-neutral-900">Memorial Service Staff Supervision</strong>
+                          <strong className="text-neutral-900 text-xs">Supervision for Memorial Service</strong>
                           <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.E3_supervisionMemorialAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Licensed Funeral Director supervision and staff ushering for memorial service.
                         </p>
-                        <div className="flex items-center space-x-2 pt-1">
-                          <input
-                            type="number"
-                            value={statementData.sectionI.E3_supervisionMemorialAmount}
-                            onChange={(e) => {
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="number"
+                              value={statementData.sectionI.E3_supervisionMemorialAmount === 0 ? '' : statementData.sectionI.E3_supervisionMemorialAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionI.E3_supervisionMemorialAmount = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                            />
+                            <span className="text-[10px] text-neutral-500">Supervision ($)</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.E3_supervisionMemorialAmount = parseFloat(e.target.value) || 0;
+                              updated.sectionI.E3_supervisionMemorialAmount = BFH_GPL_2026.supervisionMemorialService || 550;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono"
-                          />
-                          <span className="text-[10px] text-neutral-500">Supervision line item ($)</span>
+                            className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
+                          >
+                            Set $550 GPL
+                          </button>
                         </div>
                       </div>
 
-                      {/* Visitation Facilities */}
-                      <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                      {/* 7. Additional Staff Supervision (Services, Wakes or Viewings) */}
+                      <div className="p-3.5 bg-amber-50/70 rounded-xl border border-amber-200 space-y-2 sm:col-span-2">
                         <div className="flex justify-between items-center">
-                          <strong className="text-neutral-900">Visitation / Viewing Facilities</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F1_facilitiesVisitationAmount.toFixed(2)}</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-amber-800 font-bold text-xs">✨ Additional Staff Supervision</span>
+                            <span className="text-[10px] text-amber-900 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded font-medium">Services, Wakes &amp; Viewings Service Line Item</span>
+                          </div>
+                          <span className="font-mono font-bold text-xs text-[#991b1b]">
+                            ${((statementData.sectionI.E3_otherSupervisionAmount || 0) + (statementData.sectionI.E_otherAmount || 0)).toFixed(2)}
+                          </span>
                         </div>
-                        <div className="flex items-center space-x-2 pt-1">
-                          <input
-                            type="number"
-                            value={statementData.sectionI.F1_facilitiesVisitationAmount}
-                            onChange={(e) => {
-                              const updated = { ...statementData };
-                              updated.sectionI.F1_facilitiesVisitationAmount = parseFloat(e.target.value) || 0;
-                              setStatementData(calculateAP47Totals(updated));
-                            }}
-                            className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono"
-                          />
-                          <span className="text-[10px] text-neutral-500">Visitation line item ($)</span>
+                        <p className="text-[11px] text-neutral-600">
+                          Professional staff supervision service offered by staff when conducting services, wakes, or viewings.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                          <div className="sm:col-span-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.E3_otherSupervisionSpecify || statementData.sectionI.E_otherSpecify || ''}
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.E3_otherSupervisionSpecify = e.target.value;
+                                updated.sectionI.E_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              placeholder="e.g. Additional Staff Supervision for Evening Wake &amp; Viewing"
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                            />
+                          </div>
+                          <div>
+                            <div className="relative">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={((statementData.sectionI.E3_otherSupervisionAmount || 0) + (statementData.sectionI.E_otherAmount || 0)) === 0 ? '' : ((statementData.sectionI.E3_otherSupervisionAmount || 0) + (statementData.sectionI.E_otherAmount || 0))}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.E3_otherSupervisionAmount = val;
+                                  updated.sectionI.E_otherAmount = val;
+                                  if (!updated.sectionI.E3_otherSupervisionSpecify) {
+                                    updated.sectionI.E3_otherSupervisionSpecify = 'Additional Staff Supervision for Wake / Viewing / Service';
+                                    updated.sectionI.E_otherSpecify = 'Additional Staff Supervision for Wake / Viewing / Service';
+                                  }
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                          <span className="text-[10px] text-neutral-500 font-medium">Quick Presets:</span>
+                          {[
+                            { label: 'Wake Staff Supervision ($350)', amt: 350, desc: 'Staff Supervision for Wake & Viewing' },
+                            { label: 'Evening Viewing Supervision ($450)', amt: 450, desc: 'Evening Viewing Staff Supervision' },
+                            { label: 'Sanctuary Service Supervision ($550)', amt: 550, desc: 'Offsite Sanctuary Service Staff Supervision' }
+                          ].map((p) => (
+                            <button
+                              key={p.label}
+                              type="button"
+                              onClick={() => {
+                                const updated = { ...statementData };
+                                updated.sectionI.E3_otherSupervisionAmount = p.amt;
+                                updated.sectionI.E_otherAmount = p.amt;
+                                updated.sectionI.E3_otherSupervisionSpecify = p.desc;
+                                updated.sectionI.E_otherSpecify = p.desc;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="px-2 py-0.5 bg-white border border-amber-300 hover:bg-amber-100 rounded text-[10px] text-amber-900 font-medium"
+                            >
+                              {p.label}
+                            </button>
+                          ))}
                         </div>
                       </div>
 
-                      {/* Funeral Service Facilities */}
-                      <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
-                        <div className="flex justify-between items-center">
-                          <strong className="text-neutral-900">Funeral Service Facilities</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</span>
-                        </div>
-                        <div className="flex items-center space-x-2 pt-1">
+                    </div>
+                  </div>
+
+                  {/* Other Facilities Section */}
+                  <div className="bg-white p-5 rounded-2xl border border-neutral-200 space-y-3">
+                    <div>
+                      <span className="font-bold text-neutral-800 block text-xs">F. Other Facilities:</span>
+                      <span className="text-[10px] text-neutral-500">Additional visitation parlor hours, family hospitality suite, overflow sanctuary audio-visual room, or special accommodation</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <div className="sm:col-span-2">
+                        <input
+                          type="text"
+                          value={statementData.sectionI.F_otherSpecify || statementData.sectionI.F3_otherFacilitiesSpecify || ''}
+                          onChange={(e) => {
+                            const updated = { ...statementData };
+                            updated.sectionI.F_otherSpecify = e.target.value;
+                            updated.sectionI.F3_otherFacilitiesSpecify = e.target.value;
+                            setStatementData(calculateAP47Totals(updated));
+                          }}
+                          placeholder="e.g. Additional 2-Hour Evening Parlor Viewing Block"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                        />
+                      </div>
+                      <div>
+                        <div className="relative">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
                           <input
                             type="number"
-                            value={statementData.sectionI.F2_facilitiesFuneralServiceAmount}
+                            step="0.01"
+                            value={(statementData.sectionI.F_otherAmount || statementData.sectionI.F3_otherFacilitiesAmount) === 0 ? '' : (statementData.sectionI.F_otherAmount || statementData.sectionI.F3_otherFacilitiesAmount)}
+                            placeholder="0.00"
+                            onFocus={(e) => e.target.select()}
                             onChange={(e) => {
+                              const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                               const updated = { ...statementData };
-                              updated.sectionI.F2_facilitiesFuneralServiceAmount = parseFloat(e.target.value) || 0;
+                              updated.sectionI.F_otherAmount = val;
+                              updated.sectionI.F3_otherFacilitiesAmount = val;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono"
+                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
                           />
-                          <span className="text-[10px] text-neutral-500">Funeral Service line item ($)</span>
                         </div>
                       </div>
-
                     </div>
                   </div>
 
@@ -3705,10 +6236,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <input
                               type="number"
                               step="0.01"
-                              value={statementData.sectionII.cemeteryOrCrematoryAmount}
+                              value={statementData.sectionII.cemeteryOrCrematoryAmount === 0 ? '' : statementData.sectionII.cemeteryOrCrematoryAmount}
+                              placeholder="0.00"
+                              onFocus={(e) => e.target.select()}
                               onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                                 const updated = { ...statementData };
-                                updated.sectionII.cemeteryOrCrematoryAmount = parseFloat(e.target.value) || 0;
+                                updated.sectionII.cemeteryOrCrematoryAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
                               className="w-32 pl-6 pr-3 py-1.5 bg-neutral-50 border border-neutral-300 rounded-xl font-mono font-bold text-xs focus:bg-white focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
@@ -3722,10 +6256,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <label className="font-bold text-neutral-800 block">2. Clergy Honoraria / Church Fee:</label>
                       <input
                         type="number"
-                        value={statementData.sectionII.clergyHonorariaAmount}
+                        value={statementData.sectionII.clergyHonorariaAmount === 0 ? '' : statementData.sectionII.clergyHonorariaAmount}
+                        placeholder="0.00"
+                        onFocus={(e) => e.target.select()}
                         onChange={(e) => {
+                          const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                           const updated = { ...statementData };
-                          updated.sectionII.clergyHonorariaAmount = parseFloat(e.target.value) || 0;
+                          updated.sectionII.clergyHonorariaAmount = val;
                           setStatementData(calculateAP47Totals(updated));
                         }}
                         className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold"
@@ -3733,46 +6270,83 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <p className="text-[10px] text-neutral-500 italic">Payee: {statementData.sectionII.clergyChurchName || activeCase.serviceSelections.officiantName || "Abyssinian Baptist Church / Officiant"}</p>
                     </div>
 
-                    <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
-                      <label className="font-bold text-neutral-800 block">3. NYC Certified Death Certificate Transcripts ($15/ea):</label>
-                      <div className="flex items-center space-x-2">
-                        <div className="inline-flex items-center space-x-1 bg-white border border-neutral-300 rounded-lg p-0.5">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const updated = { ...statementData };
-                              updated.sectionII.deathCertificateTranscriptsCount = Math.max(0, statementData.sectionII.deathCertificateTranscriptsCount - 1);
-                              setStatementData(calculateAP47Totals(updated));
-                            }}
-                            className="w-6 h-6 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center cursor-pointer"
-                          >
-                            -
-                          </button>
-                          <input
-                            type="number"
-                            min={0}
-                            value={statementData.sectionII.deathCertificateTranscriptsCount}
-                            onChange={(e) => {
-                              const count = Math.max(0, parseInt(e.target.value) || 0);
-                              const updated = { ...statementData };
-                              updated.sectionII.deathCertificateTranscriptsCount = count;
-                              setStatementData(calculateAP47Totals(updated));
-                            }}
-                            className="w-12 text-center font-mono font-bold text-xs bg-transparent border-none p-0 focus:ring-0 text-neutral-900"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const updated = { ...statementData };
-                              updated.sectionII.deathCertificateTranscriptsCount = statementData.sectionII.deathCertificateTranscriptsCount + 1;
-                              setStatementData(calculateAP47Totals(updated));
-                            }}
-                            className="w-6 h-6 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center cursor-pointer"
-                          >
-                            +
-                          </button>
+                    {/* 3. NYC Certified Death Certificate Transcripts & Veteran Exemption */}
+                    <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-1">
+                        <label className="font-bold text-neutral-800 block">3. NYC Certified Death Certificate Transcripts ($15/ea):</label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = { ...statementData };
+                            const current = updated.isVeteran || updated.sectionII.isVeteranDiscountApplied || false;
+                            updated.isVeteran = !current;
+                            updated.sectionII.isVeteranDiscountApplied = !current;
+                            if (updated.vitalRecordsSheet) {
+                              updated.vitalRecordsSheet.militaryStatus = !current ? 'veteran' : 'none';
+                            }
+                            setStatementData(calculateAP47Totals(updated));
+                            showToast(!current ? '🎖️ Veteran Benefit: First 3 Death Certificates are Free ($0.00)' : 'Standard Pricing Applied');
+                          }}
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer transition flex items-center space-x-1 ${
+                            statementData.isVeteran || statementData.sectionII.isVeteranDiscountApplied
+                              ? 'bg-emerald-700 text-white shadow-xs'
+                              : 'bg-neutral-200 hover:bg-neutral-300 text-neutral-700'
+                          }`}
+                        >
+                          <span>🎖️ Veteran (3 Free Copies): {statementData.isVeteran || statementData.sectionII.isVeteranDiscountApplied ? 'ON' : 'OFF'}</span>
+                        </button>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="inline-flex items-center space-x-1 bg-white border border-neutral-300 rounded-lg p-0.5">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = { ...statementData };
+                                updated.sectionII.deathCertificateTranscriptsCount = Math.max(0, statementData.sectionII.deathCertificateTranscriptsCount - 1);
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-7 h-7 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center cursor-pointer"
+                            >
+                              -
+                            </button>
+                            <input
+                              type="number"
+                              min={0}
+                              value={statementData.sectionII.deathCertificateTranscriptsCount === 0 ? '' : statementData.sectionII.deathCertificateTranscriptsCount}
+                              placeholder="0"
+                              onFocus={(e) => e.target.select()}
+                              onChange={(e) => {
+                                const count = e.target.value === '' ? 0 : Math.max(0, parseInt(e.target.value) || 0);
+                                const updated = { ...statementData };
+                                updated.sectionII.deathCertificateTranscriptsCount = count;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-12 text-center font-mono font-bold text-xs bg-transparent border-none p-0 focus:ring-0 text-neutral-900"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = { ...statementData };
+                                updated.sectionII.deathCertificateTranscriptsCount = statementData.sectionII.deathCertificateTranscriptsCount + 1;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-7 h-7 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs flex items-center justify-center cursor-pointer"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <span className="text-neutral-500 font-mono text-xs">
+                            copies = <strong className="text-[#991b1b] font-mono">${statementData.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</strong>
+                          </span>
                         </div>
-                        <span className="text-neutral-500 font-mono text-xs">copies = <strong className="text-[#991b1b] font-mono">${statementData.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</strong></span>
+
+                        {(statementData.isVeteran || statementData.sectionII.isVeteranDiscountApplied) && (
+                          <div className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono">
+                            {Math.min(3, statementData.sectionII.deathCertificateTranscriptsCount)} Free VA Copies + {Math.max(0, statementData.sectionII.deathCertificateTranscriptsCount - 3)} Billable (${statementData.sectionII.deathCertificateTranscriptsAmount.toFixed(2)})
+                          </div>
+                        )}
                       </div>
                       <p className="text-[10px] text-neutral-500 italic">Payee: NYC Dept. of Health &amp; Mental Hygiene (DOHMH)</p>
                     </div>
@@ -3781,10 +6355,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <label className="font-bold text-neutral-800 block">4. Organist / Musician Accompaniment:</label>
                       <input
                         type="number"
-                        value={statementData.sectionII.organistMusicianAmount}
+                        value={statementData.sectionII.organistMusicianAmount === 0 ? '' : statementData.sectionII.organistMusicianAmount}
+                        placeholder="0.00"
+                        onFocus={(e) => e.target.select()}
                         onChange={(e) => {
+                          const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                           const updated = { ...statementData };
-                          updated.sectionII.organistMusicianAmount = parseFloat(e.target.value) || 0;
+                          updated.sectionII.organistMusicianAmount = val;
                           setStatementData(calculateAP47Totals(updated));
                         }}
                         className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold"
@@ -3824,10 +6401,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       </div>
                       <input
                         type="number"
-                        value={statementData.sectionII.pallbearersAmount}
+                        value={statementData.sectionII.pallbearersAmount === 0 ? '' : statementData.sectionII.pallbearersAmount}
+                        placeholder="0.00"
+                        onFocus={(e) => e.target.select()}
                         onChange={(e) => {
+                          const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                           const updated = { ...statementData };
-                          updated.sectionII.pallbearersAmount = parseFloat(e.target.value) || 0;
+                          updated.sectionII.pallbearersAmount = val;
                           setStatementData(calculateAP47Totals(updated));
                         }}
                         className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold"
@@ -3835,19 +6415,178 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <p className="text-[10px] text-neutral-500 italic">Payee: Harlem Professional Pallbearers Guild</p>
                     </div>
 
+                    {/* 6. Bridge & Road Tolls (Separated) */}
                     <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
-                      <label className="font-bold text-neutral-800 block">6. Bridge &amp; Road Tolls / Livery Gratuities:</label>
+                      <div className="flex justify-between items-center">
+                        <label className="font-bold text-neutral-800 block">6. Bridge &amp; Road Tolls (Pass-Through):</label>
+                        <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionII.bridgeAndRoadTollsAmount.toFixed(2)}</span>
+                      </div>
                       <input
                         type="number"
-                        value={statementData.sectionII.bridgeAndRoadTollsAmount + statementData.sectionII.gratuitiesLiveryAndStaffAmount}
+                        value={statementData.sectionII.bridgeAndRoadTollsAmount === 0 ? '' : statementData.sectionII.bridgeAndRoadTollsAmount}
+                        placeholder="0.00"
+                        onFocus={(e) => e.target.select()}
                         onChange={(e) => {
+                          const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
                           const updated = { ...statementData };
-                          updated.sectionII.bridgeAndRoadTollsAmount = parseFloat(e.target.value) || 0;
+                          updated.sectionII.bridgeAndRoadTollsAmount = val;
                           setStatementData(calculateAP47Totals(updated));
                         }}
                         className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold"
                       />
-                      <p className="text-[10px] text-neutral-500 italic">Payee: MTA Bridges &amp; Tunnels / Chauffeur Tolls Pool</p>
+                      <p className="text-[10px] text-neutral-500 italic">Payee: MTA Bridges &amp; Tunnels / Port Authority Tolls Pool</p>
+                    </div>
+
+                    {/* 7. Livery Chauffeur & Staff Gratuities (Separated) */}
+                    <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
+                      <div className="flex justify-between items-center">
+                        <label className="font-bold text-neutral-800 block">7. Livery Chauffeur &amp; Staff Gratuities:</label>
+                        <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionII.gratuitiesLiveryAndStaffAmount.toFixed(2)}</span>
+                      </div>
+                      <input
+                        type="number"
+                        value={statementData.sectionII.gratuitiesLiveryAndStaffAmount === 0 ? '' : statementData.sectionII.gratuitiesLiveryAndStaffAmount}
+                        placeholder="0.00"
+                        onFocus={(e) => e.target.select()}
+                        onChange={(e) => {
+                          const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                          const updated = { ...statementData };
+                          updated.sectionII.gratuitiesLiveryAndStaffAmount = val;
+                          setStatementData(calculateAP47Totals(updated));
+                        }}
+                        className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold"
+                      />
+                      <p className="text-[10px] text-neutral-500 italic">Payee: BFH Livery &amp; Chauffeur Gratuities Pool</p>
+                    </div>
+
+                    {/* 8. Other Cash Advances (3 Lines) */}
+                    <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 space-y-3 sm:col-span-2">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <label className="font-bold text-neutral-800 block text-xs">8. Other Cash Advances (3 Dedicated Lines):</label>
+                          <span className="text-[10px] text-neutral-500">Disbursed at actual third-party billing (100% pass-through, 0% markup)</span>
+                        </div>
+                        <span className="font-mono font-bold text-xs text-[#991b1b]">
+                          ${((statementData.sectionII.otherCashAdvanceAmount || 0) + (statementData.sectionII.otherCashAdvance2Amount || 0) + (statementData.sectionII.otherCashAdvance3Amount || 0)).toFixed(2)}
+                        </span>
+                      </div>
+
+                      {/* Line 1 */}
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-semibold text-neutral-700 block">Line 1: Item Specification &amp; Dollar Value</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          <div className="sm:col-span-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionII.otherCashAdvanceSpecify || ''}
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionII.otherCashAdvanceSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              placeholder="Specify other cash advance (e.g. Consular legalizations, apostille fee)..."
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                            />
+                          </div>
+                          <div>
+                            <div className="relative">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionII.otherCashAdvanceAmount === 0 ? '' : statementData.sectionII.otherCashAdvanceAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionII.otherCashAdvanceAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Line 2 */}
+                      <div className="space-y-1 pt-2 border-t border-neutral-200/80">
+                        <label className="text-[11px] font-semibold text-neutral-700 block">Line 2: Item Specification &amp; Dollar Value</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          <div className="sm:col-span-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionII.otherCashAdvance2Specify || ''}
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionII.otherCashAdvance2Specify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              placeholder="Specify other cash advance (e.g. Cemetery weekend/late vault surcharge)..."
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                            />
+                          </div>
+                          <div>
+                            <div className="relative">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionII.otherCashAdvance2Amount === 0 ? '' : statementData.sectionII.otherCashAdvance2Amount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionII.otherCashAdvance2Amount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Line 3 */}
+                      <div className="space-y-1 pt-2 border-t border-neutral-200/80">
+                        <label className="text-[11px] font-semibold text-neutral-700 block">Line 3: Item Specification &amp; Dollar Value</label>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          <div className="sm:col-span-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionII.otherCashAdvance3Specify || ''}
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionII.otherCashAdvance3Specify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              placeholder="Specify other cash advance (e.g. Newspaper obituary publication fee)..."
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs"
+                            />
+                          </div>
+                          <div>
+                            <div className="relative">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionII.otherCashAdvance3Amount === 0 ? '' : statementData.sectionII.otherCashAdvance3Amount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionII.otherCashAdvance3Amount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -3903,10 +6642,11 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div>
                         <input
                           type="number"
-                          value={newCashAdvAmount}
-                          onChange={(e) => setNewCashAdvAmount(parseFloat(e.target.value) || 0)}
+                          value={newCashAdvAmount === 0 ? '' : newCashAdvAmount}
                           placeholder="Amount ($)"
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono"
+                          onFocus={(e) => e.target.select()}
+                          onChange={(e) => setNewCashAdvAmount(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
                         />
                       </div>
                     </div>
@@ -4079,32 +6819,102 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       </h5>
 
                       {/* A. Alternative Services */}
-                      <div className="flex justify-between items-start">
-                        <span>A. Alternative Services:</span>
-                        <strong className="font-mono">
-                          {statementData.sectionI.A_alternativeServicesAmount > 0 
-                            ? `$${statementData.sectionI.A_alternativeServicesAmount.toFixed(2)}` 
-                            : 'N/A'}
-                        </strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">A. Alternative Services:</span>
+                          <strong className="font-mono">
+                            {statementData.sectionI.A_alternativeServicesAmount > 0 
+                              ? `$${statementData.sectionI.A_alternativeServicesAmount.toFixed(2)}` 
+                              : 'N/A'}
+                          </strong>
+                        </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">A. Other Alternative Services:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.A_otherSpecify || ''}
+                              placeholder="Specify other alternative service..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.A_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionI.A_otherAmount === 0 ? '' : statementData.sectionI.A_otherAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.A_otherAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* B. Transfer of Remains */}
-                      <div className="flex justify-between items-start">
-                        <span>B. Transfer of remains to the funeral establishment:</span>
-                        <strong className="font-mono">${statementData.sectionI.B_transferOfRemainsAmount.toFixed(2)}</strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">B. Transfer of remains to funeral establishment:</span>
+                          <strong className="font-mono">${statementData.sectionI.B_transferOfRemainsAmount.toFixed(2)}</strong>
+                        </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">B. Other Transfer / Extra Mileage:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.B_otherSpecify || ''}
+                              placeholder="Specify other transfer / excess mileage..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.B_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionI.B_otherAmount === 0 ? '' : statementData.sectionI.B_otherAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.B_otherAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* C. Preparation of Remains */}
-                      <div className="space-y-1">
-                        <div className="flex justify-between">
-                          <span>C. Preparation of Remains:</span>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">C. Preparation of Remains:</span>
                         </div>
-                        <div className="pl-3 space-y-0.5 text-neutral-700 text-[10px]">
+                        <div className="pl-3 space-y-1 text-neutral-700 text-[10px]">
                           <div className="flex justify-between">
                             <span>1. Embalming (including use of prep room):</span>
-                            <span className="font-mono">${statementData.sectionI.C1_embalmingAmount.toFixed(2)}</span>
+                            <span className="font-mono font-semibold">${statementData.sectionI.C1_embalmingAmount.toFixed(2)}</span>
                           </div>
-                          <div className="flex justify-between">
+                          <div className="flex justify-between font-medium text-neutral-800">
                             <span>2. Other Preparation:</span>
                           </div>
                           <div className="pl-3 space-y-0.5 text-neutral-600">
@@ -4125,28 +6935,99 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               <span className="font-mono">${statementData.sectionI.C2_cosmetologyAmount.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span>e. Restoration / Other:</span>
-                              <span className="font-mono">${(statementData.sectionI.C2_restorationAmount + statementData.sectionI.C2_otherAmount).toFixed(2)}</span>
+                              <span>e. Restoration / Anatomical Repair:</span>
+                              <span className="font-mono">${statementData.sectionI.C2_restorationAmount.toFixed(2)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">C. Other Preparation:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.C_otherSpecify || statementData.sectionI.C2_otherSpecify || ''}
+                              placeholder="Specify other preparation..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.C_otherSpecify = e.target.value;
+                                updated.sectionI.C2_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={(statementData.sectionI.C_otherAmount || statementData.sectionI.C2_otherAmount) === 0 ? '' : (statementData.sectionI.C_otherAmount || statementData.sectionI.C2_otherAmount)}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.C_otherAmount = val;
+                                  updated.sectionI.C2_otherAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
 
                       {/* D. Arrangements */}
-                      <div className="flex justify-between items-start">
-                        <div className="max-w-[75%]">
-                          <strong>D. Arrangements:</strong>
-                          <p className="text-[9px] text-neutral-500 leading-tight mt-0.5">
-                            Basic arrangements: funeral director, staff, equipment and facilities to respond to initial request, conference, securing authorizations, and coordination.
-                          </p>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <div className="max-w-[70%]">
+                            <span className="font-semibold text-neutral-800">D. Arrangements:</span>
+                            <p className="text-[9px] text-neutral-500 leading-tight mt-0.5">
+                              Basic arrangements: funeral director, staff, equipment, authorizations & coordination.
+                            </p>
+                          </div>
+                          <strong className="font-mono">${statementData.sectionI.D_basicArrangementsAmount.toFixed(2)}</strong>
                         </div>
-                        <strong className="font-mono">${statementData.sectionI.D_basicArrangementsAmount.toFixed(2)}</strong>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">D. Other Arrangements / Consultation:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.D_otherSpecify || ''}
+                              placeholder="Specify other arrangement service..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.D_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionI.D_otherAmount === 0 ? '' : statementData.sectionI.D_otherAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.D_otherAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* E. Supervision */}
-                      <div className="space-y-0.5">
-                        <div className="flex justify-between">
-                          <strong>E. Supervision (funeral director and staff):</strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">E. Supervision (director and staff):</span>
                         </div>
                         <div className="pl-3 space-y-0.5 text-[10px] text-neutral-700">
                           <div className="flex justify-between">
@@ -4158,8 +7039,49 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <span className="font-mono">${statementData.sectionI.E2_supervisionFuneralServiceAmount.toFixed(2)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>3. Other supervision (Cemetery/Crematory):</span>
+                            <span>3. Supervision at Cemetery / Crematory:</span>
                             <span className="font-mono">${statementData.sectionI.E3_supervisionCemeteryCrematoryAmount.toFixed(2)}</span>
+                          </div>
+                          {statementData.sectionI.E3_supervisionMemorialAmount > 0 && (
+                            <div className="flex justify-between">
+                              <span>4. Supervision for Memorial Service:</span>
+                              <span className="font-mono">${statementData.sectionI.E3_supervisionMemorialAmount.toFixed(2)}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">E. Other Supervision:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.E_otherSpecify || statementData.sectionI.E3_otherSupervisionSpecify || ''}
+                              placeholder="Specify other supervision..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.E_otherSpecify = e.target.value;
+                                updated.sectionI.E3_otherSupervisionSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={(statementData.sectionI.E_otherAmount || statementData.sectionI.E3_otherSupervisionAmount) === 0 ? '' : (statementData.sectionI.E_otherAmount || statementData.sectionI.E3_otherSupervisionAmount)}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.E_otherAmount = val;
+                                  updated.sectionI.E3_otherSupervisionAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -4170,26 +7092,73 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <div className="space-y-3">
                       
                       {/* F. Use of Facilities */}
-                      <div className="space-y-0.5">
-                        <div className="flex justify-between">
-                          <strong>F. Use of the facilities:</strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">F. Use of the facilities:</span>
                         </div>
                         <div className="pl-3 space-y-0.5 text-[10px] text-neutral-700">
                           <div className="flex justify-between">
-                            <span>1. Use of facilities for visitation:</span>
+                            <span>1. Facilities for visitation:</span>
                             <span className="font-mono">${statementData.sectionI.F1_facilitiesVisitationAmount.toFixed(2)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>2. Use of facilities for funeral service:</span>
+                            <span>2. Facilities for funeral service:</span>
                             <span className="font-mono">${statementData.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</span>
+                          </div>
+                          {statementData.sectionI.F3_repastRoomAmount > 0 && (
+                            <div className="flex justify-between">
+                              <span>3. Repast Gathering Room:</span>
+                              <span className="font-mono">${statementData.sectionI.F3_repastRoomAmount.toFixed(2)}</span>
+                            </div>
+                          )}
+                          {statementData.sectionI.F3_facilitiesMemorialServiceAmount > 0 && (
+                            <div className="flex justify-between">
+                              <span>4. Facilities for Memorial Service:</span>
+                              <span className="font-mono">${statementData.sectionI.F3_facilitiesMemorialServiceAmount.toFixed(2)}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">F. Other Facilities:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.F_otherSpecify || statementData.sectionI.F3_otherFacilitiesSpecify || ''}
+                              placeholder="Specify other facilities..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.F_otherSpecify = e.target.value;
+                                updated.sectionI.F3_otherFacilitiesSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={(statementData.sectionI.F_otherAmount || statementData.sectionI.F3_otherFacilitiesAmount) === 0 ? '' : (statementData.sectionI.F_otherAmount || statementData.sectionI.F3_otherFacilitiesAmount)}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.F_otherAmount = val;
+                                  updated.sectionI.F3_otherFacilitiesAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
 
                       {/* G. Livery */}
-                      <div className="space-y-0.5">
-                        <div className="flex justify-between">
-                          <strong>G. Livery:</strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">G. Livery:</span>
                           <strong className="font-mono">${statementData.sectionI.G_totalLiveryAmount.toFixed(2)}</strong>
                         </div>
                         <div className="pl-3 space-y-0.5 text-[10px] text-neutral-700">
@@ -4200,12 +7169,45 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </div>
                           ))}
                         </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">G. Other Livery / Special Transportation:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.G_otherSpecify || ''}
+                              placeholder="Specify other livery / transportation..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.G_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionI.G_otherAmount === 0 ? '' : statementData.sectionI.G_otherAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.G_otherAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* H. Merchandise */}
-                      <div className="space-y-0.5">
-                        <div className="flex justify-between">
-                          <strong>H. Merchandise:</strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">H. Merchandise:</span>
                         </div>
                         <div className="pl-3 space-y-0.5 text-[10px] text-neutral-700">
                           <div className="flex justify-between">
@@ -4225,12 +7227,45 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </div>
                           )}
                         </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">H. Other Merchandise:</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={statementData.sectionI.H_otherSpecify || ''}
+                              placeholder="Specify other merchandise..."
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionI.H_otherSpecify = e.target.value;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                            />
+                            <div className="relative w-28 shrink-0">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={statementData.sectionI.H_otherAmount === 0 ? '' : statementData.sectionI.H_otherAmount}
+                                placeholder="0.00"
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                  const updated = { ...statementData };
+                                  updated.sectionI.H_otherAmount = val;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* I. Additional Services and Merchandise */}
-                      <div className="space-y-0.5">
-                        <div className="flex justify-between">
-                          <strong>I. Additional Services & Merchandise:</strong>
+                      <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                        <div className="flex justify-between items-start">
+                          <span className="font-semibold text-neutral-800">I. Additional Services & Merchandise:</span>
                         </div>
                         <div className="pl-3 space-y-0.5 text-[10px] text-neutral-700">
                           <div className="flex justify-between">
@@ -4245,12 +7280,190 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <span>• Floral Arrangements ({statementData.sectionI.I6_flowerItems.length} items):</span>
                             <span className="font-mono">${statementData.sectionI.I6_totalFlowersAmount.toFixed(2)}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span>• Register Book & Video Tribute:</span>
-                            <span className="font-mono">${(statementData.sectionI.I8_registerBookAmount + statementData.sectionI.I11_videoTributeAmount).toFixed(2)}</span>
+                          {statementData.sectionI.I8_registerBookAmount > 0 && (
+                            <div className="flex justify-between">
+                              <span>• Register Books ({statementData.sectionI.I8_registerBookQty || 1}x @ ${(statementData.sectionI.I8_registerBookUnitPrice || 50).toFixed(2)}):</span>
+                              <span className="font-mono">${statementData.sectionI.I8_registerBookAmount.toFixed(2)}</span>
+                            </div>
+                          )}
+                          {statementData.sectionI.I11_videoTributeAmount > 0 && (
+                            <div className="flex justify-between">
+                              <span>• Digital Video Tribute Production:</span>
+                              <span className="font-mono">${statementData.sectionI.I11_videoTributeAmount.toFixed(2)}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-2">
+                          <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">I. Other Additional Services &amp; Merchandise (3 Lines):</span>
+                          
+                          {/* Line 1 */}
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] text-neutral-400 font-medium">Line 1:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionI.I_otherSpecify || statementData.sectionI.I12_otherSpecify || ''}
+                                placeholder="Specify other additional item (Line 1)..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionI.I_otherSpecify = e.target.value;
+                                  updated.sectionI.I12_otherSpecify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={(statementData.sectionI.I_otherAmount || statementData.sectionI.I12_otherAmount) === 0 ? '' : (statementData.sectionI.I_otherAmount || statementData.sectionI.I12_otherAmount)}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionI.I_otherAmount = val;
+                                    updated.sectionI.I12_otherAmount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Line 2 */}
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] text-neutral-400 font-medium">Line 2:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionI.I_other2Specify || statementData.sectionI.I12_other2Specify || ''}
+                                placeholder="Specify other additional item (Line 2)..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionI.I_other2Specify = e.target.value;
+                                  updated.sectionI.I12_other2Specify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={(statementData.sectionI.I_other2Amount || statementData.sectionI.I12_other2Amount) === 0 ? '' : (statementData.sectionI.I_other2Amount || statementData.sectionI.I12_other2Amount)}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionI.I_other2Amount = val;
+                                    updated.sectionI.I12_other2Amount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Line 3 */}
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] text-neutral-400 font-medium">Line 3:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionI.I_other3Specify || statementData.sectionI.I12_other3Specify || ''}
+                                placeholder="Specify other additional item (Line 3)..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionI.I_other3Specify = e.target.value;
+                                  updated.sectionI.I12_other3Specify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={(statementData.sectionI.I_other3Amount || statementData.sectionI.I12_other3Amount) === 0 ? '' : (statementData.sectionI.I_other3Amount || statementData.sectionI.I12_other3Amount)}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionI.I_other3Amount = val;
+                                    updated.sectionI.I12_other3Amount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+
+                      {/* J. Limited Services (Optional / Direct Dispositions / Forwarding / Receiving) */}
+                      {(statementData.sectionI.J1_forwardingRemainsAmount > 0 || statementData.sectionI.J2_receivingRemainsAmount > 0 || (statementData.sectionI.J_otherAmount || 0) > 0 || statementData.sectionI.J_otherSpecify) && (
+                        <div className="p-2.5 rounded-xl bg-neutral-50/80 border border-neutral-200 space-y-2">
+                          <div className="flex justify-between items-start">
+                            <span className="font-semibold text-neutral-800">J. Limited Services:</span>
+                          </div>
+                          <div className="pl-3 space-y-0.5 text-[10px] text-neutral-700">
+                            {statementData.sectionI.J1_forwardingRemainsAmount > 0 && (
+                              <div className="flex justify-between">
+                                <span>1. Forwarding of Remains to another firm:</span>
+                                <span className="font-mono">${statementData.sectionI.J1_forwardingRemainsAmount.toFixed(2)}</span>
+                              </div>
+                            )}
+                            {statementData.sectionI.J2_receivingRemainsAmount > 0 && (
+                              <div className="flex justify-between">
+                                <span>2. Receiving Remains from another firm:</span>
+                                <span className="font-mono">${statementData.sectionI.J2_receivingRemainsAmount.toFixed(2)}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1">
+                            <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">J. Other Limited Services:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionI.J_otherSpecify || ''}
+                                placeholder="Specify other limited service..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionI.J_otherSpecify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={statementData.sectionI.J_otherAmount === 0 ? '' : statementData.sectionI.J_otherAmount}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionI.J_otherAmount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                       {/* Section I Total */}
                       <div className="flex justify-between pt-2 border-t-2 border-neutral-900 font-bold text-xs text-neutral-900">
@@ -4284,7 +7497,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         <button
                           type="button"
                           onClick={() => setIsCheckPrinterOpen(true)}
-                          className="px-2.5 py-1 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1 shadow-xs border border-amber-300/40"
+                          className="px-2.5 py-1 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1 shadow-xs border border-amber-300/40 cursor-pointer"
                         >
                           <Printer className="w-3 h-3 text-amber-300" />
                           <span>Print Checks (${statementData.sectionII.totalCashAdvances.toFixed(2)})</span>
@@ -4304,7 +7517,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <span className="font-mono">${statementData.sectionII.clergyHonorariaAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>3. Death Certificate Transcripts ({statementData.sectionII.deathCertificateTranscriptsCount}x):</span>
+                          <span>3. Death Certificate Transcripts ({statementData.sectionII.deathCertificateTranscriptsCount}x{(statementData.isVeteran || statementData.sectionII.isVeteranDiscountApplied) ? ' • 3 Free VA Copies' : ''}):</span>
                           <span className="font-mono">${statementData.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
@@ -4312,20 +7525,134 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <span className="font-mono">${statementData.sectionII.organistMusicianAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>5. Pallbearers:</span>
+                          <span>5. Pallbearers (Professional Crew):</span>
                           <span className="font-mono">${statementData.sectionII.pallbearersAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>6. Gratuities & Livery Tips:</span>
-                          <span className="font-mono">${statementData.sectionII.gratuitiesLiveryAndStaffAmount.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>7. Bridge & Road Tolls:</span>
+                          <span>6. Bridge &amp; Road Tolls (Pass-Through):</span>
                           <span className="font-mono">${statementData.sectionII.bridgeAndRoadTollsAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>8. E-Vital Filing Fees:</span>
-                          <span className="font-mono">${statementData.sectionII.eVitalFilingFeeAmount.toFixed(2)}</span>
+                          <span>7. Livery Chauffeur &amp; Staff Gratuities:</span>
+                          <span className="font-mono">${statementData.sectionII.gratuitiesLiveryAndStaffAmount.toFixed(2)}</span>
+                        </div>
+                        {(statementData.sectionII.customCashAdvances || []).map((c, idx) => (
+                          <div key={idx} className="flex justify-between">
+                            <span>{8 + idx}. {c.description}:</span>
+                            <span className="font-mono">${c.amount.toFixed(2)}</span>
+                          </div>
+                        ))}
+
+                        {/* Other Cash Advance Rows (3 Lines) */}
+                        <div className="pt-2 mt-2 border-t border-dashed border-neutral-200 space-y-2">
+                          <span className="font-semibold text-neutral-800 text-[10px] uppercase tracking-wider block">
+                            Other Cash Advance Items (3 Lines):
+                          </span>
+
+                          {/* Line 1 */}
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] text-neutral-400 font-medium">Line 1:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionII.otherCashAdvanceSpecify || ''}
+                                placeholder="Specify other cash advance (Line 1)..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionII.otherCashAdvanceSpecify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={statementData.sectionII.otherCashAdvanceAmount === 0 ? '' : statementData.sectionII.otherCashAdvanceAmount}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionII.otherCashAdvanceAmount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Line 2 */}
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] text-neutral-400 font-medium">Line 2:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionII.otherCashAdvance2Specify || ''}
+                                placeholder="Specify other cash advance (Line 2)..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionII.otherCashAdvance2Specify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={statementData.sectionII.otherCashAdvance2Amount === 0 ? '' : statementData.sectionII.otherCashAdvance2Amount}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionII.otherCashAdvance2Amount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Line 3 */}
+                          <div className="space-y-0.5">
+                            <span className="text-[9px] text-neutral-400 font-medium">Line 3:</span>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="text"
+                                value={statementData.sectionII.otherCashAdvance3Specify || ''}
+                                placeholder="Specify other cash advance (Line 3)..."
+                                onChange={(e) => {
+                                  const updated = { ...statementData };
+                                  updated.sectionII.otherCashAdvance3Specify = e.target.value;
+                                  setStatementData(calculateAP47Totals(updated));
+                                }}
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              />
+                              <div className="relative w-28 shrink-0">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  value={statementData.sectionII.otherCashAdvance3Amount === 0 ? '' : statementData.sectionII.otherCashAdvance3Amount}
+                                  placeholder="0.00"
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const val = e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0);
+                                    const updated = { ...statementData };
+                                    updated.sectionII.otherCashAdvance3Amount = val;
+                                    setStatementData(calculateAP47Totals(updated));
+                                  }}
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
