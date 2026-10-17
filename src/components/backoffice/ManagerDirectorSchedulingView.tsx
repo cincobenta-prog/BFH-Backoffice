@@ -77,8 +77,8 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6 font-sans text-neutral-900">
       
       {/* Top Executive Header Banner */}
-      <div className="bg-gradient-to-r from-neutral-900 via-[#1c1917] to-neutral-900 text-white p-6 sm:p-7 rounded-3xl border border-neutral-800 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#991b1b]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="bg-gradient-to-r from-neutral-900 via-[#1c1917] to-neutral-900 text-white p-6 sm:p-7 rounded-2xl border border-neutral-800 shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#800000]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2">
@@ -103,7 +103,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
           <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={() => setActiveTab('optimizer')}
-              className="bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition shadow-md"
+              className="bg-brass-500 hover:bg-brass-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition shadow-md"
             >
               <Sparkles className="w-4 h-4 text-neutral-950" />
               <span>Smart Labor Optimizer</span>
@@ -134,8 +134,8 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
 
           <div className="bg-neutral-800/60 p-3 rounded-2xl border border-neutral-700/50">
             <span className="text-neutral-400 text-[10px] block">Outsourced Trade Guild</span>
-            <strong className="text-xl font-bold font-mono text-blue-400">{outsourcedAssigned} ({Math.round((outsourcedAssigned/totalServices)*100)}%)</strong>
-            <span className="text-[10px] text-blue-300 block mt-0.5">Per-Diem Contracts</span>
+            <strong className="text-xl font-bold font-mono text-brass-400">{outsourcedAssigned} ({Math.round((outsourcedAssigned/totalServices)*100)}%)</strong>
+            <span className="text-[10px] text-brass-300 block mt-0.5">Per-Diem Contracts</span>
           </div>
 
           <div className="bg-neutral-800/60 p-3 rounded-2xl border border-neutral-700/50">
@@ -161,7 +161,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             onClick={() => setActiveTab('services')}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
               activeTab === 'services'
-                ? 'bg-[#991b1b] text-white shadow-sm border border-amber-400/30'
+                ? 'bg-[#800000] text-white shadow-sm border border-amber-400/30'
                 : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -178,7 +178,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             onClick={() => setActiveTab('in_house')}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
               activeTab === 'in_house'
-                ? 'bg-[#991b1b] text-white shadow-sm border border-amber-400/30'
+                ? 'bg-[#800000] text-white shadow-sm border border-amber-400/30'
                 : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -190,7 +190,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             onClick={() => setActiveTab('outsourced')}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
               activeTab === 'outsourced'
-                ? 'bg-[#991b1b] text-white shadow-sm border border-amber-400/30'
+                ? 'bg-[#800000] text-white shadow-sm border border-amber-400/30'
                 : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -202,7 +202,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             onClick={() => setActiveTab('optimizer')}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
               activeTab === 'optimizer'
-                ? 'bg-[#991b1b] text-white shadow-sm border border-amber-400/30'
+                ? 'bg-[#800000] text-white shadow-sm border border-amber-400/30'
                 : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -214,7 +214,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             onClick={() => setActiveTab('vouchers')}
             className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
               activeTab === 'vouchers'
-                ? 'bg-[#991b1b] text-white shadow-sm border border-amber-400/30'
+                ? 'bg-[#800000] text-white shadow-sm border border-amber-400/30'
                 : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-200'
             }`}
           >
@@ -241,7 +241,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                     key={f}
                     onClick={() => setFilterType(f)}
                     className={`px-3 py-1 rounded-lg font-bold transition ${
-                      filterType === f ? 'bg-[#991b1b] text-white shadow-2xs' : 'text-neutral-600 hover:text-neutral-900'
+                      filterType === f ? 'bg-[#800000] text-white shadow-2xs' : 'text-neutral-600 hover:text-neutral-900'
                     }`}
                   >
                     {f === 'all' ? 'All Services' : f === 'unassigned' ? '⚠️ Unassigned Only' : f === 'in_house' ? 'In-House' : 'Outsourced Guild'}
@@ -255,7 +255,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
               <select
                 value={selectedCaseFilter}
                 onChange={(e) => setSelectedCaseFilter(e.target.value)}
-                className="bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-1.5 text-xs text-neutral-800 font-medium outline-none focus:border-[#991b1b]"
+                className="bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-1.5 text-xs text-neutral-800 font-medium outline-none focus:border-[#800000]"
               >
                 <option value="all">All Active Cases</option>
                 {cases.map(c => (
@@ -283,7 +283,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                   {/* Left Column: Service Details */}
                   <div className="space-y-2 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-[#991b1b] bg-red-50 px-2.5 py-0.5 rounded-lg border border-red-200">
+                      <span className="font-mono text-xs font-bold text-[#800000] bg-red-50 px-2.5 py-0.5 rounded-lg border border-red-200">
                         {assignment.caseNumber}
                       </span>
                       <h3 className="font-serif-title text-base font-bold text-neutral-900">
@@ -294,7 +294,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-neutral-600 pt-1">
                       <div className="flex items-center space-x-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-[#991b1b]" />
+                        <Calendar className="w-3.5 h-3.5 text-[#800000]" />
                         <span className="font-semibold text-neutral-900">{assignment.serviceDate} ({assignment.serviceTime})</span>
                       </div>
                       <div className="flex items-center space-x-1.5">
@@ -302,7 +302,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                         <span>Call Time: <strong className="font-mono text-neutral-900">{assignment.callTime}</strong></span>
                       </div>
                       <div className="flex items-center space-x-1.5">
-                        <Users className="w-3.5 h-3.5 text-blue-600" />
+                        <Users className="w-3.5 h-3.5 text-brass-600" />
                         <span>Venue: <strong className="text-neutral-900">{assignment.venueName}</strong> (~{assignment.estimatedAttendance} guests)</span>
                       </div>
                     </div>
@@ -344,7 +344,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                         <div className="flex items-center justify-between">
                           <strong className="text-neutral-900 font-bold">{assignment.assignedDirectorName}</strong>
                           <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded border ${
-                            isInHouse ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-blue-50 text-blue-800 border-blue-200'
+                            isInHouse ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-brass-50 text-brass-800 border-brass-200'
                           }`}>
                             {isInHouse ? 'In-House' : 'Outsourced Guild'}
                           </span>
@@ -356,7 +356,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                     {/* Cost recommendation preview */}
                     <div className="pt-2 border-t border-neutral-200 text-[10px] text-neutral-600 flex items-center justify-between">
                       <span>Labor Recommendation:</span>
-                      <strong className="text-[#991b1b] font-mono font-semibold">
+                      <strong className="text-[#800000] font-mono font-semibold">
                         {assignment.costAnalysis.recommendedType === 'in_house' ? 'In-House ($0 base)' : `Trade Guild ($${assignment.costAnalysis.outsourcedCost})`}
                       </strong>
                     </div>
@@ -366,7 +366,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                   <div className="flex flex-wrap lg:flex-col items-center justify-end gap-2 shrink-0">
                     <button
                       onClick={() => onOpenAssignModal(assignment)}
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
                     >
                       <UserCheck className="w-3.5 h-3.5 text-amber-300" />
                       <span>{isUnassigned ? 'Assign Director' : 'Reassign / Dispatch'}</span>
@@ -377,7 +377,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                         onClick={() => onOpenAssignModal(assignment)}
                         className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center gap-1.5"
                       >
-                        <Send className="w-3 h-3 text-[#991b1b]" />
+                        <Send className="w-3 h-3 text-[#800000]" />
                         <span>View SMS Thread ({assignment.dispatchSmsThread.length})</span>
                       </button>
                     )}
@@ -418,7 +418,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
               return (
                 <div
                   key={director.id}
-                  className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4 shadow-sm hover:shadow-md transition flex flex-col justify-between"
+                  className="bg-white rounded-2xl border border-neutral-200 p-5 space-y-4 shadow-sm hover:shadow-md transition flex flex-col justify-between"
                 >
                   <div className="space-y-3">
                     {/* Header */}
@@ -428,7 +428,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                           <h4 className="font-serif-title font-bold text-base text-neutral-900">{director.name}</h4>
                           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         </div>
-                        <p className="text-xs font-semibold text-[#991b1b]">{director.title}</p>
+                        <p className="text-xs font-semibold text-[#800000]">{director.title}</p>
                         <p className="text-[11px] text-neutral-400 font-mono">{director.licenseNumber} • {director.yearsExperience} yrs experience</p>
                       </div>
                       <span className="text-xs font-bold text-amber-500 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200">
@@ -496,7 +496,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                     <span className="text-neutral-500 font-mono">{director.phone}</span>
                     <button
                       onClick={() => onUpdateDirectorHours(director.id, 2)}
-                      className="text-xs text-[#991b1b] hover:text-red-800 font-bold hover:underline"
+                      className="text-xs text-[#800000] hover:text-red-800 font-bold hover:underline"
                     >
                       + Log 2 hrs Service
                     </button>
@@ -523,7 +523,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1.5 rounded-xl">
+              <span className="bg-brass-50 text-brass-800 border border-brass-200 text-xs font-bold px-3 py-1.5 rounded-xl">
                 {outsourcedDirectors.length} Independent Contractor LFDs
               </span>
             </div>
@@ -533,7 +533,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             {outsourcedDirectors.map((director) => (
               <div
                 key={director.id}
-                className="bg-white rounded-3xl border border-neutral-200 p-5 space-y-4 shadow-sm hover:shadow-md transition flex flex-col justify-between"
+                className="bg-white rounded-2xl border border-neutral-200 p-5 space-y-4 shadow-sm hover:shadow-md transition flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   {/* Header */}
@@ -541,7 +541,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                     <div>
                       <div className="flex items-center space-x-1.5">
                         <h4 className="font-serif-title font-bold text-base text-neutral-900">{director.name}</h4>
-                        <span className="bg-blue-100 text-blue-900 text-[10px] font-bold px-2 py-0.2 rounded-full border border-blue-200">
+                        <span className="bg-brass-100 text-brass-900 text-[10px] font-bold px-2 py-0.2 rounded-full border border-brass-200">
                           {director.guildAffiliation || 'Trade Guild'}
                         </span>
                       </div>
@@ -622,7 +622,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
       {/* ========================================================================= */}
       {activeTab === 'optimizer' && (
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-3xl border border-neutral-200 shadow-sm space-y-6">
+          <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-6">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold text-lg shadow-md shadow-amber-500/20">
                 🧠
@@ -644,7 +644,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                 <select
                   value={simServiceType}
                   onChange={(e) => setSimServiceType(e.target.value)}
-                  className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 text-neutral-900 font-medium outline-none focus:border-[#991b1b]"
+                  className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 text-neutral-900 font-medium outline-none focus:border-[#800000]"
                 >
                   <option value="Traditional Service and Burial">Traditional Service and Burial (Church + Cortege)</option>
                   <option value="Funeral Service with Cremation">Funeral Service with Cremation (Chapel)</option>
@@ -658,7 +658,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                 <select
                   value={simVenue}
                   onChange={(e) => setSimVenue(e.target.value as any)}
-                  className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 text-neutral-900 font-medium outline-none focus:border-[#991b1b]"
+                  className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 text-neutral-900 font-medium outline-none focus:border-[#800000]"
                 >
                   <option value="Main Chapel (630 St Nicholas)">Main Chapel (630 St Nicholas Ave)</option>
                   <option value="External Church / Sanctuary">External Church / Sanctuary (Abyssinian, St. Aloysius)</option>
@@ -668,7 +668,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
 
               <div>
                 <label className="block text-neutral-700 font-bold mb-1">
-                  In-House Director Current Week Hours: <strong className="text-[#991b1b]">{simAssignedInHouseHours} hrs</strong>
+                  In-House Director Current Week Hours: <strong className="text-[#800000]">{simAssignedInHouseHours} hrs</strong>
                 </label>
                 <input
                   type="range"
@@ -677,7 +677,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                   step={1}
                   value={simAssignedInHouseHours}
                   onChange={(e) => setSimAssignedInHouseHours(Number(e.target.value))}
-                  className="w-full accent-[#991b1b] mt-2"
+                  className="w-full accent-[#800000] mt-2"
                 />
                 <div className="flex justify-between text-[10px] text-neutral-400 mt-1">
                   <span>20h (Light)</span>
@@ -700,7 +700,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
               return (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
                   {/* Option A: In-House Staff */}
-                  <div className={`p-5 rounded-3xl border transition-all ${
+                  <div className={`p-5 rounded-2xl border transition-all ${
                     !shouldOutsource
                       ? 'bg-emerald-50/50 border-emerald-300 ring-2 ring-emerald-300/40'
                       : 'bg-neutral-50 border-neutral-200 opacity-90'
@@ -734,7 +734,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                       </div>
                       <div className="flex justify-between pt-2 text-sm font-bold">
                         <span>Net Incremental Cost:</span>
-                        <span className="font-mono text-[#991b1b]">
+                        <span className="font-mono text-[#800000]">
                           {inHouseCost === 0 ? '$0.00 (Salary Base)' : `$${inHouseCost.toFixed(2)} (Overtime)`}
                         </span>
                       </div>
@@ -742,18 +742,18 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                   </div>
 
                   {/* Option B: Outsourced Trade Guild Director */}
-                  <div className={`p-5 rounded-3xl border transition-all ${
+                  <div className={`p-5 rounded-2xl border transition-all ${
                     shouldOutsource
-                      ? 'bg-blue-50/50 border-blue-300 ring-2 ring-blue-300/40'
+                      ? 'bg-brass-50/50 border-brass-300 ring-2 ring-brass-300/40'
                       : 'bg-neutral-50 border-neutral-200 opacity-90'
                   }`}>
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <Users className="w-4 h-4 text-blue-700" />
+                        <Users className="w-4 h-4 text-brass-700" />
                         <h4 className="font-bold text-sm text-neutral-900">Option B: Outsourced Trade Guild LFD</h4>
                       </div>
                       {shouldOutsource && (
-                        <span className="bg-blue-600 text-white font-bold text-[10px] px-2.5 py-0.5 rounded-full">
+                        <span className="bg-brass-600 text-white font-bold text-[10px] px-2.5 py-0.5 rounded-full">
                           RECOMMENDED
                         </span>
                       )}
@@ -774,7 +774,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                       </div>
                       <div className="flex justify-between pt-2 text-sm font-bold">
                         <span>Total 1099 Disbursement:</span>
-                        <span className="font-mono text-blue-800">${outsourcedTradeRate}.00</span>
+                        <span className="font-mono text-brass-800">${outsourcedTradeRate}.00</span>
                       </div>
                     </div>
                   </div>
@@ -806,7 +806,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden divide-y divide-neutral-100">
+          <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden divide-y divide-neutral-100">
             {vouchers.map((voucher) => {
               const isPending = voucher.status === 'pending_approval';
 
@@ -821,7 +821,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                       <span className="text-neutral-500 font-mono">({voucher.directorLicense})</span>
                     </div>
                     <p className="text-xs text-neutral-700 font-medium">
-                      Case <strong className="text-[#991b1b]">{voucher.caseNumber}</strong> • {voucher.decedentName} — {voucher.serviceType}
+                      Case <strong className="text-[#800000]">{voucher.caseNumber}</strong> • {voucher.decedentName} — {voucher.serviceType}
                     </p>
                     <p className="text-[11px] text-neutral-400">
                       Service Date: {voucher.serviceDate} {voucher.notes && `• Note: ${voucher.notes}`}
@@ -835,7 +835,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                         voucher.status === 'paid_ach'
                           ? 'text-emerald-700'
                           : voucher.status === 'approved_for_payment'
-                          ? 'text-blue-700'
+                          ? 'text-brass-700'
                           : 'text-amber-700'
                       }`}>
                         {voucher.status.replace(/_/g, ' ')}
@@ -845,7 +845,7 @@ export const ManagerDirectorSchedulingView: React.FC<ManagerDirectorSchedulingVi
                     {isPending ? (
                       <button
                         onClick={() => onApproveVoucher(voucher.id)}
-                        className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm"
+                        className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm"
                       >
                         <Check className="w-3.5 h-3.5" />
                         <span>Approve ACH Payout</span>

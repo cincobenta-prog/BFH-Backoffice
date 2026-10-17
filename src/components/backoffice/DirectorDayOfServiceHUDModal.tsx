@@ -230,7 +230,7 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn">
-      <div className="bg-neutral-900 text-white w-full max-w-5xl rounded-3xl shadow-2xl border border-neutral-700 overflow-hidden flex flex-col max-h-[94vh]">
+      <div className="bg-neutral-900 text-white w-full max-w-5xl rounded-2xl shadow-2xl border border-neutral-700 overflow-hidden flex flex-col max-h-[94vh]">
 
         {/* TOP HUD APP BAR */}
         <div className="bg-neutral-950 p-4 px-6 flex items-center justify-between border-b border-neutral-800 shrink-0">
@@ -280,11 +280,11 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
         )}
 
         {/* QUICK COMMAND ACTION BAR (1-CLICK SMS BROADCAST & STAGE COUNTER) */}
-        <div className="bg-[#141b2b] border-b border-neutral-800 p-3.5 px-6 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        <div className="bg-[#1c1a1a] border-b border-neutral-800 p-3.5 px-6 flex flex-wrap items-center justify-between gap-3 shrink-0">
           <div className="flex items-center space-x-3">
             <button
               onClick={handleBroadcastAllDrivers}
-              className="px-4 py-2.5 bg-gradient-to-r from-amber-500 via-amber-600 to-[#991b1b] hover:brightness-110 text-white font-bold text-xs rounded-xl transition shadow-lg flex items-center space-x-2 border border-amber-300/40"
+              className="px-4 py-2.5 bg-gradient-to-r from-amber-500 via-amber-600 to-[#800000] hover:brightness-110 text-white font-bold text-xs rounded-xl transition shadow-lg flex items-center space-x-2 border border-amber-300/40"
             >
               <Send className="w-4 h-4 text-amber-200" />
               <span>1-Click SMS All 7 Cortege Chauffeurs</span>
@@ -298,7 +298,7 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setActiveTab('chapel_cue')}
-              className="px-3 py-1.5 bg-purple-900/60 hover:bg-purple-900 text-purple-200 border border-purple-500/40 rounded-xl text-xs font-bold transition flex items-center space-x-1.5"
+              className="px-3 py-1.5 bg-brass-900/60 hover:bg-brass-900 text-brass-200 border border-brass-500/40 rounded-xl text-xs font-bold transition flex items-center space-x-1.5"
             >
               <QrCode className="w-3.5 h-3.5" />
               <span>Clergy/Music Cue Deck</span>
@@ -410,7 +410,7 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
                             href={driver.turnByTurnUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="px-3 py-1.5 bg-blue-950/60 hover:bg-blue-900 text-blue-300 border border-blue-500/30 rounded-xl font-bold text-xs flex items-center space-x-1"
+                            className="px-3 py-1.5 bg-brass-950/60 hover:bg-brass-900 text-brass-300 border border-brass-500/30 rounded-xl font-bold text-xs flex items-center space-x-1"
                           >
                             <Navigation className="w-3 h-3" />
                             <span>GPS Route</span>
@@ -565,11 +565,11 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
 
           {/* TAB 4: CLERGY / MUSICIAN CUE DECK */}
           {activeTab === 'chapel_cue' && (
-            <div className="bg-neutral-950 p-6 rounded-3xl border border-neutral-800 space-y-6">
+            <div className="bg-neutral-950 p-6 rounded-2xl border border-neutral-800 space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h3 className="font-serif-title text-lg font-bold text-white flex items-center gap-2">
-                    <Church className="w-5 h-5 text-purple-400" />
+                    <Church className="w-5 h-5 text-brass-400" />
                     <span>Zero-Login Mobile "Chapel Cue Deck"</span>
                   </h3>
                   <p className="text-xs text-neutral-400 font-light mt-0.5">
@@ -600,7 +600,7 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
                   <p className="text-xs font-bold text-white">
                     {caseData.serviceSelections.officiantName || 'Rev. Dr. Calvin Butts IV'}
                   </p>
-                  <p className="text-[11px] text-purple-300 font-mono">Eulogy Allotment: 15 Mins</p>
+                  <p className="text-[11px] text-brass-300 font-mono">Eulogy Allotment: 15 Mins</p>
                 </div>
 
                 <div className="space-y-1">
@@ -688,7 +688,7 @@ export const DirectorDayOfServiceHUDModal: React.FC<DirectorDayOfServiceHUDModal
                 </button>
                 <button
                   onClick={handleSendIndividualDriverSms}
-                  className="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-xs rounded-xl"
+                  className="px-4 py-1.5 bg-brass-500 hover:bg-brass-400 text-neutral-950 font-bold text-xs rounded-xl"
                 >
                   Send Driver SMS
                 </button>

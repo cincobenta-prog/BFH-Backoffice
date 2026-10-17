@@ -6,7 +6,8 @@ import {
   RemovalUrgency,
   DispositionType,
   DirectorProfile,
-  RemovalReadinessStatus
+  RemovalReadinessStatus,
+  FullVitalRecordInformationSheet
 } from '../../lib/types/funeral';
 import { 
   TRI_STATE_HOSPITALS_DIRECTORY, 
@@ -34,7 +35,11 @@ import {
   ArrowRight,
   ArrowLeft,
   BookOpen,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Award,
+  Heart,
+  MapPin,
+  Building
 } from 'lucide-react';
 
 interface FirstCallIntakeModalProps {
@@ -66,44 +71,124 @@ export const FirstCallIntakeModal: React.FC<FirstCallIntakeModalProps> = ({
   // 1. Pathway Selector State
   const intakePathway: IntakePathwayType = 'scheduled_arrangement_first';
 
-  // 2. Caller / Informant State (Captured from Phone Call)
+  // 2. Caller / Informant State (Captured from Phone Call) - Clean slate without stale data
   const [callerName, setCallerName] = useState('');
   const [callerRelationship, setCallerRelationship] = useState('Spouse / Surviving Partner');
   const [callerPhone, setCallerPhone] = useState('');
   const [callerEmail, setCallerEmail] = useState('');
-  const [callerAddress, setCallerAddress] = useState('Harlem, New York, NY');
+  const [callerAddress, setCallerAddress] = useState('');
   const [hasRightToControl, setHasRightToControl] = useState(true);
 
-  // 3. Decedent & Vital Records State
+  // Informant Additional Contacts Breakdown
+  const [informantPhoneHome, setInformantPhoneHome] = useState('');
+  const [informantPhoneCell, setInformantPhoneCell] = useState('');
+  const [informantPhoneAlt, setInformantPhoneAlt] = useState('');
+  const [informantAddressStreet, setInformantAddressStreet] = useState('');
+  const [informantAddressApt, setInformantAddressApt] = useState('');
+  const [informantAddressCityStateCountry, setInformantAddressCityStateCountry] = useState('');
+  const [informantAddressZip, setInformantAddressZip] = useState('');
+
+  // 3. Decedent & Vital Records State (Official 2-Page Vital Record Sheet) - Clean slate
+  const [decedentFirstName, setDecedentFirstName] = useState('');
+  const [decedentMiddleName, setDecedentMiddleName] = useState('');
+  const [decedentLastName, setDecedentLastName] = useState('');
   const [decedentLegalName, setDecedentLegalName] = useState('');
+  const [otherKnownNames, setOtherKnownNames] = useState('');
+
+  const [residenceStreet, setResidenceStreet] = useState('');
+  const [residenceApt, setResidenceApt] = useState('');
+  const [residenceCity, setResidenceCity] = useState('');
+  const [residenceState, setResidenceState] = useState('');
+  const [residenceZip, setResidenceZip] = useState('');
+  const [residenceAddress, setResidenceAddress] = useState('');
+
   const [gender, setGender] = useState<'male' | 'female' | 'other'>('female');
+  const [educationLevel, setEducationLevel] = useState('');
+
+  const [placeOfDeathFacility, setPlaceOfDeathFacility] = useState('');
+  const [placeOfDeathCity, setPlaceOfDeathCity] = useState('');
+  const [placeOfDeathStateCountry, setPlaceOfDeathStateCountry] = useState('');
+
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [age, setAge] = useState('');
+  const [birthPlace, setBirthPlace] = useState('');
+
   const [dateOfDeath, setDateOfDeath] = useState(dateToday);
   const isExpectedDeath = false;
-  const [ssnLast4, setSsnLast4] = useState('');
-  const [maritalStatus, setMaritalStatus] = useState<'married' | 'single' | 'widowed' | 'divorced'>('widowed');
-  const [fatherName, setFatherName] = useState('');
-  const [motherMaidenName, setMotherMaidenName] = useState('');
-  const [residenceAddress, setResidenceAddress] = useState('Harlem, New York, NY 10030');
 
-  // 4. Removal Readiness & Location Triage
+  const [maritalStatus, setMaritalStatus] = useState<'married' | 'separated' | 'never_married' | 'widowed' | 'divorced'>('married');
+  const [ssn, setSsn] = useState('');
+  const [race, setRace] = useState('');
+
+  // Occupation & Industry
+  const [occupationTitle, setOccupationTitle] = useState('');
+  const [typeOfBusiness, setTypeOfBusiness] = useState('');
+
+  // Military Status & Branch
+  const [isVeteran, setIsVeteran] = useState(false);
+  const [isActiveDuty, setIsActiveDuty] = useState(false);
+  const [militaryBranch, setMilitaryBranch] = useState('');
+
+  // Parents & Spouse
+  const [fatherName, setFatherName] = useState('');
+  const [motherFirstAndMaidenName, setMotherFirstAndMaidenName] = useState('');
+  const [spouseFirstAndMaidenName, setSpouseFirstAndMaidenName] = useState('');
+  const [spouseDateOfBirth, setSpouseDateOfBirth] = useState('');
+
+  // Cemetery Deed & Previous Interment
+  const [deedOwnerName, setDeedOwnerName] = useState('');
+  const [deedOwnerAddress, setDeedOwnerAddress] = useState('');
+  const [previousIntermentWho, setPreviousIntermentWho] = useState('');
+  const [previousIntermentWhen, setPreviousIntermentWhen] = useState('');
+  const [previousIntermentRelation, setPreviousIntermentRelation] = useState('');
+
+  // Verification Jurat
+  const [reviewedOrProvidedBy, setReviewedOrProvidedBy] = useState('');
+  const [verifiedOnDate, setVerifiedOnDate] = useState(dateToday);
+
+  // Auto calculate age when DOB and DOD change
+  const handleDobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dob = e.target.value;
+    setDateOfBirth(dob);
+    if (dob && dateOfDeath) {
+      const bYear = new Date(dob).getFullYear();
+      const dYear = new Date(dateOfDeath).getFullYear();
+      if (!isNaN(bYear) && !isNaN(dYear) && dYear >= bYear) {
+        setAge(String(dYear - bYear));
+      }
+    }
+  };
+
+  const handleDodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const dod = e.target.value;
+    setDateOfDeath(dod);
+    if (dateOfBirth && dod) {
+      const bYear = new Date(dateOfBirth).getFullYear();
+      const dYear = new Date(dod).getFullYear();
+      if (!isNaN(bYear) && !isNaN(dYear) && dYear >= bYear) {
+        setAge(String(dYear - bYear));
+      }
+    }
+  };
+
+  // 4. Removal Readiness & Location Triage - Clean slate
   const [removalReadiness, setRemovalReadiness] = useState<RemovalReadinessStatus>('pending_hospital_release');
-  const [removalReadinessNotes, setRemovalReadinessNotes] = useState('Awaiting attending physician death certificate sign-off and pathology release clearance.');
+  const [removalReadinessNotes, setRemovalReadinessNotes] = useState('');
   const [selectedFacilityId, setSelectedFacilityId] = useState<string>('custom');
   const [locationType, setLocationType] = useState<RemovalLocationType>('hospital_morgue');
-  const [facilityName, setFacilityName] = useState('Mount Sinai Morningside Hospital');
-  const [facilityAddress, setFacilityAddress] = useState('411 W 114th St, New York, NY 10025');
-  const [facilityFloorRoom, setFacilityFloorRoom] = useState('Pathology / Morgue Bay 2');
-  const [facilityContactPhone, setFacilityContactPhone] = useState('(212) 523-4000');
-  const [morgueAttendantOrNurse, setMorgueAttendantOrNurse] = useState('Officer in Charge / Morgue Custody Desk');
+  const [facilityName, setFacilityName] = useState('');
+  const [facilityAddress, setFacilityAddress] = useState('');
+  const [facilityFloorRoom, setFacilityFloorRoom] = useState('');
+  const [facilityContactPhone, setFacilityContactPhone] = useState('');
+  const [morgueAttendantOrNurse, setMorgueAttendantOrNurse] = useState('');
 
   // Physician & Medical Certifier
-  const [physicianName, setPhysicianName] = useState('Dr. Sarah Jenkins, MD');
-  const [physicianPhone] = useState('(212) 523-4000');
-  const [physicianLicenseNumber] = useState('');
+  const [physicianName, setPhysicianName] = useState('');
+  const [physicianPhone, setPhysicianPhone] = useState('');
+  const [physicianLicenseNumber, setPhysicianLicenseNumber] = useState('');
 
   // 5. Service Preferences & Assignment
-  const [dispositionType, setDispositionType] = useState<DispositionType>('full_cremation');
+  const [dispositionType, setDispositionType] = useState<DispositionType>('full_burial');
   const viewingParlor = 'Parlor A (Seats 120)';
   const targetServiceDate = '';
   const [assignedDirectorId, setAssignedDirectorId] = useState(activeDirectorObj?.id || 'dir-fd-1');
@@ -120,7 +205,7 @@ export const FirstCallIntakeModal: React.FC<FirstCallIntakeModalProps> = ({
   const [scheduledAppointmentDate, setScheduledAppointmentDate] = useState(defaultApptDate);
   const [scheduledAppointmentTime, setScheduledAppointmentTime] = useState('10:00 AM');
   const [scheduledAppointmentVenue, setScheduledAppointmentVenue] = useState('630 St. Nicholas Ave - Arrangement Suite 1 (Ground Floor)');
-  const [attendingFamilyCount, setAttendingFamilyCount] = useState(3);
+  const [attendingFamilyCount, setAttendingFamilyCount] = useState(2);
   const [sendConfirmationEmail, setSendConfirmationEmail] = useState(true);
   const [sendConfirmationSms, setSendConfirmationSms] = useState(true);
 
@@ -128,7 +213,7 @@ export const FirstCallIntakeModal: React.FC<FirstCallIntakeModalProps> = ({
   const [copiedEmailText, setCopiedEmailText] = useState(false);
 
   // Validation Error State
-  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   // Quick Facility Lookup Handler
   const handleFacilitySelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -177,18 +262,23 @@ export const FirstCallIntakeModal: React.FC<FirstCallIntakeModalProps> = ({
 
   // Validate form
   const validateForm = (): boolean => {
-    const errors: { [key: string]: string } = {};
+    const errors: Record<string, string> = {};
 
     if (!callerName.trim()) {
       errors.callerName = 'Informant / Caller full name is required.';
     }
-    if (!callerPhone.trim() || callerPhone.replace(/\D/g, '').length < 10) {
+    const rawCallerPhone = (callerPhone || informantPhoneCell).replace(/\D/g, '');
+    if (!rawCallerPhone || rawCallerPhone.length < 10) {
       errors.callerPhone = 'Valid 10-digit caller phone number is required for SMS confirmation.';
     }
     if (callerEmail.trim() && !isValidEmailFormat(callerEmail)) {
       errors.callerEmail = 'Please provide a valid email format (e.g. name@domain.com) for confirmation packet.';
     }
-    if (!decedentLegalName.trim()) {
+    const constructedLegalName = [decedentFirstName, decedentMiddleName, decedentLastName]
+      .filter(Boolean)
+      .join(' ')
+      .trim() || decedentLegalName.trim();
+    if (!constructedLegalName) {
       errors.decedentLegalName = 'Decedent legal full name is required.';
     }
     if (!facilityName.trim()) {
@@ -280,30 +370,141 @@ EST. 1928 • HARLEM, NYC`;
       return;
     }
 
+    const constructedLegalName = [decedentFirstName, decedentMiddleName, decedentLastName]
+      .filter(Boolean)
+      .join(' ')
+      .trim() || decedentLegalName;
+
+    const fullResidence = [residenceStreet, residenceApt, residenceCity, residenceState, residenceZip]
+      .filter(Boolean)
+      .join(', ');
+
+    const vitalSheet: FullVitalRecordInformationSheet = {
+      decedentFirstName,
+      decedentMiddleName,
+      decedentLastName,
+      otherKnownNames,
+      residenceStreet,
+      residenceApt,
+      residenceCity,
+      residenceState,
+      residenceZip,
+      dateOfDeath,
+      sex: gender === 'female' ? 'female' : 'male',
+      educationLevel,
+      placeOfDeathFacilityOrLocation: placeOfDeathFacility || facilityName,
+      placeOfDeathCity: placeOfDeathCity || (facilityAddress.split(',')[1]?.trim() || ''),
+      placeOfDeathStateOrCountry: placeOfDeathStateCountry,
+      dateOfBirth,
+      age: age ? Number(age) || age : '',
+      birthPlaceCityStateCountry: birthPlace,
+      maritalStatus: maritalStatus === 'never_married' ? 'never_married' : maritalStatus,
+      ssn: ssn.trim(),
+      race,
+      occupationTitle,
+      typeOfBusiness,
+      militaryBranch,
+      militaryStatus: isVeteran ? 'veteran' : (isActiveDuty ? 'active' : 'none'),
+      fatherName,
+      motherFirstAndMaidenName,
+      spouseFirstAndMaidenName,
+      spouseDateOfBirth,
+
+      informantName: callerName,
+      informantRelationship: callerRelationship,
+      informantPhoneHome: informantPhoneHome || callerPhone,
+      informantPhoneCell: informantPhoneCell || callerPhone,
+      informantPhoneAlt: informantPhoneAlt,
+      informantEmail: callerEmail,
+      informantAddressStreet: informantAddressStreet || callerAddress,
+      informantAddressApt: informantAddressApt,
+      informantAddressCityStateCountry: informantAddressCityStateCountry || callerAddress,
+      informantAddressZip: informantAddressZip,
+
+      deedOwnerName,
+      deedOwnerAddress,
+      previousIntermentWho,
+      previousIntermentWhen,
+      previousIntermentRelation,
+
+      reviewedOrProvidedBy: reviewedOrProvidedBy || callerName,
+      verifiedOnDate: verifiedOnDate || dateToday,
+
+      authPostObituaryWebsite: true,
+      authLiveStreamService: true,
+      authLiveStreamType: 'public'
+    };
+
     const formData: FirstCallIntakeFormData = {
       callerName,
       callerRelationship,
       callerPhone,
       callerEmail: callerEmail || 'family@bentasfuneralhome.org',
-      callerAddress,
+      callerAddress: callerAddress || informantAddressStreet || fullResidence,
       hasRightToControl,
       
-      decedentLegalName,
+      decedentLegalName: constructedLegalName,
+      decedentFirstName,
+      decedentMiddleName,
+      decedentLastName,
+      otherKnownNames,
+
       gender,
       dateOfBirth,
+      age,
+      birthPlaceCityStateCountry: birthPlace,
       dateOfDeath,
       isExpectedDeath,
-      ssnLast4,
+      ssn: ssn.trim(),
+      ssnLast4: ssn.replace(/\D/g, '').slice(-4),
       maritalStatus,
+      race,
+      educationLevel,
+      occupationTitle,
+      typeOfBusiness,
+      militaryStatus: isVeteran ? 'veteran' : (isActiveDuty ? 'active' : 'none'),
+      militaryBranch,
+      
       fatherName,
-      motherMaidenName,
-      residenceAddress,
+      motherMaidenName: motherFirstAndMaidenName,
+      motherFirstAndMaidenName,
+      spouseFirstAndMaidenName,
+      spouseDateOfBirth,
+      
+      residenceAddress: fullResidence || residenceAddress || callerAddress,
+      residenceStreet,
+      residenceApt,
+      residenceCity,
+      residenceState,
+      residenceZip,
+      placeOfDeathFacilityOrLocation: placeOfDeathFacility || facilityName,
+      placeOfDeathCity,
+      placeOfDeathStateOrCountry: placeOfDeathStateCountry,
+
+      informantPhoneHome,
+      informantPhoneCell: informantPhoneCell || callerPhone,
+      informantPhoneAlt,
+      informantAddressStreet,
+      informantAddressApt,
+      informantAddressCityStateCountry,
+      informantAddressZip,
+
+      deedOwnerName,
+      deedOwnerAddress,
+      previousIntermentWho,
+      previousIntermentWhen,
+      previousIntermentRelation,
+
+      reviewedOrProvidedBy,
+      verifiedOnDate,
+
+      vitalRecordsSheet: vitalSheet,
       
       removalReadiness,
       removalReadinessNotes,
       
       locationType,
-      facilityName,
+      facilityName: placeOfDeathFacility || facilityName,
       facilityAddress,
       facilityFloorRoom,
       facilityContactPhone,
@@ -337,10 +538,10 @@ EST. 1928 • HARLEM, NYC`;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-neutral-900/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
-      <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden flex flex-col max-h-[94vh]">
+      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden flex flex-col max-h-[94vh]">
         
         {/* MODAL HEADER */}
-        <div className="px-6 py-4 bg-gradient-to-r from-neutral-950 via-neutral-900 to-[#991b1b] text-white border-b border-neutral-800 flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-gradient-to-r from-neutral-950 via-neutral-900 to-[#800000] text-white border-b border-neutral-800 flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3.5">
             <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-inner">
               <PhoneCall className="w-6 h-6 animate-pulse" />
@@ -386,7 +587,7 @@ EST. 1928 • HARLEM, NYC`;
                 onClick={() => setCurrentStep(s.step as any)}
                 className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-xl transition whitespace-nowrap cursor-pointer ${
                   isActive 
-                    ? 'bg-[#991b1b] text-white shadow-xs font-bold'
+                    ? 'bg-[#800000] text-white shadow-xs font-bold'
                     : isCompleted
                     ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
                     : 'text-neutral-600 hover:bg-neutral-200'
@@ -428,7 +629,7 @@ EST. 1928 • HARLEM, NYC`;
               <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
                   <h4 className="font-serif-title font-bold text-sm uppercase tracking-wider text-neutral-900 flex items-center gap-2">
-                    <User className="w-4 h-4 text-[#991b1b]" />
+                    <User className="w-4 h-4 text-[#800000]" />
                     <span>Caller & Authorized Informant (Right to Control Remains)</span>
                   </h4>
                   <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -450,7 +651,7 @@ EST. 1928 • HARLEM, NYC`;
                         if (validationErrors.callerName) setValidationErrors(prev => ({ ...prev, callerName: '' }));
                       }}
                       className={`w-full bg-[#fbfbfd] border rounded-xl p-2.5 font-bold outline-none transition ${
-                        validationErrors.callerName ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#991b1b]'
+                        validationErrors.callerName ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#800000]'
                       }`}
                     />
                     {validationErrors.callerName && (
@@ -463,7 +664,7 @@ EST. 1928 • HARLEM, NYC`;
                     <select
                       value={callerRelationship}
                       onChange={(e) => setCallerRelationship(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
                     >
                       <option value="Spouse / Surviving Partner">Spouse / Surviving Partner</option>
                       <option value="Adult Child (Son / Daughter)">Adult Child (Son / Daughter)</option>
@@ -477,18 +678,20 @@ EST. 1928 • HARLEM, NYC`;
 
                   <div>
                     <label className="block font-bold text-neutral-700 mb-1">
-                      Mobile Phone (for SMS Careline) <span className="text-red-500">*</span>
+                      Cell / Mobile Phone <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="tel"
                       placeholder="(212) 555-0198"
                       value={callerPhone}
                       onChange={(e) => {
-                        setCallerPhone(formatPhoneNumbersOnly(e.target.value));
+                        const formatted = formatPhoneNumbersOnly(e.target.value);
+                        setCallerPhone(formatted);
+                        setInformantPhoneCell(formatted);
                         if (validationErrors.callerPhone) setValidationErrors(prev => ({ ...prev, callerPhone: '' }));
                       }}
                       className={`w-full bg-[#fbfbfd] border rounded-xl p-2.5 font-bold font-mono outline-none transition ${
-                        validationErrors.callerPhone ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#991b1b]'
+                        validationErrors.callerPhone ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#800000]'
                       }`}
                     />
                     {validationErrors.callerPhone && (
@@ -498,7 +701,7 @@ EST. 1928 • HARLEM, NYC`;
 
                   <div>
                     <label className="block font-bold text-neutral-700 mb-1">
-                      Email Address (for What-to-Bring Packet) <span className="text-[#991b1b]">*</span>
+                      Email Address (for What-to-Bring Packet) <span className="text-[#800000]">*</span>
                     </label>
                     <input
                       type="email"
@@ -509,24 +712,76 @@ EST. 1928 • HARLEM, NYC`;
                         if (validationErrors.callerEmail) setValidationErrors(prev => ({ ...prev, callerEmail: '' }));
                       }}
                       className={`w-full bg-[#fbfbfd] border rounded-xl p-2.5 outline-none transition font-semibold ${
-                        validationErrors.callerEmail ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#991b1b]'
+                        validationErrors.callerEmail ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#800000]'
                       }`}
                     />
                     {validationErrors.callerEmail && (
                       <span className="text-[10px] text-red-600 font-semibold block mt-0.5">{validationErrors.callerEmail}</span>
                     )}
                   </div>
+                </div>
+
+                {/* Additional Informant Contact Breakdown */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3.5 pt-1">
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1 text-xs">Home Phone</label>
+                    <input
+                      type="tel"
+                      placeholder="(212) 555-0122"
+                      value={informantPhoneHome}
+                      onChange={(e) => setInformantPhoneHome(formatPhoneNumbersOnly(e.target.value))}
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 font-mono text-xs outline-none focus:border-[#800000]"
+                    />
+                  </div>
 
                   <div>
-                    <label className="block font-bold text-neutral-700 mb-1">
-                      Informant Home Address
-                    </label>
+                    <label className="block font-bold text-neutral-700 mb-1 text-xs">Alternate Phone</label>
+                    <input
+                      type="tel"
+                      placeholder="(917) 555-0144"
+                      value={informantPhoneAlt}
+                      onChange={(e) => setInformantPhoneAlt(formatPhoneNumbersOnly(e.target.value))}
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 font-mono text-xs outline-none focus:border-[#800000]"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block font-bold text-neutral-700 mb-1 text-xs">Informant Street Address</label>
                     <input
                       type="text"
-                      placeholder="e.g. 125 W 138th St, Apt 4B, New York, NY 10030"
-                      value={callerAddress}
-                      onChange={(e) => setCallerAddress(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b] font-medium"
+                      placeholder="e.g. 125 W 138th St"
+                      value={informantAddressStreet || callerAddress}
+                      onChange={(e) => {
+                        setInformantAddressStreet(e.target.value);
+                        setCallerAddress(e.target.value);
+                      }}
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-xs outline-none focus:border-[#800000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1 text-xs">Apt / Suite</label>
+                    <input
+                      type="text"
+                      placeholder="Apt 4B"
+                      value={informantAddressApt}
+                      onChange={(e) => setInformantAddressApt(e.target.value)}
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-xs outline-none focus:border-[#800000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1 text-xs">City, State / Zip</label>
+                    <input
+                      type="text"
+                      placeholder="New York, NY 10030"
+                      value={informantAddressCityStateCountry || (informantAddressZip ? `New York, NY ${informantAddressZip}` : '')}
+                      onChange={(e) => {
+                        setInformantAddressCityStateCountry(e.target.value);
+                        const zipMatch = e.target.value.match(/\d{5}/);
+                        if (zipMatch) setInformantAddressZip(zipMatch[0]);
+                      }}
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-xs outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
@@ -537,7 +792,7 @@ EST. 1928 • HARLEM, NYC`;
                     id="rightToControlCheckbox"
                     checked={hasRightToControl}
                     onChange={(e) => setHasRightToControl(e.target.checked)}
-                    className="w-4 h-4 accent-[#991b1b] cursor-pointer"
+                    className="w-4 h-4 accent-[#800000] cursor-pointer"
                   />
                   <label htmlFor="rightToControlCheckbox" className="text-[11px] text-amber-950 font-semibold cursor-pointer">
                     Caller certifies legal authority to control funeral arrangements under NYS Public Health Law § 4201.
@@ -546,135 +801,567 @@ EST. 1928 • HARLEM, NYC`;
               </div>
 
               {/* Decedent Vital Statistics Section (Exact match to Vital Records Sheet) */}
-              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
+              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-5">
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
                   <h4 className="font-serif-title font-bold text-sm uppercase tracking-wider text-neutral-900 flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-[#991b1b]" />
-                    <span>Decedent Vital Statistics (Needed for Death Certificate & Removal)</span>
+                    <FileText className="w-4 h-4 text-[#800000]" />
+                    <span>Decedent Vital Statistics (NYS DOH Form AP-47 / EDRS Legal Record)</span>
                   </h4>
-                  <span className="text-[10px] text-neutral-500 font-mono">
-                    NYS DOH Form AP-47 / EDRS Pre-Fill
+                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-mono">
+                    Official 2-Page Vital Record Sheet
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
-                  <div className="md:col-span-2">
-                    <label className="block font-bold text-neutral-700 mb-1">
-                      Full Legal Name of Deceased <span className="text-red-500">*</span>
-                    </label>
+                {/* 1. Decedent Names & AKAs */}
+                <div className="space-y-3 bg-neutral-50/80 p-4 rounded-xl border border-neutral-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block">
+                    1. Decedent Legal Name & Other Known Names
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">
+                        First Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Eleanor"
+                        value={decedentFirstName}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setDecedentFirstName(val);
+                          setDecedentLegalName([val, decedentMiddleName, decedentLastName].filter(Boolean).join(' '));
+                          if (validationErrors.decedentLegalName) setValidationErrors(prev => ({ ...prev, decedentLegalName: '' }));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Middle Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Mae"
+                        value={decedentMiddleName}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setDecedentMiddleName(val);
+                          setDecedentLegalName([decedentFirstName, val, decedentLastName].filter(Boolean).join(' '));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">
+                        Last Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Vance"
+                        value={decedentLastName}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setDecedentLastName(val);
+                          setDecedentLegalName([decedentFirstName, decedentMiddleName, val].filter(Boolean).join(' '));
+                          if (validationErrors.decedentLegalName) setValidationErrors(prev => ({ ...prev, decedentLegalName: '' }));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1">Any Other Known Names of Deceased (AKAs / Aliases)</label>
                     <input
                       type="text"
-                      placeholder="e.g. Eleanor Vance"
-                      value={decedentLegalName}
-                      onChange={(e) => {
-                        setDecedentLegalName(e.target.value);
-                        if (validationErrors.decedentLegalName) setValidationErrors(prev => ({ ...prev, decedentLegalName: '' }));
-                      }}
-                      className={`w-full bg-[#fbfbfd] border rounded-xl p-2.5 font-bold text-sm outline-none transition ${
-                        validationErrors.decedentLegalName ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#991b1b]'
-                      }`}
+                      placeholder="e.g. Ellie Vance, Mae Vance"
+                      value={otherKnownNames}
+                      onChange={(e) => setOtherKnownNames(e.target.value)}
+                      className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                     />
-                    {validationErrors.decedentLegalName && (
-                      <span className="text-[10px] text-red-600 font-semibold block mt-0.5">{validationErrors.decedentLegalName}</span>
+                  </div>
+                </div>
+
+                {/* 2. Residence of Loved One */}
+                <div className="space-y-3 bg-neutral-50/80 p-4 rounded-xl border border-neutral-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#800000]" />
+                    <span>2. Residence of Loved One</span>
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    <div className="sm:col-span-3">
+                      <label className="block font-bold text-neutral-700 mb-1">Street & Number</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 145 W 138th St"
+                        value={residenceStreet}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setResidenceStreet(val);
+                          setResidenceAddress([val, residenceApt, residenceCity, residenceState, residenceZip].filter(Boolean).join(', '));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Apt # / Other</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Apt 4B"
+                        value={residenceApt}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setResidenceApt(val);
+                          setResidenceAddress([residenceStreet, val, residenceCity, residenceState, residenceZip].filter(Boolean).join(', '));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">City</label>
+                      <input
+                        type="text"
+                        placeholder="New York"
+                        value={residenceCity}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setResidenceCity(val);
+                          setResidenceAddress([residenceStreet, residenceApt, val, residenceState, residenceZip].filter(Boolean).join(', '));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">State</label>
+                      <input
+                        type="text"
+                        placeholder="NY"
+                        value={residenceState}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setResidenceState(val);
+                          setResidenceAddress([residenceStreet, residenceApt, residenceCity, val, residenceZip].filter(Boolean).join(', '));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Zip Code</label>
+                      <input
+                        type="text"
+                        placeholder="10030"
+                        value={residenceZip}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setResidenceZip(val);
+                          setResidenceAddress([residenceStreet, residenceApt, residenceCity, residenceState, val].filter(Boolean).join(', '));
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Vital Demographics, Dates & Place of Death */}
+                <div className="space-y-3 bg-neutral-50/80 p-4 rounded-xl border border-neutral-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block">
+                    3. Vital Demographics, Dates & Place of Death
+                  </span>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Date of Death</label>
+                      <input
+                        type="date"
+                        value={dateOfDeath}
+                        onChange={handleDodChange}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono font-bold outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Sex</label>
+                      <select
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value as any)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
+                      >
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="other">Other / Non-Binary</option>
+                      </select>
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block font-bold text-neutral-700 mb-1">Education (Highest Level Completed)</label>
+                      <select
+                        value={educationLevel}
+                        onChange={(e) => setEducationLevel(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
+                      >
+                        <option value="">Select Education Level...</option>
+                        <option value="8th grade or less">8th grade or less</option>
+                        <option value="9th - 12th grade, no diploma">9th - 12th grade, no diploma</option>
+                        <option value="High school graduate or GED completed">High school graduate or GED completed</option>
+                        <option value="Some college credit, but no degree">Some college credit, but no degree</option>
+                        <option value="Associate degree (e.g., AA, AS)">Associate degree (e.g., AA, AS)</option>
+                        <option value="Bachelor's degree (e.g., BA, AB, BS)">Bachelor's degree (e.g., BA, AB, BS)</option>
+                        <option value="Master's degree (e.g., MA, MS, MEng, MEd, MSW, MBA)">Master's degree (e.g., MA, MS, MEng, MEd, MSW, MBA)</option>
+                        <option value="Doctorate (e.g., PhD, EdD) or Professional (e.g., MD, DDS, DVM, LLB, JD)">Doctorate (e.g., PhD, EdD) or Professional (e.g., MD, DDS, DVM, LLB, JD)</option>
+                        <option value="Unknown">Unknown</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Place of Death (Facility / Location)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Mount Sinai Morningside / Residence"
+                        value={placeOfDeathFacility}
+                        onChange={(e) => setPlaceOfDeathFacility(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Place of Death City</label>
+                      <input
+                        type="text"
+                        placeholder="New York"
+                        value={placeOfDeathCity}
+                        onChange={(e) => setPlaceOfDeathCity(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">State or Foreign Country</label>
+                      <input
+                        type="text"
+                        placeholder="NY, USA"
+                        value={placeOfDeathStateCountry}
+                        onChange={(e) => setPlaceOfDeathStateCountry(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Date of Birth</label>
+                      <input
+                        type="date"
+                        value={dateOfBirth}
+                        onChange={handleDobChange}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Age (Years)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 78"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono font-bold outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div className="md:col-span-2">
+                      <label className="block font-bold text-neutral-700 mb-1">Birth Place (City, State or Foreign Country)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Charleston, SC, USA"
+                        value={birthPlace}
+                        onChange={(e) => setBirthPlace(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Marital Status</label>
+                      <select
+                        value={maritalStatus}
+                        onChange={(e) => setMaritalStatus(e.target.value as any)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
+                      >
+                        <option value="widowed">Widowed / Widower</option>
+                        <option value="married">Married</option>
+                        <option value="separated">Separated</option>
+                        <option value="never_married">Never Married (Single)</option>
+                        <option value="divorced">Divorced</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">
+                        Social Security Number <span className="text-[10px] text-[#800000] font-mono">(9 Digits)</span>
+                      </label>
+                      <input
+                        type="text"
+                        maxLength={11}
+                        placeholder="123-45-6789"
+                        value={ssn}
+                        onChange={(e) => {
+                          const raw = e.target.value.replace(/\D/g, '').slice(0, 9);
+                          if (raw.length <= 3) {
+                            setSsn(raw);
+                          } else if (raw.length <= 5) {
+                            setSsn(`${raw.slice(0, 3)}-${raw.slice(3)}`);
+                          } else {
+                            setSsn(`${raw.slice(0, 3)}-${raw.slice(3, 5)}-${raw.slice(5)}`);
+                          }
+                        }}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono font-bold outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Race / Ethnicity</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Black / African American"
+                        value={race}
+                        onChange={(e) => setRace(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. Occupation, Industry & Military Heritage */}
+                <div className="space-y-3 bg-amber-50/50 p-4 rounded-xl border border-amber-200/80">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-950 block flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-[#800000]" />
+                    <span>4. Occupation, Industry & Military Heritage</span>
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Occupation Title (Primary Lifetime Career)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Senior Registered Nurse, Transit Motorman"
+                        value={occupationTitle}
+                        onChange={(e) => setOccupationTitle(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Type of Business / Industry</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Healthcare / NYC Health + Hospitals, NYC Transit"
+                        value={typeOfBusiness}
+                        onChange={(e) => setTypeOfBusiness(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-amber-200/60">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Military Status</label>
+                      <div className="flex items-center space-x-3 pt-1">
+                        <label className="flex items-center space-x-1.5 cursor-pointer text-xs font-semibold text-neutral-800">
+                          <input
+                            type="checkbox"
+                            checked={isVeteran}
+                            onChange={(e) => {
+                              setIsVeteran(e.target.checked);
+                              if (e.target.checked) setIsActiveDuty(false);
+                            }}
+                            className="w-4 h-4 accent-[#800000]"
+                          />
+                          <span>U.S. Veteran</span>
+                        </label>
+                        <label className="flex items-center space-x-1.5 cursor-pointer text-xs font-semibold text-neutral-800">
+                          <input
+                            type="checkbox"
+                            checked={isActiveDuty}
+                            onChange={(e) => {
+                              setIsActiveDuty(e.target.checked);
+                              if (e.target.checked) setIsVeteran(false);
+                            }}
+                            className="w-4 h-4 accent-[#800000]"
+                          />
+                          <span>Active Duty</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {(isVeteran || isActiveDuty) && (
+                      <div>
+                        <label className="block font-bold text-neutral-700 mb-1">Military Branch</label>
+                        <select
+                          value={militaryBranch}
+                          onChange={(e) => setMilitaryBranch(e.target.value)}
+                          className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
+                        >
+                          <option value="">Select Military Branch...</option>
+                          <option value="U.S. Army">U.S. Army</option>
+                          <option value="U.S. Navy">U.S. Navy</option>
+                          <option value="U.S. Air Force">U.S. Air Force</option>
+                          <option value="U.S. Marine Corps">U.S. Marine Corps</option>
+                          <option value="U.S. Coast Guard">U.S. Coast Guard</option>
+                          <option value="U.S. Space Force">U.S. Space Force</option>
+                          <option value="Army National Guard">Army National Guard</option>
+                          <option value="Air National Guard">Air National Guard</option>
+                          <option value="Merchant Marine (WWII)">Merchant Marine (WWII)</option>
+                        </select>
+                      </div>
                     )}
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Sex / Gender</label>
-                    <select
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value as any)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#991b1b]"
-                    >
-                      <option value="female">Female</option>
-                      <option value="male">Male</option>
-                      <option value="other">Other / Non-Binary</option>
-                    </select>
+                {/* 5. Parents & Spouse */}
+                <div className="space-y-3 bg-neutral-50/80 p-4 rounded-xl border border-neutral-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block flex items-center gap-1.5">
+                    <Heart className="w-3.5 h-3.5 text-[#800000]" />
+                    <span>5. Parents & Spouse Information</span>
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Father's Full Legal Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Arthur Vance Sr."
+                        value={fatherName}
+                        onChange={(e) => setFatherName(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Mother's First & Maiden Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Mildred Hayes"
+                        value={motherFirstAndMaidenName}
+                        onChange={(e) => setMotherFirstAndMaidenName(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">SSN (Last 4 Digits)</label>
-                    <input
-                      type="text"
-                      maxLength={4}
-                      placeholder="4819"
-                      value={ssnLast4}
-                      onChange={(e) => setSsnLast4(e.target.value.replace(/\D/g, ''))}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono font-bold outline-none focus:border-[#991b1b]"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="sm:col-span-2">
+                      <label className="block font-bold text-neutral-700 mb-1">Name of Spouse (First & Maiden)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Robert William Vance"
+                        value={spouseFirstAndMaidenName}
+                        onChange={(e) => setSpouseFirstAndMaidenName(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Spouse Date of Birth</label>
+                      <input
+                        type="date"
+                        value={spouseDateOfBirth}
+                        onChange={(e) => setSpouseDateOfBirth(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5">
+                {/* 6. Cemetery Deed & Previous Interment */}
+                <div className="space-y-3 bg-neutral-50/80 p-4 rounded-xl border border-neutral-200">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-700 block flex items-center gap-1.5">
+                    <Building className="w-3.5 h-3.5 text-[#800000]" />
+                    <span>6. Cemetery Deed & Previous Interment in Grave</span>
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Deed Owner Name</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Robert Vance"
+                        value={deedOwnerName}
+                        onChange={(e) => setDeedOwnerName(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Deed Owner Address</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 145 W 138th St, Apt 4B, New York, NY 10030"
+                        value={deedOwnerAddress}
+                        onChange={(e) => setDeedOwnerAddress(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">Previous Interment: Who</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Arthur Vance Sr."
+                        value={previousIntermentWho}
+                        onChange={(e) => setPreviousIntermentWho(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">When Interred (Year / Date)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1998"
+                        value={previousIntermentWhen}
+                        onChange={(e) => setPreviousIntermentWhen(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-neutral-700 mb-1">How Related to Decedent</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Father"
+                        value={previousIntermentRelation}
+                        onChange={(e) => setPreviousIntermentRelation(e.target.value)}
+                        className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 7. Verification Jurat */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-neutral-100/80 p-3.5 rounded-xl border border-neutral-200">
                   <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Date of Birth</label>
+                    <label className="block font-bold text-neutral-700 mb-1">Vital Information Reviewed / Provided By</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Robert Vance"
+                      value={reviewedOrProvidedBy}
+                      onChange={(e) => setReviewedOrProvidedBy(e.target.value)}
+                      className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1">Verified On Date</label>
                     <input
                       type="date"
-                      value={dateOfBirth}
-                      onChange={(e) => setDateOfBirth(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#991b1b]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Date of Passing</label>
-                    <input
-                      type="date"
-                      value={dateOfDeath}
-                      onChange={(e) => setDateOfDeath(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono font-bold outline-none focus:border-[#991b1b]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Marital Status</label>
-                    <select
-                      value={maritalStatus}
-                      onChange={(e) => setMaritalStatus(e.target.value as any)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#991b1b]"
-                    >
-                      <option value="widowed">Widowed</option>
-                      <option value="married">Married</option>
-                      <option value="single">Single / Never Married</option>
-                      <option value="divorced">Divorced</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Last Residence Address</label>
-                    <input
-                      type="text"
-                      placeholder="Harlem, New York, NY 10030"
-                      value={residenceAddress}
-                      onChange={(e) => setResidenceAddress(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                      value={verifiedOnDate}
+                      onChange={(e) => setVerifiedOnDate(e.target.value)}
+                      className="w-full bg-white border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Father's Full Legal Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Arthur Vance Sr."
-                      value={fatherName}
-                      onChange={(e) => setFatherName(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Mother's Full Maiden Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Mildred Hayes"
-                      value={motherMaidenName}
-                      onChange={(e) => setMotherMaidenName(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
-                    />
-                  </div>
-                </div>
               </div>
 
             </div>
@@ -690,7 +1377,7 @@ EST. 1928 • HARLEM, NYC`;
               <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
                   <h4 className="font-serif-title font-bold text-sm uppercase tracking-wider text-neutral-900 flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-[#991b1b]" />
+                    <Truck className="w-4 h-4 text-[#800000]" />
                     <span>Removal Readiness Status (Is Loved One Ready for Removal?)</span>
                   </h4>
                   <span className="text-[10px] text-neutral-500">
@@ -744,16 +1431,16 @@ EST. 1928 • HARLEM, NYC`;
                     }}
                     className={`p-4 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-2 ${
                       removalReadiness === 'family_consultation_hold'
-                        ? 'bg-purple-50/90 border-purple-700 shadow-md ring-2 ring-purple-200'
+                        ? 'bg-brass-50/90 border-brass-700 shadow-md ring-2 ring-brass-200'
                         : 'bg-white border-neutral-200 hover:border-neutral-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="bg-purple-100 text-purple-900 border border-purple-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
+                      <span className="bg-brass-100 text-brass-900 border border-brass-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
                         🟠 Family Consultation First
                       </span>
                       {removalReadiness === 'family_consultation_hold' && (
-                        <CheckCircle2 className="w-4 h-4 text-purple-700" />
+                        <CheckCircle2 className="w-4 h-4 text-brass-700" />
                       )}
                     </div>
                     <div>
@@ -764,7 +1451,7 @@ EST. 1928 • HARLEM, NYC`;
                         Family wants to meet for the arrangement conference first to finalize details before authorizing physical removal from the facility.
                       </p>
                     </div>
-                    <div className="text-[10px] text-purple-900 font-semibold pt-1 border-t border-purple-200/60">
+                    <div className="text-[10px] text-brass-900 font-semibold pt-1 border-t border-brass-200/60">
                       ✓ Coordinates removal timing after arrangement conference
                     </div>
                   </div>
@@ -811,16 +1498,16 @@ EST. 1928 • HARLEM, NYC`;
                     }}
                     className={`p-4 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between space-y-2 ${
                       removalReadiness === 'in_custody'
-                        ? 'bg-blue-50/90 border-blue-600 shadow-md ring-2 ring-blue-200'
+                        ? 'bg-brass-50/90 border-brass-600 shadow-md ring-2 ring-brass-200'
                         : 'bg-white border-neutral-200 hover:border-neutral-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="bg-blue-100 text-blue-900 border border-blue-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
+                      <span className="bg-brass-100 text-brass-900 border border-brass-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
                         🔵 Already in Custody
                       </span>
                       {removalReadiness === 'in_custody' && (
-                        <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                        <CheckCircle2 className="w-4 h-4 text-brass-600" />
                       )}
                     </div>
                     <div>
@@ -831,7 +1518,7 @@ EST. 1928 • HARLEM, NYC`;
                         Loved one is already safely present at Benta's Funeral Home. Focus directly on the upcoming arrangement conference.
                       </p>
                     </div>
-                    <div className="text-[10px] text-blue-900 font-semibold pt-1 border-t border-blue-200/60">
+                    <div className="text-[10px] text-brass-900 font-semibold pt-1 border-t border-brass-200/60">
                       ✓ Safe Arrival confirmed
                     </div>
                   </div>
@@ -843,13 +1530,13 @@ EST. 1928 • HARLEM, NYC`;
               <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
                   <h4 className="font-serif-title font-bold text-sm uppercase tracking-wider text-neutral-900 flex items-center gap-2">
-                    <Building2 className="w-4 h-4 text-[#991b1b]" />
+                    <Building2 className="w-4 h-4 text-[#800000]" />
                     <span>Facility / Hospital / Morgue Where Deceased is Resting</span>
                   </h4>
                   <select
                     value={selectedFacilityId}
                     onChange={handleFacilitySelect}
-                    className="bg-neutral-50 border border-neutral-300 text-neutral-900 font-bold rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#991b1b]"
+                    className="bg-neutral-50 border border-neutral-300 text-neutral-900 font-bold rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#800000]"
                   >
                     <option value="custom">🏠 Private Residence / Custom Facility</option>
                     <optgroup label="Tri-State Hospitals">
@@ -878,7 +1565,7 @@ EST. 1928 • HARLEM, NYC`;
                         if (validationErrors.facilityName) setValidationErrors(prev => ({ ...prev, facilityName: '' }));
                       }}
                       className={`w-full bg-[#fbfbfd] border rounded-xl p-2.5 font-bold outline-none transition ${
-                        validationErrors.facilityName ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#991b1b]'
+                        validationErrors.facilityName ? 'border-red-500 bg-red-50/30' : 'border-neutral-300 focus:border-[#800000]'
                       }`}
                     />
                   </div>
@@ -890,7 +1577,7 @@ EST. 1928 • HARLEM, NYC`;
                       value={facilityFloorRoom}
                       onChange={(e) => setFacilityFloorRoom(e.target.value)}
                       placeholder="e.g. Pathology / Morgue Bay 2"
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                     />
                   </div>
 
@@ -900,7 +1587,7 @@ EST. 1928 • HARLEM, NYC`;
                       type="text"
                       value={facilityAddress}
                       onChange={(e) => setFacilityAddress(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                     />
                   </div>
 
@@ -910,30 +1597,53 @@ EST. 1928 • HARLEM, NYC`;
                       type="tel"
                       value={facilityContactPhone}
                       onChange={(e) => setFacilityContactPhone(formatPhoneNumbersOnly(e.target.value))}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3.5 pt-1">
                   <div>
                     <label className="block font-bold text-neutral-700 mb-1">Attending Physician / Certifier</label>
                     <input
                       type="text"
                       value={physicianName}
                       onChange={(e) => setPhysicianName(e.target.value)}
-                      placeholder="Dr. Sarah Jenkins, MD"
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                      placeholder="e.g. Dr. Sarah Jenkins, MD"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-neutral-700 mb-1">Removal Readiness Status Notes</label>
+                    <label className="block font-bold text-neutral-700 mb-1">Physician Phone</label>
+                    <input
+                      type="tel"
+                      value={physicianPhone}
+                      onChange={(e) => setPhysicianPhone(formatPhoneNumbersOnly(e.target.value))}
+                      placeholder="(212) 555-0100"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1">Physician License #</label>
+                    <input
+                      type="text"
+                      value={physicianLicenseNumber}
+                      onChange={(e) => setPhysicianLicenseNumber(e.target.value)}
+                      placeholder="e.g. NY-284910"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-mono outline-none focus:border-[#800000]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-neutral-700 mb-1">Removal Readiness Notes</label>
                     <input
                       type="text"
                       value={removalReadinessNotes}
                       onChange={(e) => setRemovalReadinessNotes(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                      placeholder="e.g. Awaiting pathology clearance"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
@@ -951,7 +1661,7 @@ EST. 1928 • HARLEM, NYC`;
               <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
                   <h4 className="font-serif-title font-bold text-sm uppercase tracking-wider text-neutral-900 flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-[#991b1b]" />
+                    <Calendar className="w-4 h-4 text-[#800000]" />
                     <span>In-Person or Virtual Arrangement Conference Scheduler</span>
                   </h4>
                   <span className="text-[10px] text-amber-900 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
@@ -968,7 +1678,7 @@ EST. 1928 • HARLEM, NYC`;
                       type="date"
                       value={scheduledAppointmentDate}
                       onChange={(e) => setScheduledAppointmentDate(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold font-mono outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold font-mono outline-none focus:border-[#800000]"
                     />
                   </div>
 
@@ -979,7 +1689,7 @@ EST. 1928 • HARLEM, NYC`;
                     <select
                       value={scheduledAppointmentTime}
                       onChange={(e) => setScheduledAppointmentTime(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                     >
                       <option value="09:00 AM">09:00 AM (Morning Slot)</option>
                       <option value="10:00 AM">10:00 AM (Primary Morning)</option>
@@ -996,7 +1706,7 @@ EST. 1928 • HARLEM, NYC`;
                     <select
                       value={scheduledAppointmentVenue}
                       onChange={(e) => setScheduledAppointmentVenue(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
                     >
                       <option value="630 St. Nicholas Ave - Arrangement Suite 1 (Ground Floor)">
                         Arrangement Suite 1 (Ground Floor)
@@ -1015,7 +1725,7 @@ EST. 1928 • HARLEM, NYC`;
                     <select
                       value={assignedDirectorId}
                       onChange={(e) => handleDirectorChange(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                     >
                       {directorProfiles.filter(d => d.canMakeArrangements !== false && !d.isIndependentContractor).map(d => (
                         <option key={d.id} value={d.id}>{d.name} ({d.title})</option>
@@ -1037,7 +1747,7 @@ EST. 1928 • HARLEM, NYC`;
                         max={12}
                         value={attendingFamilyCount}
                         onChange={(e) => setAttendingFamilyCount(Number(e.target.value))}
-                        className="w-24 bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-center outline-none focus:border-[#991b1b]"
+                        className="w-24 bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-center outline-none focus:border-[#800000]"
                       />
                       <span className="text-neutral-500 text-xs">
                         Spokesperson: <strong>{callerName || 'Informant'}</strong> ({callerRelationship})
@@ -1050,7 +1760,7 @@ EST. 1928 • HARLEM, NYC`;
                     <select
                       value={dispositionType}
                       onChange={(e) => setDispositionType(e.target.value as any)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-semibold outline-none focus:border-[#800000]"
                     >
                       <option value="undecided">To Be Determined / Consultation with Director</option>
                       <option value="full_cremation">Full Cremation with Chapel Viewing</option>
@@ -1070,10 +1780,10 @@ EST. 1928 • HARLEM, NYC`;
                         type="checkbox"
                         checked={sendConfirmationEmail}
                         onChange={(e) => setSendConfirmationEmail(e.target.checked)}
-                        className="w-4 h-4 accent-[#991b1b] rounded"
+                        className="w-4 h-4 accent-[#800000] rounded"
                       />
                       <span className="font-bold text-neutral-800">
-                        📧 Send Email Confirmation Packet to <strong className="text-[#991b1b]">{callerEmail || 'Caller Email'}</strong>
+                        📧 Send Email Confirmation Packet to <strong className="text-[#800000]">{callerEmail || 'Caller Email'}</strong>
                       </span>
                     </label>
 
@@ -1082,10 +1792,10 @@ EST. 1928 • HARLEM, NYC`;
                         type="checkbox"
                         checked={sendConfirmationSms}
                         onChange={(e) => setSendConfirmationSms(e.target.checked)}
-                        className="w-4 h-4 accent-[#991b1b] rounded"
+                        className="w-4 h-4 accent-[#800000] rounded"
                       />
                       <span className="font-bold text-neutral-800">
-                        📱 Send Instant SMS Confirmation to <strong className="text-[#991b1b]">{callerPhone || 'Caller Phone'}</strong>
+                        📱 Send Instant SMS Confirmation to <strong className="text-[#800000]">{callerPhone || 'Caller Phone'}</strong>
                       </span>
                     </label>
                   </div>
@@ -1104,7 +1814,7 @@ EST. 1928 • HARLEM, NYC`;
               {/* Header Action Controls */}
               <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-neutral-200 shadow-2xs">
                 <div className="flex items-center space-x-2">
-                  <span className="w-8 h-8 rounded-lg bg-red-50 text-[#991b1b] flex items-center justify-center font-bold">
+                  <span className="w-8 h-8 rounded-lg bg-red-50 text-[#800000] flex items-center justify-center font-bold">
                     <Mail className="w-4 h-4" />
                   </span>
                   <div>
@@ -1112,7 +1822,7 @@ EST. 1928 • HARLEM, NYC`;
                       Family Confirmation & "What to Bring" Packet Preview
                     </h4>
                     <p className="text-[11px] text-neutral-500">
-                      Dispatched immediately to <strong className="text-[#991b1b]">{callerEmail || 'informant@example.com'}</strong> and SMS to <strong className="text-neutral-800">{callerPhone || '(212) 555-0198'}</strong>.
+                      Dispatched immediately to <strong className="text-[#800000]">{callerEmail || 'informant@example.com'}</strong> and SMS to <strong className="text-neutral-800">{callerPhone || '(212) 555-0198'}</strong>.
                     </p>
                   </div>
                 </div>
@@ -1139,16 +1849,16 @@ EST. 1928 • HARLEM, NYC`;
               </div>
 
               {/* LIVE EMAIL RENDER CONTAINER */}
-              <div className="bg-white border border-neutral-300 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 max-w-3xl mx-auto">
+              <div className="bg-white border border-neutral-300 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 max-w-3xl mx-auto">
                 
                 {/* Brand Header */}
-                <div className="border-b-2 border-[#991b1b] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-center sm:text-left">
+                <div className="border-b-2 border-[#800000] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-center sm:text-left">
                   <div className="flex items-center space-x-3 justify-center sm:justify-start">
-                    <div className="w-12 h-12 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-serif-title font-bold text-xl border-2 border-amber-400/60 shadow-md">
+                    <div className="w-12 h-12 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-xl border-2 border-amber-400/60 shadow-md">
                       BFH
                     </div>
                     <div>
-                      <h3 className="font-serif-title font-bold text-xl text-[#991b1b]">
+                      <h3 className="font-serif-title font-bold text-xl text-[#800000]">
                         BENTA'S FUNERAL HOME
                       </h3>
                       <p className="text-[10px] text-[#b45309] font-bold uppercase tracking-widest">
@@ -1160,7 +1870,7 @@ EST. 1928 • HARLEM, NYC`;
                   <div className="text-right text-[11px] text-neutral-500 font-light">
                     <p className="font-semibold text-neutral-800">630 Saint Nicholas Avenue</p>
                     <p>New York, NY 10030</p>
-                    <p className="text-[#991b1b] font-bold">24/7 Careline: (212) 281-8850</p>
+                    <p className="text-[#800000] font-bold">24/7 Careline: (212) 281-8850</p>
                   </div>
                 </div>
 
@@ -1177,11 +1887,11 @@ EST. 1928 • HARLEM, NYC`;
                 {/* Stately Appointment Card */}
                 <div className="bg-gradient-to-br from-red-50/90 via-[#fffcf9] to-amber-50/90 border-2 border-red-200/90 rounded-2xl p-5 shadow-xs space-y-3">
                   <div className="flex items-center justify-between border-b border-red-200 pb-2">
-                    <span className="font-serif-title font-bold text-xs uppercase tracking-wider text-[#991b1b] flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4 text-[#991b1b]" />
+                    <span className="font-serif-title font-bold text-xs uppercase tracking-wider text-[#800000] flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-[#800000]" />
                       <span>Confirmed Arrangement Conference Details</span>
                     </span>
-                    <span className="bg-[#991b1b] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
+                    <span className="bg-[#800000] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
                       Confirmed Appointment
                     </span>
                   </div>
@@ -1216,11 +1926,11 @@ EST. 1928 • HARLEM, NYC`;
                   removalReadiness === 'pending_hospital_release'
                     ? 'bg-amber-50/90 border-amber-300 text-amber-950'
                     : removalReadiness === 'family_consultation_hold'
-                    ? 'bg-purple-50/90 border-purple-300 text-purple-950'
+                    ? 'bg-brass-50/90 border-brass-300 text-brass-950'
                     : 'bg-emerald-50/90 border-emerald-300 text-emerald-950'
                 }`}>
                   <div className={`p-2 rounded-xl text-white font-bold shrink-0 ${
-                    removalReadiness === 'pending_hospital_release' ? 'bg-amber-600' : removalReadiness === 'family_consultation_hold' ? 'bg-purple-700' : 'bg-emerald-600'
+                    removalReadiness === 'pending_hospital_release' ? 'bg-amber-600' : removalReadiness === 'family_consultation_hold' ? 'bg-brass-700' : 'bg-emerald-600'
                   }`}>
                     <Truck className="w-4 h-4" />
                   </div>
@@ -1250,7 +1960,7 @@ EST. 1928 • HARLEM, NYC`;
                 {/* ========================================================= */}
                 <div className="space-y-4">
                   <div className="border-b border-neutral-200 pb-1">
-                    <h4 className="font-serif-title font-bold text-sm text-[#991b1b] uppercase tracking-wider flex items-center gap-2">
+                    <h4 className="font-serif-title font-bold text-sm text-[#800000] uppercase tracking-wider flex items-center gap-2">
                       <BookOpen className="w-4 h-4" />
                       <span>What to Bring to Your Arrangement Conference</span>
                     </h4>
@@ -1263,7 +1973,7 @@ EST. 1928 • HARLEM, NYC`;
                     
                     {/* Item Category 1 */}
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-2">
-                      <span className="font-bold text-[#991b1b] text-xs flex items-center gap-1.5">
+                      <span className="font-bold text-[#800000] text-xs flex items-center gap-1.5">
                         <FileText className="w-3.5 h-3.5" />
                         <span>1. Vital Records & State Statistics</span>
                       </span>
@@ -1307,8 +2017,8 @@ EST. 1928 • HARLEM, NYC`;
 
                     {/* Item Category 4 */}
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-2">
-                      <span className="font-bold text-purple-900 text-xs flex items-center gap-1.5">
-                        <ImageIcon className="w-3.5 h-3.5 text-purple-700" />
+                      <span className="font-bold text-brass-900 text-xs flex items-center gap-1.5">
+                        <ImageIcon className="w-3.5 h-3.5 text-brass-700" />
                         <span>4. Memorial & Tribute Materials</span>
                       </span>
                       <ul className="text-[11px] text-neutral-700 space-y-1.5 list-disc list-inside">
@@ -1324,7 +2034,7 @@ EST. 1928 • HARLEM, NYC`;
                 {/* Action Links Buttons */}
                 <div className="pt-2 border-t border-neutral-200 flex flex-wrap gap-3 items-center justify-between text-xs">
                   <div className="flex flex-wrap gap-2">
-                    <span className="bg-[#991b1b] text-white px-3.5 py-2 rounded-xl font-bold inline-flex items-center gap-1 shadow-xs">
+                    <span className="bg-[#800000] text-white px-3.5 py-2 rounded-xl font-bold inline-flex items-center gap-1 shadow-xs">
                       <span>✓ Pre-Fill Vital Records Sheet Online</span>
                     </span>
                     <span className="bg-neutral-100 text-neutral-800 px-3.5 py-2 rounded-xl font-bold inline-flex items-center gap-1 border border-neutral-300">
@@ -1347,7 +2057,7 @@ EST. 1928 • HARLEM, NYC`;
         <div className="px-6 py-4 bg-white border-t border-neutral-200 shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
           
           <div className="flex items-center space-x-2 text-neutral-500 text-xs">
-            <Info className="w-4 h-4 text-[#991b1b]" />
+            <Info className="w-4 h-4 text-[#800000]" />
             <span>Step {currentStep} of 4 • Case auto-generates with complete Golden Record.</span>
           </div>
 
@@ -1372,7 +2082,7 @@ EST. 1928 • HARLEM, NYC`;
                   }
                   setCurrentStep((currentStep + 1) as any);
                 }}
-                className="px-5 py-2.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center gap-1.5 border border-amber-400/40"
+                className="px-5 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition shadow-md flex items-center gap-1.5 border border-amber-400/40"
               >
                 <span>Continue to {currentStep === 1 ? 'Removal Readiness' : currentStep === 2 ? 'Appointment' : 'Email Preview'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -1390,7 +2100,7 @@ EST. 1928 • HARLEM, NYC`;
                 <button
                   type="button"
                   onClick={() => handleSubmit('open_appointment')}
-                  className="px-5 py-2.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center gap-2 border border-amber-400/40 cursor-pointer"
+                  className="px-5 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition shadow-md flex items-center gap-2 border border-amber-400/40 cursor-pointer"
                 >
                   <Mail className="w-4 h-4 text-amber-300" />
                   <span>Create Case & Dispatch Preparation Packet ➔</span>

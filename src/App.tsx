@@ -107,15 +107,124 @@ import { createCaseFromFirstCall } from './lib/data/firstCallHelper';
 // Family Portal Component (with full 9-Part Obituary Writer Suite)
 import { FamilyPortalView } from './components/family/FamilyPortalView';
 import { InteractiveGuidedTourModal, TourTrack } from './components/ui/InteractiveGuidedTourModal';
+import { FrontOfficeLobbyKioskModal } from './components/backoffice/FrontOfficeLobbyKioskModal';
+import { PreNeedTrustVaultModal } from './components/backoffice/PreNeedTrustVaultModal';
+import { InsuranceRapidFundingBridgeModal } from './components/backoffice/InsuranceRapidFundingBridgeModal';
+import { SSA721FilingModal } from './components/backoffice/SSA721FilingModal';
+import { VAMilitaryHonorsHubModal } from './components/backoffice/VAMilitaryHonorsHubModal';
+import { INITIAL_PRE_NEED_ACCOUNTS, INITIAL_INSURANCE_CLAIMS } from './lib/data/preNeedAndInsuranceData';
+import { PreNeedTrustAccount, InsuranceAssignmentClaim, SplitBillingItem, SSA721Filing, VAMilitaryHonorsData } from './lib/types/funeral';
 
 export function App() {
   // App View Mode: 'public' or 'backoffice'
   const [viewMode, setViewMode] = useState<'public' | 'backoffice'>('public');
   const [activePublicSection, setActivePublicSection] = useState('home');
+  const [isLobbyKioskOpen, setIsLobbyKioskOpen] = useState(false);
+
+  // Detect ?mode=lobby-kiosk in URL for front-office TV display boot
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'lobby-kiosk' || params.get('mode') === 'lobby') {
+        setIsLobbyKioskOpen(true);
+      }
+    }
+  }, []);
 
   // Multi-Tenancy & Access Isolation: isStaffUser is true only for BFH Staff / Directors
   const [isStaffUser, setIsStaffUser] = useState<boolean>(true);
   const [isFamilyAccessModalOpen, setIsFamilyAccessModalOpen] = useState<boolean>(false);
+
+  // Pre-Need Trusts & Insurance Rapid-Funding State
+  const [preNeedAccounts, setPreNeedAccounts] = useState<PreNeedTrustAccount[]>(() =>
+    loadPersistedState<PreNeedTrustAccount[]>('bfh_preneed_accounts', INITIAL_PRE_NEED_ACCOUNTS)
+  );
+  useEffect(() => { savePersistedState('bfh_preneed_accounts', preNeedAccounts); }, [preNeedAccounts]);
+
+  const [insuranceClaims, setInsuranceClaims] = useState<InsuranceAssignmentClaim[]>(() =>
+    loadPersistedState<InsuranceAssignmentClaim[]>('bfh_insurance_claims', INITIAL_INSURANCE_CLAIMS)
+  );
+  useEffect(() => { savePersistedState('bfh_insurance_claims', insuranceClaims); }, [insuranceClaims]);
+
+  const [isPreNeedModalOpen, setIsPreNeedModalOpen] = useState(false);
+  const [isInsuranceFundingModalOpen, setIsInsuranceFundingModalOpen] = useState(false);
+
+  const handleApplyInsuranceFundingToCase = (caseId: string, amount: number, claimRef: string) => {
+    setCases(prev => prev.map(c => {
+      if (c.id === caseId) {
+        const newSplitItem: SplitBillingItem = {
+          id: `split-${Date.now()}-ins`,
+          payerType: 'Life Insurance Assignment',
+          payerName: `Life Insurance Direct Wire (${claimRef})`,
+          providerName: 'C&J Financial / Carrier Wire',
+          policyNumber: claimRef,
+          amountAllocated: amount,
+          amountPaid: amount,
+          status: 'verified_active',
+          itemAssigned: '24-Hour Life Insurance Proceeds Advance Wire',
+          notes: `Guaranteed wire of $${amount.toLocaleString()} scheduled for direct deposit.`
+        };
+        const newNoteItem = {
+          id: `note-${Date.now()}`,
+          author: 'C&J Funding Bridge System',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          text: `24-Hour Insurance Wire Approved: Claim ${claimRef} applied to balance ($${amount.toLocaleString()})`
+        };
+        return {
+          ...c,
+          splitBilling: [...c.splitBilling, newSplitItem],
+          totalPaid: (c.totalPaid || 0) + amount,
+          notes: [...c.notes, newNoteItem]
+        };
+      }
+      return c;
+    }));
+  };
+
+  const [isSSA721ModalOpen, setIsSSA721ModalOpen] = useState(false);
+  const [isVAHonorsModalOpen, setIsVAHonorsModalOpen] = useState(false);
+
+  const handleSaveSSA721 = (filing: SSA721Filing) => {
+    setCases(prev => prev.map(c => {
+      if (c.id === filing.caseId) {
+        return {
+          ...c,
+          ssa721Filing: filing,
+          notes: [
+            ...c.notes,
+            {
+              id: `note-${Date.now()}`,
+              author: 'SSA-721 Electronic Gateway',
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              text: `Form SSA-721 Status: ${filing.status.toUpperCase()}. Confirmation: ${filing.ssaConfirmationNumber || 'Pending'}. $255 LSDP Voucher Active.`
+            }
+          ]
+        };
+      }
+      return c;
+    }));
+  };
+
+  const handleSaveVAHonors = (honors: VAMilitaryHonorsData) => {
+    setCases(prev => prev.map(c => {
+      if (c.id === honors.caseId) {
+        return {
+          ...c,
+          militaryHonors: honors,
+          notes: [
+            ...c.notes,
+            {
+              id: `note-${Date.now()}`,
+              author: 'VA Military Honors Hub',
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              text: `VA Honors Configured: ${honors.militaryBranch} (${honors.serviceEra}). Honor Guard: ${honors.honorGuardStatus.toUpperCase()} (${honors.honorGuardConfirmationCode || 'Req Pending'}). National Cemetery: ${honors.nationalCemeterySelected || 'None'}.`
+            }
+          ]
+        };
+      }
+      return c;
+    }));
+  };
 
   // Case State with Persistent Local Storage Hydration
   const [cases, setCases] = useState<GoldenRecordCase[]>(() => 
@@ -1020,7 +1129,7 @@ export function App() {
     }
 
     return (
-      <div className="min-h-screen bg-[#f8fafc] text-neutral-900 flex flex-col font-sans">
+      <div className="min-h-screen bg-[#f3f4f6] text-neutral-900 font-sans">
         <BackOfficeLayout
           currentRole={currentRole}
           onChangeRole={(role) => {
@@ -1092,13 +1201,16 @@ export function App() {
           onOpenIntegrationsCenter={() => setIsIntegrationsCenterOpen(true)}
           onOpenSimulationModal={() => setIsSimulationModalOpen(true)}
           onOpenGuidedTour={() => handleOpenGuidedTour('director')}
+          onOpenPreNeedModal={() => setIsPreNeedModalOpen(true)}
+          onOpenInsuranceFundingModal={() => setIsInsuranceFundingModalOpen(true)}
+          onOpenSSA721Modal={() => setIsSSA721ModalOpen(true)}
+          onOpenVAHonorsModal={() => setIsVAHonorsModalOpen(true)}
           currentDirectorId={currentDirectorId}
           onChangeDirectorId={setCurrentDirectorId}
           directorProfiles={directorProfiles}
           partnerRequests={partnerRequests}
-        />
-
-        <main className="flex-1 overflow-y-auto">
+        >
+          <main className="min-w-0">
           {backOfficeTab === 'dashboard' && (
             <DirectorActiveCasesDashboard
               cases={cases}
@@ -1211,6 +1323,8 @@ export function App() {
               onOpenAftercare={() => setBackOfficeTab('aftercare')}
               onOpenCheckPrinter={() => handleOpenCheckPrinterModal(activeCase)}
               partnerRequests={partnerRequests}
+              onOpenSSA721Modal={() => setIsSSA721ModalOpen(true)}
+              onOpenVAHonorsModal={() => setIsVAHonorsModalOpen(true)}
             />
           )}
 
@@ -1293,6 +1407,8 @@ export function App() {
                 setTargetESignDoc(doc || null);
                 setIsESignOpen(true);
               }}
+              onOpenSSA721Modal={() => setIsSSA721ModalOpen(true)}
+              onOpenVAHonorsModal={() => setIsVAHonorsModalOpen(true)}
             />
           )}
 
@@ -1346,7 +1462,30 @@ export function App() {
               onOpenQuickBooks={(targetCase) => handleOpenQuickBooksModal(targetCase)}
               onOpenCheckPrinter={(targetCase) => handleOpenCheckPrinterModal(targetCase)}
               onOpenStripeModal={() => setIsStripeModalOpen(true)}
+              onOpenInsuranceBridge={() => setIsInsuranceFundingModalOpen(true)}
+              onOpenPreNeedVault={() => setIsPreNeedModalOpen(true)}
             />
+          )}
+
+          {backOfficeTab === 'preneed' && (
+            <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+              <PreNeedTrustVaultModal
+                isOpen={true}
+                onClose={() => setBackOfficeTab('dashboard')}
+                accounts={preNeedAccounts}
+                onUpdateAccounts={setPreNeedAccounts}
+                cases={cases}
+                onAddCase={(newCase) => {
+                  setCases(prev => [newCase, ...prev]);
+                  setActiveCaseId(newCase.id);
+                  setBackOfficeTab('golden_record');
+                }}
+                onSelectCase={(target) => {
+                  setActiveCaseId(target.id);
+                  setBackOfficeTab('golden_record');
+                }}
+              />
+            </div>
           )}
 
           {backOfficeTab === 'aftercare' && (
@@ -1360,7 +1499,8 @@ export function App() {
               }}
             />
           )}
-        </main>
+          </main>
+        </BackOfficeLayout>
 
         {/* Service Partner SMS Schedule Modal */}
         {isPartnerModalOpen && (
@@ -1998,6 +2138,67 @@ export function App() {
           setCurrentRole('director');
           setViewMode('backoffice');
         }}
+      />
+
+      {/* Global Front Office Lobby Kiosk Display Modal */}
+      <FrontOfficeLobbyKioskModal
+        isOpen={isLobbyKioskOpen}
+        onClose={() => setIsLobbyKioskOpen(false)}
+        events={calendarEvents}
+        cases={cases}
+        directorProfiles={directorProfiles}
+        initialDate="2026-09-22"
+      />
+
+      {/* NYS PRE-NEED TRUST & MEDICAID SPEND-DOWN VAULT MODAL */}
+      <PreNeedTrustVaultModal
+        isOpen={isPreNeedModalOpen}
+        onClose={() => setIsPreNeedModalOpen(false)}
+        accounts={preNeedAccounts}
+        onUpdateAccounts={setPreNeedAccounts}
+        cases={cases}
+        onAddCase={(newCase) => {
+          setCases(prev => [newCase, ...prev]);
+          setActiveCaseId(newCase.id);
+          setIsPreNeedModalOpen(false);
+          setBackOfficeTab('golden_record');
+        }}
+        onSelectCase={(target) => {
+          setActiveCaseId(target.id);
+          setIsPreNeedModalOpen(false);
+          setBackOfficeTab('golden_record');
+        }}
+      />
+
+      {/* LIFE INSURANCE RAPID-FUNDING & 24H WIRE BRIDGE MODAL */}
+      <InsuranceRapidFundingBridgeModal
+        isOpen={isInsuranceFundingModalOpen}
+        onClose={() => setIsInsuranceFundingModalOpen(false)}
+        cases={cases}
+        activeCase={activeCase}
+        claims={insuranceClaims}
+        onUpdateClaims={setInsuranceClaims}
+        onApplyFundingToCase={handleApplyInsuranceFundingToCase}
+      />
+
+      {/* FORM SSA-721 STATEMENT OF DEATH & SOCIAL SECURITY CLEARING MODAL */}
+      <SSA721FilingModal
+        isOpen={isSSA721ModalOpen}
+        onClose={() => setIsSSA721ModalOpen(false)}
+        activeCase={activeCase}
+        cases={cases}
+        onSelectCase={(targetId) => setActiveCaseId(targetId)}
+        onSaveFiling={handleSaveSSA721}
+      />
+
+      {/* VA MILITARY HONORS & VETERANS MEMORIAL BENEFITS HUB MODAL */}
+      <VAMilitaryHonorsHubModal
+        isOpen={isVAHonorsModalOpen}
+        onClose={() => setIsVAHonorsModalOpen(false)}
+        activeCase={activeCase}
+        cases={cases}
+        onSelectCase={(targetId) => setActiveCaseId(targetId)}
+        onSaveHonors={handleSaveVAHonors}
       />
     </div>
   );

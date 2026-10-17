@@ -148,7 +148,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center space-x-1.5">
             <span className="font-semibold text-neutral-800">Case Progress:</span>
-            <span className="font-bold text-[#991b1b]">{progressPercent}%</span>
+            <span className="font-bold text-[#800000]">{progressPercent}%</span>
           </div>
           <span className="text-[11px] font-medium text-neutral-500 truncate max-w-[200px]">
             Phase: {caseItem.currentPhase.replace('_', ' ').toUpperCase()}
@@ -156,7 +156,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
         </div>
         <div className="w-full bg-neutral-200 rounded-full h-2 overflow-hidden shadow-inner">
           <div 
-            className="h-full bg-gradient-to-r from-amber-500 via-rose-600 to-[#991b1b] transition-all duration-500 rounded-full"
+            className="h-full bg-gradient-to-r from-amber-500 via-red-600 to-[#800000] transition-all duration-500 rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
@@ -170,7 +170,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
       {/* Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-100 pb-3">
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-lg bg-[#991b1b]/10 border border-[#991b1b]/20 flex items-center justify-center text-[#991b1b]">
+          <div className="w-9 h-9 rounded-lg bg-[#800000]/10 border border-[#800000]/20 flex items-center justify-center text-[#800000]">
             <CheckCircle2 className="w-5 h-5" />
           </div>
           <div>
@@ -182,7 +182,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
                 {progressPercent}% Complete
               </span>
               {isUnclaimed && (
-                <span className="px-2 py-0.5 bg-rose-100 border border-rose-300 text-[#991b1b] text-[11px] font-bold rounded-full animate-pulse flex items-center space-x-1">
+                <span className="px-2 py-0.5 bg-red-100 border border-red-300 text-[#800000] text-[11px] font-bold rounded-full animate-pulse flex items-center space-x-1">
                   <AlertCircle className="w-3 h-3" />
                   <span>Claim Required</span>
                 </span>
@@ -199,7 +199,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
           {isUnclaimed && onClaimCase && (
             <button
               onClick={() => onClaimCase(caseItem.id)}
-              className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-lg shadow-sm flex items-center space-x-1.5 transition border border-amber-400/40"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-lg shadow-sm flex items-center space-x-1.5 transition border border-amber-400/40"
             >
               <UserCheck className="w-4 h-4 text-amber-300" />
               <span>Claim Case to Lead</span>
@@ -245,14 +245,14 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
                   isDone 
                     ? 'bg-emerald-600 text-white' 
                     : isCurrent 
-                      ? 'bg-[#991b1b] text-white' 
+                      ? 'bg-[#800000] text-white' 
                       : 'bg-neutral-300 text-neutral-700'
                 }`}>
                   {isDone ? '✓' : step.stepNumber}
                 </span>
 
                 <StepIcon className={`w-4 h-4 ${
-                  isDone ? 'text-emerald-600' : isCurrent ? 'text-[#991b1b]' : 'text-neutral-400'
+                  isDone ? 'text-emerald-600' : isCurrent ? 'text-[#800000]' : 'text-neutral-400'
                 }`} />
               </div>
 
@@ -268,7 +268,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
                   isDone 
                     ? 'bg-emerald-100 text-emerald-800' 
                     : isCurrent 
-                      ? 'bg-rose-100 text-red-900 font-bold' 
+                      ? 'bg-red-100 text-red-900 font-bold' 
                       : 'bg-neutral-200 text-neutral-600'
                 }`}>
                   {step.statusBadge}
@@ -283,7 +283,7 @@ export const CaseProgressBar: React.FC<CaseProgressBarProps> = ({
       <div className="space-y-1">
         <div className="w-full bg-neutral-100 rounded-full h-2.5 overflow-hidden border border-neutral-200 shadow-inner">
           <div 
-            className="h-full bg-gradient-to-r from-amber-500 via-rose-600 to-[#991b1b] transition-all duration-700 rounded-full"
+            className="h-full bg-gradient-to-r from-amber-500 via-red-600 to-[#800000] transition-all duration-700 rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
         </div>

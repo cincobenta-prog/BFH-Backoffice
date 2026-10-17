@@ -103,22 +103,22 @@ export const CanvasESignModal: React.FC<CanvasESignModalProps> = ({
 
         {/* Header */}
         <div className="border-b border-neutral-200 pb-4">
-          <div className="flex items-center space-x-2 text-xs text-[#991b1b] font-bold uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4 text-[#991b1b]" />
+          <div className="flex items-center space-x-2 text-xs text-[#800000] font-bold uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 text-[#800000]" />
             <span>NYS Legally Binding e-Signature Portal</span>
           </div>
           <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mt-1">
             {targetDoc ? `Sign: ${targetDoc.name}` : 'Execute Phase 3 Legal Bundle'}
           </h2>
           <p className="text-xs text-neutral-500 mt-0.5 font-light">
-            Golden Record Case <strong className="text-[#991b1b] font-semibold">{caseData.caseNumber}</strong> • Decedent: {caseData.decedent.legalName}
+            Golden Record Case <strong className="text-[#800000] font-semibold">{caseData.caseNumber}</strong> • Decedent: {caseData.decedent.legalName}
           </p>
         </div>
 
         {/* Document Legal Bundle Scope */}
         <div className="bg-red-50/60 p-4 rounded-xl border border-red-200/80 space-y-2 text-xs text-neutral-800">
-          <p className="font-bold text-[#991b1b] flex items-center gap-1.5">
-            <FileCheck className="w-4 h-4 text-[#991b1b]" />
+          <p className="font-bold text-[#800000] flex items-center gap-1.5">
+            <FileCheck className="w-4 h-4 text-[#800000]" />
             <span>Documents Included in this Single e-Sign Execution:</span>
           </p>
           <ul className="list-disc list-inside space-y-1 text-neutral-700 pl-1 text-[11px] font-medium">
@@ -139,7 +139,7 @@ export const CanvasESignModal: React.FC<CanvasESignModalProps> = ({
               type="text"
               value={signerName}
               onChange={(e) => setSignerName(e.target.value)}
-              className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-medium focus:border-[#991b1b] outline-none"
+              className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-medium focus:border-[#800000] outline-none"
             />
           </div>
 
@@ -155,12 +155,12 @@ export const CanvasESignModal: React.FC<CanvasESignModalProps> = ({
         <div className="space-y-2">
           <div className="flex justify-between items-center text-xs">
             <span className="font-semibold text-neutral-800 flex items-center gap-1.5">
-              <PenTool className="w-3.5 h-3.5 text-[#991b1b]" />
+              <PenTool className="w-3.5 h-3.5 text-[#800000]" />
               Draw Your Signature in the Box Below:
             </span>
             <button
               onClick={handleClear}
-              className="text-neutral-500 hover:text-[#991b1b] flex items-center gap-1 text-[11px] font-semibold transition"
+              className="text-neutral-500 hover:text-[#800000] flex items-center gap-1 text-[11px] font-semibold transition"
             >
               <RotateCcw className="w-3 h-3" /> Clear Pad
             </button>
@@ -195,7 +195,7 @@ export const CanvasESignModal: React.FC<CanvasESignModalProps> = ({
             id="legalConsent"
             checked={agreedToTerms}
             onChange={(e) => setAgreedToTerms(e.target.checked)}
-            className="rounded accent-[#991b1b] w-4 h-4 mt-0.5"
+            className="rounded accent-[#800000] w-4 h-4 mt-0.5"
           />
           <label htmlFor="legalConsent" className="leading-snug text-[11px]">
             I, <strong>{signerName}</strong>, certify under penalty of law that I am the legal Next of Kin with Right to Control pursuant to NYS Public Health Law § 4201, and agree to electronic signature execution for Benta’s Funeral Home, Inc.
@@ -216,7 +216,7 @@ export const CanvasESignModal: React.FC<CanvasESignModalProps> = ({
             onClick={handleComplete}
             className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center space-x-2 transition shadow-md ${
               hasSignature && agreedToTerms
-                ? 'bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-white shadow-red-950/20 border border-amber-300/40'
+                ? 'bg-gradient-to-r from-[#800000] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#800000] text-white shadow-red-950/20 border border-amber-300/40'
                 : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
             }`}
           >

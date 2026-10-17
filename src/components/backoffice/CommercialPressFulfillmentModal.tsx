@@ -222,12 +222,12 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
   };
 
   const stageLabels: Record<PressJobStage, { label: string; color: string; desc: string }> = {
-    files_received: { label: 'Files Received', color: 'bg-blue-500/20 text-blue-300 border-blue-500/40', desc: 'PDF/X-1a received in secure drop' },
+    files_received: { label: 'Files Received', color: 'bg-slate-500/20 text-slate-300 border-slate-500/40', desc: 'PDF/X-1a received in secure drop' },
     preflight_passed: { label: 'Pre-Flight Passed', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40', desc: '300 DPI CMYK bleed validated' },
     plate_imaging: { label: 'CTP Plate Imaging', color: 'bg-amber-500/20 text-amber-300 border-amber-500/40', desc: 'Thermal aluminum plates laser-etched' },
-    on_press_heidelberg: { label: 'On Heidelberg Press', color: 'bg-purple-500/20 text-purple-300 border-purple-500/40', desc: '4-Color Heidelberg offset running' },
-    uv_coating_finishing: { label: 'UV Finishing & Bindery', color: 'bg-pink-500/20 text-pink-300 border-pink-500/40', desc: 'Creasing, foil stamping & stitching' },
-    courier_in_transit: { label: 'Courier In Transit', color: 'bg-orange-500/20 text-orange-300 border-orange-500/40', desc: 'Harlem white-glove direct van en route' },
+    on_press_heidelberg: { label: 'On Heidelberg Press', color: 'bg-brass-500/20 text-brass-300 border-brass-500/40', desc: '4-Color Heidelberg offset running' },
+    uv_coating_finishing: { label: 'UV Finishing & Bindery', color: 'bg-brass-400/25 text-brass-200 border-brass-400/50', desc: 'Creasing, foil stamping & stitching' },
+    courier_in_transit: { label: 'Courier In Transit', color: 'bg-[#a0080e]/25 text-[#f0b9bb] border-[#a0080e]/50', desc: 'Harlem white-glove direct van en route' },
     delivered_bfh_chapel: { label: 'Delivered to Chapel', color: 'bg-emerald-500/30 text-emerald-200 border-emerald-400', desc: 'Verified at 630 St. Nicholas Ave' }
   };
 
@@ -236,7 +236,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
       <div className="bg-slate-900 border border-amber-500/30 w-full max-w-6xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-slate-100">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-900/30">
               <Printer className="w-5 h-5 text-slate-950 font-bold" />
@@ -571,7 +571,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
                 <div className="space-y-6">
                   
                   {/* Preflight Badge Card */}
-                  <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-850 to-slate-950 border border-slate-700/80 shadow-xl space-y-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-950 border border-slate-700/80 shadow-xl space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <Sparkles className="w-5 h-5 text-amber-400" />
@@ -754,7 +754,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
                           {job.currentStage !== 'delivered_bfh_chapel' && (
                             <button
                               onClick={() => handleAdvanceStage(job.jobId)}
-                              className="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-medium transition-colors flex items-center gap-1"
+                              className="px-3 py-1 rounded-lg bg-brass-500/20 hover:bg-brass-500/30 text-brass-300 border border-brass-500/40 font-medium transition-colors flex items-center gap-1"
                             >
                               <span>Advance Stage</span>
                               <ChevronRight className="w-3.5 h-3.5" />
@@ -779,7 +779,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Visual Program Preview Card */}
-                <div className="p-6 rounded-2xl bg-gradient-to-b from-slate-850 to-slate-950 border border-slate-700/80 shadow-2xl space-y-4">
+                <div className="p-6 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 border border-slate-700/80 shadow-2xl space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                     <span className="text-xs font-bold text-amber-300 uppercase">Interactive Proof Spread (8.5x11 Folded)</span>
                     <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
@@ -820,7 +820,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
                   <div className="flex gap-3">
                     <button
                       onClick={() => alert(`Downloaded 300 DPI CMYK press file for ${selectedCase.caseNumber}`)}
-                      className="flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center justify-center space-x-2 transition-colors"
+                      className="flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center justify-center space-x-2 transition-colors"
                     >
                       <Download className="w-4 h-4 text-amber-400" />
                       <span>Download PDF/X-1a Press File</span>
@@ -828,7 +828,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
 
                     <button
                       onClick={() => alert(`Full resolution 300 DPI vector preview loaded.`)}
-                      className="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center justify-center space-x-2 transition-colors"
+                      className="py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center justify-center space-x-2 transition-colors"
                     >
                       <Maximize2 className="w-4 h-4 text-slate-400" />
                       <span>Zoom Proof</span>
@@ -1000,7 +1000,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
                     type="button"
                     onClick={handleTestConnection}
                     disabled={isTesting}
-                    className="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center space-x-2 transition-colors disabled:opacity-50"
+                    className="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center space-x-2 transition-colors disabled:opacity-50"
                   >
                     {isTesting ? <RefreshCw className="w-4 h-4 animate-spin text-amber-400" /> : <ShieldCheck className="w-4 h-4 text-emerald-400" />}
                     <span>Test Press SFTP / API Ping</span>
@@ -1008,7 +1008,7 @@ export const CommercialPressFulfillmentModal: React.FC<CommercialPressFulfillmen
 
                   <button
                     type="submit"
-                    className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-950"
+                    className="py-2.5 px-6 rounded-xl bg-brass-500 hover:bg-brass-400 text-neutral-950 font-bold text-xs transition-colors shadow-lg shadow-amber-950"
                   >
                     Save Press Configuration
                   </button>

@@ -137,8 +137,8 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
       category: 'phase1',
       phaseLabel: 'Phase 1: Immediate / Core Experience',
       icon: Cloud,
-      colorClass: 'text-blue-700 bg-blue-50 border-blue-300',
-      badgeClass: 'bg-blue-100 text-blue-950 border-blue-300',
+      colorClass: 'text-brass-700 bg-brass-50 border-brass-300',
+      badgeClass: 'bg-brass-100 text-brass-950 border-brass-300',
       statutoryLabel: '256-Bit AES Golden Vault • Multi-Tenant Postgres',
       portalUrl: 'https://supabase.com/dashboard',
       portalName: 'supabase.com/dashboard',
@@ -173,8 +173,8 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
       category: 'phase2',
       phaseLabel: 'Phase 2: Legal & Financial Compliance',
       icon: Receipt,
-      colorClass: 'text-teal-700 bg-teal-50 border-teal-300',
-      badgeClass: 'bg-teal-100 text-teal-950 border-teal-300',
+      colorClass: 'text-brass-700 bg-brass-50 border-brass-300',
+      badgeClass: 'bg-brass-100 text-brass-950 border-brass-300',
       statutoryLabel: 'GAAP Double-Entry • Form AP-47 Sync • 1099 Payouts',
       portalUrl: 'https://developer.intuit.com',
       portalName: 'developer.intuit.com',
@@ -209,8 +209,8 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
       category: 'phase3',
       phaseLabel: 'Phase 3: Enterprise Regulatory & Broadcast',
       icon: Video,
-      colorClass: 'text-purple-700 bg-purple-50 border-purple-300',
-      badgeClass: 'bg-purple-100 text-purple-950 border-purple-300',
+      colorClass: 'text-brass-700 bg-brass-50 border-brass-300',
+      badgeClass: 'bg-brass-100 text-brass-950 border-brass-300',
       statutoryLabel: '4K HLS Low Latency • PIN Protected VIP Player',
       portalUrl: 'https://vimeo.com/manage',
       portalName: 'vimeo.com/enterprise',
@@ -245,8 +245,8 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
       category: 'ai',
       phaseLabel: 'Companion Intelligence Engine',
       icon: Bot,
-      colorClass: 'text-indigo-700 bg-indigo-50 border-indigo-300',
-      badgeClass: 'bg-indigo-100 text-indigo-950 border-indigo-300',
+      colorClass: 'text-brass-700 bg-brass-50 border-brass-300',
+      badgeClass: 'bg-brass-100 text-brass-950 border-brass-300',
       statutoryLabel: '9-Part Obituary Suite • 24/7 Voice Intake AI',
       portalUrl: 'https://platform.openai.com',
       portalName: 'platform.openai.com',
@@ -390,7 +390,7 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
-      <div className="bg-[#fcfbfa] border border-neutral-300 rounded-3xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl text-neutral-900 overflow-hidden">
+      <div className="bg-[#fcfbfa] border border-neutral-300 rounded-2xl max-w-6xl w-full max-h-[94vh] flex flex-col shadow-2xl text-neutral-900 overflow-hidden">
         
         {/* HEADER */}
         <div className="p-5 sm:p-6 bg-white border-b border-neutral-200 flex flex-wrap items-center justify-between gap-4 shrink-0">
@@ -418,7 +418,7 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
             <button
               onClick={handleRunAllDiagnostics}
               disabled={isRunningAllDiagnostics}
-              className="px-4 py-2 bg-gradient-to-r from-[#991b1b] to-red-800 hover:from-red-800 hover:to-red-900 disabled:opacity-50 text-white text-xs font-bold rounded-xl flex items-center space-x-2 transition shadow-md border border-amber-400/40 cursor-pointer"
+              className="px-4 py-2 bg-gradient-to-r from-[#800000] to-red-800 hover:from-red-800 hover:to-red-900 disabled:opacity-50 text-white text-xs font-bold rounded-xl flex items-center space-x-2 transition shadow-md border border-amber-400/40 cursor-pointer"
             >
               {isRunningAllDiagnostics ? (
                 <>
@@ -467,7 +467,7 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
                 onClick={() => setActiveFilter(tab.id as any)}
                 className={`py-3.5 px-3.5 border-b-2 font-medium flex items-center space-x-2 transition cursor-pointer whitespace-nowrap ${
                   isActive 
-                    ? 'border-[#991b1b] text-[#991b1b] font-bold bg-white' 
+                    ? 'border-[#800000] text-[#800000] font-bold bg-white' 
                     : 'border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300'
                 }`}
               >
@@ -503,7 +503,7 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
             <div className="space-y-4">
               <div className="p-4 bg-white border border-neutral-200 rounded-2xl space-y-2">
                 <h3 className="text-sm font-bold text-neutral-900 flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-[#991b1b]" />
+                  <Terminal className="w-4 h-4 text-[#800000]" />
                   Command-Line Interface (CLI) Credential Provisioning Scripts
                 </h3>
                 <p className="text-xs text-neutral-600">
@@ -565,7 +565,7 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
                       </div>
 
                       {/* Service Title & Legal Statutory Tag */}
-                      <h3 className="text-sm font-bold text-neutral-900 group-hover:text-[#991b1b] transition">
+                      <h3 className="text-sm font-bold text-neutral-900 group-hover:text-[#800000] transition">
                         {service.name}
                       </h3>
                       
@@ -606,7 +606,7 @@ export const IntegrationsCommandCenterModal: React.FC<IntegrationsCommandCenterM
 
                       <button
                         onClick={() => handleLaunchService(service.launchKey)}
-                        className="px-3 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-[11px] font-bold flex items-center space-x-1 transition cursor-pointer shadow-xs border border-amber-400/30"
+                        className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-lg text-[11px] font-bold flex items-center space-x-1 transition cursor-pointer shadow-xs border border-amber-400/30"
                       >
                         <span>Open Console</span>
                         <ArrowUpRight className="w-3 h-3 text-amber-200" />

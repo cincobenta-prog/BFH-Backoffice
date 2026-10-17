@@ -67,12 +67,12 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto font-sans animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none">
+      <div className="bg-white rounded-2xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none">
         
         {/* MODAL HEADER (SCREEN ONLY) */}
         <div className="bg-gradient-to-r from-neutral-900 via-[#1a1318] to-neutral-900 text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 border-b border-amber-400/40 shrink-0 print:hidden">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#991b1b] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-md">
+            <div className="w-10 h-10 rounded-2xl bg-[#800000] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-md">
               <History className="w-5 h-5" />
             </div>
             <div>
@@ -96,7 +96,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                 type="button"
                 onClick={() => setViewMode('timeline')}
                 className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
-                  viewMode === 'timeline' ? 'bg-[#991b1b] text-white shadow-xs' : 'text-neutral-300 hover:text-white'
+                  viewMode === 'timeline' ? 'bg-[#800000] text-white shadow-xs' : 'text-neutral-300 hover:text-white'
                 }`}
               >
                 <span className="flex items-center gap-1.5">
@@ -108,7 +108,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                 type="button"
                 onClick={() => setViewMode('printable_rider')}
                 className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
-                  viewMode === 'printable_rider' ? 'bg-[#991b1b] text-white shadow-xs' : 'text-neutral-300 hover:text-white'
+                  viewMode === 'printable_rider' ? 'bg-[#800000] text-white shadow-xs' : 'text-neutral-300 hover:text-white'
                 }`}
               >
                 <span className="flex items-center gap-1.5">
@@ -121,7 +121,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
             {viewMode === 'printable_rider' && (
               <button
                 onClick={handlePrintRider}
-                className="px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-neutral-950 font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-md cursor-pointer"
+                className="px-3.5 py-2 bg-brass-400 hover:bg-brass-300 text-neutral-950 font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-md cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Print Legal Rider</span>
@@ -150,7 +150,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
               <div className="bg-gradient-to-r from-amber-50 via-white to-red-50 p-4 rounded-2xl border border-amber-300 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div>
                   <div className="flex items-center space-x-2">
-                    <ShieldCheck className="w-4 h-4 text-[#991b1b]" />
+                    <ShieldCheck className="w-4 h-4 text-[#800000]" />
                     <span className="font-bold text-neutral-900 text-sm">NYS Public Health Law § 3440-a &amp; 10 NYCRR § 77.8 Compliance</span>
                   </div>
                   <p className="text-neutral-600 mt-0.5">
@@ -161,7 +161,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                   <button
                     type="button"
                     onClick={() => setIsCreatingRevision(true)}
-                    className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5 text-amber-300" />
                     <span>Archive New Revision Snapshot</span>
@@ -210,7 +210,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs rounded-xl transition shadow-md cursor-pointer"
+                      className="px-4 py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl transition shadow-md cursor-pointer"
                     >
                       ✓ Save &amp; Archive Revision
                     </button>
@@ -238,7 +238,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                           onClick={() => setSelectedRevisionId(rev.id)}
                           className={`p-3.5 rounded-2xl border transition text-left cursor-pointer flex flex-col justify-between space-y-2 ${
                             isSelected
-                              ? 'bg-red-50/80 border-[#991b1b] ring-2 ring-red-400/50 shadow-md'
+                              ? 'bg-red-50/80 border-[#800000] ring-2 ring-red-400/50 shadow-md'
                               : 'bg-white border-neutral-200 hover:border-neutral-300 hover:shadow-xs'
                           }`}
                         >
@@ -246,7 +246,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                             <div className="flex items-center space-x-2">
                               <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
                                 isBaseline
-                                  ? 'bg-blue-100 text-blue-900 border border-blue-200'
+                                  ? 'bg-brass-100 text-brass-900 border border-brass-200'
                                   : 'bg-amber-100 text-amber-900 border border-amber-200'
                               }`}>
                                 {rev.versionLabel || `v1.${index}`}
@@ -268,7 +268,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
 
                           <div className="pt-2 border-t border-neutral-100 flex items-center justify-between text-xs">
                             <div className="text-[10px] text-neutral-500 flex items-center gap-1">
-                              <UserCheck className="w-3 h-3 text-[#991b1b]" />
+                              <UserCheck className="w-3 h-3 text-[#800000]" />
                               <span>{rev.savedByDirector?.name || 'Jason Benta, LFD'}</span>
                             </div>
                             <div className="font-mono font-bold text-neutral-900 flex items-center gap-1">
@@ -340,7 +340,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                         </div>
                         <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs">
                           <span className="text-[10px] text-neutral-500 uppercase block font-semibold">Revised Total</span>
-                          <span className="font-mono font-bold text-sm text-[#991b1b]">
+                          <span className="font-mono font-bold text-sm text-[#800000]">
                             ${selectedRevision.newGrandTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                           </span>
                         </div>
@@ -358,7 +358,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5">
-                            <FileText className="w-3.5 h-3.5 text-[#991b1b]" />
+                            <FileText className="w-3.5 h-3.5 text-[#800000]" />
                             <span>Itemized Contract Adjustments &amp; Quantity Deltas ({selectedRevision.adjustmentsSummary?.length || 0}):</span>
                           </span>
                         </div>
@@ -394,7 +394,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                                         <span className="text-neutral-500">{diff.fieldChanged}:</span>
                                         <span className="font-mono line-through text-neutral-400">{diff.oldValue}</span>
                                         <ArrowRight className="w-3 h-3 text-neutral-400 inline" />
-                                        <span className="font-mono font-bold text-[#991b1b]">{diff.newValue}</span>
+                                        <span className="font-mono font-bold text-[#800000]">{diff.newValue}</span>
                                       </div>
                                     </td>
                                     <td className="p-2.5 text-right font-mono font-bold">
@@ -518,7 +518,7 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
                     <tfoot className="bg-neutral-100 border-t-2 border-neutral-900 font-bold text-xs">
                       <tr>
                         <td colSpan={3} className="p-2.5 text-right uppercase">Revised Total Funeral Charges (Form AP-47 Section III):</td>
-                        <td className="p-2.5 text-right font-mono text-[#991b1b] text-sm">
+                        <td className="p-2.5 text-right font-mono text-[#800000] text-sm">
                           ${currentStatement.sectionIII.totalFuneralCharges.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </td>
                       </tr>

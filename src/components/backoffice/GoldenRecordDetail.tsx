@@ -69,6 +69,8 @@ interface GoldenRecordDetailProps {
   onOpenAftercare?: () => void;
   onOpenCheckPrinter?: () => void;
   partnerRequests?: PartnerScheduleRequest[];
+  onOpenSSA721Modal?: () => void;
+  onOpenVAHonorsModal?: () => void;
 }
 
 export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
@@ -98,7 +100,9 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
   onOpenFinances,
   onOpenAftercare,
   onOpenCheckPrinter,
-  partnerRequests = []
+  partnerRequests = [],
+  onOpenSSA721Modal,
+  onOpenVAHonorsModal
 }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'vitals' | 'informant' | 'services' | 'notes'>('overview');
   const [newNote, setNewNote] = useState('');
@@ -317,7 +321,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
             {onOpenNotifications && (
               <button
                 onClick={onOpenNotifications}
-                className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg flex items-center space-x-1 shadow-2xs transition"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3 py-1.5 rounded-lg flex items-center space-x-1 shadow-2xs transition"
               >
                 <Smartphone className="w-3.5 h-3.5" />
                 <span>View in SMS Simulator</span>
@@ -401,7 +405,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     isCritical
                       ? 'bg-red-700 hover:bg-red-800 text-white'
                       : hasMismatches
-                        ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                        ? 'bg-[#800000] hover:bg-[#6a0509] text-white'
                         : 'bg-white hover:bg-neutral-100 text-emerald-900 border border-emerald-300'
                   }`}
                 >
@@ -418,7 +422,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
       <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center space-x-2.5">
-            <span className="font-mono text-xs font-bold text-[#991b1b] bg-red-50 px-2.5 py-1 rounded border border-red-200">
+            <span className="font-mono text-xs font-bold text-[#800000] bg-red-50 px-2.5 py-1 rounded border border-red-200">
               {caseData.caseNumber}
             </span>
             <h2 className="font-serif-title text-2xl font-bold text-neutral-900">
@@ -438,7 +442,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {caseData.safeArrivalStatus !== 'safe_arrival_confirmed' && (
             <button
               onClick={handleTriggerSafeArrival}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Log Safe Arrival at BFH</span>
@@ -449,7 +453,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenDirectorDayOfServiceHUD && (
             <button
               onClick={onOpenDirectorDayOfServiceHUD}
-              className="bg-amber-500/15 hover:bg-amber-500/25 text-amber-950 border border-amber-400 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-2xs"
+              className="bg-brass-500/15 hover:bg-brass-500/25 text-brass-950 border border-brass-400 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-2xs"
               title="Open Mobile Day-of-Service Director Pocket HUD & 1-Click SMS Cortege Dispatch"
             >
               <Compass className="w-3.5 h-3.5 text-amber-700" />
@@ -461,17 +465,17 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenFamilyProofApproval && (
             <button
               onClick={onOpenFamilyProofApproval}
-              className="bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-2xs"
+              className="bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-2xs"
               title="Open Family Proof Approval & Commercial Press Lock Hub"
             >
-              <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+              <BookOpen className="w-3.5 h-3.5 text-brass-700" />
               <span>🖨️ Family Proof & Press Lock</span>
             </button>
           )}
 
           <button
             onClick={onOpenESign}
-            className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-amber-300/40"
+            className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-brass-300/40"
           >
             <PenTool className="w-3.5 h-3.5 text-amber-300" />
             <span>Open Legal eSign Pad</span>
@@ -480,10 +484,10 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenRemovalModal && (
             <button
               onClick={onOpenRemovalModal}
-              className="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Schedule / View First Call Removal & Custody Affidavit"
             >
-              <Truck className="w-3.5 h-3.5 text-blue-700" />
+              <Truck className="w-3.5 h-3.5 text-brass-700" />
               <span>🚑 Removal & Affidavit</span>
             </button>
           )}
@@ -491,7 +495,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenAppointmentModal && (
             <button
               onClick={onOpenAppointmentModal}
-              className="bg-amber-50 hover:bg-amber-100 text-[#b45309] border border-amber-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Schedule / Manage Family In-Person Arrangement Conference"
             >
               <CalendarCheck className="w-3.5 h-3.5 text-amber-700" />
@@ -502,7 +506,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenContractModal && (
             <button
               onClick={onOpenContractModal}
-              className="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Open Arrangement Conference & Form AP-47 Contract Studio"
             >
               <ScrollText className="w-3.5 h-3.5 text-emerald-700" />
@@ -513,7 +517,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenPrintAP47 && (
             <button
               onClick={onOpenPrintAP47}
-              className="bg-[#991b1b] hover:bg-red-800 text-white border border-amber-300/60 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white border border-brass-300/60 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Print Official Form AP-47 Statement of Goods & Services (10 NYCRR § 77.8)"
             >
               <Printer className="w-3.5 h-3.5 text-amber-300" />
@@ -524,7 +528,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenCheckPrinter && (
             <button
               onClick={onOpenCheckPrinter}
-              className="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Print 3-Part Pass-Through Cash Advance Checks (10 NYCRR § 77.8)"
             >
               <Printer className="w-3.5 h-3.5 text-amber-700" />
@@ -534,7 +538,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
 
           <button
             onClick={() => setIsVIPItineraryModalOpen(true)}
-            className="bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+            className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
             title="Open Day-of-Service Mobile VIP Family Itinerary & GPS Dispatch"
           >
             <Compass className="w-3.5 h-3.5 text-amber-700" />
@@ -544,10 +548,10 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenMemorialProgramModal && (
             <button
               onClick={onOpenMemorialProgramModal}
-              className="bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Print 4-Panel Memorial Service Program (8.5x11 Bifold)"
             >
-              <ScrollText className="w-3.5 h-3.5 text-purple-700" />
+              <ScrollText className="w-3.5 h-3.5 text-brass-700" />
               <span>🖨️ 4-Panel Bulletin Studio</span>
             </button>
           )}
@@ -555,10 +559,10 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenEdrsRapidFillModal && (
             <button
               onClick={onOpenEdrsRapidFillModal}
-              className="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="NYS EDRS & NYC eVital Death Registration Assistant"
             >
-              <Building className="w-3.5 h-3.5 text-indigo-700" />
+              <Building className="w-3.5 h-3.5 text-brass-700" />
               <span>🏛️ NYS EDRS Assistant</span>
             </button>
           )}
@@ -566,17 +570,17 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenChapelQrModal && (
             <button
               onClick={onOpenChapelQrModal}
-              className="bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
+              className="bg-brass-50 hover:bg-brass-100 text-[#800000] border border-brass-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-xs"
               title="Print Chapel Welcome & Tribute QR Easel Sign"
             >
-              <Sparkles className="w-3.5 h-3.5 text-rose-700" />
+              <Sparkles className="w-3.5 h-3.5 text-red-700" />
               <span>📱 Chapel QR Easel Sign</span>
             </button>
           )}
 
           <button
             onClick={handleSendPortalInvite}
-            className="bg-red-50 hover:bg-red-100 text-[#991b1b] border border-red-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm"
+            className="bg-brass-50 hover:bg-brass-100 text-[#800000] border border-brass-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm"
             title="Dispatch Family Portal Access Link via Email & SMS"
           >
             <Send className="w-3.5 h-3.5" />
@@ -586,7 +590,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
           {onOpenFamilyPortal && (
             <button
               onClick={onOpenFamilyPortal}
-              className="bg-amber-50 hover:bg-amber-100 text-[#b45309] border border-amber-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm"
+              className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm"
               title="Open Family Portal with 9-Part Obituary Writer Suite"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
@@ -598,7 +602,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
             onClick={onOpenWoodlawnDispatch}
             className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition"
           >
-            <Flame className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Flame className="w-3.5 h-3.5 text-[#800000]" />
             <span>Woodlawn Dispatch</span>
           </button>
         </div>
@@ -608,7 +612,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
       <div className="bg-amber-50/80 border border-amber-300/80 p-4 rounded-xl flex items-center space-x-3 text-xs text-amber-950 shadow-sm">
         <ShieldCheck className="w-5 h-5 text-[#b45309] shrink-0" />
         <div>
-          <strong className="font-bold text-[#991b1b]">Golden Record Zero-Transcription Architecture:</strong> Staff never re-copy data. All vital fields are populated once and verified against state EDRS, permits, and contracts, eliminating ~80% of administrative errors.
+          <strong className="font-bold text-[#800000]">Golden Record Zero-Transcription Architecture:</strong> Staff never re-copy data. All vital fields are populated once and verified against state EDRS, permits, and contracts, eliminating ~80% of administrative errors.
         </div>
       </div>
 
@@ -632,7 +636,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
                   activeTab === tab.id
-                    ? 'bg-red-50 text-[#991b1b] border border-red-200 shadow-sm'
+                    ? 'bg-brass-50 text-[#800000] border border-brass-200 shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
                 }`}
               >
@@ -646,7 +650,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
             <div className="space-y-6">
               
               {/* BI-DIRECTIONAL FIRST CALL & LOGISTICS BRIDGE PANEL */}
-              <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-[#991b1b] text-white p-5 rounded-2xl shadow-md border border-amber-400/30 space-y-3">
+              <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-[#800000] text-white p-5 rounded-2xl shadow-md border border-amber-400/30 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center space-x-2">
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2.5 py-1 rounded-lg">
@@ -661,9 +665,9 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     {onOpenRemovalModal && (
                       <button
                         onClick={onOpenRemovalModal}
-                        className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm"
+                        className="bg-brass-600 hover:bg-brass-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm"
                       >
-                        <Truck className="w-3.5 h-3.5 text-blue-200" />
+                        <Truck className="w-3.5 h-3.5 text-brass-200" />
                         <span>{caseData.safeArrivalStatus === 'safe_arrival_confirmed' ? '✓ Removal Completed' : '🚑 Dispatch Removal'}</span>
                       </button>
                     )}
@@ -671,7 +675,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     {onOpenAppointmentModal && (
                       <button
                         onClick={onOpenAppointmentModal}
-                        className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm"
+                        className="bg-brass-600 hover:bg-brass-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 shadow-sm"
                       >
                         <Calendar className="w-3.5 h-3.5 text-amber-200" />
                         <span>{caseData.arrangementAppointment?.status === 'confirmed' ? `📅 Conference: ${caseData.arrangementAppointment.confirmedSlot?.date}` : '📅 Schedule Conference'}</span>
@@ -708,7 +712,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               {/* Decedent Summary Card */}
               <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-4">
                 <h3 className="font-serif-title text-sm font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">
-                  <User className="w-4 h-4 text-[#991b1b]" />
+                  <User className="w-4 h-4 text-[#800000]" />
                   <span>Decedent Master Profile</span>
                 </h3>
 
@@ -735,7 +739,19 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   </div>
                   <div>
                     <span className="text-neutral-500 block">Veteran Status</span>
-                    <strong className="text-[#991b1b]">{caseData.decedent.veteran ? `Yes (${caseData.decedent.branchOfService || 'Armed Forces'})` : 'No'}</strong>
+                    <div className="flex items-center space-x-2 mt-0.5">
+                      <strong className="text-[#800000]">{caseData.decedent.veteran ? `Yes (${caseData.decedent.branchOfService || 'Armed Forces'})` : 'No'}</strong>
+                      {onOpenVAHonorsModal && (
+                        <button
+                          type="button"
+                          onClick={onOpenVAHonorsModal}
+                          className="text-[10px] bg-brass-100 hover:bg-brass-200 text-brass-900 border border-brass-300 font-bold px-2 py-0.5 rounded-full cursor-pointer transition flex items-center space-x-1"
+                          title="Open VA Military Honors & Benefits Hub"
+                        >
+                          <span>🎖️ VA Honors Hub</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -764,7 +780,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                         : caseData.arrangementAppointment?.status === 'proposed_options_sent'
                         ? 'bg-amber-100 text-amber-800 border border-amber-300'
                         : caseData.arrangementAppointment?.status === 'rescheduled'
-                        ? 'bg-purple-100 text-purple-800 border border-purple-300'
+                        ? 'bg-brass-100 text-brass-800 border border-brass-300'
                         : 'bg-neutral-100 text-neutral-700 border border-neutral-300'
                     }`}>
                       {caseData.arrangementAppointment?.status === 'confirmed'
@@ -779,7 +795,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     {onOpenAppointmentModal && (
                       <button
                         onClick={onOpenAppointmentModal}
-                        className="px-3 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition flex items-center space-x-1 shadow-sm"
+                        className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition flex items-center space-x-1 shadow-sm"
                       >
                         <Calendar className="w-3.5 h-3.5 text-amber-300" />
                         <span>Schedule / Manage</span>
@@ -799,7 +815,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
 
                   <div>
                     <span className="text-neutral-500 block">Date & Time Slot</span>
-                    <strong className="text-[#991b1b] block">
+                    <strong className="text-[#800000] block">
                       {caseData.arrangementAppointment?.confirmedSlot 
                         ? `${caseData.arrangementAppointment.confirmedSlot.date} (${caseData.arrangementAppointment.confirmedSlot.time})`
                         : caseData.arrangementAppointment?.proposedSlots && caseData.arrangementAppointment.proposedSlots.length > 0
@@ -851,7 +867,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   {onOpenAppointmentModal && (
                     <button
                       onClick={onOpenAppointmentModal}
-                      className="text-xs font-bold text-[#991b1b] hover:text-red-900 flex items-center gap-1"
+                      className="text-xs font-bold text-[#800000] hover:text-[#800000] flex items-center gap-1"
                     >
                       <span>Open Interactive Family Slot Dispatcher & SMS Studio</span>
                       <span>➔</span>
@@ -861,10 +877,10 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               </div>
 
               {/* First Call Physical Removal & Custodial Transfer Card */}
-              <div className="bg-white p-6 rounded-2xl border-2 border-blue-500/30 shadow-sm space-y-4">
+              <div className="bg-white p-6 rounded-2xl border-2 border-brass-500/30 shadow-sm space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-100 pb-3">
                   <div className="flex items-center space-x-2">
-                    <span className="p-1.5 bg-blue-100 text-blue-800 rounded-lg">
+                    <span className="p-1.5 bg-brass-100 text-brass-800 rounded-lg">
                       <Truck className="w-4 h-4" />
                     </span>
                     <div>
@@ -882,7 +898,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                       caseData.safeArrivalStatus === 'safe_arrival_confirmed'
                         ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                         : caseData.safeArrivalStatus === 'in_transit'
-                        ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                        ? 'bg-brass-100 text-brass-800 border border-brass-300'
                         : 'bg-amber-100 text-amber-800 border border-amber-300'
                     }`}>
                       {caseData.safeArrivalStatus === 'safe_arrival_confirmed' ? '✅ Safe Arrival at 630 St Nicholas' : caseData.safeArrivalStatus === 'in_transit' ? '🚐 Transfer In-Transit' : 'Pending Removal'}
@@ -891,7 +907,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     {onOpenRemovalModal && (
                       <button
                         onClick={onOpenRemovalModal}
-                        className="px-3 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition flex items-center space-x-1 shadow-sm"
+                        className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition flex items-center space-x-1 shadow-sm"
                       >
                         <Truck className="w-3.5 h-3.5" />
                         <span>Schedule / Removal Options</span>
@@ -922,7 +938,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     <strong className="text-neutral-900 block">
                       {caseData.removalSchedule?.vehicleType || 'First Call Custom Van (BFH-1)'}
                     </strong>
-                    <span className="text-[10px] font-mono text-[#991b1b] block">Plate: {caseData.removalSchedule?.vehiclePlate || 'BFH-CUSTODY-1'}</span>
+                    <span className="text-[10px] font-mono text-[#800000] block">Plate: {caseData.removalSchedule?.vehiclePlate || 'BFH-CUSTODY-1'}</span>
                   </div>
 
                   <div>
@@ -949,7 +965,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   {onOpenRemovalModal && (
                     <button
                       onClick={onOpenRemovalModal}
-                      className="text-xs font-bold text-[#991b1b] hover:text-red-900 flex items-center gap-1"
+                      className="text-xs font-bold text-[#800000] hover:text-[#800000] flex items-center gap-1"
                     >
                       <span>View Completed NYS Affidavit & Effects Ledger</span>
                       <span>➔</span>
@@ -968,7 +984,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
                   <div>
                     <span className="text-neutral-500 block">Package Type</span>
-                    <strong className="text-[#991b1b]">{caseData.serviceSelections.packageTitle}</strong>
+                    <strong className="text-[#800000]">{caseData.serviceSelections.packageTitle}</strong>
                   </div>
                   <div>
                     <span className="text-neutral-500 block">Viewing Parlor</span>
@@ -999,7 +1015,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               <div className="bg-white p-6 rounded-2xl border-2 border-red-500/30 shadow-sm space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-100 pb-3">
                   <div className="flex items-center space-x-2">
-                    <span className="p-1.5 bg-red-100 text-[#991b1b] rounded-lg">
+                    <span className="p-1.5 bg-red-100 text-[#800000] rounded-lg">
                       <Video className="w-4 h-4" />
                     </span>
                     <div>
@@ -1020,7 +1036,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     </span>
                     <button
                       onClick={() => setIsWebcastModalOpen(true)}
-                      className="px-3 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition flex items-center space-x-1 shadow-sm"
+                      className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition flex items-center space-x-1 shadow-sm"
                     >
                       <Clock className="w-3.5 h-3.5 text-amber-300" />
                       <span>Schedule Webcast</span>
@@ -1035,7 +1051,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   </div>
                   <div>
                     <span className="text-neutral-500 block">Assigned Director & AV</span>
-                    <strong className="text-[#991b1b]">{caseData.webcastSchedule?.assignedDirector || 'Jason Benta, LFD'}</strong>
+                    <strong className="text-[#800000]">{caseData.webcastSchedule?.assignedDirector || 'Jason Benta, LFD'}</strong>
                     <span className="block text-[11px] text-neutral-600">{caseData.webcastSchedule?.assignedAvTech || 'Marcus Vance (Harlem Media AV)'}</span>
                   </div>
                   <div>
@@ -1062,46 +1078,166 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
 
           {/* Tab 2: Vital Statistics */}
           {activeTab === 'vitals' && (
-            <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-4 text-xs">
-              <h3 className="font-serif-title text-sm font-bold text-neutral-900 uppercase tracking-wider">
-                NYC EDRS Vital Statistics Fields
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <div>
-                  <span className="text-neutral-500 block">Social Security (Masked)</span>
-                  <strong className="text-neutral-900 font-mono">{caseData.decedent.ssnMasked}</strong>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">Marital Status</span>
-                  <strong className="text-neutral-900 capitalize">{caseData.decedent.maritalStatus}</strong>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">Usual Occupation</span>
-                  <strong className="text-neutral-900">{caseData.decedent.occupation}</strong>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">Father's Full Name</span>
-                  <strong className="text-neutral-900">{caseData.decedent.fatherName}</strong>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">Mother's Maiden Name</span>
-                  <strong className="text-neutral-900">{caseData.decedent.motherMaidenName}</strong>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">Attending Physician</span>
-                  <strong className="text-neutral-900">{caseData.medicalCertifier.physicianName}</strong>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">EDRS Permit Status</span>
-                  <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 uppercase text-[10px]">
-                    {caseData.medicalCertifier.edrsStatus}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-neutral-500 block">EDRS Permit Number</span>
-                  <strong className="text-[#991b1b] font-mono">{caseData.medicalCertifier.edrsPermitNumber || 'Pending State Generation'}</strong>
+            <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-6 text-xs">
+              <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+                <h3 className="font-serif-title text-sm font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#800000]" />
+                  <span>NYS DOH Form AP-47 / EDRS Official Vital Statistics Legal Record</span>
+                </h3>
+                <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-mono">
+                  Official 2-Page Legal Record
+                </span>
+              </div>
+
+              {/* Section 1: Demographics & Legal Identification */}
+              <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-800 block">
+                  1. Demographics & Identification
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-neutral-500 block">Social Security Number</span>
+                      {onOpenSSA721Modal && (
+                        <button
+                          type="button"
+                          onClick={onOpenSSA721Modal}
+                          className="text-[10px] text-[#800000] hover:text-[#600000] font-bold underline cursor-pointer"
+                          title="Open Form SSA-721 Social Security Notice"
+                        >
+                          SSA-721 ➔
+                        </button>
+                      )}
+                    </div>
+                    <strong className="text-neutral-900 font-mono text-sm">{caseData.vitalRecordsSheet?.ssn || caseData.decedent.ssn || caseData.decedent.ssnMasked || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Date of Birth & Age</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.dateOfBirth || caseData.decedent.dateOfBirth || '—'} {caseData.vitalRecordsSheet?.age ? `(Age ${caseData.vitalRecordsSheet.age})` : ''}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Place of Birth</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.birthPlaceCityStateCountry || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Marital Status & Gender</span>
+                    <strong className="text-neutral-900 capitalize">{caseData.vitalRecordsSheet?.maritalStatus || caseData.decedent.maritalStatus || '—'} • {caseData.vitalRecordsSheet?.sex || caseData.decedent.gender}</strong>
+                  </div>
                 </div>
               </div>
+
+              {/* Section 2: Occupation, Industry, Education & Military */}
+              <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-800 block">
+                  2. Career, Education & Military Service
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div>
+                    <span className="text-neutral-500 block">Primary Occupation</span>
+                    <strong className="text-neutral-900 font-semibold">{caseData.vitalRecordsSheet?.occupationTitle || caseData.decedent.occupation || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Type of Business / Industry</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.typeOfBusiness || caseData.decedent.industry || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Highest Level of Education</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.educationLevel || caseData.decedent.educationLevel || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Military Service Status</span>
+                    {caseData.vitalRecordsSheet?.militaryStatus === 'veteran' || caseData.decedent.veteran ? (
+                      <div className="flex flex-wrap items-center gap-1.5 mt-0.5">
+                        <span className="inline-flex items-center gap-1 font-bold text-brass-800 bg-brass-50 px-2 py-0.5 rounded border border-brass-200 text-[11px]">
+                          <span>U.S. Veteran</span>
+                          {caseData.vitalRecordsSheet?.militaryBranch || caseData.decedent.branchOfService ? `(${caseData.vitalRecordsSheet?.militaryBranch || caseData.decedent.branchOfService})` : ''}
+                        </span>
+                        {onOpenVAHonorsModal && (
+                          <button
+                            type="button"
+                            onClick={onOpenVAHonorsModal}
+                            className="text-[10px] bg-brass-600 hover:bg-brass-700 text-white font-bold px-2 py-0.5 rounded cursor-pointer transition shadow-2xs"
+                          >
+                            Honors Hub ➔
+                          </button>
+                        )}
+                      </div>
+                    ) : caseData.vitalRecordsSheet?.militaryStatus === 'active' ? (
+                      <span className="inline-flex items-center gap-1 font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 text-[11px]">
+                        <span>Active Duty</span>
+                        {caseData.vitalRecordsSheet?.militaryBranch ? `(${caseData.vitalRecordsSheet.militaryBranch})` : ''}
+                      </span>
+                    ) : (
+                      <strong className="text-neutral-600">Non-Veteran</strong>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 3: Parents & Spouse */}
+              <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-800 block">
+                  3. Parents & Spouse Heritage
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div>
+                    <span className="text-neutral-500 block">Father's Full Name</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.fatherName || caseData.decedent.fatherName || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Mother's Maiden Name</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.motherFirstAndMaidenName || caseData.decedent.motherMaidenName || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Spouse Full & Maiden Name</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.spouseFirstAndMaidenName || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Spouse Date of Birth</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.spouseDateOfBirth || '—'}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 4: Cemetery Deed & Medical Certifier */}
+              <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-800 block">
+                  4. Cemetery Deed & EDRS Certifier
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div>
+                    <span className="text-neutral-500 block">Cemetery Deed Owner</span>
+                    <strong className="text-neutral-900">{caseData.vitalRecordsSheet?.deedOwnerName || '—'}</strong>
+                    {caseData.vitalRecordsSheet?.deedOwnerAddress && (
+                      <span className="text-neutral-500 text-[10px] block truncate">{caseData.vitalRecordsSheet.deedOwnerAddress}</span>
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Previous Interment in Grave</span>
+                    <strong className="text-neutral-900">
+                      {caseData.vitalRecordsSheet?.previousIntermentWho ? `${caseData.vitalRecordsSheet.previousIntermentWho} (${caseData.vitalRecordsSheet.previousIntermentRelation || 'Relative'})` : 'None / New Plot'}
+                    </strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">Attending Physician</span>
+                    <strong className="text-neutral-900">{caseData.medicalCertifier.physicianName}</strong>
+                  </div>
+                  <div>
+                    <span className="text-neutral-500 block">EDRS Permit Status</span>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 uppercase text-[10px]">
+                      {caseData.medicalCertifier.edrsStatus} ({caseData.medicalCertifier.edrsPermitNumber || 'Pending'})
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Verification Jurat */}
+              {caseData.vitalRecordsSheet?.reviewedOrProvidedBy && (
+                <div className="flex items-center justify-between text-[11px] text-neutral-500 bg-neutral-100/70 px-4 py-2 rounded-lg">
+                  <span>Information verified and provided by: <strong className="text-neutral-800">{caseData.vitalRecordsSheet.reviewedOrProvidedBy}</strong></span>
+                  <span>Date Verified: <strong className="text-neutral-800 font-mono">{caseData.vitalRecordsSheet.verifiedOnDate}</strong></span>
+                </div>
+              )}
             </div>
           )}
 
@@ -1141,10 +1277,10 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               </div>
 
               {/* Family Portal Access & Credentials Center */}
-              <div className="bg-gradient-to-br from-red-50 via-amber-50 to-orange-50 border-2 border-amber-300/80 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="bg-gradient-to-br from-red-50 via-amber-50 to-amber-50 border-2 border-amber-300/80 rounded-2xl p-6 shadow-sm space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200/80 pb-3">
                   <div className="flex items-center space-x-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-[#991b1b] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                    <div className="w-8 h-8 rounded-xl bg-[#800000] text-white flex items-center justify-center font-bold text-xs shadow-sm">
                       <Key className="w-4 h-4 text-amber-300" />
                     </div>
                     <div>
@@ -1166,7 +1302,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-white/90 p-4 rounded-xl border border-amber-200">
                   <div>
                     <span className="text-neutral-500 text-[10px] block uppercase font-bold">Portal Direct URL</span>
-                    <strong className="font-mono text-[#991b1b] text-[11px] truncate block">
+                    <strong className="font-mono text-[#800000] text-[11px] truncate block">
                       portal.e-bfh.com/case/{caseData.caseNumber}
                     </strong>
                   </div>
@@ -1195,7 +1331,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   <div className="flex flex-wrap items-center gap-2">
                     <button
                       onClick={handleSendPortalInvite}
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm"
                     >
                       <Send className="w-3.5 h-3.5 text-amber-300" />
                       <span>Resend Portal Invite (Email + SMS)</span>
@@ -1212,14 +1348,14 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => setPreviewEmailModalOpen(true)}
-                      className="bg-white hover:bg-red-50 text-[#991b1b] border border-red-200 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1"
+                      className="bg-white hover:bg-brass-50 text-[#800000] border border-brass-300 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1"
                     >
                       <Mail className="w-3.5 h-3.5" />
                       <span>Preview Email</span>
                     </button>
                     <button
                       onClick={() => setPreviewSMSModalOpen(true)}
-                      className="bg-white hover:bg-amber-50 text-[#b45309] border border-amber-200 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1"
+                      className="bg-white hover:bg-brass-50 text-brass-800 border border-brass-300 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1"
                     >
                       <Smartphone className="w-3.5 h-3.5" />
                       <span>Preview SMS</span>
@@ -1227,7 +1363,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     {onOpenFamilyPortal && (
                       <button
                         onClick={onOpenFamilyPortal}
-                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1"
+                        className="bg-white hover:bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1"
                       >
                         <Sparkles className="w-3.5 h-3.5 text-amber-700" />
                         <span>Open Portal</span>
@@ -1264,7 +1400,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 {onOpenContractModal && (
                   <button
                     onClick={onOpenContractModal}
-                    className="bg-[#991b1b] hover:bg-red-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition shadow-md border border-amber-300/40 shrink-0"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition shadow-md border border-brass-300/40 shrink-0"
                   >
                     <ScrollText className="w-4 h-4 text-amber-300" />
                     <span>Arrangement Studio / Edit Contract</span>
@@ -1302,7 +1438,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   <div className="text-[11px] font-bold text-amber-900 uppercase tracking-wider">
                     Section III: Estimated Grand Total
                   </div>
-                  <div className="text-xl font-bold font-mono text-[#991b1b] mt-1">
+                  <div className="text-xl font-bold font-mono text-[#800000] mt-1">
                     ${(caseData.statementOfGoods?.sectionIII.totalFuneralCharges ?? caseData.totalAmountDue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
                   <div className="text-[10px] text-amber-800 mt-1 flex justify-between font-semibold">
@@ -1393,17 +1529,17 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                               {fl.imageUrl ? (
                                 <img src={fl.imageUrl} alt={fl.description} className="w-10 h-10 rounded-lg object-cover border border-neutral-300 shrink-0 shadow-xs" />
                               ) : (
-                                <div className="w-10 h-10 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center shrink-0">💐</div>
+                                <div className="w-10 h-10 rounded-lg bg-red-100 text-red-800 flex items-center justify-center shrink-0">💐</div>
                               )}
                               <div className="min-w-0 flex-1">
                                 <div className="text-xs font-bold text-neutral-900 truncate">{fl.name || fl.description}</div>
                                 <div className="text-[10px] text-neutral-500 flex items-center gap-1.5 flex-wrap">
                                   {fl.code && <span className="font-mono bg-amber-100 text-amber-900 px-1 rounded font-bold">{fl.code}</span>}
                                   {fl.size && <span className="uppercase font-semibold text-neutral-700">{fl.size}</span>}
-                                  {fl.ribbonText && <span className="italic text-[#991b1b]">&quot;{fl.ribbonText}&quot;</span>}
+                                  {fl.ribbonText && <span className="italic text-[#800000]">&quot;{fl.ribbonText}&quot;</span>}
                                 </div>
                               </div>
-                              <div className="text-xs font-mono font-bold text-[#991b1b] text-right shrink-0">
+                              <div className="text-xs font-mono font-bold text-[#800000] text-right shrink-0">
                                 ${(fl.quantity * fl.unitPrice).toFixed(2)}
                               </div>
                             </div>
@@ -1436,7 +1572,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   {onOpenTwoWaySmsModal && (
                     <button
                       onClick={() => onOpenTwoWaySmsModal()}
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm border border-amber-300/40"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm border border-brass-300/40"
                     >
                       <Smartphone className="w-3.5 h-3.5 text-amber-300" />
                       <span>Open 2-Way SMS Studio</span>
@@ -1507,7 +1643,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 {onOpenContractModal && (
                   <button
                     onClick={onOpenContractModal}
-                    className="text-[#991b1b] hover:text-red-800 font-bold underline shrink-0 ml-4"
+                    className="text-[#800000] hover:text-red-800 font-bold underline shrink-0 ml-4"
                   >
                     View Official 2-Page Print Form →
                   </button>
@@ -1529,11 +1665,11 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
                   placeholder="Add operational update, phone note, or transfer detail..."
-                  className="flex-1 bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                  className="flex-1 bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-xs text-neutral-900 outline-none focus:border-[#800000]"
                 />
                 <button
                   type="submit"
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-lg transition"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-lg transition"
                 >
                   Post Note
                 </button>
@@ -1543,7 +1679,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 {caseData.notes.map((note) => (
                   <div key={note.id} className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 text-xs space-y-1">
                     <div className="flex justify-between text-neutral-500 text-[10px]">
-                      <span className="font-bold text-[#991b1b]">{note.author}</span>
+                      <span className="font-bold text-[#800000]">{note.author}</span>
                       <span>{note.timestamp}</span>
                     </div>
                     <p className="text-neutral-800 font-light">{note.text}</p>
@@ -1585,7 +1721,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 </p>
                 <button
                   onClick={handleTriggerSafeArrival}
-                  className="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-[11px] transition shadow-sm"
+                  className="w-full py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-[11px] transition shadow-sm"
                 >
                   Confirm Arrival & Alert Family
                 </button>
@@ -1601,7 +1737,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               </h4>
               <button 
                 onClick={onOpenDocuments}
-                className="text-[11px] text-[#991b1b] hover:text-red-900 font-bold"
+                className="text-[11px] text-[#800000] hover:text-[#800000] font-bold"
               >
                 View All 14 Docs →
               </button>
@@ -1615,7 +1751,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     doc.status === 'completed' || doc.status === 'signed'
                       ? 'bg-emerald-100 text-emerald-800'
                       : doc.status === 'urgent'
-                      ? 'bg-red-100 text-[#991b1b] animate-pulse'
+                      ? 'bg-red-100 text-[#800000] animate-pulse'
                       : 'bg-amber-100 text-amber-800'
                   }`}>
                     {doc.status}
@@ -1641,7 +1777,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
               </div>
               <div className="flex justify-between text-neutral-600 pt-1 border-t border-neutral-200">
                 <span>Balance Remaining:</span>
-                <span className="text-[#991b1b] font-mono font-bold">
+                <span className="text-[#800000] font-mono font-bold">
                   ${(caseData.totalAmountDue - caseData.totalPaid).toLocaleString()}
                 </span>
               </div>
@@ -1654,7 +1790,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
 
       {/* Toast Copy Alert */}
       {copiedAlert && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#141b2b] text-white px-5 py-3 rounded-xl shadow-2xl border border-amber-400/40 flex items-center space-x-3 text-xs font-bold animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#1c1a1a] text-white px-5 py-3 rounded-xl shadow-2xl border border-amber-400/40 flex items-center space-x-3 text-xs font-bold animate-bounce">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{copiedAlert}</span>
         </div>
@@ -1663,11 +1799,11 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
       {/* MODAL 1: FAMILY PORTAL ACCESS EMAIL PREVIEW */}
       {previewEmailModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-300 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-300 max-h-[90vh] overflow-y-auto">
             
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <Mail className="w-5 h-5 text-[#991b1b]" />
+                <Mail className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title text-lg font-bold text-neutral-900">
                   Official Family Portal Email Invitation Preview
                 </h3>
@@ -1689,8 +1825,8 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
 
             {/* Letterhead Body */}
             <div className="border-2 border-amber-300/80 rounded-2xl overflow-hidden shadow-sm">
-              <div className="bg-[#141b2b] text-white p-5 text-center border-b-2 border-amber-400/80 space-y-1">
-                <div className="w-10 h-10 rounded-xl bg-[#991b1b] text-white flex items-center justify-center font-serif-title font-bold text-base mx-auto border border-amber-300">
+              <div className="bg-[#1c1a1a] text-white p-5 text-center border-b-2 border-amber-400/80 space-y-1">
+                <div className="w-10 h-10 rounded-xl bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-base mx-auto border border-amber-300">
                   BFH
                 </div>
                 <h4 className="font-serif-title text-base font-bold tracking-wide">
@@ -1708,7 +1844,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                 </p>
 
                 <div className="bg-amber-50/80 p-4 rounded-xl border border-amber-200 space-y-2">
-                  <strong className="text-xs font-bold text-[#991b1b] block">Features Ready in Your Family Portal:</strong>
+                  <strong className="text-xs font-bold text-[#800000] block">Features Ready in Your Family Portal:</strong>
                   <ul className="list-disc list-inside space-y-1 text-[11px] text-neutral-700">
                     <li><strong>🕊️ 9-Part Trauma-Informed Obituary Studio:</strong> Craft meaningful memorial programs and short newspaper notices at your own pace.</li>
                     <li><strong>🎙️ 360° Digital Tribute & Voice Studio:</strong> Listen to living voice memories from relatives and lifelong friends worldwide.</li>
@@ -1726,7 +1862,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                       setPreviewEmailModalOpen(false);
                       if (onOpenFamilyPortal) onOpenFamilyPortal();
                     }}
-                    className="inline-block bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md shadow-red-950/20 transition border border-amber-300/40"
+                    className="inline-block bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md shadow-red-950/20 transition border border-amber-300/40"
                   >
                     Open Secure Family Portal →
                   </a>
@@ -1755,7 +1891,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   handleSendPortalInvite();
                   setPreviewEmailModalOpen(false);
                 }}
-                className="bg-[#991b1b] hover:bg-red-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1"
               >
                 <Send className="w-3.5 h-3.5 text-amber-300" />
                 <span>Resend Email to {caseData.informant.email}</span>
@@ -1769,11 +1905,11 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
       {/* MODAL 2: FAMILY PORTAL ACCESS SMS PREVIEW */}
       {previewSMSModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 space-y-5 shadow-2xl border border-neutral-300">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 space-y-5 shadow-2xl border border-neutral-300">
             
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <Smartphone className="w-5 h-5 text-[#991b1b]" />
+                <Smartphone className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title text-lg font-bold text-neutral-900">
                   Carrier SMS Alert Preview
                 </h3>
@@ -1787,7 +1923,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
             </div>
 
             {/* Phone Screen Mockup */}
-            <div className="bg-[#181a20] rounded-3xl p-5 text-white space-y-4 shadow-xl border-4 border-neutral-800">
+            <div className="bg-[#181a20] rounded-2xl p-5 text-white space-y-4 shadow-xl border-4 border-neutral-800">
               <div className="flex justify-between items-center text-[10px] text-neutral-400 border-b border-neutral-800 pb-2">
                 <span>Verizon 5G</span>
                 <span>Benta Care Dispatch</span>
@@ -1834,7 +1970,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                   handleSendPortalInvite();
                   setPreviewSMSModalOpen(false);
                 }}
-                className="bg-[#991b1b] hover:bg-red-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1"
               >
                 <Send className="w-3.5 h-3.5 text-amber-300" />
                 <span>Resend SMS to {caseData.informant.phone}</span>

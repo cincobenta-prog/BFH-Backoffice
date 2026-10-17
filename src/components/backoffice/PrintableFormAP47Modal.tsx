@@ -53,7 +53,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 print:p-0 font-sans animate-fadeIn">
       
       {/* Modal Container */}
-      <div className="bg-white border border-neutral-200 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none">
         
         {/* Screen-Only Header Bar */}
         <div className="p-4 sm:p-5 bg-neutral-900 text-white flex items-center justify-between shrink-0 print:hidden">
@@ -82,7 +82,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
             </button>
             <button
               onClick={handlePrint}
-              className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
             >
               <Printer className="w-3.5 h-3.5 text-amber-300" />
               <span>Print / Save PDF</span>
@@ -152,10 +152,40 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200">
+                {sog.sectionI.A_alternativeServicesAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5">A. Alternative Services ({sog.serviceType === 'direct_cremation' ? 'Direct Cremation' : sog.serviceType === 'direct_burial' ? 'Direct Burial' : 'Alternative Service'})</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.A_alternativeServicesAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.A_otherAmount || 0) > 0 || Boolean(sog.sectionI.A_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • A. Alternative Services — Other: <em>{sog.sectionI.A_otherSpecify || 'Special Alternative Service'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.A_otherAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
                 {sog.sectionI.B_transferOfRemainsAmount > 0 && (
                   <tr>
                     <td className="py-1.5">B. Transfer of Remains to Funeral Establishment (NYC Radius)</td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionI.B_transferOfRemainsAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.B_excessMilesAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • B. Excess Mileage ({sog.sectionI.B_excessMilesCount} miles @ ${(sog.sectionI.B_excessMilesRate || 5).toFixed(2)}/mi)
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.B_excessMilesAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.B_otherAmount || 0) > 0 || Boolean(sog.sectionI.B_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • B. Transfer of Remains — Other: <em>{sog.sectionI.B_otherSpecify || 'Special Transfer Equipment/Personnel'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.B_otherAmount || 0).toFixed(2)}</td>
                   </tr>
                 )}
                 {sog.sectionI.C1_embalmingAmount > 0 && (
@@ -164,20 +194,92 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                     <td className="py-1.5 text-right font-mono">${sog.sectionI.C1_embalmingAmount.toFixed(2)}</td>
                   </tr>
                 )}
+                {sog.sectionI.C2_topicalDisinfectionAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.a. Topical Disinfection</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_topicalDisinfectionAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.C2_custodialCareAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.b. Custodial Care ({sog.sectionI.C2_custodialCareDays} days)</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_custodialCareAmount.toFixed(2)}</td>
+                  </tr>
+                )}
                 {sog.sectionI.C2_dressingCasketingAmount > 0 && (
                   <tr>
-                    <td className="py-1.5">C2. Other Preparation of the Remains (Cosmetology, Dressing, Casketing)</td>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.c. Dressing and Casketing</td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_dressingCasketingAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.C2_cosmetologyAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.d. Cosmetology</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_cosmetologyAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.C2_restorationAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.e. Restoration</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_restorationAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.C2_refrigerationAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.f. Refrigeration ({sog.sectionI.C2_refrigerationDays} days)</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_refrigerationAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.C2_otherAmount || 0) > 0 || (sog.sectionI.C_otherAmount || 0) > 0 || Boolean(sog.sectionI.C2_otherSpecify) || Boolean(sog.sectionI.C_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • C2.g. Other Preparation: <em>{sog.sectionI.C2_otherSpecify || sog.sectionI.C_otherSpecify || 'Special Sanitary Prep / Hair Grooming'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.C2_otherAmount || 0) + (sog.sectionI.C_otherAmount || 0)).toFixed(2)}</td>
                   </tr>
                 )}
                 <tr>
                   <td className="py-1.5">D. Basic Services of Funeral Director & Staff (Non-Declinable Overhead)</td>
                   <td className="py-1.5 text-right font-mono">${sog.sectionI.D_basicArrangementsAmount.toFixed(2)}</td>
                 </tr>
+                {((sog.sectionI.D_otherAmount || 0) > 0 || Boolean(sog.sectionI.D_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • D. Arrangements — Other: <em>{sog.sectionI.D_otherSpecify || 'Special Administrative / Coordination Service'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.D_otherAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
                 {sog.sectionI.E1_supervisionVisitationAmount > 0 && (
                   <tr>
                     <td className="py-1.5">E1. Supervision for Visitation / Wake</td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionI.E1_supervisionVisitationAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.E2_supervisionFuneralServiceAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5">E2. Supervision for Funeral Service / Ceremony</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E2_supervisionFuneralServiceAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.E3_supervisionCemeteryCrematoryAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5">E3. Supervision for Cemetery Committal / Crematory</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E3_supervisionCemeteryCrematoryAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.E3_supervisionMemorialAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5">E3. Supervision for Memorial Service</td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E3_supervisionMemorialAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.E3_otherSupervisionAmount || 0) > 0 || (sog.sectionI.E_otherAmount || 0) > 0 || Boolean(sog.sectionI.E3_otherSupervisionSpecify) || Boolean(sog.sectionI.E_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • E3. Supervision — Other: <em>{sog.sectionI.E3_otherSupervisionSpecify || sog.sectionI.E_otherSpecify || 'Special Ceremony Staff Supervision'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.E3_otherSupervisionAmount || 0) + (sog.sectionI.E_otherAmount || 0)).toFixed(2)}</td>
                   </tr>
                 )}
                 {sog.sectionI.F1_facilitiesVisitationAmount > 0 && (
@@ -196,6 +298,14 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                   <tr>
                     <td className="py-1.5">F3. Fellowship Repast Reception Facility</td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionI.F3_repastRoomAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.F_otherAmount || 0) > 0 || (sog.sectionI.F3_otherFacilitiesAmount || 0) > 0 || Boolean(sog.sectionI.F_otherSpecify) || Boolean(sog.sectionI.F3_otherFacilitiesSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • F. Use of Facilities — Other: <em>{sog.sectionI.F_otherSpecify || sog.sectionI.F3_otherFacilitiesSpecify || 'Special Gathering Parlor / Salon'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.F_otherAmount || 0) + (sog.sectionI.F3_otherFacilitiesAmount || 0)).toFixed(2)}</td>
                   </tr>
                 )}
                 {sog.sectionI.G_totalLiveryAmount > 0 && (
@@ -219,6 +329,14 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                         ))}
                       </div>
                     </td>
+                  </tr>
+                )}
+                {((sog.sectionI.G_otherAmount || 0) > 0 || Boolean(sog.sectionI.G_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • G. Livery — Other: <em>{sog.sectionI.G_otherSpecify || 'Custom Motorcade Vehicle / Sprinter'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.G_otherAmount || 0).toFixed(2)}</td>
                   </tr>
                 )}
                 {sog.sectionI.H1_casketAmount > 0 && (
@@ -245,6 +363,14 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                     <td className="py-1.5 text-right font-mono">${sog.sectionI.H3_urnAmount.toFixed(2)}</td>
                   </tr>
                 )}
+                {((sog.sectionI.H_otherAmount || 0) > 0 || Boolean(sog.sectionI.H_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • H. Merchandise — Other: <em>{sog.sectionI.H_otherSpecify || 'Custom Merchandise Item'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.H_otherAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
                 {sog.sectionI.I6_totalFlowersAmount > 0 && (
                   <tr>
                     <td className="py-2" colSpan={2}>
@@ -269,7 +395,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                                 </span>
                                 <div className="text-[10px] text-neutral-500">
                                   {f.size && <span className="uppercase font-bold text-neutral-700">{f.size}</span>}
-                                  {f.ribbonText && <span className="text-[#991b1b] italic ml-1.5 font-medium">&quot;{f.ribbonText}&quot;</span>}
+                                  {f.ribbonText && <span className="text-[#800000] italic ml-1.5 font-medium">&quot;{f.ribbonText}&quot;</span>}
                                 </div>
                               </div>
                             </div>
@@ -280,6 +406,70 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                         ))}
                       </div>
                     </td>
+                  </tr>
+                )}
+                {sog.sectionI.I1_memorialCardsAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I1. Memorial / Prayer Cards ({sog.sectionI.I1_memorialCardsQty} Cards)
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I1_memorialCardsAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.I10_programsMatrix.quantity > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I10. Printed Memorial Programs ({sog.sectionI.I10_programsMatrix.quantity} qty)
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I10_programsMatrix.totalAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.I8_registerBookAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I8. Register Book ({sog.sectionI.I8_registerBookQty || 1}x)
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I8_registerBookAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {sog.sectionI.I11_videoTributeAmount > 0 && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I11. Digital Video Tribute Production
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I11_videoTributeAmount.toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.I_otherAmount || 0) > 0 || (sog.sectionI.I12_otherAmount || 0) > 0 || Boolean(sog.sectionI.I_otherSpecify) || Boolean(sog.sectionI.I12_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I. Additional Services &amp; Merchandise — Other (Line 1): <em>{sog.sectionI.I_otherSpecify || sog.sectionI.I12_otherSpecify || 'Custom Keepsake / Memorial Item'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.I_otherAmount || 0) + (sog.sectionI.I12_otherAmount || 0)).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.I_other2Amount || 0) > 0 || (sog.sectionI.I12_other2Amount || 0) > 0 || Boolean(sog.sectionI.I_other2Specify) || Boolean(sog.sectionI.I12_other2Specify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I. Additional Services &amp; Merchandise — Other (Line 2): <em>{sog.sectionI.I_other2Specify || sog.sectionI.I12_other2Specify || 'Custom Keepsake / Memorial Item (2)'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.I_other2Amount || 0) + (sog.sectionI.I12_other2Amount || 0)).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.I_other3Amount || 0) > 0 || (sog.sectionI.I12_other3Amount || 0) > 0 || Boolean(sog.sectionI.I_other3Specify) || Boolean(sog.sectionI.I12_other3Specify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • I. Additional Services &amp; Merchandise — Other (Line 3): <em>{sog.sectionI.I_other3Specify || sog.sectionI.I12_other3Specify || 'Custom Keepsake / Memorial Item (3)'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.I_other3Amount || 0) + (sog.sectionI.I12_other3Amount || 0)).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionI.J_otherAmount || 0) > 0 || Boolean(sog.sectionI.J_otherSpecify)) && (
+                  <tr>
+                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
+                      • J. Limited Services — Other: <em>{sog.sectionI.J_otherSpecify || 'Special Transport / Forwarding'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.J_otherAmount || 0).toFixed(2)}</td>
                   </tr>
                 )}
 
@@ -301,7 +491,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
               </h2>
               <button
                 onClick={handleOpenChecks}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-[10px] px-2.5 py-0.5 rounded transition flex items-center gap-1 border border-amber-400/40 print:hidden"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-[10px] px-2.5 py-0.5 rounded transition flex items-center gap-1 border border-amber-400/40 print:hidden"
               >
                 <HandCoins className="w-3 h-3 text-amber-300" />
                 <span>Print Checks (${sog.sectionII.totalCashAdvances.toFixed(2)})</span>
@@ -318,7 +508,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {sog.sectionII.cemeteryOrCrematoryAmount > 0 && (
                   <tr>
                     <td className="py-1.5">
-                      Cemetery / Crematory Fee ({sog.sectionII.cemeteryOrCrematoryName || caseData.serviceSelections.crematoryOrCemeteryName || "Woodlawn Crematory"})
+                      1. Cemetery / Crematory Fee ({sog.sectionII.cemeteryOrCrematoryName || caseData.serviceSelections.crematoryOrCemeteryName || "Woodlawn Crematory"})
                     </td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionII.cemeteryOrCrematoryAmount.toFixed(2)}</td>
                   </tr>
@@ -326,7 +516,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {sog.sectionII.deathCertificateTranscriptsAmount > 0 && (
                   <tr>
                     <td className="py-1.5">
-                      Certified Death Certificate Transcripts ({sog.sectionII.deathCertificateTranscriptsCount} Copies @ NYC Health Dept)
+                      2. Certified Death Certificate Transcripts ({sog.sectionII.deathCertificateTranscriptsCount} Copies @ NYC Health Dept)
                     </td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</td>
                   </tr>
@@ -334,7 +524,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {sog.sectionII.clergyHonorariaAmount > 0 && (
                   <tr>
                     <td className="py-1.5">
-                      Clergy Honorarium / Church Officiant ({sog.sectionII.clergyChurchName || "Harlem Minister Guild"})
+                      3. Clergy Honorarium / Church Officiant ({sog.sectionII.clergyChurchName || "Harlem Minister Guild"})
                     </td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionII.clergyHonorariaAmount.toFixed(2)}</td>
                   </tr>
@@ -342,7 +532,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {sog.sectionII.organistMusicianAmount > 0 && (
                   <tr>
                     <td className="py-1.5">
-                      Organist / Vocalist ({sog.sectionII.organistMusicianName || "Sanctuary Organist"})
+                      4. Organist / Vocalist ({sog.sectionII.organistMusicianName || "Sanctuary Organist"})
                     </td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionII.organistMusicianAmount.toFixed(2)}</td>
                   </tr>
@@ -350,7 +540,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {sog.sectionII.pallbearersAmount > 0 && (
                   <tr>
                     <td className="py-1.5">
-                      Pallbearers Professional Service Crew ({sog.sectionII.pallbearersCount || 4} Staff)
+                      5. Pallbearers Professional Service Crew ({sog.sectionII.pallbearersCount || 4} Staff)
                     </td>
                     <td className="py-1.5 text-right font-mono">${sog.sectionII.pallbearersAmount.toFixed(2)}</td>
                   </tr>
@@ -358,11 +548,43 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {(sog.sectionII.bridgeAndRoadTollsAmount > 0 || sog.sectionII.gratuitiesLiveryAndStaffAmount > 0) && (
                   <tr>
                     <td className="py-1.5">
-                      Bridge &amp; Road Tolls / Chauffeur Service Pool
+                      6. Bridge &amp; Road Tolls / Chauffeur Service Pool
                     </td>
                     <td className="py-1.5 text-right font-mono">${(sog.sectionII.bridgeAndRoadTollsAmount + sog.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</td>
                   </tr>
                 )}
+                {((sog.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvanceSpecify)) && (
+                  <tr>
+                    <td className="py-1.5">
+                      7. Other Cash Advance (Line 1): <em>{sog.sectionII.otherCashAdvanceSpecify || 'Pass-Through Cash Disbursement (1)'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionII.otherCashAdvance2Amount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvance2Specify)) && (
+                  <tr>
+                    <td className="py-1.5">
+                      7b. Other Cash Advance (Line 2): <em>{sog.sectionII.otherCashAdvance2Specify || 'Pass-Through Cash Disbursement (2)'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionII.otherCashAdvance3Amount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvance3Specify)) && (
+                  <tr>
+                    <td className="py-1.5">
+                      7c. Other Cash Advance (Line 3): <em>{sog.sectionII.otherCashAdvance3Specify || 'Pass-Through Cash Disbursement (3)'}</em>
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {(sog.sectionII.customCashAdvances || []).map((c, idx) => (
+                  <tr key={c.id || idx}>
+                    <td className="py-1.5">
+                      {8 + idx}. {c.description}
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${c.amount.toFixed(2)}</td>
+                  </tr>
+                ))}
               </tbody>
               <tfoot>
                 <tr className="font-bold border-t-2 border-neutral-900">
@@ -389,7 +611,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
               </div>
               <div className="flex justify-between border-t border-neutral-300 pt-2 text-sm font-bold text-neutral-900">
                 <span>TOTAL ESTIMATED FUNERAL CHARGES:</span>
-                <span className="font-mono text-[#991b1b]">${sog.sectionIII.totalFuneralCharges.toFixed(2)}</span>
+                <span className="font-mono text-[#800000]">${sog.sectionIII.totalFuneralCharges.toFixed(2)}</span>
               </div>
               {sog.sectionIII.lessCreditsAndInsurance > 0 && (
                 <div className="flex justify-between text-emerald-800 font-semibold">
@@ -399,7 +621,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
               )}
               <div className="flex justify-between border-t-2 border-neutral-900 pt-2 text-base font-bold text-neutral-950">
                 <span>ESTIMATED BALANCE DUE:</span>
-                <span className="font-mono text-[#991b1b]">${sog.sectionIII.balanceDue.toFixed(2)}</span>
+                <span className="font-mono text-[#800000]">${sog.sectionIII.balanceDue.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -408,7 +630,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
           <div className="p-4 bg-neutral-100 rounded-xl border border-neutral-300 space-y-2">
             <div className="flex justify-between text-sm font-bold text-neutral-900">
               <span>TOTAL ESTIMATED FUNERAL CONTRACT AMOUNT:</span>
-              <span className="font-mono text-base text-[#991b1b]">${caseData.totalAmountDue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+              <span className="font-mono text-base text-[#800000]">${caseData.totalAmountDue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
             </div>
             {caseData.splitBilling && caseData.splitBilling.length > 0 && (
               <div className="pt-2 border-t border-neutral-200 text-[11px] text-neutral-600 space-y-1">

@@ -79,10 +79,13 @@ export const BFH_GPL_2026 = {
     flowerVehicleLocal: 655.00,
     limousine7PaxLocal: 715.00,
     limousine7PaxCalverton: 825.00,
+    sprinterVan: 1300.00, // Mercedes Sprinter Van
     sprinter10PaxLocal: 1035.00,
     sprinter10PaxCalverton: 1195.00,
     sprinter14PaxLocal: 1155.00,
     sprinter14PaxCalverton: 1315.00,
+    utilityVanEscortedWithFamily: 650.00,
+    utilityVanEscortedWithoutFamily: 484.00,
     overtimeHourlyRateHearseAndLimo: 120.00, // after 5h local / 6h long distance
     overtimeHourlyRateSprinter: 175.00,
   },
@@ -405,58 +408,88 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
   const refrigerationTotal = s1.C2_refrigerationDays * s1.C2_refrigerationRatePerDay;
   s1.C2_refrigerationAmount = refrigerationTotal;
 
+  // Register Book calculation
+  const regBookUnit = s1.I8_registerBookUnitPrice || BFH_GPL_2026.stationery.registerBookBase;
+  const regBookQty = s1.I8_registerBookQty !== undefined ? s1.I8_registerBookQty : (s1.I8_registerBookAmount > 0 ? Math.round(s1.I8_registerBookAmount / regBookUnit) : 0);
+  s1.I8_registerBookQty = regBookQty;
+  s1.I8_registerBookUnitPrice = regBookUnit;
+  s1.I8_registerBookAmount = regBookQty * regBookUnit;
+
   // Calculate Section I: Funeral Home Charges Total
+  const aOther = s1.A_otherAmount || 0;
+  const bOther = s1.B_otherAmount || 0;
+  const cOther = (s1.C2_otherAmount || 0) + (s1.C_otherAmount || 0);
+  const dOther = s1.D_otherAmount || 0;
+  const eOther = (s1.E3_otherSupervisionAmount || 0) + (s1.E_otherAmount || 0);
+  const fOther = (s1.F_otherAmount || 0) + (s1.F3_otherFacilitiesAmount || 0);
+  const gOther = s1.G_otherAmount || 0;
+  const hOther = s1.H_otherAmount || 0;
+  const iOther = (s1.I_otherAmount || 0) + (s1.I12_otherAmount || 0) +
+                 (s1.I_other2Amount || 0) + (s1.I12_other2Amount || 0) +
+                 (s1.I_other3Amount || 0) + (s1.I12_other3Amount || 0);
+  const jOther = s1.J_otherAmount || 0;
+
   let sectionITotal = 0;
   if (data.serviceType === 'direct_cremation' || data.serviceType === 'direct_burial') {
-    sectionITotal = s1.A_alternativeServicesAmount + excessMilesTotal + custodialTotal + refrigerationTotal +
-      casketTotal + outerTotal + urnTotal + flowersTotal + programsTotal + s1.I1_memorialCardsAmount +
+    sectionITotal = s1.A_alternativeServicesAmount + aOther + excessMilesTotal + bOther + custodialTotal + refrigerationTotal + cOther + dOther + eOther + fOther +
+      casketTotal + outerTotal + urnTotal + hOther + flowersTotal + programsTotal + s1.I1_memorialCardsAmount +
       s1.I2_acknowledgementCardsAmount + s1.I3_casketPlateAmount + s1.I8_registerBookAmount +
       s1.I11_videoTributeAmount + s1.I12_capPanelsAmount + s1.I12_easelPhotosAmount +
-      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount;
+      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + iOther;
   } else if (data.serviceType === 'cremation_memorial') {
     // Cremation and Memorial Service (Direct Cremation Base + Memorial Supervision & Facilities + Variables)
-    sectionITotal = s1.A_alternativeServicesAmount + s1.E3_supervisionMemorialAmount + s1.F3_facilitiesMemorialServiceAmount +
-      s1.F3_repastRoomAmount + excessMilesTotal + custodialTotal + refrigerationTotal +
-      urnTotal + flowersTotal + programsTotal + s1.I1_memorialCardsAmount +
+    sectionITotal = s1.A_alternativeServicesAmount + aOther + s1.E3_supervisionMemorialAmount + eOther + s1.F3_facilitiesMemorialServiceAmount +
+      s1.F3_repastRoomAmount + fOther + excessMilesTotal + bOther + custodialTotal + refrigerationTotal + cOther + dOther +
+      urnTotal + hOther + flowersTotal + programsTotal + s1.I1_memorialCardsAmount +
       s1.I2_acknowledgementCardsAmount + s1.I3_casketPlateAmount + s1.I8_registerBookAmount +
       s1.I11_videoTributeAmount + s1.I12_capPanelsAmount + s1.I12_easelPhotosAmount +
-      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + liveryTotal;
+      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + iOther + liveryTotal + gOther;
   } else if (data.serviceType === 'forwarding_remains') {
-    sectionITotal = s1.J1_forwardingRemainsAmount + excessMilesTotal + casketTotal;
+    sectionITotal = s1.J1_forwardingRemainsAmount + jOther + excessMilesTotal + bOther + casketTotal + hOther;
   } else if (data.serviceType === 'receiving_remains') {
-    sectionITotal = s1.J2_receivingRemainsAmount + excessMilesTotal + casketTotal;
+    sectionITotal = s1.J2_receivingRemainsAmount + jOther + excessMilesTotal + bOther + casketTotal + hOther;
   } else {
     // Traditional Service and Burial / Funeral Service with Cremation
     sectionITotal = 
-      s1.B_transferOfRemainsAmount + excessMilesTotal +
+      s1.B_transferOfRemainsAmount + excessMilesTotal + bOther +
       (s1.C1_embalmingSelected ? s1.C1_embalmingAmount : 0) +
       s1.C2_topicalDisinfectionAmount + custodialTotal + s1.C2_dressingCasketingAmount +
-      s1.C2_cosmetologyAmount + s1.C2_restorationAmount + refrigerationTotal + s1.C2_otherAmount +
-      s1.D_basicArrangementsAmount +
+      s1.C2_cosmetologyAmount + s1.C2_restorationAmount + refrigerationTotal + cOther +
+      s1.D_basicArrangementsAmount + dOther +
       s1.E1_supervisionVisitationAmount + s1.E2_supervisionFuneralServiceAmount +
       s1.E3_supervisionCemeteryCrematoryAmount + s1.E3_supervisionGravesideAmount +
       s1.E3_supervisionMemorialAmount + s1.E3_supervisionDisintermentAmount +
-      s1.E3_consulateFilingFeeAmount + s1.E3_otherSupervisionAmount +
+      s1.E3_consulateFilingFeeAmount + eOther +
       s1.F1_facilitiesVisitationAmount + s1.F2_facilitiesFuneralServiceAmount +
       s1.F3_facilitiesMemorialServiceAmount + s1.F3_prepRoomCeremonialAmount +
-      s1.F3_repastRoomAmount +
+      s1.F3_repastRoomAmount + fOther +
       (s1.F_combinedSupervisionAndFacilitiesSelected ? s1.F_combinedSupervisionAndFacilitiesAmount : 0) +
-      liveryTotal +
-      casketTotal + outerTotal + urnTotal +
+      liveryTotal + gOther +
+      casketTotal + outerTotal + urnTotal + hOther +
       s1.I1_memorialCardsAmount + s1.I2_acknowledgementCardsAmount + s1.I3_casketPlateAmount +
       s1.I4_crucifixCrossAmount + s1.I5_hairdressingAmount + flowersTotal +
       s1.I7_clothingBurialGarmentsAmount + s1.I8_registerBookAmount + s1.I9_deathNoticesAmount +
       programsTotal + s1.I11_videoTributeAmount + s1.I12_capPanelsAmount + s1.I12_easelPhotosAmount +
-      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount;
+      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + iOther +
+      aOther + jOther;
   }
 
   s1.totalFuneralHomeCharges = sectionITotal;
 
   // Calculate Section II: Cash Advances
-  const transcriptsTotal = s2.deathCertificateTranscriptsCount * s2.deathCertificatePricePerCopy;
+  // Veterans get 3 free death certificates:
+  const isVet = data.isVeteran || s2.isVeteranDiscountApplied || false;
+  const freeVetTranscripts = isVet ? Math.min(3, s2.deathCertificateTranscriptsCount) : 0;
+  s2.isVeteranDiscountApplied = isVet;
+  s2.freeVeteranTranscriptsCount = freeVetTranscripts;
+  const billableTranscriptsCount = Math.max(0, s2.deathCertificateTranscriptsCount - freeVetTranscripts);
+  const transcriptsTotal = billableTranscriptsCount * s2.deathCertificatePricePerCopy;
   s2.deathCertificateTranscriptsAmount = transcriptsTotal;
 
   const customCashTotal = (s2.customCashAdvances || []).reduce((acc, c) => acc + c.amount, 0);
+  const otherCashAdvanceTotal = (s2.otherCashAdvanceAmount || 0) +
+                                (s2.otherCashAdvance2Amount || 0) +
+                                (s2.otherCashAdvance3Amount || 0);
 
   const sectionIITotal = 
     s2.cemeteryOrCrematoryAmount +
@@ -471,6 +504,7 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
     s2.eVitalFilingFeeAmount +
     s2.nycCorrectionFeeAmount +
     s2.cateringReceptionAmount +
+    otherCashAdvanceTotal +
     customCashTotal;
 
   s2.totalCashAdvances = sectionIITotal;
@@ -508,6 +542,7 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       id: 'liv-1',
       vehicleType: 'Cadillac Professional Funeral Hearse',
       rateType: 'local_nyc',
+      escortType: 'none',
       count: 0,
       unitPrice: BFH_GPL_2026.livery.hearseLocalNYC,
       totalAmount: 0
@@ -516,14 +551,34 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       id: 'liv-2',
       vehicleType: '7-Passenger Cadillac Family Limousine',
       rateType: 'local_nyc',
+      escortType: 'with_family',
       count: 0,
       unitPrice: BFH_GPL_2026.livery.limousine7PaxLocal,
       totalAmount: 0
     },
     {
       id: 'liv-3',
+      vehicleType: 'Mercedes Sprinter Van (14-Passenger)',
+      rateType: 'local_nyc',
+      escortType: 'with_family',
+      count: 0,
+      unitPrice: BFH_GPL_2026.livery.sprinterVan,
+      totalAmount: 0
+    },
+    {
+      id: 'liv-4',
+      vehicleType: 'Transfer / Utility Van',
+      rateType: 'local_nyc',
+      escortType: 'without_family',
+      count: 0,
+      unitPrice: BFH_GPL_2026.livery.utilityVanEscortedWithoutFamily,
+      totalAmount: 0
+    },
+    {
+      id: 'liv-5',
       vehicleType: 'Lead Director / NYPD Escort Vehicle',
       rateType: 'local_nyc',
+      escortType: 'none',
       count: 0,
       unitPrice: BFH_GPL_2026.livery.alternativeVehicleLocal,
       totalAmount: 0
@@ -532,13 +587,13 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
 
   const defaultFloralItems: FloralArrangementItem[] = [];
 
-
   const rawData: StatementOfGoodsData = {
     id: `sog-${c.id}`,
     caseId: c.id,
     invoiceNumber: `${c.caseNumber}-AP47`,
     agreementDate: c.serviceSelections.serviceDate || '2026-09-22',
     serviceType: serviceType,
+    isVeteran: c.decedent.veteran || false,
     lovedOneBiography: {
       whoWereThey: `${c.decedent.legalName}, beloved parent, educator, and community pillar in Harlem. Born in ${c.decedent.dateOfBirth?.split('-')[0] || '1944'}, dedicated to civic education, music, and family.`,
       passionsAndHobbies: "Jazz concerts at Apollo Theater, classic literature, Harlem history preservation, church choir.",
@@ -546,16 +601,119 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       specialAccomplishments: "Retired Dean of Humanities, Columbia University; Lifetime Member NAACP.",
       familyLegacyNotes: `Surviving spouse ${c.informant.fullName} and 3 loving children and grandchildren.`
     },
+    vitalRecordsSheet: c.vitalRecordsSheet ? { ...c.vitalRecordsSheet } : {
+      decedentFirstName: c.decedent.legalName?.split(' ')[0] || '',
+      decedentMiddleName: c.decedent.legalName?.split(' ').length > 2 ? c.decedent.legalName.split(' ')[1] : '',
+      decedentLastName: c.decedent.legalName?.split(' ').slice(-1)[0] || '',
+      otherKnownNames: '',
+      residenceStreet: c.decedent.residenceAddress || '',
+      residenceApt: '',
+      residenceCity: c.decedent.city || '',
+      residenceState: c.decedent.state || 'NY',
+      residenceZip: c.decedent.zipCode || '',
+      dateOfDeath: c.decedent.dateOfDeath || '',
+      sex: c.decedent.gender === 'female' ? 'female' : 'male',
+      educationLevel: '',
+      placeOfDeathFacilityOrLocation: c.decedent.placeOfDeath || '',
+      placeOfDeathCity: c.decedent.city || '',
+      placeOfDeathStateOrCountry: 'NY, USA',
+      dateOfBirth: c.decedent.dateOfBirth || '',
+      age: c.decedent.dateOfBirth && c.decedent.dateOfDeath ? (new Date(c.decedent.dateOfDeath).getFullYear() - new Date(c.decedent.dateOfBirth).getFullYear()) : '',
+      birthPlaceCityStateCountry: '',
+      maritalStatus: c.decedent.maritalStatus === 'married' ? 'married' : (c.decedent.maritalStatus === 'widowed' ? 'widowed' : (c.decedent.maritalStatus === 'divorced' ? 'divorced' : 'never_married')),
+      ssn: c.decedent.ssn || c.decedent.ssnMasked || '',
+      race: '',
+      occupationTitle: c.decedent.occupation || '',
+      typeOfBusiness: c.decedent.industry || '',
+      militaryBranch: c.decedent.branchOfService || '',
+      militaryStatus: c.decedent.veteran ? 'veteran' : 'none',
+      fatherName: c.decedent.fatherName || '',
+      motherFirstAndMaidenName: c.decedent.motherMaidenName || '',
+      spouseFirstAndMaidenName: c.informant.relationship?.toLowerCase().includes('spouse') || c.informant.relationship?.toLowerCase().includes('wife') || c.informant.relationship?.toLowerCase().includes('husband') ? c.informant.fullName : '',
+      spouseDateOfBirth: '',
+
+      informantName: c.informant.fullName || '',
+      informantRelationship: c.informant.relationship || '',
+      informantPhoneHome: c.informant.phone || '',
+      informantPhoneCell: c.informant.phone || '',
+      informantPhoneAlt: '',
+      informantEmail: c.informant.email || '',
+      informantAddressStreet: c.informant.address || '',
+      informantAddressApt: '',
+      informantAddressCityStateCountry: '',
+      informantAddressZip: '',
+
+      deedOwnerName: '',
+      deedOwnerAddress: '',
+      previousIntermentWho: '',
+      previousIntermentWhen: '',
+      previousIntermentRelation: '',
+
+      reviewedOrProvidedBy: c.informant.fullName ? `${c.informant.fullName}${c.informant.relationship ? ` (${c.informant.relationship})` : ''}` : '',
+      verifiedOnDate: c.serviceSelections?.serviceDate || new Date().toISOString().split('T')[0],
+
+      authPostObituaryWebsite: true,
+      authLiveStreamService: true,
+      authLiveStreamType: 'public',
+
+      directorViewingDate: c.serviceSelections.serviceDate || '2026-09-22',
+      directorViewingTime: '10:00 AM',
+      directorViewingPlace: c.serviceSelections.viewingParlor || 'Chapel 1 (Main Sanctuary)',
+      directorWakeDate: '',
+      directorWakeHoursFrom: '04:00 PM',
+      directorWakeHoursTo: '08:00 PM',
+      directorWakeLocation: 'Chapel 1 (Main Sanctuary)',
+      directorFuneralDate: c.serviceSelections.serviceDate || '2026-09-22',
+      directorFuneralHour: c.serviceSelections.serviceTime || '11:00 AM',
+      directorFuneralLocation: c.serviceSelections.serviceVenueName || "Benta's Funeral Home - Chapel 1",
+      directorFuneralAddress: '630 St. Nicholas Ave, New York, NY 10030',
+      directorDispositionDate: c.serviceSelections.serviceDate || '2026-09-22',
+      directorDispositionDueTime: '01:30 PM',
+      directorDispositionMode: isCremation ? 'cremation' : 'burial',
+      directorCemeteryCrematory: c.serviceSelections.crematoryOrCemeteryName || 'The Woodlawn Cemetery & Crematory',
+      directorCemeteryLocation: 'Bronx, NY',
+      directorSection: 'Oak Crest',
+      directorPlot: 'Lot 14',
+      directorRange: 'Range B',
+      directorGraveNum: 'Grave 4',
+      directorLot: 'Lot 14B',
+
+      organizationsAssociations: 'Alpha Phi Alpha Fraternity, Harlem Historical Society, NAACP Lifetime Member',
+      favoriteColor: 'Royal Blue & Gold',
+      favoriteMusicType: 'Classic Gospel, Traditional Hymns & Bebop Jazz',
+      interests: 'Reading, mentoring Harlem youth, gardening, piano',
+      knownFor: 'Warm wisdom, unconditional kindness, brilliant lectures, community leadership',
+      favoriteQuote: 'To whom much is given, much is required.',
+      proudestAccomplishment: 'Mentoring three generations of Harlem scholars and seeing all his children graduate college.',
+      historicalMilestoneWitnessed: '1963 March on Washington & 2008 Presidential Inauguration'
+    },
+    dispositionSchedule: {
+      sequence: 'same_day',
+      dateOfDisposition: c.serviceSelections.serviceDate || '2026-09-22',
+      dueTimeForDisposition: '01:30 PM',
+      modeOfDisposition: isCremation ? 'cremation' : 'burial',
+      cemeteryOrCrematory: c.serviceSelections.crematoryOrCemeteryName || 'The Woodlawn Cemetery & Crematory',
+      locationCityState: 'Bronx, NY',
+      section: 'Section 48',
+      plot: 'Plot 12',
+      range: 'Range A',
+      graveNumber: 'Grave 2',
+      lot: 'Lot 8'
+    },
     sectionI: {
       A_alternativeServicesTitle: 'N/A (Full Service Selected)',
       A_alternativeServicesAmount: 0,
       directCremationOption: undefined,
       directBurialOption: undefined,
+      A_otherSpecify: '',
+      A_otherAmount: 0,
 
       B_transferOfRemainsAmount: BFH_GPL_2026.transferOfRemainsLocalNYC,
       B_excessMilesCount: 0,
       B_excessMilesRate: BFH_GPL_2026.excessMilesPerMileRate,
       B_excessMilesAmount: 0,
+      B_otherSpecify: '',
+      B_otherAmount: 0,
 
       C1_embalmingAmount: BFH_GPL_2026.embalming,
       C1_embalmingSelected: false,
@@ -569,9 +727,14 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       C2_refrigerationDays: 0,
       C2_refrigerationRatePerDay: BFH_GPL_2026.refrigerationDailyRate,
       C2_refrigerationAmount: 0,
+      C2_otherSpecify: '',
       C2_otherAmount: 0,
+      C_otherSpecify: '',
+      C_otherAmount: 0,
 
       D_basicArrangementsAmount: BFH_GPL_2026.basicArrangements,
+      D_otherSpecify: '',
+      D_otherAmount: 0,
 
       E1_supervisionVisitationAmount: 0,
       E1_isAfterHours: false,
@@ -582,7 +745,10 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       E3_supervisionMemorialAmount: 0,
       E3_supervisionDisintermentAmount: 0,
       E3_consulateFilingFeeAmount: 0,
+      E3_otherSupervisionSpecify: '',
       E3_otherSupervisionAmount: 0,
+      E_otherSpecify: '',
+      E_otherAmount: 0,
 
       F1_facilitiesVisitationAmount: 0,
       F2_facilitiesFuneralServiceAmount: 0,
@@ -591,9 +757,15 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       F3_repastRoomAmount: 0,
       F_combinedSupervisionAndFacilitiesSelected: false,
       F_combinedSupervisionAndFacilitiesAmount: 0,
+      F_otherSpecify: '',
+      F_otherAmount: 0,
+      F3_otherFacilitiesSpecify: '',
+      F3_otherFacilitiesAmount: 0,
 
       G_vehicles: defaultLiveryVehicles,
       G_totalLiveryAmount: 0,
+      G_otherSpecify: '',
+      G_otherAmount: 0,
 
       H1_casketSelected: false,
       H1_casketSupplier: 'Batesville / BFH Reserve',
@@ -614,6 +786,9 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       H3_urnModelName: 'The Harlem Jazz Living Memorial Bronze Urn',
       H3_urnMaterial: 'Hand-Spun Solid Bronze with Gold Leaf Patina',
       H3_urnAmount: 0,
+
+      H_otherSpecify: '',
+      H_otherAmount: 0,
 
       I1_memorialCardsAmount: 0,
       I1_memorialCardsType: 'with_photo_50',
@@ -636,7 +811,9 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
 
       I7_clothingBurialGarmentsAmount: 0,
       I8_registerBookAmount: 0,
-      I8_registerBookType: 'Leatherette Keepsake Register Book with Gold Benta Crest',
+      I8_registerBookQty: 0,
+      I8_registerBookUnitPrice: BFH_GPL_2026.stationery.registerBookBase,
+      I8_registerBookType: 'Leatherette Keepsake Register Book with Gold Benta Crest ($50.00)',
 
       I9_deathNoticesAmount: 0,
       I10_programsMatrix: {
@@ -656,9 +833,23 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       I12_casketEngravingAmount: 0,
       I12_urnKeepsakeTransfersAmount: 0,
       I12_equipmentSetupAmount: 0,
+      I12_otherSpecify: '',
+      I12_otherAmount: 0,
+      I12_other2Specify: '',
+      I12_other2Amount: 0,
+      I12_other3Specify: '',
+      I12_other3Amount: 0,
+      I_otherSpecify: '',
+      I_otherAmount: 0,
+      I_other2Specify: '',
+      I_other2Amount: 0,
+      I_other3Specify: '',
+      I_other3Amount: 0,
 
       J1_forwardingRemainsAmount: 0,
       J2_receivingRemainsAmount: 0,
+      J_otherSpecify: '',
+      J_otherAmount: 0,
 
       totalFuneralHomeCharges: 0
     },
@@ -669,18 +860,26 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       clergyHonorariaAmount: 350.00,
       deathCertificateTranscriptsCount: 6,
       deathCertificatePricePerCopy: BFH_GPL_2026.cashAdvances.nycDeathCertificateTranscriptRate,
-      deathCertificateTranscriptsAmount: 90.00,
+      deathCertificateTranscriptsAmount: (c.decedent.veteran ? 3 : 6) * BFH_GPL_2026.cashAdvances.nycDeathCertificateTranscriptRate,
+      isVeteranDiscountApplied: c.decedent.veteran || false,
+      freeVeteranTranscriptsCount: c.decedent.veteran ? 3 : 0,
       liveryCashAdvanceAmount: 0,
-      pallbearersCount: 4,
+      pallbearersCount: 0,
       pallbearersAmount: 400.00,
       publicTransportationShippingAmount: 0,
-      gratuitiesLiveryAndStaffAmount: 150.00,
-      bridgeAndRoadTollsAmount: 75.00,
-      organistMusicianName: c.serviceSelections.organistName || 'Sanctuary Master Organist',
+      gratuitiesLiveryAndStaffAmount: 100.00,
+      bridgeAndRoadTollsAmount: 125.00,
+      organistMusicianName: 'Sanctuary Master Organist',
       organistMusicianAmount: 300.00,
       eVitalFilingFeeAmount: BFH_GPL_2026.cashAdvances.eVitalFilingFee,
       nycCorrectionFeeAmount: 0,
       cateringReceptionAmount: 0,
+      otherCashAdvanceSpecify: '',
+      otherCashAdvanceAmount: 0,
+      otherCashAdvance2Specify: '',
+      otherCashAdvance2Amount: 0,
+      otherCashAdvance3Specify: '',
+      otherCashAdvance3Amount: 0,
       customCashAdvances: [],
       totalCashAdvances: 0
     },
@@ -1005,6 +1204,38 @@ export const computeContractDiffs = (
       newValue: `$${next.sectionII.pallbearersAmount.toFixed(2)}`,
       deltaAmount: next.sectionII.pallbearersAmount - prev.sectionII.pallbearersAmount
     });
+  }
+
+  // 7. Section I & II "Other" Custom Fields
+  const otherChecks = [
+    { cat: 'Alternative Services', name: 'Other Alternative Services', prevSpec: prev.sectionI.A_otherSpecify, nextSpec: next.sectionI.A_otherSpecify, prevAmt: prev.sectionI.A_otherAmount || 0, nextAmt: next.sectionI.A_otherAmount || 0 },
+    { cat: 'Transfer of Remains', name: 'Other Transfer of Remains', prevSpec: prev.sectionI.B_otherSpecify, nextSpec: next.sectionI.B_otherSpecify, prevAmt: prev.sectionI.B_otherAmount || 0, nextAmt: next.sectionI.B_otherAmount || 0 },
+    { cat: 'Preparation of Remains', name: 'Other Preparation', prevSpec: prev.sectionI.C2_otherSpecify || prev.sectionI.C_otherSpecify, nextSpec: next.sectionI.C2_otherSpecify || next.sectionI.C_otherSpecify, prevAmt: (prev.sectionI.C2_otherAmount || 0) + (prev.sectionI.C_otherAmount || 0), nextAmt: (next.sectionI.C2_otherAmount || 0) + (next.sectionI.C_otherAmount || 0) },
+    { cat: 'Arrangements', name: 'Other Arrangements', prevSpec: prev.sectionI.D_otherSpecify, nextSpec: next.sectionI.D_otherSpecify, prevAmt: prev.sectionI.D_otherAmount || 0, nextAmt: next.sectionI.D_otherAmount || 0 },
+    { cat: 'Supervision', name: 'Other Supervision', prevSpec: prev.sectionI.E3_otherSupervisionSpecify || prev.sectionI.E_otherSpecify, nextSpec: next.sectionI.E3_otherSupervisionSpecify || next.sectionI.E_otherSpecify, prevAmt: (prev.sectionI.E3_otherSupervisionAmount || 0) + (prev.sectionI.E_otherAmount || 0), nextAmt: (next.sectionI.E3_otherSupervisionAmount || 0) + (next.sectionI.E_otherAmount || 0) },
+    { cat: 'Facilities', name: 'Other Facilities', prevSpec: prev.sectionI.F_otherSpecify || prev.sectionI.F3_otherFacilitiesSpecify, nextSpec: next.sectionI.F_otherSpecify || next.sectionI.F3_otherFacilitiesSpecify, prevAmt: (prev.sectionI.F_otherAmount || 0) + (prev.sectionI.F3_otherFacilitiesAmount || 0), nextAmt: (next.sectionI.F_otherAmount || 0) + (next.sectionI.F3_otherFacilitiesAmount || 0) },
+    { cat: 'Livery', name: 'Other Livery', prevSpec: prev.sectionI.G_otherSpecify, nextSpec: next.sectionI.G_otherSpecify, prevAmt: prev.sectionI.G_otherAmount || 0, nextAmt: next.sectionI.G_otherAmount || 0 },
+    { cat: 'Merchandise', name: 'Other Merchandise', prevSpec: prev.sectionI.H_otherSpecify, nextSpec: next.sectionI.H_otherSpecify, prevAmt: prev.sectionI.H_otherAmount || 0, nextAmt: next.sectionI.H_otherAmount || 0 },
+    { cat: 'Additional Services', name: 'Other Additional Services/Merchandise (Line 1)', prevSpec: prev.sectionI.I_otherSpecify || prev.sectionI.I12_otherSpecify, nextSpec: next.sectionI.I_otherSpecify || next.sectionI.I12_otherSpecify, prevAmt: (prev.sectionI.I_otherAmount || 0) + (prev.sectionI.I12_otherAmount || 0), nextAmt: (next.sectionI.I_otherAmount || 0) + (next.sectionI.I12_otherAmount || 0) },
+    { cat: 'Additional Services', name: 'Other Additional Services/Merchandise (Line 2)', prevSpec: prev.sectionI.I_other2Specify || prev.sectionI.I12_other2Specify, nextSpec: next.sectionI.I_other2Specify || next.sectionI.I12_other2Specify, prevAmt: (prev.sectionI.I_other2Amount || 0) + (prev.sectionI.I12_other2Amount || 0), nextAmt: (next.sectionI.I_other2Amount || 0) + (next.sectionI.I12_other2Amount || 0) },
+    { cat: 'Additional Services', name: 'Other Additional Services/Merchandise (Line 3)', prevSpec: prev.sectionI.I_other3Specify || prev.sectionI.I12_other3Specify, nextSpec: next.sectionI.I_other3Specify || next.sectionI.I12_other3Specify, prevAmt: (prev.sectionI.I_other3Amount || 0) + (prev.sectionI.I12_other3Amount || 0), nextAmt: (next.sectionI.I_other3Amount || 0) + (next.sectionI.I12_other3Amount || 0) },
+    { cat: 'Cash Advances', name: 'Other Cash Advance (Line 1)', prevSpec: prev.sectionII.otherCashAdvanceSpecify, nextSpec: next.sectionII.otherCashAdvanceSpecify, prevAmt: prev.sectionII.otherCashAdvanceAmount || 0, nextAmt: next.sectionII.otherCashAdvanceAmount || 0 },
+    { cat: 'Cash Advances', name: 'Other Cash Advance (Line 2)', prevSpec: prev.sectionII.otherCashAdvance2Specify, nextSpec: next.sectionII.otherCashAdvance2Specify, prevAmt: prev.sectionII.otherCashAdvance2Amount || 0, nextAmt: next.sectionII.otherCashAdvance2Amount || 0 },
+    { cat: 'Cash Advances', name: 'Other Cash Advance (Line 3)', prevSpec: prev.sectionII.otherCashAdvance3Specify, nextSpec: next.sectionII.otherCashAdvance3Specify, prevAmt: prev.sectionII.otherCashAdvance3Amount || 0, nextAmt: next.sectionII.otherCashAdvance3Amount || 0 },
+  ];
+
+  for (const oc of otherChecks) {
+    if (oc.prevAmt !== oc.nextAmt || oc.prevSpec !== oc.nextSpec) {
+      diffs.push({
+        id: `diff-${Date.now()}-${counter++}`,
+        category: oc.cat as any,
+        itemDescription: `${oc.name}: ${oc.nextSpec || oc.prevSpec || 'Custom Item'}`,
+        fieldChanged: oc.prevAmt === 0 && oc.nextAmt > 0 ? 'Added Other Item' : oc.nextAmt === 0 ? 'Removed Other Item' : 'Other Item Amount/Description Modified',
+        oldValue: `${oc.prevSpec ? `"${oc.prevSpec}" ` : ''}$${oc.prevAmt.toFixed(2)}`,
+        newValue: `${oc.nextSpec ? `"${oc.nextSpec}" ` : ''}$${oc.nextAmt.toFixed(2)}`,
+        deltaAmount: oc.nextAmt - oc.prevAmt
+      });
+    }
   }
 
   return diffs;

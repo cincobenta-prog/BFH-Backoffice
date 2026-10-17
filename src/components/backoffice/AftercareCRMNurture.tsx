@@ -44,12 +44,12 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
             <h2 className="font-serif-title text-xl font-bold text-neutral-900">
               Compassionate Aftercare & Family Nurture Engine
             </h2>
-            <span className="bg-red-50 text-[#991b1b] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200">
+            <span className="bg-red-50 text-[#800000] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200">
               Automated CRM Touchpoints
             </span>
           </div>
           <p className="text-xs text-neutral-500 mt-0.5 font-light">
-            Nurturing long-term relationships with Next of Kin <strong className="text-[#991b1b] font-semibold">{caseData.informant.fullName}</strong> following the service.
+            Nurturing long-term relationships with Next of Kin <strong className="text-[#800000] font-semibold">{caseData.informant.fullName}</strong> following the service.
           </p>
         </div>
       </div>
@@ -71,7 +71,7 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
             >
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#991b1b] bg-red-50 px-2.5 py-1 rounded-full border border-red-200">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#800000] bg-red-50 px-2.5 py-1 rounded-full border border-red-200">
                     Day {item.triggerDaysPostService} Post-Service
                   </span>
                   <span className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full ${
@@ -90,7 +90,7 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
                 </p>
 
                 <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 text-[11px] text-neutral-800 space-y-1">
-                  <span className="font-bold text-[#991b1b] block">{template.subject}</span>
+                  <span className="font-bold text-[#800000] block">{template.subject}</span>
                   <p className="line-clamp-3 text-neutral-600 font-light">{template.body}</p>
                 </div>
               </div>
@@ -106,7 +106,7 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
                 {!isSent ? (
                   <button
                     onClick={() => handleTriggerMilestone(idx)}
-                    className="w-1/2 py-2 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-sm border border-amber-300/30"
+                    className="w-1/2 py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-sm border border-amber-300/30"
                   >
                     <Send className="w-3 h-3 text-amber-300" />
                     <span>Send Now</span>
@@ -140,7 +140,7 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
 
         <button
           onClick={() => alert('Automated 5-star review outreach scheduled for Day 14.')}
-          className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg whitespace-nowrap transition shadow-md shadow-red-950/20 border border-amber-300/40"
+          className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-lg whitespace-nowrap transition shadow-md shadow-red-950/20 border border-amber-300/40"
         >
           Trigger Review Request
         </button>
@@ -165,7 +165,7 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
             <div className="p-4 bg-[#fbfbfd] rounded-xl border border-neutral-200 text-xs space-y-3 font-sans">
               <p className="text-neutral-600"><strong>To:</strong> {caseData.informant.fullName} &lt;{caseData.informant.email}&gt;</p>
               <p className="text-neutral-600"><strong>From:</strong> Jason Benta &lt;care@e-bfh.com&gt;</p>
-              <p className="text-[#991b1b] font-bold"><strong>Subject:</strong> {defaultTemplates[activePreview.templateName]?.subject}</p>
+              <p className="text-[#800000] font-bold"><strong>Subject:</strong> {defaultTemplates[activePreview.templateName]?.subject}</p>
               <div className="border-t border-neutral-200 pt-3 text-neutral-700 whitespace-pre-line leading-relaxed font-light">
                 {defaultTemplates[activePreview.templateName]?.body}
               </div>
@@ -174,7 +174,7 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
             <div className="flex justify-end">
               <button
                 onClick={() => setActivePreview(null)}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2 rounded-lg transition"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2 rounded-lg transition"
               >
                 Close Preview
               </button>

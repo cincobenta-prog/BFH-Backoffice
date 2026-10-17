@@ -3,6 +3,8 @@
 // Verified Operational Data for NYC & Tri-State Area (NY, NJ, CT)
 // ============================================================================
 
+import { BFH_FLORAL_CATALOG } from './floralCatalog';
+
 export interface StaffMember {
   id: string;
   name: string;
@@ -82,7 +84,7 @@ export interface FloralCatalogItem {
   floristPhone: string;
   floristEmail: string;
   name: string;
-  category: 'casket_spray' | 'standing_spray' | 'wreath' | 'basket' | 'urn_surround' | 'boutonniere';
+  category: 'casket_spray' | 'standing_spray' | 'wreath' | 'basket' | 'urn_surround' | 'boutonniere' | 'heart' | 'cross' | 'inside_casket' | 'letter_tribute' | 'danielas' | 'custom';
   price: number;
   description: string;
   dimensions?: string;
@@ -1007,135 +1009,23 @@ export const TRI_STATE_NURSING_HOMES_DIRECTORY: MedicalFacilityDirectoryItem[] =
 // 6. HARLEM & NYC FLORAL PARTNERS & CATALOGS
 // ============================================================================
 export const FLORAL_CATALOG_DATA: FloralCatalogItem[] = [
-  // Barbara's Flowers (Harlem / Brooklyn)
-  {
-    id: 'fl-barb-1',
-    floristId: 'barbaras_flowers',
-    floristName: "Barbara's Flowers (Harlem)",
-    floristAddress: '2522 Frederick Douglass Blvd, New York, NY 10030',
-    floristPhone: '(212) 234-3211',
-    floristEmail: 'orders@barbarasflowershop.net',
-    name: 'Grand Harlem Casket Spray',
-    category: 'casket_spray',
-    price: 450,
-    description: 'Full-length premium casket spray of deep red velvet roses, white oriental lilies, snapdragons, and lush Italian ruscus.',
-    dimensions: '48" L x 26" W',
-    leadTimeHours: 12
-  },
-  {
-    id: 'fl-barb-2',
-    floristId: 'barbaras_flowers',
-    floristName: "Barbara's Flowers (Harlem)",
-    floristAddress: '2522 Frederick Douglass Blvd, New York, NY 10030',
-    floristPhone: '(212) 234-3211',
-    floristEmail: 'orders@barbarasflowershop.net',
-    name: 'Solid Heart of Devotion Standing Wreath',
-    category: 'wreath',
-    price: 375,
-    description: 'Solid standing sympathy heart covered in pristine white carnations with an asymmetrical cluster of crimson Ecuadorian roses.',
-    dimensions: '24" Heart on 54" Wire Easel',
-    leadTimeHours: 12
-  },
-  {
-    id: 'fl-barb-3',
-    floristId: 'barbaras_flowers',
-    floristName: "Barbara's Flowers (Harlem)",
-    floristAddress: '2522 Frederick Douglass Blvd, New York, NY 10030',
-    floristPhone: '(212) 234-3211',
-    floristEmail: 'orders@barbarasflowershop.net',
-    name: 'Broken Heart Tribute Wreath',
-    category: 'wreath',
-    price: 425,
-    description: 'Traditional solid white carnation heart with a jagged red rose "broken" path through the center representing profound family loss.',
-    dimensions: '26" Heart on 54" Wire Easel',
-    leadTimeHours: 18
-  },
-  {
-    id: 'fl-barb-4',
-    floristId: 'barbaras_flowers',
-    floristName: "Barbara's Flowers (Harlem)",
-    floristAddress: '2522 Frederick Douglass Blvd, New York, NY 10030',
-    floristPhone: '(212) 234-3211',
-    floristEmail: 'orders@barbarasflowershop.net',
-    name: 'Altar Tribute Pedestal Baskets (Pair)',
-    category: 'basket',
-    price: 225,
-    description: 'Matching pair of large wicker basket arrangements featuring gladioli, hydrangeas, larkspur, and Fuji mums for church sanctuary altars.',
-    dimensions: '36" H each',
-    leadTimeHours: 12
-  },
-  {
-    id: 'fl-barb-5',
-    floristId: 'barbaras_flowers',
-    floristName: "Barbara's Flowers (Harlem)",
-    floristAddress: '2522 Frederick Douglass Blvd, New York, NY 10030',
-    floristPhone: '(212) 234-3211',
-    floristEmail: 'orders@barbarasflowershop.net',
-    name: 'Cremation Urn Floral Garden Surround',
-    category: 'urn_surround',
-    price: 195,
-    description: 'Circular floral wreath designed to frame a memorial urn with orchids, miniature spray roses, and seeded eucalyptus.',
-    dimensions: '16" Outer Diameter',
-    leadTimeHours: 8
-  },
-
-  // Daniela's Flower Shop (Manhattan / Broadway)
-  {
-    id: 'fl-dan-1',
-    floristId: 'danielas_flowers',
-    floristName: "Daniela's Flower Shop (Manhattan)",
-    floristAddress: '3650 Broadway (at W 150th St), New York, NY 10031',
-    floristPhone: '(212) 283-9300',
-    floristEmail: 'orders@uptowndanielasflowershop.com',
-    name: 'Classic White Peace Standing Spray',
-    category: 'standing_spray',
-    price: 295,
-    description: 'Graceful single-ended standing easel spray of white calla lilies, dendrobium orchids, spider mums, and palm greens.',
-    dimensions: '42" H on 54" Easel',
-    leadTimeHours: 12
-  },
-  {
-    id: 'fl-dan-2',
-    floristId: 'danielas_flowers',
-    floristName: "Daniela's Flower Shop (Manhattan)",
-    floristAddress: '3650 Broadway (at W 150th St), New York, NY 10031',
-    floristPhone: '(212) 283-9300',
-    floristEmail: 'orders@uptowndanielasflowershop.com',
-    name: 'Eternal Remembrance Floral Cross',
-    category: 'wreath',
-    price: 385,
-    description: 'Solid floral standing cross composed of white cushion mums with a sash of deep lavender and purple tea roses.',
-    dimensions: '36" Cross on 60" Easel',
-    leadTimeHours: 18
-  },
-  {
-    id: 'fl-dan-3',
-    floristId: 'danielas_flowers',
-    floristName: "Daniela's Flower Shop (Manhattan)",
-    floristAddress: '3650 Broadway (at W 150th St), New York, NY 10031',
-    floristPhone: '(212) 283-9300',
-    floristEmail: 'orders@uptowndanielasflowershop.com',
-    name: 'Garden of Memories Pastel Casket Spray',
-    category: 'casket_spray',
-    price: 395,
-    description: 'Pastel botanical casket cover with blush pink garden roses, lavender stock, peach carnations, and silver dollar eucalyptus.',
-    dimensions: '44" L x 24" W',
-    leadTimeHours: 12
-  },
-  {
-    id: 'fl-dan-4',
-    floristId: 'danielas_flowers',
-    floristName: "Daniela's Flower Shop (Manhattan)",
-    floristAddress: '3650 Broadway (at W 150th St), New York, NY 10031',
-    floristPhone: '(212) 283-9300',
-    floristEmail: 'orders@uptowndanielasflowershop.com',
-    name: 'Celebration of Life Table Tribute',
-    category: 'basket',
-    price: 125,
-    description: 'Compact table arrangement of white hydrangea, ivory roses, and greens in a ceramic container for parlor registry tables.',
-    dimensions: '14" H x 12" W',
-    leadTimeHours: 6
-  }
+  ...BFH_FLORAL_CATALOG.map((bfhItem): FloralCatalogItem => {
+    const isDaniela = bfhItem.category === 'danielas' || (bfhItem.floristPartner && bfhItem.floristPartner.includes('Daniela'));
+    return {
+      id: `fl-${bfhItem.code.toLowerCase()}`,
+      floristId: isDaniela ? 'danielas_flowers' : 'barbaras_flowers',
+      floristName: isDaniela ? "Daniela's Flower Shop (Harlem)" : "Barbara's Flowers (Harlem)",
+      floristAddress: isDaniela ? '3650 Broadway (at W 150th St), New York, NY 10031' : '2522 Frederick Douglass Blvd, New York, NY 10030',
+      floristPhone: isDaniela ? '(212) 283-9300' : '(212) 234-3211',
+      floristEmail: isDaniela ? 'orders@uptowndanielasflowershop.com' : 'orders@barbarasflowershop.net',
+      name: `[${bfhItem.code}] ${bfhItem.name}`,
+      category: bfhItem.category as any,
+      price: bfhItem.pricing.medium || bfhItem.pricing.small || 350,
+      description: bfhItem.description,
+      dimensions: bfhItem.dimensions.medium || bfhItem.dimensions.large || 'Standard Tribute',
+      leadTimeHours: 12
+    };
+  })
 ];
 
 // ============================================================================

@@ -30,7 +30,7 @@ export const NotableServices: React.FC = () => {
       title: 'Visionary Choreographer & Founder, Alvin Ailey American Dance Theater',
       year: '1931 – 1989',
       category: 'arts',
-      image: '/images/ebfh/Ailey_-_2_0.jpg',
+      image: '/images/ebfh/notable/Ailey_-_2_0.jpg',
       description: 'Whose transformative choreography enriched world culture. Benta’s assisted the family and the global dance community in celebrating his immortal artistry.',
       icon: Sparkles,
       tag: 'Master Choreographer'
@@ -50,7 +50,7 @@ export const NotableServices: React.FC = () => {
       title: 'Acclaimed Essayist, Novelist, Playwright & Civil Rights Conscience',
       year: '1924 – 1987',
       category: 'literature',
-      image: '/images/ebfh/JamesBaldwin_-SophieBassouls_GettyImages-970956586.jpg',
+      image: '/images/ebfh/notable/JamesBaldwin_-SophieBassouls_GettyImages-970956586.jpg',
       description: 'One of the twentieth century’s greatest literary figures and Harlem native, whose final journey and community farewell were entrusted to the care of Benta’s.',
       icon: BookOpen,
       tag: 'Literary Giant'
@@ -110,7 +110,7 @@ export const NotableServices: React.FC = () => {
       title: 'Legendary ABC News Journalist & Emmy Award-Winning Host of "Like It Is"',
       year: '1932 – 2012',
       category: 'media',
-      image: '/images/ebfh/Gil_Noblebw.jpg',
+      image: '/images/ebfh/notable/Gil_Noblebw.jpg',
       description: 'Respected investigative journalist and documentarian who chronicled the Black experience for over four decades on television.',
       icon: Mic,
       tag: 'Journalist'
@@ -184,13 +184,13 @@ export const NotableServices: React.FC = () => {
     });
 
   return (
-    <section id="notable" className="py-20 bg-white border-b border-red-900/10 relative">
+    <section id="notable" className="py-20 bg-white border-b border-benta-900/10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="inline-flex items-center space-x-2 bg-red-50 border border-red-200 px-3 py-1 rounded-full text-xs text-[#991b1b] font-bold tracking-wide uppercase">
-            <Award className="w-3.5 h-3.5 text-[#b45309]" />
+          <div className="inline-flex items-center space-x-2 bg-benta-50 border border-benta-200 px-3 py-1 rounded-full text-xs text-[#a0080e] font-bold tracking-wide uppercase">
+            <Award className="w-3.5 h-3.5 text-[#9c7a30]" />
             <span>A Legacy of Reverence Since 1928</span>
           </div>
           <h2 className="font-serif-title text-3xl sm:text-4xl font-bold text-neutral-900">
@@ -208,7 +208,7 @@ export const NotableServices: React.FC = () => {
                 onClick={() => setActiveCategory(c.id)}
                 className={`px-3 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
                   activeCategory === c.id
-                    ? 'bg-[#991b1b] text-white shadow-sm border border-amber-300/40'
+                    ? 'bg-[#a0080e] text-white shadow-sm border border-brass-300/40'
                     : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200'
                 }`}
               >
@@ -225,7 +225,7 @@ export const NotableServices: React.FC = () => {
             return (
               <div 
                 key={idx}
-                className="bg-white rounded-2xl border border-neutral-200 hover:border-red-300 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group"
+                className="bg-white rounded-none border border-neutral-200 hover:border-benta-300 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden group"
               >
                 <div>
                   {/* Real Scraped Photo from e-bfh.com */}
@@ -233,11 +233,11 @@ export const NotableServices: React.FC = () => {
                     <img
                       src={person.image}
                       alt={person.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500"
                       onError={(e) => {
-                        // Fallback placeholder with initials if needed
+                        // Neutral fallback (Benta emblem) so a missing image never shows an unrelated face
                         const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80';
+                        target.src = '/images/ebfh/Benta-Flame-MN.png';
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
@@ -252,13 +252,13 @@ export const NotableServices: React.FC = () => {
                       <h3 className="font-serif-title text-lg font-bold text-white leading-snug">
                         {person.name}
                       </h3>
-                      <p className="text-[11px] text-amber-300 font-mono font-medium">{person.year}</p>
+                      <p className="text-[11px] text-brass-300 font-mono font-medium">{person.year}</p>
                     </div>
                   </div>
 
                   {/* Details */}
                   <div className="p-4 space-y-2">
-                    <p className="text-xs text-[#b45309] font-semibold line-clamp-2">
+                    <p className="text-xs text-[#9c7a30] font-semibold line-clamp-2">
                       {person.title}
                     </p>
                     <p className="text-xs text-neutral-600 leading-relaxed font-light line-clamp-4">
@@ -267,8 +267,8 @@ export const NotableServices: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-4 pt-2 border-t border-neutral-100 flex items-center text-[11px] text-neutral-500 group-hover:text-[#991b1b] transition font-medium">
-                  <Icon className="w-3.5 h-3.5 mr-1.5 text-[#b45309] shrink-0" />
+                <div className="p-4 pt-2 border-t border-neutral-100 flex items-center text-[11px] text-neutral-500 group-hover:text-[#a0080e] transition font-medium">
+                  <Icon className="w-3.5 h-3.5 mr-1.5 text-[#9c7a30] shrink-0" />
                   <span className="truncate">Arranged by Benta's Funeral Home</span>
                 </div>
               </div>
@@ -277,11 +277,11 @@ export const NotableServices: React.FC = () => {
         </div>
 
         {/* Quote banner: Crimson & Gold */}
-        <div className="mt-14 p-8 rounded-2xl bg-gradient-to-r from-[#991b1b] via-[#b91c1c] to-[#991b1b] text-white border border-amber-400/40 text-center max-w-4xl mx-auto shadow-xl shadow-red-950/20">
-          <p className="font-serif-title text-lg sm:text-xl text-amber-200 italic font-medium leading-relaxed">
+        <div className="mt-14 p-8 rounded-none bg-gradient-to-r from-[#a0080e] via-[#7d060b] to-[#a0080e] text-white border border-brass-400/40 text-center max-w-4xl mx-auto shadow-xl shadow-benta-950/20">
+          <p className="font-serif-title text-lg sm:text-xl text-brass-200 italic font-medium leading-relaxed">
             "In 1928, George A. Benta recognized a need in the Harlem Community and in a small way, he tried to fulfill it... We continue this sacred trust today."
           </p>
-          <p className="text-xs text-amber-300 uppercase tracking-widest mt-3 font-bold">
+          <p className="text-xs text-brass-300 uppercase tracking-widest mt-3 font-bold">
             — Benta's Historic Commitment
           </p>
         </div>

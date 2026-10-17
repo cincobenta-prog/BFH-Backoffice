@@ -26,7 +26,6 @@ import {
   Upload, 
   Share2, 
   QrCode, 
-  Headphones, 
   Send, 
   Smartphone, 
   CheckCircle2, 
@@ -34,10 +33,7 @@ import {
   Eye, 
   X, 
   MessageSquare, 
-  Video, 
-  Home, 
   Edit3, 
-  Lock, 
   Download, 
   ExternalLink, 
   Camera, 
@@ -46,14 +42,17 @@ import {
   Layout, 
   MessageCircle, 
   Trash2, 
-  ScrollText, 
-  Flower2 
+  ScrollText,
+  Newspaper,
+  Flower2
 } from 'lucide-react';
+import { Badge } from '../ui/primitives';
 import { FamilyPortalOverviewHome } from './FamilyPortalOverviewHome';
 import { FamilyCareConciergeView } from './FamilyCareConciergeView';
 import { FamilyWebcastServiceView } from './FamilyWebcastServiceView';
 import { FloralTributeShopModal } from './FloralTributeShopModal';
 import { DigitalTributeStudioView } from './DigitalTributeStudioView';
+import { FamilyPortalLayout } from './FamilyPortalLayout';
 
 interface FamilyPortalViewProps {
   activeCase: GoldenRecordCase;
@@ -639,238 +638,24 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
   };
 
   return (
-    <div className="min-h-screen bg-[#fcfbfa] text-neutral-900 font-sans flex flex-col">
+    <FamilyPortalLayout
+      portalTab={portalTab}
+      onChangeTab={setPortalTab}
+      activeCase={activeCase}
+      cases={cases}
+      onSelectCase={onSelectCase}
+      isStaffUser={isStaffUser}
+      onExitPortal={onExitPortal}
+      onOpenGuidedTour={onOpenGuidedTour}
+      onOpenFloralShop={() => setIsFloralShopModalOpen(true)}
+    >
       
-      {/* Top Contact & Announcement Bar (e-bfh.com style) */}
-      <div className="bg-[#141b2b] text-white text-xs py-2 px-4 sm:px-8 flex flex-wrap justify-between items-center gap-2 border-b border-amber-500/30">
-        <div className="flex items-center space-x-3 text-amber-200/90 font-medium">
-          <span>📍 630 Saint Nicholas Ave, New York, NY 10030</span>
-          <span className="hidden md:inline text-neutral-500">|</span>
-          <span className="hidden md:inline">📞 (212) 281-8850</span>
-        </div>
-        <div className="flex items-center space-x-3">
-          {isStaffUser ? (
-            <div className="flex items-center space-x-2">
-              <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
-                👑 Licensed Staff Console Mode
-              </span>
-              {onOpenGuidedTour && (
-                <button
-                  onClick={onOpenGuidedTour}
-                  className="flex items-center space-x-1 bg-amber-400/30 hover:bg-amber-400/40 text-amber-100 px-2.5 py-1 rounded text-[11px] font-bold transition border border-amber-300/50"
-                  title="Launch Family Portal Interactive Tutorial"
-                >
-                  <Sparkles className="w-3 h-3 text-amber-200" />
-                  <span>Portal Tour 🎓</span>
-                </button>
-              )}
-              <button
-                onClick={onExitPortal}
-                className="flex items-center space-x-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 px-2.5 py-1 rounded text-[11px] font-bold transition border border-amber-400/30"
-              >
-                <ArrowLeft className="w-3 h-3" />
-                <span>Return to Director Back-Office</span>
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-3">
-              <span className="text-emerald-400 font-semibold tracking-wide text-xs flex items-center gap-1.5 hidden sm:flex">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Confidential Family Portal</span>
-              </span>
-              {onOpenGuidedTour && (
-                <button
-                  onClick={onOpenGuidedTour}
-                  className="flex items-center space-x-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 px-2.5 py-1 rounded text-[11px] font-bold transition border border-amber-400/40"
-                  title="Launch Family Portal Interactive Walkthrough"
-                >
-                  <Sparkles className="w-3 h-3 text-amber-300 animate-pulse" />
-                  <span>Interactive Guide 💡</span>
-                </button>
-              )}
-              <button
-                onClick={onExitPortal}
-                className="flex items-center space-x-1 bg-red-950/40 hover:bg-red-900/60 text-red-200 px-2.5 py-1 rounded text-[11px] font-bold transition border border-red-700/40"
-              >
-                <Lock className="w-3 h-3 text-red-400" />
-                <span>Sign Out of Family Vault</span>
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Stately Family Portal Header */}
-      <header className="bg-white border-b-2 border-[#991b1b] px-4 sm:px-8 py-4 shadow-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-          
-          {/* Brand Logo & Active Family Header */}
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-2xl bg-[#991b1b] flex items-center justify-center text-white font-serif-title font-bold text-xl shadow-md border-2 border-amber-400/50">
-              BFH
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <h1 className="font-serif-title font-bold text-xl sm:text-2xl text-neutral-900">
-                  The Family Portal
-                </h1>
-                <span className="bg-red-50 text-[#991b1b] border border-red-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-                  {activeCase.caseNumber}
-                </span>
-              </div>
-              <p className="text-xs text-[#b45309] font-medium tracking-wide">
-                Honoring <strong className="text-neutral-900 font-bold">{activeCase.decedent.legalName}</strong> • Spokesperson: {activeCase.informant.fullName}
-              </p>
-            </div>
-          </div>
-
-          {/* Right Header: Staff Navigator vs. Isolated Family Badge */}
-          {isStaffUser ? (
-            <div className="flex items-center space-x-2.5 bg-amber-50/90 px-3 py-1.5 rounded-xl border border-amber-300 shadow-2xs">
-              <span className="text-xs text-amber-900 font-bold hidden lg:inline">Staff Switch Family:</span>
-              <select
-                value={activeCase.id}
-                onChange={(e) => {
-                  const found = cases.find(c => c.id === e.target.value);
-                  if (found) onSelectCase(found);
-                }}
-                className="bg-white border border-amber-300 text-neutral-900 text-xs font-bold rounded-lg px-2.5 py-1.5 outline-none focus:border-[#991b1b] shadow-xs"
-              >
-                {cases.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.caseNumber} — Family of {c.decedent.legalName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-2.5 bg-emerald-50 text-emerald-950 px-3.5 py-2 rounded-xl border border-emerald-200 text-xs shadow-2xs">
-              <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0" />
-              <div>
-                <span className="font-bold text-neutral-900 block">Private Family Access</span>
-                <span className="text-[11px] text-emerald-800 block font-light">
-                  Authorized Informant: <strong>{activeCase.informant.fullName}</strong> ({activeCase.informant.relationship})
-                </span>
-              </div>
-            </div>
-          )}
-
-        </div>
-
-        {/* Family Portal Main Navigation Pills */}
-        <div className="max-w-7xl mx-auto mt-4 flex items-center space-x-1.5 overflow-x-auto pb-1">
-          <button
-            onClick={() => setPortalTab('home')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'home'
-                ? 'bg-[#991b1b] text-white shadow-md ring-2 ring-amber-400'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <Home className="w-3.5 h-3.5 text-amber-300" />
-            <span>🏠 Welcome & Overview</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('obituary')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'obituary'
-                ? 'bg-[#991b1b] text-white shadow-md'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>🕊️ Obituary & Story Studio</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('tribute')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'tribute'
-                ? 'bg-[#991b1b] text-white shadow-md'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <Headphones className="w-3.5 h-3.5 text-amber-500" />
-            <span>🎙️ Digital Tribute</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('webcast')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'webcast'
-                ? 'bg-[#991b1b] text-white shadow-md ring-2 ring-amber-400'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <Video className="w-3.5 h-3.5 text-amber-500" />
-            <span>🔴 Live Webcast & Service Info</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('concierge')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'concierge'
-                ? 'bg-[#991b1b] text-white shadow-md ring-2 ring-amber-400'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <MessageSquare className="w-3.5 h-3.5 text-amber-500" />
-            <span>💬 24/7 Family Care Concierge</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('arrangements')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'arrangements'
-                ? 'bg-[#991b1b] text-white shadow-md'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <Calendar className="w-3.5 h-3.5" />
-            <span>📋 Arrangement Summary</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('documents')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'documents'
-                ? 'bg-[#991b1b] text-white shadow-md'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <PenTool className="w-3.5 h-3.5" />
-            <span>✍️ Legal Documents & eSign</span>
-          </button>
-
-          <button
-            onClick={() => setPortalTab('photos')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition cursor-pointer ${
-              portalTab === 'photos'
-                ? 'bg-[#991b1b] text-white shadow-md'
-                : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
-            }`}
-          >
-            <ImageIcon className="w-3.5 h-3.5" />
-            <span>📸 Memorial Photos</span>
-          </button>
-
-          <button
-            onClick={() => setIsFloralShopModalOpen(true)}
-            className="px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white shadow-md transition ml-auto cursor-pointer"
-          >
-            <Flower2 className="w-3.5 h-3.5 text-amber-200" />
-            <span>🌸 Send Flowers (Daniela’s)</span>
-          </button>
-        </div>
-      </header>
-
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
         {/* Toast Copy Alert */}
         {copiedNotification && (
-          <div className="fixed bottom-6 right-6 z-50 bg-[#141b2b] text-white px-5 py-3 rounded-xl shadow-2xl border border-amber-400/40 flex items-center space-x-3 text-xs font-bold animate-bounce">
+          <div className="fixed bottom-6 right-6 z-50 bg-[#1c1a1a] text-white px-5 py-3 rounded-xl shadow-2xl border border-amber-400/40 flex items-center space-x-3 text-xs font-bold animate-bounce">
             <Check className="w-4 h-4 text-emerald-400" />
             <span>{copiedNotification}</span>
           </div>
@@ -934,7 +719,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setPortalTab('home')}
                 className="inline-flex items-center space-x-2 px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-800 rounded-xl font-bold text-xs transition border border-neutral-300 shadow-xs group cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4 text-[#991b1b] group-hover:-translate-x-0.5 transition-transform" />
+                <ArrowLeft className="w-4 h-4 text-[#800000] group-hover:-translate-x-0.5 transition-transform" />
                 <span>← Back to Welcome Page</span>
               </button>
               <div className="text-xs text-neutral-500 font-mono">
@@ -943,7 +728,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             </div>
             
             {/* Dignified Hero Banner (matching obituary-writer.html) */}
-            <div className="bg-gradient-to-br from-[#141b2b] to-[#1f2a42] text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-amber-500/20">
+            <div className="bg-gradient-to-br from-[#1c1a1a] to-[#1f2a42] text-white p-6 sm:p-8 rounded-2xl shadow-xl relative overflow-hidden border border-amber-500/20">
               <div className="max-w-3xl space-y-2 relative z-10">
                 <span className="inline-block bg-amber-400/20 border border-amber-400/50 text-amber-200 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
                   Nine-Part Trauma-Informed Method • Benta's Memorial Suite
@@ -966,7 +751,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setObitSection('interview')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
                   obitSection === 'interview'
-                    ? 'bg-[#991b1b] text-white shadow-sm'
+                    ? 'bg-[#800000] text-white shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
                 }`}
               >
@@ -977,7 +762,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setObitSection('drafting')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
                   obitSection === 'drafting'
-                    ? 'bg-[#991b1b] text-white shadow-sm'
+                    ? 'bg-[#800000] text-white shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
                 }`}
               >
@@ -988,7 +773,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setObitSection('ledger')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
                   obitSection === 'ledger'
-                    ? 'bg-[#991b1b] text-white shadow-sm'
+                    ? 'bg-[#800000] text-white shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
                 }`}
               >
@@ -999,7 +784,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setObitSection('safety')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
                   obitSection === 'safety'
-                    ? 'bg-[#991b1b] text-white shadow-sm'
+                    ? 'bg-[#800000] text-white shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
                 }`}
               >
@@ -1010,7 +795,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setObitSection('approval')}
                 className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 whitespace-nowrap transition ${
                   obitSection === 'approval'
-                    ? 'bg-[#991b1b] text-white shadow-sm'
+                    ? 'bg-[#800000] text-white shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
                 }`}
               >
@@ -1035,12 +820,12 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       onClick={() => setInterviewStep(s.step)}
                       className={`p-3 rounded-2xl border text-left transition flex items-center space-x-3 ${
                         interviewStep === s.step
-                          ? 'bg-red-50 border-[#991b1b] ring-2 ring-red-500/20 shadow-sm'
+                          ? 'bg-red-50 border-[#800000] ring-2 ring-red-500/20 shadow-sm'
                           : 'bg-white border-neutral-200 hover:bg-neutral-50'
                       }`}
                     >
                       <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                        interviewStep === s.step ? 'bg-[#991b1b] text-white' : 'bg-neutral-100 text-neutral-600'
+                        interviewStep === s.step ? 'bg-[#800000] text-white' : 'bg-neutral-100 text-neutral-600'
                       }`}>
                         {s.step}
                       </div>
@@ -1054,7 +839,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                 {/* Sub-Pane 1: Consent & Spokesperson */}
                 {interviewStep === 1 && (
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                     <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                       <div>
                         <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1064,7 +849,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           One designated spokesperson holds sole authority to review and approve publication.
                         </p>
                       </div>
-                      <span className="bg-red-50 text-[#991b1b] border border-red-200 text-xs font-bold px-3 py-1 rounded-full">
+                      <span className="bg-red-50 text-[#800000] border border-red-200 text-xs font-bold px-3 py-1 rounded-full">
                         Trauma-Informed Gate
                       </span>
                     </div>
@@ -1086,7 +871,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.spokespersonName}
                           onChange={(e) => setObitState({ ...obitState, spokespersonName: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs font-bold text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs font-bold text-neutral-900 focus:border-[#800000] outline-none"
                         />
                       </div>
 
@@ -1096,7 +881,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="email"
                           value={obitState.spokespersonEmail}
                           onChange={(e) => setObitState({ ...obitState, spokespersonEmail: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                         />
                       </div>
 
@@ -1106,7 +891,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.spokespersonRelation}
                           onChange={(e) => setObitState({ ...obitState, spokespersonRelation: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                         />
                       </div>
                     </div>
@@ -1117,7 +902,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         id="consent-check"
                         checked={obitState.consentGranted}
                         onChange={(e) => setObitState({ ...obitState, consentGranted: e.target.checked })}
-                        className="mt-1 accent-[#991b1b] w-4 h-4"
+                        className="mt-1 accent-[#800000] w-4 h-4"
                       />
                       <label htmlFor="consent-check" className="text-xs text-neutral-800 cursor-pointer">
                         <strong>Family Consent Granted:</strong> I authorize Benta's Obituary Assistant to securely assist in drafting this memorial and affirm that our designated spokesperson has final approval rights prior to printing or newspaper transmission.
@@ -1130,7 +915,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           saveObituaryToCase(obitState);
                           setInterviewStep(2);
                         }}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                        className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                       >
                         <span>Proceed to Step 2: The Person →</span>
                       </button>
@@ -1140,7 +925,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                 {/* Sub-Pane 2: The Person Before the Timeline */}
                 {interviewStep === 2 && (
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                     <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                       <div>
                         <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1164,7 +949,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           rows={3}
                           value={obitState.ordinaryHabits}
                           onChange={(e) => setObitState({ ...obitState, ordinaryHabits: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#991b1b] outline-none leading-relaxed"
+                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#800000] outline-none leading-relaxed"
                           placeholder="e.g. Brewing chamomile tea at 6:00 AM every morning and leaving handwritten notes of encouragement..."
                         />
                       </div>
@@ -1177,7 +962,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.signaturePhrase}
                           onChange={(e) => setObitState({ ...obitState, signaturePhrase: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                           placeholder="e.g. “Don't let one bad day tell you who you are.”"
                         />
                       </div>
@@ -1190,7 +975,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           rows={3}
                           value={obitState.definingStory}
                           onChange={(e) => setObitState({ ...obitState, definingStory: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#991b1b] outline-none leading-relaxed"
+                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#800000] outline-none leading-relaxed"
                           placeholder="e.g. When the town music program was cut, she gathered 8 retired teachers to host free violin classes in her living room for four years..."
                         />
                       </div>
@@ -1208,7 +993,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           saveObituaryToCase(obitState);
                           setInterviewStep(3);
                         }}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                        className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                       >
                         <span>Next: Chronology & Milestones →</span>
                       </button>
@@ -1218,7 +1003,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                 {/* Sub-Pane 3: Chronology & Milestones */}
                 {interviewStep === 3 && (
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                     <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                       <div>
                         <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1228,9 +1013,9 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           Capture verified dates, places of origin, education, career, military honors, and affiliations.
                         </p>
                       </div>
-                      <span className="bg-blue-50 text-blue-800 border border-blue-200 text-xs font-bold px-3 py-1 rounded-full">
+                      <Badge tone="brand" className="px-3 py-1 text-xs">
                         Publishable Milestones
-                      </span>
+                      </Badge>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1240,7 +1025,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.birthDetails}
                           onChange={(e) => setObitState({ ...obitState, birthDetails: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                         />
                       </div>
 
@@ -1250,7 +1035,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.passingDetails}
                           onChange={(e) => setObitState({ ...obitState, passingDetails: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                         />
                       </div>
 
@@ -1260,7 +1045,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           rows={3}
                           value={obitState.educationCareer}
                           onChange={(e) => setObitState({ ...obitState, educationCareer: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#991b1b] outline-none leading-relaxed"
+                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#800000] outline-none leading-relaxed"
                           placeholder="e.g. Proud graduate of Hunter College. Dedicated 38 years as a master educator at PS 154 in Harlem..."
                         />
                       </div>
@@ -1278,7 +1063,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           saveObituaryToCase(obitState);
                           setInterviewStep(4);
                         }}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                        className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                       >
                         <span>Next: Family & Services →</span>
                       </button>
@@ -1288,7 +1073,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                 {/* Sub-Pane 4: Family & Services */}
                 {interviewStep === 4 && (
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                     <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                       <div>
                         <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1298,9 +1083,9 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           Acknowledge loved ones, service locations, and charitable tribute funds.
                         </p>
                       </div>
-                      <span className="bg-purple-50 text-purple-800 border border-purple-200 text-xs font-bold px-3 py-1 rounded-full">
-                        Family & Service Details
-                      </span>
+                      <Badge tone="brand" className="px-3 py-1 text-xs">
+                        Family &amp; Service Details
+                      </Badge>
                     </div>
 
                     <div className="space-y-4">
@@ -1312,7 +1097,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           rows={3}
                           value={obitState.survivors}
                           onChange={(e) => setObitState({ ...obitState, survivors: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#991b1b] outline-none leading-relaxed"
+                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#800000] outline-none leading-relaxed"
                           placeholder="e.g. Her devoted husband of 52 years, Robert; children Claire and David; four grandchildren..."
                         />
                       </div>
@@ -1325,7 +1110,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.predeceased}
                           onChange={(e) => setObitState({ ...obitState, predeceased: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                           placeholder="e.g. Her beloved parents Arthur and Mae Williams..."
                         />
                       </div>
@@ -1338,7 +1123,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           rows={2}
                           value={obitState.serviceDetails}
                           onChange={(e) => setObitState({ ...obitState, serviceDetails: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#991b1b] outline-none leading-relaxed"
+                          className="w-full bg-white border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 focus:border-[#800000] outline-none leading-relaxed"
                         />
                       </div>
 
@@ -1350,7 +1135,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={obitState.memorialDonations}
                           onChange={(e) => setObitState({ ...obitState, memorialDonations: e.target.value })}
-                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                          className="w-full bg-white border border-neutral-300 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                         />
                       </div>
                     </div>
@@ -1367,7 +1152,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           handleGenerateDrafts();
                           setObitSection('drafting');
                         }}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                        className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                       >
                         <Sparkles className="w-4 h-4 text-amber-300" />
                         <span>✨ Generate Dual-Length Drafts →</span>
@@ -1398,7 +1183,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       }}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                         obitState.voiceTone === 'warm'
-                          ? 'bg-red-50 text-[#991b1b] border border-red-300'
+                          ? 'bg-red-50 text-[#800000] border border-red-300'
                           : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
                       }`}
                     >
@@ -1412,7 +1197,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       }}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                         obitState.voiceTone === 'stately'
-                          ? 'bg-red-50 text-[#991b1b] border border-red-300'
+                          ? 'bg-red-50 text-[#800000] border border-red-300'
                           : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
                       }`}
                     >
@@ -1432,7 +1217,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   
                   {/* Full Memorial Program Draft */}
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 shadow-sm flex flex-col space-y-4">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm flex flex-col space-y-4">
                     <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                       <div className="flex items-center space-x-2">
                         <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
@@ -1452,7 +1237,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         setObitState(updated);
                         saveObituaryToCase(updated);
                       }}
-                      className="w-full bg-[#fdfbf7] border border-[#ebd8bf] rounded-2xl p-4 text-sm font-serif text-neutral-900 leading-relaxed outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fdfbf7] border border-[#ebd8bf] rounded-2xl p-4 text-sm font-serif text-neutral-900 leading-relaxed outline-none focus:border-[#800000]"
                     />
 
                     <div className="flex justify-between items-center pt-2">
@@ -1470,12 +1255,13 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   </div>
 
                   {/* Short Newspaper Notice Draft */}
-                  <div className="bg-white border border-neutral-200 rounded-3xl p-6 shadow-sm flex flex-col space-y-4">
+                  <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm flex flex-col space-y-4">
                     <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                       <div className="flex items-center space-x-2">
-                        <span className="bg-purple-50 text-purple-800 border border-purple-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                          📰 Short Newspaper Notice
-                        </span>
+                        <Badge tone="brand" className="px-2.5 py-0.5">
+                          <Newspaper className="w-3 h-3" />
+                          <span>Short Newspaper Notice</span>
+                        </Badge>
                       </div>
                       <span className="text-[11px] text-neutral-500 font-mono">
                         ~{obitState.shortNoticeDraft.split(/\s+/).filter(Boolean).length} Words
@@ -1490,7 +1276,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         setObitState(updated);
                         saveObituaryToCase(updated);
                       }}
-                      className="w-full bg-[#fdfbf7] border border-[#ebd8bf] rounded-2xl p-4 text-sm font-serif text-neutral-900 leading-relaxed outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fdfbf7] border border-[#ebd8bf] rounded-2xl p-4 text-sm font-serif text-neutral-900 leading-relaxed outline-none focus:border-[#800000]"
                     />
 
                     <div className="flex justify-between items-center pt-2">
@@ -1512,7 +1298,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <div className="flex justify-end pt-2">
                   <button
                     onClick={() => setObitSection('safety')}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                    className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                   >
                     <span>Proceed to Fraud Shield & Public Disclosure Screen →</span>
                   </button>
@@ -1522,7 +1308,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
             {/* SECTION 3: FACT LEDGER */}
             {obitSection === 'ledger' && (
-              <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+              <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                 <div className="flex flex-wrap justify-between items-center gap-3 border-b border-neutral-200 pb-4">
                   <div>
                     <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1544,7 +1330,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={newFactDetail}
                     onChange={(e) => setNewFactDetail(e.target.value)}
                     placeholder="Enter new fact, story detail, or private memory (e.g. Volunteer choir soloist for 25 years)..."
-                    className="flex-1 bg-white border border-neutral-300 rounded-xl px-3.5 py-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="flex-1 bg-white border border-neutral-300 rounded-xl px-3.5 py-2 text-xs text-neutral-900 outline-none focus:border-[#800000]"
                   />
                   <select
                     value={newFactTag}
@@ -1558,7 +1344,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   </select>
                   <button
                     onClick={handleAddFact}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1"
+                    className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add Fact Entry</span>
@@ -1571,7 +1357,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     const tagStyles = {
                       confirmed: 'bg-emerald-50 text-emerald-800 border-emerald-200',
                       unconfirmed: 'bg-amber-50 text-amber-800 border-amber-200',
-                      private: 'bg-purple-50 text-purple-800 border-purple-200',
+                      private: 'bg-neutral-100 text-neutral-600 border-neutral-200',
                       omitted: 'bg-red-50 text-red-800 border-red-200'
                     };
 
@@ -1593,7 +1379,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
             {/* SECTION 4: FRAUD SHIELD & PUBLIC DISCLOSURE SCREEN */}
             {obitSection === 'safety' && (
-              <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+              <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                 <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                   <div>
                     <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1648,7 +1434,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <div className="flex justify-end pt-2">
                   <button
                     onClick={() => setObitSection('approval')}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                    className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                   >
                     <span>Proceed to 4-Gate Review & Spokesperson Sign-Off →</span>
                   </button>
@@ -1660,7 +1446,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             {obitSection === 'approval' && (
               <div className="space-y-6">
                 
-                <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+                <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
                   <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
                     <div>
                       <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -1670,7 +1456,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         Step 9 of Method: The final sign-off requires four distinct verification passes before publishing.
                       </p>
                     </div>
-                    <span className="bg-red-50 text-[#991b1b] border border-red-200 text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="bg-red-50 text-[#800000] border border-red-200 text-xs font-bold px-3 py-1 rounded-full">
                       Step 9 Protocol
                     </span>
                   </div>
@@ -1682,7 +1468,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         type="checkbox"
                         checked={obitState.reviewGate1Facts}
                         onChange={(e) => setObitState({ ...obitState, reviewGate1Facts: e.target.checked })}
-                        className="accent-[#991b1b] w-4 h-4"
+                        className="accent-[#800000] w-4 h-4"
                       />
                       <span className="text-xs text-neutral-800">
                         <strong>Pass 1: Fact Verification</strong> — All dates, hospitals, schools, and civic organizations match certified records.
@@ -1694,7 +1480,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         type="checkbox"
                         checked={obitState.reviewGate2Names}
                         onChange={(e) => setObitState({ ...obitState, reviewGate2Names: e.target.checked })}
-                        className="accent-[#991b1b] w-4 h-4"
+                        className="accent-[#800000] w-4 h-4"
                       />
                       <span className="text-xs text-neutral-800">
                         <strong>Pass 2: Names & Family Hierarchy</strong> — Correct spelling and relationship order of all surviving spouses, children, grandchildren, and predeceased loved ones.
@@ -1706,7 +1492,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         type="checkbox"
                         checked={obitState.reviewGate3Tone}
                         onChange={(e) => setObitState({ ...obitState, reviewGate3Tone: e.target.checked })}
-                        className="accent-[#991b1b] w-4 h-4"
+                        className="accent-[#800000] w-4 h-4"
                       />
                       <span className="text-xs text-neutral-800">
                         <strong>Pass 3: Voice & Tone</strong> — The language authentically captures our family's heritage and love.
@@ -1718,7 +1504,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         type="checkbox"
                         checked={obitState.reviewGate4Privacy}
                         onChange={(e) => setObitState({ ...obitState, reviewGate4Privacy: e.target.checked })}
-                        className="accent-[#991b1b] w-4 h-4"
+                        className="accent-[#800000] w-4 h-4"
                       />
                       <span className="text-xs text-neutral-800">
                         <strong>Pass 4: Public Disclosure Screen</strong> — No private identifiers, financial passwords, or sensitive residential coordinates are exposed.
@@ -1727,7 +1513,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   </div>
 
                   {/* Official Digital Sign-Off Form */}
-                  <div className="bg-red-50/40 border-2 border-red-200 p-6 rounded-3xl space-y-4">
+                  <div className="bg-red-50/40 border-2 border-red-200 p-6 rounded-2xl space-y-4">
                     <h4 className="font-serif-title font-bold text-base text-neutral-900">
                       Spokesperson Digital Authorization
                     </h4>
@@ -1756,7 +1542,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                     <button
                       onClick={handleFinalSignoff}
-                      className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-3.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-red-950/20 border border-amber-400/40"
+                      className="w-full bg-[#800000] hover:bg-red-800 text-white font-bold text-xs py-3.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-red-950/20 border border-amber-400/40"
                     >
                       <PenTool className="w-4 h-4 text-amber-300" />
                       <span>✍️ Sign & Finalize Approved Obituary for Publication</span>
@@ -1766,12 +1552,12 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                 {/* Printable Certificate Keepsake Frame (from obituary-writer.html) */}
                 {obitState.isSignedOff && (
-                  <div className="bg-white border-2 border-amber-500/80 rounded-3xl p-8 sm:p-12 shadow-2xl text-center space-y-6">
+                  <div className="bg-white border-2 border-amber-500/80 rounded-2xl p-8 sm:p-12 shadow-2xl text-center space-y-6">
                     <div className="text-2xl text-amber-600">❧ &nbsp; ✦ &nbsp; ❧</div>
                     <h2 className="font-serif-title text-2xl sm:text-3xl font-bold text-neutral-900">
                       Certificate of Approved Memorial Obituary
                     </h2>
-                    <p className="text-xs uppercase tracking-widest text-[#991b1b] font-bold">
+                    <p className="text-xs uppercase tracking-widest text-[#800000] font-bold">
                       Benta's Funeral Home, Inc. • Master Archival Record
                     </p>
 
@@ -1788,7 +1574,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div className="pt-2">
                       <button
                         onClick={() => window.print()}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 mx-auto shadow-md"
+                        className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 mx-auto shadow-md"
                       >
                         <Printer className="w-4 h-4" />
                         <span>🖨️ Print Approved Memorial Proof</span>
@@ -1812,7 +1598,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setPortalTab('home')}
                 className="inline-flex items-center space-x-2 px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-800 rounded-xl font-bold text-xs transition border border-neutral-300 shadow-xs group cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4 text-[#991b1b] group-hover:-translate-x-0.5 transition-transform" />
+                <ArrowLeft className="w-4 h-4 text-[#800000] group-hover:-translate-x-0.5 transition-transform" />
                 <span>← Back to Welcome Page</span>
               </button>
               <div className="text-xs text-neutral-500 font-mono">
@@ -1823,9 +1609,9 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* Service Selections Card */}
-            <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
               <div className="flex items-center space-x-3 border-b border-neutral-200 pb-4">
-                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center font-bold text-base">
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center font-bold text-base">
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
@@ -1853,7 +1639,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </div>
                 <div className="flex justify-between py-2 border-b border-neutral-100">
                   <span className="text-neutral-500">Service Date & Time:</span>
-                  <span className="font-bold text-[#991b1b]">{activeCase.serviceSelections.serviceDate} at {activeCase.serviceSelections.serviceTime}</span>
+                  <span className="font-bold text-[#800000]">{activeCase.serviceSelections.serviceDate} at {activeCase.serviceSelections.serviceTime}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-neutral-100">
                   <span className="text-neutral-500">Casket / Urn Selection:</span>
@@ -1871,7 +1657,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             </div>
 
             {/* Statement of Goods and Services (Form AP-47) Transparency Breakdown */}
-            <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
               <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-base">
@@ -1912,10 +1698,10 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </div>
 
                 <div className="p-3.5 bg-red-50/60 rounded-2xl border border-red-200 text-center">
-                  <div className="text-[10px] font-bold text-[#991b1b] uppercase tracking-wider">
+                  <div className="text-[10px] font-bold text-[#800000] uppercase tracking-wider">
                     Sec. III: Grand Total
                   </div>
-                  <div className="text-base font-bold font-mono text-[#991b1b] mt-0.5">
+                  <div className="text-base font-bold font-mono text-[#800000] mt-0.5">
                     ${(activeCase.statementOfGoods?.sectionIII.totalFuneralCharges ?? activeCase.totalAmountDue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </div>
                 </div>
@@ -1945,17 +1731,17 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </div>
 
                 {activeCase.statementOfGoods?.sectionI.I6_flowerItems && activeCase.statementOfGoods.sectionI.I6_flowerItems.length > 0 && !activeCase.statementOfGoods.sectionI.I6_noFlowersRequested && (
-                  <div className="py-2.5 px-3 bg-rose-50/50 rounded-2xl border border-rose-100 space-y-2 my-1">
+                  <div className="py-2.5 px-3 bg-brass-50/70 rounded-xl border border-brass-200/80 space-y-2 my-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-neutral-900 flex items-center gap-1.5">
-                        <span>💐</span>
+                        <Flower2 className="w-3.5 h-3.5 text-brass-600" strokeWidth={2} />
                         <span>Selected Floral Tributes &amp; Sprays:</span>
                       </span>
                       <span className="text-[11px] text-neutral-500 font-serif-title italic">Handcrafted by Benta&apos;s Florist</span>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {activeCase.statementOfGoods.sectionI.I6_flowerItems.map((fl) => (
-                        <div key={fl.id} className="flex items-center space-x-3 p-2 bg-white rounded-xl border border-rose-200/80 shadow-xs">
+                        <div key={fl.id} className="flex items-center space-x-3 p-2 bg-white rounded-xl border border-brass-200/70 shadow-xs">
                           {fl.imageUrl ? (
                             <img
                               src={fl.imageUrl}
@@ -1963,8 +1749,8 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                               className="w-12 h-12 rounded-lg object-cover border border-neutral-200 shrink-0 shadow-2xs"
                             />
                           ) : (
-                            <div className="w-12 h-12 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center shrink-0">
-                              💐
+                            <div className="w-12 h-12 rounded-xl bg-brass-600/10 text-[#800000] flex items-center justify-center shrink-0">
+                              <Flower2 className="w-5 h-5" strokeWidth={1.75} />
                             </div>
                           )}
                           <div className="min-w-0 flex-1">
@@ -1983,12 +1769,12 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                                 </span>
                               )}
                               {fl.ribbonText && (
-                                <span className="italic text-[#991b1b] font-medium">
+                                <span className="italic text-[#800000] font-medium">
                                   &quot;{fl.ribbonText}&quot;
                                 </span>
                               )}
                             </div>
-                            <div className="text-[11px] font-mono font-bold text-[#991b1b] mt-0.5">
+                            <div className="text-[11px] font-mono font-bold text-[#800000] mt-0.5">
                               {fl.quantity} &times; ${fl.unitPrice.toFixed(2)} = ${(fl.quantity * fl.unitPrice).toFixed(2)}
                             </div>
                           </div>
@@ -2011,7 +1797,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             </div>
 
             {/* Vital Statistics Verification Card */}
-            <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-4 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
               <div className="flex items-center space-x-3 border-b border-neutral-200 pb-4">
                 <div className="w-10 h-10 rounded-xl bg-amber-50 text-[#b45309] flex items-center justify-center font-bold text-base">
                   <FileText className="w-5 h-5" />
@@ -2067,7 +1853,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setPortalTab('home')}
                 className="inline-flex items-center space-x-2 px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-800 rounded-xl font-bold text-xs transition border border-neutral-300 shadow-xs group cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4 text-[#991b1b] group-hover:-translate-x-0.5 transition-transform" />
+                <ArrowLeft className="w-4 h-4 text-[#800000] group-hover:-translate-x-0.5 transition-transform" />
                 <span>← Back to Welcome Page</span>
               </button>
               <div className="text-xs text-neutral-500 font-mono">
@@ -2075,7 +1861,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               </div>
             </div>
 
-            <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
               <div className="flex flex-wrap justify-between items-center border-b border-neutral-200 pb-4 gap-4">
                 <div>
                   <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -2098,7 +1884,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         setIsAgreedTerms(false);
                       }
                     }}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20 cursor-pointer"
+                    className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20 cursor-pointer"
                   >
                     <PenTool className="w-3.5 h-3.5 text-amber-300" />
                     <span>Launch eSign Pad</span>
@@ -2113,7 +1899,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div key={doc.id} className="p-4 sm:p-5 rounded-2xl border border-neutral-200 bg-neutral-50/60 hover:bg-neutral-50 transition flex flex-wrap items-center justify-between gap-4">
                       <div className="space-y-1 max-w-xl">
                         <div className="flex items-center space-x-2">
-                          <FileText className="w-4 h-4 text-[#991b1b] shrink-0" />
+                          <FileText className="w-4 h-4 text-[#800000] shrink-0" />
                           <strong className="text-sm font-bold text-neutral-900">{doc.name}</strong>
                           <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border uppercase ${
                             isCompleted
@@ -2144,7 +1930,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                               setTypedSignName(activeCase.informant.fullName || '');
                               setIsAgreedTerms(false);
                             }}
-                            className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs cursor-pointer"
+                            className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs cursor-pointer"
                           >
                             <PenTool className="w-3.5 h-3.5 text-amber-300" />
                             <span>Sign Document</span>
@@ -2176,7 +1962,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 onClick={() => setPortalTab('home')}
                 className="inline-flex items-center space-x-2 px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-800 rounded-xl font-bold text-xs transition border border-neutral-300 shadow-xs group cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4 text-[#991b1b] group-hover:-translate-x-0.5 transition-transform" />
+                <ArrowLeft className="w-4 h-4 text-[#800000] group-hover:-translate-x-0.5 transition-transform" />
                 <span>← Back to Welcome Page</span>
               </button>
               <div className="text-xs text-neutral-500 font-mono">
@@ -2184,13 +1970,13 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               </div>
             </div>
 
-            <div className="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
             
             {/* Studio Header */}
             <div className="flex flex-wrap justify-between items-center border-b border-neutral-200 pb-4 gap-4">
               <div>
                 <div className="flex items-center space-x-2">
-                  <Camera className="w-5 h-5 text-[#991b1b]" />
+                  <Camera className="w-5 h-5 text-[#800000]" />
                   <h3 className="font-serif-title text-xl font-bold text-neutral-900">
                     Memorial Media & 360° Digi-Tribute Photo Studio
                   </h3>
@@ -2207,7 +1993,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     onClick={() => setPhotoSubTab('announcement')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
                       photoSubTab === 'announcement'
-                        ? 'bg-[#991b1b] text-white shadow-xs'
+                        ? 'bg-[#800000] text-white shadow-xs'
                         : 'text-neutral-700 hover:text-neutral-900'
                     }`}
                   >
@@ -2222,7 +2008,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     onClick={() => setPhotoSubTab('gallery')}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center space-x-1.5 ${
                       photoSubTab === 'gallery'
-                        ? 'bg-[#991b1b] text-white shadow-xs'
+                        ? 'bg-[#800000] text-white shadow-xs'
                         : 'text-neutral-700 hover:text-neutral-900'
                     }`}
                   >
@@ -2233,7 +2019,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                 <button
                   onClick={() => setIsPhotoUploadModalOpen(true)}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
                 >
                   <Upload className="w-3.5 h-3.5 text-amber-300" />
                   <span>Upload Photo</span>
@@ -2255,7 +2041,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-2.5">
                       <label className="text-xs font-bold text-neutral-800 flex items-center justify-between">
                         <span className="flex items-center gap-1.5">
-                          <Palette className="w-3.5 h-3.5 text-[#991b1b]" />
+                          <Palette className="w-3.5 h-3.5 text-[#800000]" />
                           Announcement Theme & Palette:
                         </span>
                         <span className="text-[10px] text-neutral-500 uppercase font-mono font-bold">
@@ -2292,16 +2078,16 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-2.5">
                       <label className="text-xs font-bold text-neutral-800 flex items-center justify-between">
                         <span className="flex items-center gap-1.5">
-                          <Layout className="w-3.5 h-3.5 text-[#991b1b]" />
+                          <Layout className="w-3.5 h-3.5 text-[#800000]" />
                           Card Format & Distribution Layout:
                         </span>
                       </label>
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         {[
-                          { id: 'mobile_story_9_16', label: '📱 Mobile Story (9:16)', desc: 'SMS/Text, WhatsApp, Stories' },
-                          { id: 'social_square_1_1', label: '🖼️ Social Square (1:1)', desc: 'Instagram, Facebook, LinkedIn' },
-                          { id: 'landscape_banner_16_9', label: '💻 Landscape Banner (16:9)', desc: 'X/Twitter, Webcast Stream' },
-                          { id: 'printable_flyer_letter', label: '📄 Printable Flyer (8.5x11)', desc: 'Church Bulletin & Easel' }
+                          { id: 'mobile_story_9_16', label: 'Mobile Story (9:16)', desc: 'SMS/Text, WhatsApp, Stories' },
+                          { id: 'social_square_1_1', label: 'Social Square (1:1)', desc: 'Instagram, Facebook, LinkedIn' },
+                          { id: 'landscape_banner_16_9', label: 'Landscape Banner (16:9)', desc: 'X/Twitter, Webcast Stream' },
+                          { id: 'printable_flyer_letter', label: 'Printable Flyer (8.5x11)', desc: 'Church Bulletin & Easel' }
                         ].map((ar) => (
                           <button
                             key={ar.id}
@@ -2309,7 +2095,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             onClick={() => setAnnouncementAspectRatio(ar.id as AnnouncementAspectRatio)}
                             className={`p-2.5 rounded-xl border text-left transition flex flex-col gap-0.5 ${
                               announcementAspectRatio === ar.id
-                                ? 'bg-red-50 border-[#991b1b] text-[#991b1b] font-bold shadow-2xs'
+                                ? 'bg-red-50 border-[#800000] text-[#800000] font-bold shadow-2xs'
                                 : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-100'
                             }`}
                           >
@@ -2324,12 +2110,12 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
                       <div className="flex items-center justify-between">
                         <label className="text-xs font-bold text-neutral-800 flex items-center gap-1.5">
-                          <ImageIcon className="w-3.5 h-3.5 text-[#991b1b]" />
+                          <ImageIcon className="w-3.5 h-3.5 text-[#800000]" />
                           Main Announcement Portrait Photo:
                         </label>
                         <button
                           onClick={() => setIsPhotoUploadModalOpen(true)}
-                          className="text-[11px] text-[#991b1b] hover:underline font-bold"
+                          className="text-[11px] text-[#800000] hover:underline font-bold"
                         >
                           + Upload New
                         </button>
@@ -2344,13 +2130,13 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             onClick={() => setAnnouncementPortraitUrl(p.url)}
                             className={`w-14 h-14 rounded-xl overflow-hidden shrink-0 border-2 transition relative ${
                               announcementPortraitUrl === p.url
-                                ? 'border-[#991b1b] ring-2 ring-red-400 scale-105 shadow-sm'
+                                ? 'border-[#800000] ring-2 ring-red-400 scale-105 shadow-sm'
                                 : 'border-neutral-300 opacity-70 hover:opacity-100'
                             }`}
                           >
                             <img src={p.url} alt={p.caption} className="w-full h-full object-cover" />
                             {announcementPortraitUrl === p.url && (
-                              <span className="absolute bottom-0 inset-x-0 bg-[#991b1b] text-white text-[8px] font-bold text-center">
+                              <span className="absolute bottom-0 inset-x-0 bg-[#800000] text-white text-[8px] font-bold text-center">
                                 Active
                               </span>
                             )}
@@ -2372,7 +2158,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             onClick={() => setAnnouncementFrameStyle(fr.id as any)}
                             className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition ${
                               announcementFrameStyle === fr.id
-                                ? 'bg-[#991b1b] text-white border-[#991b1b]'
+                                ? 'bg-[#800000] text-white border-[#800000]'
                                 : 'bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100'
                             }`}
                           >
@@ -2386,7 +2172,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3 text-xs">
                       <div className="flex items-center justify-between border-b border-neutral-200 pb-1.5">
                         <span className="font-bold text-neutral-800 flex items-center gap-1.5">
-                          <FileText className="w-3.5 h-3.5 text-[#991b1b]" />
+                          <FileText className="w-3.5 h-3.5 text-[#800000]" />
                           Announcement Headline & Details:
                         </span>
                       </div>
@@ -2397,7 +2183,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={announcementHeadline}
                           onChange={(e) => setAnnouncementHeadline(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                           placeholder="e.g. Homegoing Celebration & Celebration of Life"
                         />
                       </div>
@@ -2408,7 +2194,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={announcementWakeInfo}
                           onChange={(e) => setAnnouncementWakeInfo(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                         />
                       </div>
 
@@ -2418,7 +2204,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={announcementServiceInfo}
                           onChange={(e) => setAnnouncementServiceInfo(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                         />
                       </div>
 
@@ -2429,7 +2215,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             type="text"
                             value={announcementServiceVenue}
                             onChange={(e) => setAnnouncementServiceVenue(e.target.value)}
-                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                           />
                         </div>
                         <div>
@@ -2438,7 +2224,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             type="text"
                             value={announcementServiceAddress}
                             onChange={(e) => setAnnouncementServiceAddress(e.target.value)}
-                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                           />
                         </div>
                       </div>
@@ -2450,7 +2236,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             type="text"
                             value={announcementWakeVenue}
                             onChange={(e) => setAnnouncementWakeVenue(e.target.value)}
-                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                           />
                         </div>
                         <div>
@@ -2459,7 +2245,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             type="text"
                             value={announcementOfficiant}
                             onChange={(e) => setAnnouncementOfficiant(e.target.value)}
-                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                           />
                         </div>
                       </div>
@@ -2470,7 +2256,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={announcementCommittal}
                           onChange={(e) => setAnnouncementCommittal(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                         />
                       </div>
 
@@ -2481,7 +2267,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             type="text"
                             value={announcementWebcastUrl}
                             onChange={(e) => setAnnouncementWebcastUrl(e.target.value)}
-                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] font-mono text-[11px]"
+                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] font-mono text-[11px]"
                           />
                         </div>
                         <div>
@@ -2490,7 +2276,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             type="text"
                             value={announcementWebcastPin}
                             onChange={(e) => setAnnouncementWebcastPin(e.target.value)}
-                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] font-mono text-[11px]"
+                            className="w-full text-xs p-2 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] font-mono text-[11px]"
                           />
                         </div>
                       </div>
@@ -2501,7 +2287,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           type="text"
                           value={announcementDonations}
                           onChange={(e) => setAnnouncementDonations(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                         />
                       </div>
 
@@ -2511,7 +2297,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           rows={2}
                           value={announcementFamilyMessage}
                           onChange={(e) => setAnnouncementFamilyMessage(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-white border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                         />
                       </div>
 
@@ -2519,7 +2305,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         <button
                           type="button"
                           onClick={handleSaveAnnouncementData}
-                          className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-2.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-sm"
+                          className="w-full bg-[#800000] hover:bg-red-800 text-white font-bold text-xs py-2.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-sm"
                         >
                           <Check className="w-3.5 h-3.5 text-amber-300" />
                           <span>Save & Synchronize Announcement Graphic</span>
@@ -2536,7 +2322,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     <div className="w-full flex flex-wrap items-center justify-between gap-2 bg-neutral-100 p-3 rounded-2xl border border-neutral-200 text-xs">
                       <div className="flex items-center space-x-2">
                         <span className="font-bold text-neutral-800 flex items-center gap-1.5">
-                          <Eye className="w-4 h-4 text-[#991b1b]" />
+                          <Eye className="w-4 h-4 text-[#800000]" />
                           Live Announcement Preview:
                         </span>
                         <span className="text-[10px] font-mono text-neutral-500">
@@ -2567,7 +2353,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     {/* LIVE RENDERED ANNOUNCEMENT CARD */}
                     <div
                       id="funeral-announcement-card"
-                      className={`w-full rounded-3xl p-6 sm:p-8 transition-all duration-300 shadow-2xl relative overflow-hidden flex flex-col justify-between text-center ${
+                      className={`w-full rounded-2xl p-6 sm:p-8 transition-all duration-300 shadow-2xl relative overflow-hidden flex flex-col justify-between text-center ${
                         announcementAspectRatio === 'mobile_story_9_16'
                           ? 'max-w-sm aspect-[9/16] min-h-[660px]'
                           : announcementAspectRatio === 'social_square_1_1'
@@ -2579,14 +2365,14 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         announcementTheme === 'harlem_obsidian_gold'
                           ? 'bg-[#0f1523] text-white border-2 border-amber-400 shadow-amber-950/40'
                           : announcementTheme === 'sanctuary_crimson_ivory'
-                          ? 'bg-[#fcfaf5] text-neutral-900 border-2 border-[#991b1b] shadow-red-950/30'
+                          ? 'bg-[#fcfaf5] text-neutral-900 border-2 border-[#800000] shadow-red-950/30'
                           : announcementTheme === 'serenity_white_silver'
                           ? 'bg-white text-neutral-900 border-2 border-slate-300 shadow-slate-400/20'
-                          : 'bg-gradient-to-b from-[#1a1c2e] via-[#2d2138] to-[#121124] text-white border-2 border-amber-300 shadow-purple-950/40'
+                          : 'bg-gradient-to-b from-[#221c17] via-[#2a1d12] to-[#161311] text-white border-2 border-brass-400/50 shadow-black/40'
                       }`}
                     >
                       {/* Top Gold / Crimson Foil Filigree Accent */}
-                      <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#991b1b] via-[#d4af37] to-[#991b1b]" />
+                      <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-[#800000] via-[#d4af37] to-[#800000]" />
 
                       {/* Header Section */}
                       <div className="space-y-1.5 pt-2">
@@ -2598,7 +2384,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                         <h4 className={`font-serif-title font-bold text-xs sm:text-sm tracking-wider uppercase ${
                           announcementTheme === 'sanctuary_crimson_ivory' || announcementTheme === 'serenity_white_silver'
-                            ? 'text-[#991b1b]'
+                            ? 'text-[#800000]'
                             : 'text-amber-300'
                         }`}>
                           {announcementHeadline}
@@ -2641,7 +2427,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                           </div>
 
                           {/* Dove / Gold Crest Badge */}
-                          <div className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-[#991b1b] border-2 border-amber-400 flex items-center justify-center text-white text-xs shadow-md">
+                          <div className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-[#800000] border-2 border-amber-400 flex items-center justify-center text-white text-xs shadow-md">
                             🕊️
                           </div>
                         </div>
@@ -2719,7 +2505,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     </div>
 
                     {/* PUBLIC SOCIAL MEDIA & SMS TEXT SHARING ACTION BAR */}
-                    <div className="w-full bg-gradient-to-r from-neutral-900 via-[#141b2b] to-neutral-900 text-white p-5 rounded-2xl border border-amber-400/40 space-y-3 shadow-lg">
+                    <div className="w-full bg-gradient-to-r from-neutral-900 via-[#1c1a1a] to-neutral-900 text-white p-5 rounded-2xl border border-amber-400/40 space-y-3 shadow-lg">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2">
                         <div className="flex items-center space-x-2">
                           <Share2 className="w-4 h-4 text-amber-400" />
@@ -2738,37 +2524,37 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                         {/* 1. Direct SMS Dispatch Launcher */}
                         <button
                           onClick={() => setIsAnnouncementSMSModalOpen(true)}
-                          className="p-2.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 shadow-sm border border-amber-400/30"
+                          className="p-2.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 shadow-sm border border-brass-400/30"
                           title="Send announcement card directly to phone numbers via SMS"
                         >
-                          <Smartphone className="w-4 h-4 text-amber-300" />
-                          <span>📱 Text / SMS</span>
+                          <Smartphone className="w-4 h-4 text-brass-300" />
+                          <span>Text / SMS</span>
                         </button>
 
                         {/* 2. WhatsApp */}
                         <button
                           onClick={handleShareWhatsApp}
-                          className="p-2.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 shadow-sm"
+                          className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 border border-white/15 cursor-pointer"
                           title="Share announcement on WhatsApp"
                         >
-                          <MessageCircle className="w-4 h-4" />
+                          <MessageCircle className="w-4 h-4 text-brass-300" />
                           <span>WhatsApp</span>
                         </button>
 
                         {/* 3. Facebook */}
                         <button
                           onClick={handleShareFacebook}
-                          className="p-2.5 bg-blue-700 hover:bg-blue-600 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 shadow-sm"
+                          className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 border border-white/15 cursor-pointer"
                           title="Share announcement on Facebook"
                         >
-                          <Globe className="w-4 h-4" />
+                          <Globe className="w-4 h-4 text-brass-300" />
                           <span>Facebook</span>
                         </button>
 
                         {/* 4. X (Twitter) */}
                         <button
                           onClick={handleShareTwitter}
-                          className="p-2.5 bg-neutral-800 hover:bg-neutral-700 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 shadow-sm border border-neutral-600"
+                          className="p-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold text-xs transition flex items-center justify-center space-x-1.5 border border-white/15 cursor-pointer"
                           title="Post announcement to X / Twitter"
                         >
                           <span>𝕏 Post</span>
@@ -2821,7 +2607,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <div className="bg-gradient-to-r from-red-50 via-neutral-50 to-amber-50 p-5 rounded-2xl border border-neutral-200 flex flex-wrap items-center justify-between gap-4">
                   <div className="space-y-0.5">
                     <h4 className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
-                      <ImageIcon className="w-4 h-4 text-[#991b1b]" />
+                      <ImageIcon className="w-4 h-4 text-[#800000]" />
                       <span>Memorial Media Vault & Placement Manager</span>
                     </h4>
                     <p className="text-xs text-neutral-600">
@@ -2831,7 +2617,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
                   <button
                     onClick={() => setIsPhotoUploadModalOpen(true)}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
+                    className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
                   >
                     <Plus className="w-3.5 h-3.5 text-amber-300" />
                     <span>Upload New Photo</span>
@@ -2841,7 +2627,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 {/* Photo Gallery Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                   {obitState.photos.map((photo) => (
-                    <div key={photo.id} className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm space-y-3 p-4 flex flex-col justify-between group hover:border-[#991b1b] transition">
+                    <div key={photo.id} className="bg-white border border-neutral-200 rounded-2xl overflow-hidden shadow-sm space-y-3 p-4 flex flex-col justify-between group hover:border-[#800000] transition">
                       <div className="space-y-2.5">
                         <div className="w-full h-52 rounded-xl overflow-hidden bg-neutral-200 relative">
                           <img
@@ -2853,7 +2639,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                             {photo.placement}
                           </span>
                           {announcementPortraitUrl === photo.url && (
-                            <span className="absolute top-2 right-2 bg-[#991b1b] text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                            <span className="absolute top-2 right-2 bg-[#800000] text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
                               ⭐ Active Announcement
                             </span>
                           )}
@@ -2906,10 +2692,10 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
         {/* MODAL: UPLOAD NEW MEMORIAL PHOTO */}
         {isPhotoUploadModalOpen && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl border-2 border-amber-400">
+            <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl border-2 border-amber-400">
               <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                 <div className="flex items-center space-x-2">
-                  <Upload className="w-5 h-5 text-[#991b1b]" />
+                  <Upload className="w-5 h-5 text-[#800000]" />
                   <h4 className="font-serif-title text-lg font-bold text-neutral-900">
                     Upload Memorial Photo
                   </h4>
@@ -2930,21 +2716,21 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={newPhotoUrl}
                     onChange={(e) => setNewPhotoUrl(e.target.value)}
                     placeholder="https://... or paste image URL"
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                   />
                   <div className="flex items-center gap-2 mt-1.5">
                     <span className="text-[10px] text-neutral-500">Quick Samples:</span>
                     <button
                       type="button"
                       onClick={() => setNewPhotoUrl('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80')}
-                      className="text-[10px] text-[#991b1b] underline"
+                      className="text-[10px] text-[#800000] underline"
                     >
                       Sample Portrait
                     </button>
                     <button
                       type="button"
                       onClick={() => setNewPhotoUrl('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80')}
-                      className="text-[10px] text-[#991b1b] underline"
+                      className="text-[10px] text-[#800000] underline"
                     >
                       Sample Legacy
                     </button>
@@ -2964,7 +2750,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={newPhotoCaption}
                     onChange={(e) => setNewPhotoCaption(e.target.value)}
                     placeholder="e.g. Official Family Portrait for Funeral Program"
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                   />
                 </div>
 
@@ -2973,7 +2759,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   <select
                     value={newPhotoPlacement}
                     onChange={(e) => setNewPhotoPlacement(e.target.value as any)}
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-bold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-bold text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                   >
                     <option value="Front Cover">Front Cover & Official Announcement Portrait</option>
                     <option value="Inside Spread">Inside Spread (Printed Program)</option>
@@ -2994,7 +2780,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <button
                   type="button"
                   onClick={handleAddPhoto}
-                  className="px-5 py-2 text-xs font-bold text-white bg-[#991b1b] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20"
+                  className="px-5 py-2 text-xs font-bold text-white bg-[#800000] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20"
                 >
                   Save Photo to Vault
                 </button>
@@ -3006,11 +2792,11 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
         {/* MODAL: DISPATCH FUNERAL ANNOUNCEMENT BY TEXT / SMS */}
         {isAnnouncementSMSModalOpen && (
           <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl border-2 border-amber-400">
+            <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl border-2 border-amber-400">
               
               <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                 <div className="flex items-center space-x-2">
-                  <Smartphone className="w-5 h-5 text-[#991b1b]" />
+                  <Smartphone className="w-5 h-5 text-[#800000]" />
                   <h4 className="font-serif-title text-lg font-bold text-neutral-900">
                     Dispatch Funeral Announcement via SMS
                   </h4>
@@ -3031,7 +2817,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={announcementSMSRecipientName}
                     onChange={(e) => setAnnouncementSMSRecipientName(e.target.value)}
                     placeholder="e.g. Harlem Church Deacons / Cousin Michael"
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                   />
                 </div>
 
@@ -3042,7 +2828,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={announcementSMSRecipientPhone}
                     onChange={(e) => setAnnouncementSMSRecipientPhone(e.target.value)}
                     placeholder="e.g. (212) 555-0198"
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] font-mono"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] font-mono"
                   />
                 </div>
 
@@ -3053,14 +2839,17 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={announcementSMSCustomNote}
                     onChange={(e) => setAnnouncementSMSCustomNote(e.target.value)}
                     placeholder="e.g. Please join us in celebrating Arthur's legacy."
-                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                    className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-300 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                   />
                 </div>
 
                 {/* Live Carrier SMS Bubble Preview */}
                 <div className="bg-neutral-900 text-white p-4 rounded-2xl border border-amber-400/40 space-y-1.5 shadow-inner">
                   <div className="flex items-center justify-between text-[10px] text-amber-400 font-mono">
-                    <span>📱 CARRIER SMS PREVIEW</span>
+                    <span className="flex items-center gap-1.5">
+                      <Smartphone className="w-3 h-3" />
+                      CARRIER SMS PREVIEW
+                    </span>
                     <span>Carrier Delivered</span>
                   </div>
                   <p className="text-[11px] leading-relaxed text-neutral-200">
@@ -3104,7 +2893,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 <button
                   type="button"
                   onClick={() => handleDispatchAnnouncementSMS(announcementSMSRecipientName, announcementSMSRecipientPhone)}
-                  className="px-5 py-2 text-xs font-bold text-white bg-[#991b1b] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20 flex items-center space-x-1.5"
+                  className="px-5 py-2 text-xs font-bold text-white bg-[#800000] hover:bg-red-800 rounded-xl transition shadow-md shadow-red-950/20 flex items-center space-x-1.5"
                 >
                   <Send className="w-3.5 h-3.5 text-amber-300" />
                   <span>Dispatch SMS Announcement</span>
@@ -3119,7 +2908,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
       {/* Floating Toast Alert */}
       {toastAlert && (
-        <div className="fixed top-6 right-6 z-60 bg-[#141b2b] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-amber-400/50 flex items-center space-x-3 animate-fadeIn">
+        <div className="fixed top-6 right-6 z-60 bg-[#1c1a1a] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-amber-400/50 flex items-center space-x-3 animate-fadeIn">
           <Sparkles className="w-5 h-5 text-amber-400 shrink-0 animate-pulse" />
           <p className="text-xs font-medium">{toastAlert}</p>
         </div>
@@ -3127,7 +2916,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
 
       {/* Family Portal Footer */}
       <footer className="bg-white border-t border-neutral-200 py-6 px-4 text-center text-xs text-neutral-500 space-y-1">
-        <p className="font-serif-title font-bold text-[#991b1b]">BENTA'S FUNERAL HOME, INC. • HARLEM, NYC</p>
+        <p className="font-serif-title font-bold text-[#800000]">BENTA'S FUNERAL HOME, INC. • HARLEM, NYC</p>
         <p>630 Saint Nicholas Ave, New York, NY 10030 • (212) 281-8850</p>
       </footer>
 
@@ -3138,13 +2927,13 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             setPortalTab('concierge');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="fixed bottom-6 left-6 z-40 bg-[#141b2b] text-white border-2 border-amber-400 hover:bg-[#991b1b] shadow-2xl px-4 py-3 rounded-2xl flex items-center space-x-3 transition-all duration-300 group hover:scale-105"
+          className="fixed bottom-6 left-6 z-40 bg-[#1c1a1a] text-white border-2 border-amber-400 hover:bg-[#800000] shadow-2xl px-4 py-3 rounded-2xl flex items-center space-x-3 transition-all duration-300 group hover:scale-105"
           title="Open 24/7 Family Care Concierge, Financial Benefits & Legal Assistant"
         >
           <div className="relative">
             <MessageSquare className="w-5 h-5 text-amber-400 group-hover:rotate-12 transition-transform" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#141b2b] animate-ping" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#141b2b]" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#1c1a1a] animate-ping" />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#1c1a1a]" />
           </div>
           <div className="text-left leading-tight hidden sm:block">
             <div className="text-[11px] font-bold text-amber-300 flex items-center space-x-1">
@@ -3160,11 +2949,11 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
       {/* MODAL: OFFICIAL STATUTORY DOCUMENT VIEWER */}
       {viewingDoc && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-300 max-h-[92vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-300 max-h-[92vh] overflow-y-auto">
             {/* Header */}
             <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center font-bold">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
@@ -3188,7 +2977,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             <div className="border-2 border-neutral-300 bg-[#fdfbf7] rounded-2xl p-6 sm:p-8 space-y-5 text-xs text-neutral-800 shadow-inner font-sans">
               {/* Masthead */}
               <div className="text-center border-b border-neutral-300 pb-4 space-y-1">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-[#991b1b]">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-[#800000]">
                   State of New York • Department of Health Bureau of Funeral Directing
                 </div>
                 <h4 className="font-serif-title text-lg font-bold text-neutral-900">
@@ -3282,7 +3071,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                       setTypedSignName(activeCase.informant.fullName || '');
                       setIsAgreedTerms(false);
                     }}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20 cursor-pointer"
+                    className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20 cursor-pointer"
                   >
                     <PenTool className="w-3.5 h-3.5 text-amber-300" />
                     <span>Proceed to Sign</span>
@@ -3315,11 +3104,11 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
       {/* MODAL: INTERACTIVE CANVAS & TYPED E-SIGNATURE PAD */}
       {signingDoc && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-amber-500 max-h-[92vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-amber-500 max-h-[92vh] overflow-y-auto">
             {/* Header */}
             <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center font-bold">
                   <PenTool className="w-5 h-5" />
                 </div>
                 <div>
@@ -3370,7 +3159,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   onClick={() => setSignatureMode('type')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer ${
                     signatureMode === 'type'
-                      ? 'bg-[#991b1b] text-white shadow-sm'
+                      ? 'bg-[#800000] text-white shadow-sm'
                       : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
                   }`}
                 >
@@ -3382,7 +3171,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   onClick={() => setSignatureMode('draw')}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer ${
                     signatureMode === 'draw'
-                      ? 'bg-[#991b1b] text-white shadow-sm'
+                      ? 'bg-[#800000] text-white shadow-sm'
                       : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
                   }`}
                 >
@@ -3402,7 +3191,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     value={typedSignName}
                     onChange={(e) => setTypedSignName(e.target.value)}
                     placeholder="e.g. Eleanor Vance"
-                    className="w-full border border-neutral-300 rounded-xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                    className="w-full border border-neutral-300 rounded-xl px-4 py-2.5 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                   />
                 </div>
                 {/* Cursive Signature Preview */}
@@ -3425,7 +3214,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   <button
                     type="button"
                     onClick={clearCanvas}
-                    className="text-xs text-[#991b1b] font-bold hover:underline cursor-pointer"
+                    className="text-xs text-[#800000] font-bold hover:underline cursor-pointer"
                   >
                     Clear Signature
                   </button>
@@ -3458,7 +3247,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 type="date"
                 value={signDate}
                 onChange={(e) => setSignDate(e.target.value)}
-                className="w-full border border-neutral-300 rounded-xl px-4 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                className="w-full border border-neutral-300 rounded-xl px-4 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
               />
             </div>
 
@@ -3468,7 +3257,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 type="checkbox"
                 checked={isAgreedTerms}
                 onChange={(e) => setIsAgreedTerms(e.target.checked)}
-                className="mt-0.5 rounded-md text-[#991b1b] focus:ring-[#991b1b] w-4 h-4"
+                className="mt-0.5 rounded-md text-[#800000] focus:ring-[#800000] w-4 h-4"
               />
               <span className="text-xs text-neutral-700 leading-relaxed">
                 I, <strong>{activeCase.informant.fullName}</strong>, hereby affirm and certify under penalty of perjury under New York State Law that I have full legal authority as Next of Kin / Authorized Agent pursuant to NY PHL § 4201 to execute <strong>{signingDoc.name}</strong> for the arrangements of <strong>{activeCase.decedent.legalName}</strong>.
@@ -3489,7 +3278,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 type="button"
                 onClick={() => handleExecuteSigning(signingDoc)}
                 disabled={isSigningSubmitting}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer disabled:opacity-50"
+                className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer disabled:opacity-50"
               >
                 <CheckCircle2 className="w-4 h-4 text-amber-300" />
                 <span>{isSigningSubmitting ? 'Stamping & Finalizing...' : 'Adopt & Sign Document'}</span>
@@ -3502,13 +3291,13 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
       {/* MODAL 1: 4-UP PRINTABLE MEMORIAL QR KEEPSAKE CARDS */}
       {isQRModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-4xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-amber-400 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-2xl max-w-4xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-amber-400 max-h-[90vh] overflow-y-auto">
             
             {/* Modal Header */}
             <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
               <div>
                 <div className="flex items-center space-x-2">
-                  <QrCode className="w-5 h-5 text-[#991b1b]" />
+                  <QrCode className="w-5 h-5 text-[#800000]" />
                   <h3 className="font-serif-title text-xl font-bold text-neutral-900">
                     Print-Ready 4-Up Memorial QR Keepsake Cards
                   </h3>
@@ -3521,7 +3310,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
                 >
                   <Printer className="w-4 h-4 text-amber-300" />
                   <span>Print Sheet</span>
@@ -3543,15 +3332,15 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   className="bg-white border-2 border-[#b45309]/60 rounded-2xl p-5 shadow-sm space-y-3 flex flex-col justify-between text-center relative overflow-hidden"
                 >
                   {/* Top Gold Foil Bar */}
-                  <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#991b1b] via-[#d4af37] to-[#991b1b]" />
+                  <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-[#800000] via-[#d4af37] to-[#800000]" />
 
                   <div className="space-y-1">
-                    <span className="text-[9px] font-bold tracking-widest text-[#991b1b] uppercase">
+                    <span className="text-[9px] font-bold tracking-widest text-[#800000] uppercase">
                       Benta's Funeral Home · Harlem, NYC
                     </span>
                     <h4 className="font-serif-title font-bold text-sm sm:text-base text-neutral-900 leading-tight">
                       In Loving Memory of<br />
-                      <strong className="text-[#991b1b]">{activeCase.decedent.legalName}</strong>
+                      <strong className="text-[#800000]">{activeCase.decedent.legalName}</strong>
                     </h4>
                     <div className="text-[10px] text-neutral-500 italic">
                       {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath}
@@ -3583,14 +3372,14 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             {/* Print Instructions */}
             <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-700">
               <div className="flex items-center space-x-2">
-                <Printer className="w-4 h-4 text-[#991b1b]" />
+                <Printer className="w-4 h-4 text-[#800000]" />
                 <span><strong>Print Recommendation:</strong> Use heavy matte white or linen cardstock (80lb+) for the highest quality presentation.</span>
               </div>
               <button
                 onClick={() => {
                   handleCopyText(`https://e-bfh.com/tribute/${activeCase.caseNumber}`, 'Tribute URL');
                 }}
-                className="text-[#991b1b] font-bold hover:underline flex items-center space-x-1"
+                className="text-[#800000] font-bold hover:underline flex items-center space-x-1"
               >
                 <Copy className="w-3.5 h-3.5" />
                 <span>Copy Raw QR Link</span>
@@ -3604,11 +3393,11 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
       {/* MODAL 2: QUICK SHARE DIGITAL TRIBUTE DIALOG */}
       {isShareModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-200">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-200">
             
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <Share2 className="w-5 h-5 text-[#991b1b]" />
+                <Share2 className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title text-xl font-bold text-neutral-900">
                   Share Digital Tribute
                 </h3>
@@ -3637,7 +3426,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 />
                 <button
                   onClick={() => handleCopyText(`https://e-bfh.com/tribute/${activeCase.caseNumber}`, 'Tribute Link')}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center space-x-1 shrink-0"
+                  className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition flex items-center space-x-1 shrink-0"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>Copy</span>
@@ -3653,14 +3442,14 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                   href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Please join our family in celebrating the life of ${activeCase.decedent.legalName}. Listen and record your voice memory: https://e-bfh.com/tribute/${activeCase.caseNumber}`)}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white p-2.5 rounded-xl transition flex flex-col items-center justify-center space-y-1"
+                  className="bg-neutral-50 hover:bg-neutral-100 text-[#800000] border border-neutral-200 p-2.5 rounded-xl transition flex flex-col items-center justify-center space-y-1"
                 >
                   <span>WhatsApp</span>
                 </a>
 
                 <a
                   href={`sms:?&body=${encodeURIComponent(`Please join our family in celebrating the life of ${activeCase.decedent.legalName}. Listen and record your voice memory: https://e-bfh.com/tribute/${activeCase.caseNumber}`)}`}
-                  className="bg-sky-600 hover:bg-sky-700 text-white p-2.5 rounded-xl transition flex flex-col items-center justify-center space-y-1"
+                  className="bg-neutral-50 hover:bg-neutral-100 text-[#800000] border border-neutral-200 p-2.5 rounded-xl transition flex flex-col items-center justify-center space-y-1"
                 >
                   <span>iMessage / SMS</span>
                 </a>
@@ -3670,7 +3459,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                     setIsShareModalOpen(false);
                     setIsQRModalOpen(true);
                   }}
-                  className="bg-amber-700 hover:bg-amber-800 text-white p-2.5 rounded-xl transition flex flex-col items-center justify-center space-y-1"
+                  className="bg-neutral-50 hover:bg-neutral-100 text-[#800000] border border-neutral-200 p-2.5 rounded-xl transition flex flex-col items-center justify-center space-y-1"
                 >
                   <span>Print QR</span>
                 </button>
@@ -3703,6 +3492,6 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
         }}
       />
 
-    </div>
+    </FamilyPortalLayout>
   );
 };

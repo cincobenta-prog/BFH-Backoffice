@@ -139,12 +139,12 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 print:p-0 font-sans animate-fadeIn">
       
       {/* Modal Container */}
-      <div className="bg-neutral-100 border border-neutral-300 rounded-3xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:bg-white">
+      <div className="bg-neutral-100 border border-neutral-300 rounded-2xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:bg-white">
         
         {/* Screen-Only Executive Header Toolbar */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#141b2b] via-[#1e2738] to-[#141b2b] text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0 border-b-2 border-amber-400/80 print:hidden">
+        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#1c1a1a] via-[#241f1a] to-[#1c1a1a] text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0 border-b-2 border-amber-400/80 print:hidden">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-bold shadow-md border border-amber-300">
+            <div className="w-10 h-10 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-bold shadow-md border border-amber-300">
               <HandCoins className="w-5 h-5 text-amber-300" />
             </div>
             <div>
@@ -188,7 +188,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
 
             <button
               onClick={handlePrint}
-              className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
               title="Print standard 3-part check vouchers with auto page-breaks"
             >
               <Printer className="w-3.5 h-3.5 text-amber-300" />
@@ -228,7 +228,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
           <div className="flex flex-wrap items-center gap-4 text-neutral-700">
             <div className="flex items-center space-x-1.5">
               <span className="text-neutral-500 font-medium">Total Check Amount:</span>
-              <strong className="font-mono text-sm font-bold text-[#991b1b]">
+              <strong className="font-mono text-sm font-bold text-[#800000]">
                 ${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </strong>
             </div>
@@ -240,7 +240,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
             <div className="h-4 w-px bg-neutral-300 hidden sm:block" />
             <div className="flex items-center space-x-1.5">
               <span className="text-neutral-500 font-medium">Printed:</span>
-              <strong className="font-mono font-bold text-blue-700">{printedCount} / {checks.length}</strong>
+              <strong className="font-mono font-bold text-brass-700">{printedCount} / {checks.length}</strong>
             </div>
             <div className="h-4 w-px bg-neutral-300 hidden sm:block" />
             <div className="flex items-center space-x-1.5">
@@ -259,7 +259,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
             </button>
             <button
               onClick={handleBatchMarkDelivered}
-              className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold rounded-lg border border-emerald-300 transition text-[11px]"
+              className="px-2.5 py-1.5 bg-brass-50 hover:bg-brass-100 text-brass-900 font-semibold rounded-lg border border-brass-300 transition text-[11px]"
             >
               Mark All Delivered at Service
             </button>
@@ -276,7 +276,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
             onClick={() => setSelectedCheckId('all')}
             className={`px-3 py-1.5 rounded-lg font-bold transition shrink-0 flex items-center gap-1.5 ${
               selectedCheckId === 'all'
-                ? 'bg-[#141b2b] text-white shadow-sm'
+                ? 'bg-[#1c1a1a] text-white shadow-sm'
                 : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-300'
             }`}
           >
@@ -290,7 +290,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
               onClick={() => setSelectedCheckId(c.id)}
               className={`px-3 py-1.5 rounded-lg font-bold transition shrink-0 flex items-center gap-1.5 ${
                 selectedCheckId === c.id
-                  ? 'bg-[#991b1b] text-white shadow-sm'
+                  ? 'bg-[#800000] text-white shadow-sm'
                   : 'bg-white text-neutral-700 hover:bg-neutral-100 border border-neutral-300'
               }`}
             >
@@ -334,7 +334,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
                       check.status === 'hand_delivered_at_service' || check.status === 'reconciled_cleared'
                         ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                         : check.status === 'check_printed'
-                        ? 'bg-blue-100 text-blue-800 border border-blue-200'
+                        ? 'bg-brass-100 text-brass-800 border border-brass-200'
                         : 'bg-amber-100 text-amber-800 border border-amber-200'
                     }`}>
                       {check.status.replace(/_/g, ' ')}
@@ -350,7 +350,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
                     <select
                       value={check.status}
                       onChange={(e) => handleUpdateStatus(check.id, e.target.value as CheckDisbursementStatus)}
-                      className="bg-neutral-50 border border-neutral-300 rounded-lg px-2 py-1 text-xs font-bold text-neutral-800 outline-none focus:border-[#991b1b]"
+                      className="bg-neutral-50 border border-neutral-300 rounded-lg px-2 py-1 text-xs font-bold text-neutral-800 outline-none focus:border-[#800000]"
                     >
                       <option value="draft_queued">Draft / Queued</option>
                       <option value="check_printed">Check Printed (Director Folder)</option>
@@ -375,7 +375,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
                   <div className="flex justify-between items-start">
                     <div className="space-y-0.5">
                       <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 rounded bg-[#991b1b] text-white flex items-center justify-center font-serif-title font-bold text-xs">
+                        <div className="w-6 h-6 rounded bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-xs">
                           B
                         </div>
                         <h2 className="font-serif-title text-base sm:text-lg font-bold uppercase tracking-wider text-neutral-950">
@@ -391,7 +391,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
                     </div>
 
                     <div className="text-right space-y-1">
-                      <div className="font-mono text-base sm:text-lg font-black text-[#991b1b]">
+                      <div className="font-mono text-base sm:text-lg font-black text-[#800000]">
                         {check.checkNumber}
                       </div>
                       <div className="text-xs text-neutral-800">
@@ -452,7 +452,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
                       <span className="text-[10px] font-bold text-neutral-600 uppercase tracking-wider block">
                         MEMO:
                       </span>
-                      <div className="p-1.5 bg-amber-50/80 border-b-2 border-neutral-900 font-mono font-bold text-[11px] text-[#991b1b] rounded-t">
+                      <div className="p-1.5 bg-amber-50/80 border-b-2 border-neutral-900 font-mono font-bold text-[11px] text-[#800000] rounded-t">
                         {check.memo}
                       </div>
                     </div>
@@ -625,7 +625,7 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
             </button>
             <button
               onClick={handlePrint}
-              className="px-5 py-2 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
+              className="px-5 py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
             >
               <Printer className="w-4 h-4 text-amber-300" />
               <span>Print {visibleChecks.length} Check Voucher{visibleChecks.length > 1 ? 's' : ''}</span>

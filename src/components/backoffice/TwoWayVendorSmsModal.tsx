@@ -312,13 +312,13 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-5xl w-full border border-neutral-300 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white rounded-2xl max-w-5xl w-full border border-neutral-300 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         
         {/* Universal Top Header */}
-        <div className="bg-gradient-to-r from-[#141b2b] via-[#1e2738] to-[#141b2b] text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-400/80 shrink-0">
+        <div className="bg-gradient-to-r from-[#1c1a1a] via-[#241f1a] to-[#1c1a1a] text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-400/80 shrink-0">
           
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-bold shadow-sm border border-amber-300">
+            <div className="w-10 h-10 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-bold shadow-sm border border-amber-300">
               <Smartphone className="w-5 h-5 text-amber-300" />
             </div>
             <div>
@@ -370,7 +370,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               onClick={() => setActiveModalTab('simulator')}
               className={`px-3 py-1.5 rounded-xl font-bold flex items-center space-x-1.5 transition ${
                 activeModalTab === 'simulator'
-                  ? 'bg-amber-400 text-neutral-950 shadow-sm'
+                  ? 'bg-brass-400 text-neutral-950 shadow-sm'
                   : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
               }`}
             >
@@ -381,7 +381,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               onClick={() => setActiveModalTab('webhook')}
               className={`px-3 py-1.5 rounded-xl font-bold flex items-center space-x-1.5 transition ${
                 activeModalTab === 'webhook'
-                  ? 'bg-amber-400 text-neutral-950 shadow-sm'
+                  ? 'bg-brass-400 text-neutral-950 shadow-sm'
                   : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
               }`}
             >
@@ -445,7 +445,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                 {onOpenTwilioGateway && (
                   <button
                     onClick={onOpenTwilioGateway}
-                    className="px-3.5 py-1.5 bg-[#991b1b] hover:bg-[#7f1d1d] text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 border border-amber-300/40 shadow-xs cursor-pointer"
+                    className="px-3.5 py-1.5 bg-[#800000] hover:bg-[#7f1d1d] text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 border border-amber-300/40 shadow-xs cursor-pointer"
                     title="Open Twilio Gateway Settings to enter Account SID and Auth Token"
                   >
                     <Key className="w-3.5 h-3.5 text-amber-300" />
@@ -493,12 +493,12 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               </div>
               <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-3">
                 <span className="text-[10px] text-neutral-400 block font-sans">A2P 10DLC Campaign</span>
-                <span className="text-blue-400 font-bold text-sm">Registered 10DLC</span>
+                <span className="text-brass-400 font-bold text-sm">Registered 10DLC</span>
                 <span className="text-[10px] text-neutral-400 block mt-0.5">Trust Score: 98/100</span>
               </div>
               <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-3">
                 <span className="text-[10px] text-neutral-400 block font-sans">Delivery Rate</span>
-                <span className="text-purple-400 font-bold text-sm">100% Confirmed</span>
+                <span className="text-brass-400 font-bold text-sm">100% Confirmed</span>
                 <span className="text-[10px] text-neutral-400 block mt-0.5">0 Failed / 0 Filtered</span>
               </div>
             </div>
@@ -573,7 +573,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-xs space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2.5">
-                    <div className="p-2 bg-red-50 text-[#991b1b] rounded-xl border border-red-200">
+                    <div className="p-2 bg-red-50 text-[#800000] rounded-xl border border-red-200">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div>
@@ -634,24 +634,24 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               </div>
 
               {/* Standby Backup Partner & Emergency Escalation Hub */}
-              <div className="bg-gradient-to-r from-purple-50 via-purple-100/40 to-white p-4 rounded-2xl border border-purple-200 shadow-xs space-y-3">
+              <div className="bg-gradient-to-r from-brass-50 via-brass-100/40 to-white p-4 rounded-2xl border border-brass-200 shadow-xs space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-1.5">
-                    <span className="text-xs font-bold text-purple-950 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-brass-950 uppercase tracking-wider">
                       🛡️ Standby Waterfall Backup Partner
                     </span>
                   </div>
-                  <span className="text-[10px] bg-purple-200/70 text-purple-900 font-mono font-bold px-2 py-0.5 rounded">
+                  <span className="text-[10px] bg-brass-200/70 text-brass-900 font-mono font-bold px-2 py-0.5 rounded">
                     Pre-Assigned
                   </span>
                 </div>
 
-                <div className="p-2.5 bg-white rounded-xl border border-purple-200/80 text-xs space-y-1">
+                <div className="p-2.5 bg-white rounded-xl border border-brass-200/80 text-xs space-y-1">
                   <div className="flex justify-between items-center">
                     <strong className="font-serif-title text-neutral-900 font-bold">
                       {currentRequest?.standbyBackupPartnerName || 'Assigned in Harlem Network Directory'}
                     </strong>
-                    <span className="text-[10px] text-purple-700 font-bold">
+                    <span className="text-[10px] text-brass-700 font-bold">
                       {currentRequest?.standbyBackupRoleTitle || currentRequest?.roleTitle}
                     </span>
                   </div>
@@ -669,7 +669,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                           handleStandbyCascade();
                         }
                       }}
-                      className="px-3 py-2 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5"
+                      className="px-3 py-2 bg-brass-700 hover:bg-brass-800 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5"
                       title="1-Tap Waterfall: Swap to Standby Backup Partner and dispatch SMS"
                     >
                       <span>⚡ Cascade Backup</span>
@@ -683,7 +683,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                       className="px-3 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5"
                       title="Log direct verbal telephone confirmation from vendor"
                     >
-                      <Phone className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <Phone className="w-3.5 h-3.5 text-[#800000]" />
                       <span>Log Verbal Call</span>
                     </button>
                   </div>
@@ -692,10 +692,10 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
 
               {/* In-Modal Phone Log Dialog */}
               {showPhoneLogModal && (
-                <form onSubmit={handleLogDirectorPhoneCall} className="p-4 bg-white rounded-2xl border-2 border-[#991b1b] shadow-md space-y-3 text-xs animate-fadeIn">
+                <form onSubmit={handleLogDirectorPhoneCall} className="p-4 bg-white rounded-2xl border-2 border-[#800000] shadow-md space-y-3 text-xs animate-fadeIn">
                   <div className="flex justify-between items-center border-b border-neutral-200 pb-2">
                     <span className="font-serif-title font-bold text-neutral-900 flex items-center gap-1.5">
-                      <Phone className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <Phone className="w-3.5 h-3.5 text-[#800000]" />
                       <span>Log Director Phone Call Confirmation</span>
                     </span>
                     <button
@@ -714,7 +714,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                       required
                       value={phoneLogCaller}
                       onChange={(e) => setPhoneLogCaller(e.target.value)}
-                      className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2 font-bold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2 font-bold outline-none focus:border-[#800000]"
                     />
                   </div>
 
@@ -725,7 +725,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                       required
                       value={phoneLogNotes}
                       onChange={(e) => setPhoneLogNotes(e.target.value)}
-                      className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2 outline-none focus:border-[#991b1b]"
+                      className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2 outline-none focus:border-[#800000]"
                     />
                   </div>
 
@@ -739,7 +739,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                     </button>
                     <button
                       type="submit"
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold px-4 py-1.5 rounded-lg shadow-xs"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-4 py-1.5 rounded-lg shadow-xs"
                     >
                       Confirm Booking
                     </button>
@@ -751,7 +751,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-xs space-y-3">
                 <div className="flex items-center justify-between">
                   <h5 className="font-serif-title font-bold text-xs text-neutral-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Send className="w-3.5 h-3.5 text-[#991b1b]" />
+                    <Send className="w-3.5 h-3.5 text-[#800000]" />
                     <span>Send Outbound Dispatch SMS</span>
                   </h5>
                   <span className="text-[10px] text-neutral-400 font-mono">Twilio Live Relay</span>
@@ -763,21 +763,21 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                     value={directorOutboundDraft}
                     onChange={(e) => setDirectorOutboundDraft(e.target.value)}
                     placeholder={currentRequest?.smsMessageDraft || "Type custom dispatch instructions or updates to partner..."}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 outline-none focus:border-[#991b1b] font-mono leading-relaxed"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-3 text-xs text-neutral-900 outline-none focus:border-[#800000] font-mono leading-relaxed"
                   />
 
                   <div className="flex items-center justify-between">
                     <button
                       type="button"
                       onClick={() => setDirectorOutboundDraft(currentRequest?.smsMessageDraft || '')}
-                      className="text-[11px] text-[#991b1b] hover:underline font-bold"
+                      className="text-[11px] text-[#800000] hover:underline font-bold"
                     >
                       Reset to Default Template
                     </button>
 
                     <button
                       type="submit"
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
                     >
                       <Send className="w-3.5 h-3.5 text-amber-300" />
                       <span>Dispatch Outbound SMS</span>
@@ -790,7 +790,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
 
             {/* Compliance Guarantee */}
             <div className="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-[11px] text-amber-950 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#991b1b] shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-[#800000] shrink-0" />
               <span>
                 All two-way SMS confirmations are cryptographically stamped and synchronized with the <strong>Golden Record Activity Ledger</strong>.
               </span>
@@ -816,7 +816,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
               </div>
 
               {/* iPhone Mockup Frame */}
-              <div className="bg-[#1f242d] rounded-3xl p-3 sm:p-4 shadow-xl border-4 border-neutral-800 max-w-md mx-auto w-full text-white">
+              <div className="bg-[#1f242d] rounded-2xl p-3 sm:p-4 shadow-xl border-4 border-neutral-800 max-w-md mx-auto w-full text-white">
                 
                 {/* Phone Status Bar */}
                 <div className="flex justify-between items-center text-[10px] font-mono text-neutral-400 px-2 pb-2 border-b border-neutral-700/60">
@@ -827,7 +827,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
 
                 {/* Conversation Header */}
                 <div className="p-3 text-center border-b border-neutral-800 space-y-0.5">
-                  <div className="w-10 h-10 rounded-full bg-[#991b1b] text-white flex items-center justify-center font-bold text-xs mx-auto border border-amber-300">
+                  <div className="w-10 h-10 rounded-full bg-[#800000] text-white flex items-center justify-center font-bold text-xs mx-auto border border-amber-300">
                     BFH
                   </div>
                   <div className="font-bold text-xs text-white">Benta's Funeral Home</div>
@@ -851,7 +851,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                           className={`p-3 rounded-2xl max-w-[85%] text-xs leading-relaxed shadow-sm ${
                             isBfh
                               ? 'bg-neutral-800 text-neutral-100 rounded-tl-xs border border-neutral-700'
-                              : 'bg-[#007aff] text-white rounded-tr-xs font-medium'
+                              : 'bg-[#9c7a30] text-white rounded-tr-xs font-medium'
                           }`}
                         >
                           {msg.body}
@@ -884,7 +884,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                   <button
                     onClick={() => handleVendorSimulateReply('custom_reply')}
                     disabled={!vendorCustomReplyText.trim()}
-                    className="p-1.5 bg-[#007aff] hover:bg-blue-600 disabled:opacity-40 text-white rounded-full transition"
+                    className="p-1.5 bg-[#9c7a30] hover:bg-brass-600 disabled:opacity-40 text-white rounded-full transition"
                   >
                     <Send className="w-3.5 h-3.5" />
                   </button>
@@ -909,7 +909,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                 {/* 1. Accept & Confirm */}
                 <button
                   onClick={() => handleVendorSimulateReply('accept_confirm')}
-                  className="p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-sm flex flex-col items-center justify-center text-center gap-1"
+                  className="p-3 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl text-xs font-bold transition shadow-sm flex flex-col items-center justify-center text-center gap-1"
                 >
                   <CheckCircle2 className="w-4 h-4 text-amber-200" />
                   <span>Accept Order & Confirm</span>
@@ -919,7 +919,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                 {/* 2. Adjust Time */}
                 <button
                   onClick={() => setShowAdjustTimeModal(true)}
-                  className="p-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition shadow-sm flex flex-col items-center justify-center text-center gap-1"
+                  className="p-3 bg-brass-500 hover:bg-brass-600 text-white rounded-xl text-xs font-bold transition shadow-sm flex flex-col items-center justify-center text-center gap-1"
                 >
                   <Clock className="w-4 h-4 text-amber-100" />
                   <span>Adjust Arrival Time</span>
@@ -929,7 +929,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                 {/* 3. Decline / Unavailable */}
                 <button
                   onClick={() => handleVendorSimulateReply('decline')}
-                  className="p-3 bg-neutral-800 hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-sm flex flex-col items-center justify-center text-center gap-1"
+                  className="p-3 bg-red-700 hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-sm flex flex-col items-center justify-center text-center gap-1"
                 >
                   <AlertCircle className="w-4 h-4 text-red-300" />
                   <span>Decline / Unavailable</span>
@@ -953,7 +953,7 @@ export const TwoWayVendorSmsModal: React.FC<TwoWayVendorSmsModalProps> = ({
                     />
                     <button
                       onClick={() => handleVendorSimulateReply('time_adjustment')}
-                      className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-4 py-2 rounded-lg text-xs transition"
                     >
                       Confirm Time Adjustment
                     </button>

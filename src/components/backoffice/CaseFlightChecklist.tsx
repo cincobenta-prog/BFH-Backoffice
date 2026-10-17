@@ -81,10 +81,10 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
     <div className="bg-white rounded-2xl border-2 border-red-900/20 shadow-md overflow-hidden transition-all text-neutral-900">
       
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-[#141b2b] via-[#1e2738] to-[#141b2b] text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-400/80">
+      <div className="bg-gradient-to-r from-[#1c1a1a] via-[#241f1a] to-[#1c1a1a] text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-400/80">
         
         <div className="flex items-center space-x-3">
-          <div className="w-9 h-9 rounded-xl bg-[#991b1b] text-white flex items-center justify-center font-bold shadow-sm border border-amber-300">
+          <div className="w-9 h-9 rounded-xl bg-[#800000] text-white flex items-center justify-center font-bold shadow-sm border border-amber-300">
             <Layers className="w-5 h-5 text-amber-300" />
           </div>
           <div>
@@ -130,7 +130,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
       {/* Gatekeeper Alert Notice */}
       {gatekeeperAlert && (
         <div className="bg-amber-50 border-b border-amber-300 p-3 px-5 text-xs text-amber-950 flex items-start gap-2 animate-fadeIn">
-          <AlertTriangle className="w-4 h-4 text-[#991b1b] shrink-0 mt-0.5" />
+          <AlertTriangle className="w-4 h-4 text-[#800000] shrink-0 mt-0.5" />
           <div className="flex-1 font-medium">{gatekeeperAlert}</div>
           <button
             onClick={() => setGatekeeperAlert(null)}
@@ -160,7 +160,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                   onClick={() => setSelectedPhaseView(phase.phase)}
                   className={`p-3 rounded-xl border text-left transition relative flex flex-col justify-between ${
                     isSelected
-                      ? 'bg-red-50/90 border-[#991b1b] ring-2 ring-red-500/20 shadow-sm'
+                      ? 'bg-red-50/90 border-[#800000] ring-2 ring-red-500/20 shadow-sm'
                       : isPast || allPhaseCompleted
                       ? 'bg-emerald-50/60 border-emerald-300 hover:bg-emerald-50 text-emerald-950'
                       : 'bg-neutral-50 border-neutral-200 hover:bg-neutral-100 text-neutral-600'
@@ -169,7 +169,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                   <div className="flex items-center justify-between w-full mb-1">
                     <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded uppercase ${
                       isCurrent
-                        ? 'bg-[#991b1b] text-white'
+                        ? 'bg-[#800000] text-white'
                         : isPast || allPhaseCompleted
                         ? 'bg-emerald-600 text-white'
                         : 'bg-neutral-200 text-neutral-700'
@@ -180,7 +180,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                     {allPhaseCompleted ? (
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     ) : isCurrent ? (
-                      <span className="w-2 h-2 rounded-full bg-[#991b1b] animate-ping" />
+                      <span className="w-2 h-2 rounded-full bg-[#800000] animate-ping" />
                     ) : (
                       <Clock className="w-3 h-3 text-neutral-400" />
                     )}
@@ -188,7 +188,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
 
                   <div>
                     <span className={`text-xs font-bold block truncate ${
-                      isSelected ? 'text-[#991b1b]' : isPast ? 'text-emerald-950' : 'text-neutral-800'
+                      isSelected ? 'text-[#800000]' : isPast ? 'text-emerald-950' : 'text-neutral-800'
                     }`}>
                       {phase.title.split(':')[1]?.trim() || phase.title}
                     </span>
@@ -209,7 +209,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                 <h4 className="font-serif-title font-bold text-sm sm:text-base text-neutral-900 flex items-center gap-2">
                   <span>{activePhaseProgress.title}</span>
                   {selectedPhaseView === currentPhase && (
-                    <span className="bg-red-100 text-[#991b1b] border border-red-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                    <span className="bg-red-100 text-[#800000] border border-red-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                       Current Active Phase
                     </span>
                   )}
@@ -225,7 +225,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                   onClick={handleAdvanceClick}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm shrink-0 ${
                     canAdvanceCurrentPhase
-                      ? 'bg-[#991b1b] hover:bg-red-800 text-white border border-amber-300/40'
+                      ? 'bg-[#800000] hover:bg-[#6a0509] text-white border border-amber-300/40'
                       : 'bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300'
                   }`}
                   title={canAdvanceCurrentPhase ? 'Advance to next phase' : 'Mandatory tasks pending'}
@@ -264,7 +264,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                       className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition ${
                         item.isCompleted
                           ? 'bg-emerald-600 text-white'
-                          : 'border-2 border-neutral-400 hover:border-[#991b1b] bg-white'
+                          : 'border-2 border-neutral-400 hover:border-[#800000] bg-white'
                       }`}
                       title={item.isCompleted ? 'Mark task pending' : 'Mark task completed'}
                     >
@@ -283,7 +283,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                         </strong>
 
                         {item.isMandatoryForPhaseAdvance && (
-                          <span className="text-[9px] font-bold uppercase tracking-wider bg-red-50 text-[#991b1b] border border-red-200 px-1.5 py-0.2 rounded">
+                          <span className="text-[9px] font-bold uppercase tracking-wider bg-red-50 text-[#800000] border border-red-200 px-1.5 py-0.2 rounded">
                             Mandatory Gate
                           </span>
                         )}
@@ -312,7 +312,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
                   <div className="flex items-center space-x-2 shrink-0 sm:self-center pl-8 sm:pl-0">
                     <button
                       onClick={() => onTriggerAction(item.actionType)}
-                      className="px-3.5 py-1.5 bg-neutral-900 hover:bg-[#991b1b] text-white font-bold rounded-lg text-xs transition shadow-2xs flex items-center gap-1.5 border border-amber-400/30"
+                      className="px-3.5 py-1.5 bg-neutral-900 hover:bg-[#800000] text-white font-bold rounded-lg text-xs transition shadow-2xs flex items-center gap-1.5 border border-amber-400/30"
                     >
                       <Play className="w-3 h-3 text-amber-300" />
                       <span>{item.actionLabel}</span>
@@ -328,7 +328,7 @@ export const CaseFlightChecklist: React.FC<CaseFlightChecklistProps> = ({
           {/* Zero Transcription Assurance Footer */}
           <div className="bg-amber-50/70 p-3 rounded-xl border border-amber-200 flex flex-wrap items-center justify-between text-xs text-amber-950 gap-2">
             <div className="flex items-center space-x-2">
-              <ShieldCheck className="w-4 h-4 text-[#991b1b] shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-[#800000] shrink-0" />
               <span>
                 <strong>Compliance Engine Note:</strong> All statutory actions link directly to the Golden Record. Data entered once syncs automatically into state filing sheets and vendor dispatch tickets.
               </span>

@@ -207,7 +207,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
         {/* Header Banner */}
         <div className="p-5 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-950/50 border border-emerald-400/40">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-brass-700 flex items-center justify-center shadow-lg shadow-emerald-950/50 border border-emerald-400/40">
               <span className="text-white font-black text-xl font-mono tracking-tighter">qb</span>
             </div>
             <div>
@@ -429,7 +429,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                   <button
                     onClick={handleSyncInvoice}
                     disabled={isSyncing}
-                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center space-x-2 transition shadow-lg shadow-emerald-950/40 border border-emerald-400/30 cursor-pointer"
+                    className="px-5 py-2.5 bg-[#800000] hover:bg-[#6a0509] disabled:bg-slate-800 text-white font-bold text-xs rounded-xl flex items-center space-x-2 transition shadow-lg shadow-emerald-950/40 border border-emerald-400/30 cursor-pointer"
                   >
                     {isSyncing ? (
                       <>
@@ -518,9 +518,9 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
           {activeTab === 'bills' && (
             <div className="space-y-6">
               <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl flex items-start space-x-3">
-                <Building2 className="w-5 h-5 text-sky-400 shrink-0 mt-0.5" />
+                <Building2 className="w-5 h-5 text-brass-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-sky-300">Accounts Payable Vendor Bill & 1099 Disbursement Generation</h4>
+                  <h4 className="text-xs font-bold text-brass-300">Accounts Payable Vendor Bill & 1099 Disbursement Generation</h4>
                   <p className="text-[11px] text-slate-300 mt-0.5">
                     Dispatches Accounts Payable vendor bills for third-party pass-throughs (Woodlawn Crematory, Livery fleets, florist orders) and 1099 independent contractor vouchers for freelance service directors.
                   </p>
@@ -542,7 +542,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                   <tbody className="divide-y divide-slate-800/60 font-sans">
                     {vendorBills.map((b) => (
                       <tr key={b.billId} className="hover:bg-slate-900/40 transition">
-                        <td className="py-3 px-4 font-mono font-bold text-sky-300">{b.billNumber}</td>
+                        <td className="py-3 px-4 font-mono font-bold text-brass-300">{b.billNumber}</td>
                         <td className="py-3 px-4 font-semibold text-slate-200">
                           <div>{b.vendorName}</div>
                           {b.vendorEin && <div className="text-[10px] text-slate-500 font-mono">EIN: {b.vendorEin}</div>}
@@ -656,12 +656,12 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                 <div className={`p-4 rounded-xl text-xs border flex items-start space-x-2.5 animate-fadeIn ${
                   testConnResult.success 
                     ? 'bg-emerald-950/60 border-emerald-500/50 text-emerald-200' 
-                    : 'bg-rose-950/60 border-rose-500/50 text-rose-200'
+                    : 'bg-red-950/60 border-red-500/50 text-red-200'
                 }`}>
                   {testConnResult.success ? (
                     <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                   ) : (
-                    <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
                   )}
                   <div>
                     <div className="font-bold">{testConnResult.success ? 'Handshake Successful' : 'Connection Failed'}</div>
@@ -737,7 +737,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                       onClick={() => setEnvInput('production')}
                       className={`p-2.5 rounded-xl border text-xs font-bold transition ${
                         envInput === 'production'
-                          ? 'bg-emerald-600/20 border-emerald-500 text-white'
+                          ? 'bg-brass-500/20 border-brass-500 text-white'
                           : 'bg-slate-900 border-slate-700 text-slate-400'
                       }`}
                     >
@@ -748,7 +748,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                       onClick={() => setEnvInput('sandbox')}
                       className={`p-2.5 rounded-xl border text-xs font-bold transition ${
                         envInput === 'sandbox'
-                          ? 'bg-amber-600/20 border-amber-500 text-white'
+                          ? 'bg-brass-600/20 border-brass-500 text-white'
                           : 'bg-slate-900 border-slate-700 text-slate-400'
                       }`}
                     >
@@ -770,7 +770,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
 
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl border border-emerald-400/30 flex items-center justify-center space-x-1.5 shadow-lg shadow-emerald-950/40 cursor-pointer"
+                    className="flex-1 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl border border-emerald-400/30 flex items-center justify-center space-x-1.5 shadow-lg shadow-emerald-950/40 cursor-pointer"
                   >
                     <span>Save QBO Credentials</span>
                   </button>

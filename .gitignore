@@ -26,3 +26,11 @@ dist-ssr
 scratch/
 credentials.json
 service-account*.json
+
+# Image pipeline scratch output (unreferenced test crops)
+public/images/daniela_test/
+public/images/daniela_test_sections/
+public/images/daniela_test_smart/
+
+# Personal bookmarks / local notes
+FAVORITES.md

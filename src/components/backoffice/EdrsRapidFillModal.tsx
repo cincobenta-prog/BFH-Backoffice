@@ -170,7 +170,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
-      <div className="bg-[#fcfbfa] border border-neutral-300 rounded-3xl max-w-5xl w-full max-h-[95vh] flex flex-col shadow-2xl text-neutral-900 overflow-hidden">
+      <div className="bg-[#fcfbfa] border border-neutral-300 rounded-2xl max-w-5xl w-full max-h-[95vh] flex flex-col shadow-2xl text-neutral-900 overflow-hidden">
         
         {/* TOP HEADER */}
         <div className="p-5 bg-white border-b border-neutral-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
@@ -257,11 +257,11 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                 onClick={() => setActiveTab(t.id as any)}
                 className={`py-3.5 px-3.5 border-b-2 font-medium flex items-center space-x-2 transition cursor-pointer whitespace-nowrap ${
                   isActive 
-                    ? 'border-[#991b1b] text-[#991b1b] font-bold bg-white' 
+                    ? 'border-[#800000] text-[#800000] font-bold bg-white' 
                     : 'border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-[#991b1b]' : 'text-neutral-400'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-[#800000]' : 'text-neutral-400'}`} />
                 <span>{t.label}</span>
               </button>
             );
@@ -290,7 +290,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                       onClick={() => setActiveSection(s.id as any)}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                         activeSection === s.id 
-                          ? 'bg-[#991b1b] text-white shadow-xs' 
+                          ? 'bg-[#800000] text-white shadow-xs' 
                           : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                       }`}
                     >
@@ -429,7 +429,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                   </div>
                   <button
                     onClick={() => setActiveTab('permit')}
-                    className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl flex items-center space-x-1 transition cursor-pointer shadow-xs"
+                    className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold rounded-xl flex items-center space-x-1 transition cursor-pointer shadow-xs"
                   >
                     <span>View Permit</span>
                     <QrCode className="w-3.5 h-3.5" />
@@ -449,7 +449,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                 <button
                   onClick={handleSubmitElectronicRegistration}
                   disabled={isSubmitting}
-                  className="px-5 py-2.5 bg-[#991b1b] hover:bg-red-800 disabled:bg-neutral-400 text-white font-bold text-xs rounded-xl flex items-center space-x-2 transition shadow-lg shadow-red-950/20 border border-amber-400/40 cursor-pointer"
+                  className="px-5 py-2.5 bg-[#800000] hover:bg-[#6a0509] disabled:bg-neutral-400 text-white font-bold text-xs rounded-xl flex items-center space-x-2 transition shadow-lg shadow-red-950/20 border border-amber-400/40 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -506,7 +506,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                 <div className="text-center border-b-2 border-neutral-800 pb-4 space-y-1">
                   <div className="text-[10px] uppercase tracking-widest font-sans font-bold text-neutral-500">The City of New York • Department of Health and Mental Hygiene</div>
                   <h3 className="text-lg font-bold uppercase tracking-wider text-neutral-900">Burial, Removal & Transit Permit</h3>
-                  <div className="text-xs font-mono font-bold text-[#991b1b]">Permit Number: {permit.permitNumber}</div>
+                  <div className="text-xs font-mono font-bold text-[#800000]">Permit Number: {permit.permitNumber}</div>
                   <div className="text-[10px] text-neutral-500 font-sans">State File Number: {permit.stateFileNumber}</div>
                 </div>
 
@@ -593,7 +593,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
 
               <form onSubmit={handleSaveSettings} className="bg-white p-6 rounded-2xl border border-neutral-200 space-y-4">
                 <h3 className="text-sm font-bold text-neutral-900 flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-[#991b1b]" />
+                  <Lock className="w-4 h-4 text-[#800000]" />
                   NYS DOHMH & NYS Health Commerce System Credentials
                 </h3>
 
@@ -652,7 +652,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                       onClick={() => setJurChoice('nyc_dohmh_5boroughs')}
                       className={`p-2.5 rounded-xl border text-xs font-bold transition ${
                         jurChoice === 'nyc_dohmh_5boroughs'
-                          ? 'bg-amber-100 border-amber-500 text-amber-950'
+                          ? 'bg-brass-100 border-brass-500 text-brass-950'
                           : 'bg-neutral-50 border-neutral-200 text-neutral-600'
                       }`}
                     >
@@ -663,7 +663,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
                       onClick={() => setJurChoice('nys_hcs_outside_nyc')}
                       className={`p-2.5 rounded-xl border text-xs font-bold transition ${
                         jurChoice === 'nys_hcs_outside_nyc'
-                          ? 'bg-amber-100 border-amber-500 text-amber-950'
+                          ? 'bg-brass-100 border-brass-500 text-brass-950'
                           : 'bg-neutral-50 border-neutral-200 text-neutral-600'
                       }`}
                     >
@@ -685,7 +685,7 @@ SUPERVISING DIRECTOR: ${targetCase.assignedDirector} (NYC ID #${config.nycDohLfd
 
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs rounded-xl border border-amber-400/40 flex items-center justify-center space-x-1.5 shadow-sm cursor-pointer"
+                    className="flex-1 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl border border-amber-400/40 flex items-center justify-center space-x-1.5 shadow-sm cursor-pointer"
                   >
                     <span>Save Credentials</span>
                   </button>

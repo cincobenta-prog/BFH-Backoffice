@@ -112,7 +112,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fadeIn font-sans">
-      <div className="bg-neutral-900 text-white rounded-3xl max-w-2xl w-full border-2 border-amber-400 shadow-2xl overflow-hidden flex flex-col my-4">
+      <div className="bg-neutral-900 text-white rounded-2xl max-w-2xl w-full border-2 border-amber-400 shadow-2xl overflow-hidden flex flex-col my-4">
         
         {/* Top Header */}
         <div className="bg-neutral-950 p-5 px-6 border-b border-neutral-800 flex items-center justify-between">
@@ -264,7 +264,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
                 type="button"
                 onClick={handleTestSms}
                 disabled={isTesting}
-                className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-neutral-950 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
+                className="px-4 py-2 bg-brass-500 hover:bg-brass-400 text-neutral-950 rounded-xl font-bold text-xs transition flex items-center space-x-1.5 shadow-sm disabled:opacity-50 cursor-pointer"
               >
                 {isTesting ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
                 <span>{isTesting ? 'Sending...' : '⚡ Test SMS'}</span>
@@ -302,7 +302,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
           <div className="flex items-center space-x-2">
             <button
               onClick={handleSave}
-              className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-xs transition shadow-md flex items-center space-x-1.5 cursor-pointer"
+              className="px-5 py-2 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold text-xs transition shadow-md flex items-center space-x-1.5 cursor-pointer"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Save & Activate Twilio Gateway</span>

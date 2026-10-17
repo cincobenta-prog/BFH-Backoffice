@@ -1,0 +1,3842 @@
+[
+  {
+    "catalogNumber": 1,
+    "code": "BFH-CC-001",
+    "name": "Emerald & Ivory Garden Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Emerald & Ivory Garden Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_001.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 2,
+    "code": "BFH-CC-002",
+    "name": "Regal Orchid & White Rose Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Regal Orchid & White Rose Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_002.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 3,
+    "code": "BFH-CC-003",
+    "name": "Graceful Lavender & Blush Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Graceful Lavender & Blush Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_003.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 4,
+    "code": "BFH-CC-004",
+    "name": "Sunset Peach & Cream Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Sunset Peach & Cream Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_004.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 5,
+    "code": "BFH-CC-005",
+    "name": "Spring Pastel Harmony Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Spring Pastel Harmony Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_005.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 6,
+    "code": "BFH-CC-006",
+    "name": "Crimson Velvet Rose Casket Blanket",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Crimson Velvet Rose Casket Blanket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_006.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 7,
+    "code": "BFH-CC-007",
+    "name": "Royal Gold & White Casablanca Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Royal Gold & White Casablanca Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_007.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 8,
+    "code": "BFH-CC-008",
+    "name": "Celestial Blue & White Rose Casket Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Celestial Blue & White Rose Casket Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_008.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 9,
+    "code": "BFH-CC-009",
+    "name": "Tangerine Sunset & Oriental Lily Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Tangerine Sunset & Oriental Lily Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_009.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 10,
+    "code": "BFH-CC-0010",
+    "name": "Pure Peace White Lily & Snapdragon Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Pure Peace White Lily & Snapdragon Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_010.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 11,
+    "code": "BFH-CC-0011",
+    "name": "Magenta & Violet Royalty Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Magenta & Violet Royalty Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_011.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 12,
+    "code": "BFH-CC-0012",
+    "name": "Autumn Amber & Terracotta Garden Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Autumn Amber & Terracotta Garden Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_012.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 13,
+    "code": "BFH-CC-0013",
+    "name": "Sweetheart Coral & Pink Floral Blanket",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Sweetheart Coral & Pink Floral Blanket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_013.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 14,
+    "code": "BFH-CC-0014",
+    "name": "Classic Deep Red Rose Half-Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Classic Deep Red Rose Half-Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_014.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 15,
+    "code": "BFH-CC-0015",
+    "name": "Serenity Sky Blue & White Hydrangea Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Serenity Sky Blue & White Hydrangea Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_015.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 16,
+    "code": "BFH-CC-0016",
+    "name": "Grand Rose & Carnation Pink Casket Blanket",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Grand Rose & Carnation Pink Casket Blanket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_016.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 17,
+    "code": "BFH-CC-0017",
+    "name": "Garden Whisper Soft Peach & Cream Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Garden Whisper Soft Peach & Cream Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_017.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 18,
+    "code": "BFH-CC-0018",
+    "name": "Burgundy Grandeur Velvet Rose Casket Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Burgundy Grandeur Velvet Rose Casket Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_018.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 19,
+    "code": "BFH-CC-0019",
+    "name": "Sunny Meadow Yellow Sunflower & Lily Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Sunny Meadow Yellow Sunflower & Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_019.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 20,
+    "code": "BFH-CC-0020",
+    "name": "Lilac Elegance Lavender Rose Casket Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Lilac Elegance Lavender Rose Casket Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_020.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 21,
+    "code": "BFH-CC-0021",
+    "name": "Eternal Devotion Red & White Rose Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Eternal Devotion Red & White Rose Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_021.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 22,
+    "code": "BFH-CC-0022",
+    "name": "Paradise Tropical Bird of Paradise & Anthurium",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Paradise Tropical Bird of Paradise & Anthurium - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_022.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 23,
+    "code": "BFH-CC-0023",
+    "name": "Angelic Blush Orchid & Carnation Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Angelic Blush Orchid & Carnation Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_023.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 24,
+    "code": "BFH-CC-0024",
+    "name": "Harlem Heritage Grand Mixed Blossom Blanket",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Harlem Heritage Grand Mixed Blossom Blanket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_024.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 25,
+    "code": "BFH-CC-0025",
+    "name": "Opulent White Calla Lily & Rose Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Opulent White Calla Lily & Rose Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_025.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 26,
+    "code": "BFH-CC-0026",
+    "name": "Vibrant Sunrise Orange & Gold Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Vibrant Sunrise Orange & Gold Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_026.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 27,
+    "code": "BFH-CC-0027",
+    "name": "Royal Purple Iris & Lavender Rose Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Royal Purple Iris & Lavender Rose Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_027.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 28,
+    "code": "BFH-CC-0028",
+    "name": "Blush Radiance Pink Carnation & Rose Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Blush Radiance Pink Carnation & Rose Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_028.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 29,
+    "code": "BFH-CC-0029",
+    "name": "Ruby Glow Grand Red Carnation Blanket",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Ruby Glow Grand Red Carnation Blanket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_029.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 30,
+    "code": "BFH-CC-0030",
+    "name": "Golden Light Yellow Rose & Lily Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Golden Light Yellow Rose & Lily Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_030.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 31,
+    "code": "BFH-CC-0031",
+    "name": "Whispering Willow White & Emerald Garland Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Whispering Willow White & Emerald Garland Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_031.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 32,
+    "code": "BFH-CC-0032",
+    "name": "Majestic Fuchsia & Violet Blossom Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Majestic Fuchsia & Violet Blossom Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_032.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 33,
+    "code": "BFH-CC-0033",
+    "name": "Sweet Remembrances Pink Lily & Rose Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Sweet Remembrances Pink Lily & Rose Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_033.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 34,
+    "code": "BFH-CC-0034",
+    "name": "Autumn Glory Terracotta & Amber Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Autumn Glory Terracotta & Amber Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_034.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 35,
+    "code": "BFH-CC-0035",
+    "name": "Pure Devotion Solid White Rose Blanket",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Pure Devotion Solid White Rose Blanket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_035.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 36,
+    "code": "BFH-CC-0036",
+    "name": "Sunkissed Yellow Snapdragon & Daisy Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Sunkissed Yellow Snapdragon & Daisy Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_036.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 37,
+    "code": "BFH-CC-0037",
+    "name": "Enchanted Meadow Wildflower & Lavender Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Enchanted Meadow Wildflower & Lavender Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_037.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 38,
+    "code": "BFH-CC-0038",
+    "name": "Deep Crimson & White Ribboned Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Deep Crimson & White Ribboned Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_038.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 39,
+    "code": "BFH-CC-0039",
+    "name": "Orchid Dream White & Violet Cascading Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Orchid Dream White & Violet Cascading Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_039.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 40,
+    "code": "BFH-CC-0040",
+    "name": "Coral Horizon Rose & Gladiolus Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Coral Horizon Rose & Gladiolus Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_040.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 41,
+    "code": "BFH-CC-0041",
+    "name": "Victorian Rose Pastel Symphony Casket Cover",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Victorian Rose Pastel Symphony Casket Cover - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_041.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 42,
+    "code": "BFH-CC-0042",
+    "name": "Timeless Grace Ivory & Eucalyptus Casket Spray",
+    "category": "casket_spray",
+    "categoryLabel": "Casket Spray & Cover",
+    "description": "Timeless Grace Ivory & Eucalyptus Casket Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_042.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Half Casket",
+      "medium": "48\" Full Casket",
+      "large": "60\" Grand Full Casket"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 43,
+    "code": "BFH-CC-043",
+    "name": "Grand Remembrance Trio Combo Package",
+    "category": "combo",
+    "categoryLabel": "Grand Floral Combo Package",
+    "description": "Complete 3-piece tribute package with matching Casket Spray, Standing Easel Spray, and Table Pedestal.",
+    "imageUrl": "/images/florals/danielas/daniela_043.jpg",
+    "pricing": {
+      "small": 700,
+      "medium": 700,
+      "large": 700
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 44,
+    "code": "BFH-CC-0044",
+    "name": "Royal Heritage 4-Piece Grand Tribute Combo",
+    "category": "combo",
+    "categoryLabel": "Grand Floral Combo Package",
+    "description": "Majestic 4-piece family collection: Casket Cover, Standing Heart, Faith Cross, and Side Urn Garland.",
+    "imageUrl": "/images/florals/danielas/daniela_044.jpg",
+    "pricing": {
+      "small": 1000,
+      "medium": 1000,
+      "large": 1000
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 45,
+    "code": "BFH-CC-045",
+    "name": "Imperial Red Rose Complete Family Ensemble",
+    "category": "combo",
+    "categoryLabel": "Grand Floral Combo Package",
+    "description": "Luxury red rose package featuring full Casket Blanket, Matching Standing Wreath, and Dual Pedestal Baskets.",
+    "imageUrl": "/images/florals/danielas/daniela_045.jpg",
+    "pricing": {
+      "small": 1000,
+      "medium": 1000,
+      "large": 1000
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 46,
+    "code": "BFH-CC-046",
+    "name": "Harlem Serenity Pastel Family Tribute Combo",
+    "category": "combo",
+    "categoryLabel": "Grand Floral Combo Package",
+    "description": "Full pastel service ensemble: Casket Spray, Standing Easel Spray, and Broken Heart Tribute.",
+    "imageUrl": "/images/florals/danielas/daniela_046.jpg",
+    "pricing": {
+      "small": 900,
+      "medium": 900,
+      "large": 900
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 47,
+    "code": "BFH-CC-047",
+    "name": "Pure Light White Lily & Orchid Deluxe Package",
+    "category": "combo",
+    "categoryLabel": "Grand Floral Combo Package",
+    "description": "Pristine white sympathy suite: Grand Casablanca Casket Spray, Standing Cross, and Altar Baskets.",
+    "imageUrl": "/images/florals/danielas/daniela_047.jpg",
+    "pricing": {
+      "small": 900,
+      "medium": 900,
+      "large": 900
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 48,
+    "code": "BFH-SP-001",
+    "name": "Golden Radiance Standing Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Golden Radiance Standing Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_048.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 49,
+    "code": "BFH-SP-002",
+    "name": "Pastel Whisper Sympathy Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Pastel Whisper Sympathy Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_049.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 50,
+    "code": "BFH-SP-003",
+    "name": "Scarlet Passion Red Rose Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Scarlet Passion Red Rose Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_050.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 51,
+    "code": "BFH-SP-004",
+    "name": "Celestial White Casablanca Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Celestial White Casablanca Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_051.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 52,
+    "code": "BFH-SP-005",
+    "name": "Royal Violet & Lavender Tribute Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Royal Violet & Lavender Tribute Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_052.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 53,
+    "code": "BFH-SP-006",
+    "name": "Sunny Daybreak Yellow Lily Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sunny Daybreak Yellow Lily Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_053.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 54,
+    "code": "BFH-SP-007",
+    "name": "Coral Sunset Warmth Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Coral Sunset Warmth Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_054.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 55,
+    "code": "BFH-SP-008",
+    "name": "Harlem Pride Blue & Ivory Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Harlem Pride Blue & Ivory Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_055.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 56,
+    "code": "BFH-SP-009",
+    "name": "Graceful Meadow Mixed Blossom Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Graceful Meadow Mixed Blossom Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_056.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 57,
+    "code": "BFH-SP-0010",
+    "name": "Pure Devotion All-White Rose Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Pure Devotion All-White Rose Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_057.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 58,
+    "code": "BFH-SP-0011",
+    "name": "Vibrant Magenta Orchid Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Vibrant Magenta Orchid Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_058.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 59,
+    "code": "BFH-SP-0012",
+    "name": "Autumn Harmony Bronze Mum & Rose Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Autumn Harmony Bronze Mum & Rose Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_059.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 60,
+    "code": "BFH-SP-0013",
+    "name": "Soft Blush Carnation & Lily Tribute Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Soft Blush Carnation & Lily Tribute Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_060.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 61,
+    "code": "BFH-SP-0014",
+    "name": "Crimson Majesty Deep Red Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Crimson Majesty Deep Red Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_061.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 62,
+    "code": "BFH-SP-0015",
+    "name": "Skyview Blue Hydrangea & White Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Skyview Blue Hydrangea & White Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_062.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 63,
+    "code": "BFH-SP-0016",
+    "name": "Sweetheart Pink Rose Fan Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sweetheart Pink Rose Fan Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_063.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 64,
+    "code": "BFH-SP-0017",
+    "name": "Golden Glow Gladiolus & Mum Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Golden Glow Gladiolus & Mum Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_064.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 65,
+    "code": "BFH-SP-0018",
+    "name": "Regal Lavender Orchid & Lily Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Regal Lavender Orchid & Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_065.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 66,
+    "code": "BFH-SP-0019",
+    "name": "Tropical Paradise Bird of Paradise Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Tropical Paradise Bird of Paradise Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_066.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 67,
+    "code": "BFH-SP-0020",
+    "name": "Eternal Peace Pure White Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Eternal Peace Pure White Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_067.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 68,
+    "code": "BFH-SP-0021",
+    "name": "Ruby Velvet Rose & Carnation Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Ruby Velvet Rose & Carnation Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_068.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 69,
+    "code": "BFH-SP-0022",
+    "name": "Spring Symphony Pastel Mixed Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Spring Symphony Pastel Mixed Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_069.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 70,
+    "code": "BFH-SP-0023",
+    "name": "Sunrise Burst Orange & Yellow Lily Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sunrise Burst Orange & Yellow Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_070.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 71,
+    "code": "BFH-SP-0024",
+    "name": "Navy & Ivory Dignified Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Navy & Ivory Dignified Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_071.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 72,
+    "code": "BFH-SP-0025",
+    "name": "Opulent Pink Blossom Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Opulent Pink Blossom Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_072.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 73,
+    "code": "BFH-SP-0026",
+    "name": "Emerald Forest White Lily Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Emerald Forest White Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_073.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 74,
+    "code": "BFH-SP-0027",
+    "name": "Sunset Romance Coral & Rose Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sunset Romance Coral & Rose Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_074.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 75,
+    "code": "BFH-SP-0028",
+    "name": "Royal Purple Aster & Violet Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Royal Purple Aster & Violet Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_075.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 76,
+    "code": "BFH-SP-0029",
+    "name": "Sunkissed Sunflower Tribute Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sunkissed Sunflower Tribute Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_076.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 77,
+    "code": "BFH-SP-0030",
+    "name": "Classic Red Carnation & Rose Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Classic Red Carnation & Rose Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_077.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 78,
+    "code": "BFH-SP-0031",
+    "name": "Angelic Ivory & Lace Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Angelic Ivory & Lace Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_078.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 79,
+    "code": "BFH-SP-0032",
+    "name": "Soft Lavender Garden Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Soft Lavender Garden Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_079.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 80,
+    "code": "BFH-SP-0033",
+    "name": "Autumn Flame Copper & Gold Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Autumn Flame Copper & Gold Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_080.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 81,
+    "code": "BFH-SP-0034",
+    "name": "Pastel Reverie Pink & Cream Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Pastel Reverie Pink & Cream Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_081.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 82,
+    "code": "BFH-SP-0035",
+    "name": "Majestic White Orchid Fan Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Majestic White Orchid Fan Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_082.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 83,
+    "code": "BFH-SP-0036",
+    "name": "Crimson Glory Bold Red Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Crimson Glory Bold Red Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_083.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 84,
+    "code": "BFH-SP-0037",
+    "name": "Peaceful Horizon Blue & White Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Peaceful Horizon Blue & White Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_084.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 85,
+    "code": "BFH-SP-0038",
+    "name": "Golden Harvest Warm Sympathy Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Golden Harvest Warm Sympathy Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_085.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 86,
+    "code": "BFH-SP-0039",
+    "name": "Violet Splendor Purple Lily Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Violet Splendor Purple Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_086.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 87,
+    "code": "BFH-SP-0040",
+    "name": "Blush & Ivory Gentle Memorial Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Blush & Ivory Gentle Memorial Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_087.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 88,
+    "code": "BFH-SP-0041",
+    "name": "Harlem Horizon Tri-Color Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Harlem Horizon Tri-Color Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_088.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 89,
+    "code": "BFH-SP-0042",
+    "name": "Pure Casablanca Lily Regal Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Pure Casablanca Lily Regal Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_089.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 90,
+    "code": "BFH-SP-0043",
+    "name": "Scarlet Devotion Red Rose Fan Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Scarlet Devotion Red Rose Fan Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_090.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 91,
+    "code": "BFH-SP-0044",
+    "name": "Sunny Blessing Yellow & Orange Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sunny Blessing Yellow & Orange Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_091.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 92,
+    "code": "BFH-SP-0045",
+    "name": "Lavender Mist Peaceful Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Lavender Mist Peaceful Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_092.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 93,
+    "code": "BFH-SP-0046",
+    "name": "Pink Ribbon of Hope Tribute Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Pink Ribbon of Hope Tribute Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_093.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 94,
+    "code": "BFH-SP-0047",
+    "name": "Royal Amethyst Purple & Gold Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Royal Amethyst Purple & Gold Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_094.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 95,
+    "code": "BFH-SP-0048",
+    "name": "White Serenade Sympathy Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "White Serenade Sympathy Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_095.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 96,
+    "code": "BFH-SP-0049",
+    "name": "Grand Celebration Mixed Color Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Grand Celebration Mixed Color Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_096.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 97,
+    "code": "BFH-SP-0050",
+    "name": "Deep Crimson & White Fan Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Deep Crimson & White Fan Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_097.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 98,
+    "code": "BFH-SP-0051",
+    "name": "Golden Sunlight Daisy & Lily Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Golden Sunlight Daisy & Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_098.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 99,
+    "code": "BFH-SP-0052",
+    "name": "Pastel Garden Grace Easel Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Pastel Garden Grace Easel Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_099.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 100,
+    "code": "BFH-SP-0053",
+    "name": "Ocean Breeze Blue Hydrangea Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Ocean Breeze Blue Hydrangea Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_100.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 101,
+    "code": "BFH-SP-0054",
+    "name": "Imperial Red & Purple Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Imperial Red & Purple Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_101.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 102,
+    "code": "BFH-SP-0055",
+    "name": "Ivory Cascade Calla Lily Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Ivory Cascade Calla Lily Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_102.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 103,
+    "code": "BFH-SP-0056",
+    "name": "Sunset Coral & Gold Standing Spray",
+    "category": "standing_spray",
+    "categoryLabel": "Standing Easel Spray",
+    "description": "Sunset Coral & Gold Standing Spray - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_103.jpg",
+    "pricing": {
+      "small": 300,
+      "medium": 350,
+      "large": 400
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 104,
+    "code": "BFH-H-001",
+    "name": "Pure White Rose Solid Heart Tribute",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Pure White Rose Solid Heart Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_104.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 105,
+    "code": "BFH-H-002",
+    "name": "Scarlet Rose Open Heart Tribute",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Scarlet Rose Open Heart Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_105.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 106,
+    "code": "BFH-H-003",
+    "name": "Pink & Ivory Broken Heart Sympathy Tribute",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Pink & Ivory Broken Heart Sympathy Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_106.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 107,
+    "code": "BFH-H-004",
+    "name": "Royal Purple & Lavender Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Royal Purple & Lavender Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_107.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 108,
+    "code": "BFH-H-005",
+    "name": "Golden Yellow Rose & Lily Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Golden Yellow Rose & Lily Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_108.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 109,
+    "code": "BFH-H-006",
+    "name": "Sky Blue & White Solid Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Sky Blue & White Solid Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_109.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 110,
+    "code": "BFH-H-007",
+    "name": "Crimson & Gold Regal Heart Tribute",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Crimson & Gold Regal Heart Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_110.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 111,
+    "code": "BFH-H-008",
+    "name": "Sweetheart Pastel Mixed Blossom Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Sweetheart Pastel Mixed Blossom Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_111.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 112,
+    "code": "BFH-H-009",
+    "name": "All-Red Velvet Rose Solid Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "All-Red Velvet Rose Solid Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_112.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 113,
+    "code": "BFH-H-0010",
+    "name": "Graceful Pink Rose Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Graceful Pink Rose Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_113.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 114,
+    "code": "BFH-H-0011",
+    "name": "Ivory Casablanca Open Heart on Easel",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Ivory Casablanca Open Heart on Easel - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_114.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 115,
+    "code": "BFH-H-0012",
+    "name": "Red & White Devotion Broken Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Red & White Devotion Broken Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_115.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 116,
+    "code": "BFH-H-0013",
+    "name": "Lavender Serenity Solid Floral Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Lavender Serenity Solid Floral Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_116.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 117,
+    "code": "BFH-H-0014",
+    "name": "Sunburst Gold & Orange Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Sunburst Gold & Orange Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_117.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 118,
+    "code": "BFH-H-0015",
+    "name": "Midnight Blue & Crimson Heart Tribute",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Midnight Blue & Crimson Heart Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_118.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 119,
+    "code": "BFH-H-0016",
+    "name": "Coral & Peach Blossom Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Coral & Peach Blossom Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_119.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 120,
+    "code": "BFH-H-0017",
+    "name": "Eternal White Orchid Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Eternal White Orchid Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_120.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 121,
+    "code": "BFH-H-0018",
+    "name": "Deep Ruby Rose & Baby Breath Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Deep Ruby Rose & Baby Breath Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_121.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 122,
+    "code": "BFH-H-0019",
+    "name": "Blush Carnation Solid Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Blush Carnation Solid Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_122.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 123,
+    "code": "BFH-H-0020",
+    "name": "Purple Majesty Lavender Rose Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Purple Majesty Lavender Rose Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_123.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 124,
+    "code": "BFH-H-0021",
+    "name": "Golden Sunrise Solid Rose Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Golden Sunrise Solid Rose Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_124.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 125,
+    "code": "BFH-H-0022",
+    "name": "Skyward Blue & White Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Skyward Blue & White Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_125.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 126,
+    "code": "BFH-H-0023",
+    "name": "Burgundy & Champagne Broken Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Burgundy & Champagne Broken Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_126.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 127,
+    "code": "BFH-H-0024",
+    "name": "Spring Garden Multi-Color Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Spring Garden Multi-Color Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_127.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 128,
+    "code": "BFH-H-0025",
+    "name": "Pure Grace White Rose Broken Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Pure Grace White Rose Broken Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_128.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 129,
+    "code": "BFH-H-0026",
+    "name": "Scarlet Ribbon & Red Carnation Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Scarlet Ribbon & Red Carnation Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_129.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 130,
+    "code": "BFH-H-0027",
+    "name": "Soft Pink Rose & Daisy Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Soft Pink Rose & Daisy Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_130.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 131,
+    "code": "BFH-H-0028",
+    "name": "Violet Cascade Open Heart Tribute",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Violet Cascade Open Heart Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_131.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 132,
+    "code": "BFH-H-0029",
+    "name": "Yellow Sunshine Solid Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Yellow Sunshine Solid Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_132.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 133,
+    "code": "BFH-H-0030",
+    "name": "Royal Blue Sapphire Rose Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Royal Blue Sapphire Rose Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_133.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 134,
+    "code": "BFH-H-0031",
+    "name": "Coral Horizon Blossom Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Coral Horizon Blossom Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_134.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 135,
+    "code": "BFH-H-0032",
+    "name": "Harlem Heritage Grand Solid Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Harlem Heritage Grand Solid Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_135.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 136,
+    "code": "BFH-H-0033",
+    "name": "Angelic White Carnation Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Angelic White Carnation Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_136.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 137,
+    "code": "BFH-H-0034",
+    "name": "Crimson Elegance Solid Red Rose Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Crimson Elegance Solid Red Rose Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_137.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 138,
+    "code": "BFH-H-0035",
+    "name": "Blush & White Serenity Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Blush & White Serenity Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_138.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 139,
+    "code": "BFH-H-0036",
+    "name": "Lavender Ribbon Memorial Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Lavender Ribbon Memorial Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_139.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 140,
+    "code": "BFH-H-0037",
+    "name": "Golden Amber Solid Rose Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Golden Amber Solid Rose Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_140.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 141,
+    "code": "BFH-H-0038",
+    "name": "Blue Sky & Cloud Open Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Blue Sky & Cloud Open Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_141.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 142,
+    "code": "BFH-H-0039",
+    "name": "Eternal Devotion Multi-Color Rose Heart",
+    "category": "heart",
+    "categoryLabel": "Heart Sympathy Tribute",
+    "description": "Eternal Devotion Multi-Color Rose Heart - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_142.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 143,
+    "code": "BFH-C-001",
+    "name": "Pure White Carnation & Red Rose Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Pure White Carnation & Red Rose Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_143.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 144,
+    "code": "BFH-C-002",
+    "name": "Solid Red Velvet Rose Standing Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Solid Red Velvet Rose Standing Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_144.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 145,
+    "code": "BFH-C-003",
+    "name": "Ivory Casablanca & White Orchid Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Ivory Casablanca & White Orchid Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_145.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 146,
+    "code": "BFH-C-004",
+    "name": "Pink Rose & White Mum Faith Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Pink Rose & White Mum Faith Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_146.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 147,
+    "code": "BFH-C-005",
+    "name": "Lavender & Purple Majesty Standing Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Lavender & Purple Majesty Standing Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_147.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 148,
+    "code": "BFH-C-006",
+    "name": "Golden Sunlight Yellow Rose Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Golden Sunlight Yellow Rose Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_148.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 149,
+    "code": "BFH-C-007",
+    "name": "Royal Blue & White Faith Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Royal Blue & White Faith Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_149.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 150,
+    "code": "BFH-C-008",
+    "name": "Crimson & Gold Grand Standing Cross",
+    "category": "cross",
+    "categoryLabel": "Standing Faith Cross",
+    "description": "Crimson & Gold Grand Standing Cross - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_150.jpg",
+    "pricing": {
+      "small": 550,
+      "medium": 550,
+      "large": 550
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 151,
+    "code": "BFH-PC-001",
+    "name": "Custom Masonic Square & Compass Floral Emblem",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Custom Masonic Square & Compass Floral Emblem - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_151.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 152,
+    "code": "BFH-PC-002",
+    "name": "Eastern Star 5-Pointed Floral Emblem",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Eastern Star 5-Pointed Floral Emblem - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_152.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 153,
+    "code": "BFH-PC-003",
+    "name": "Grand Sports Jersey / Baseball Tribute Piece",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Grand Sports Jersey / Baseball Tribute Piece - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_153.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 154,
+    "code": "BFH-PC-004",
+    "name": "Musical Treble Clef & Note Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Musical Treble Clef & Note Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_154.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 155,
+    "code": "BFH-PC-005",
+    "name": "Praying Hands Solid Floral Sculpture",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Praying Hands Solid Floral Sculpture - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_155.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 156,
+    "code": "BFH-PC-006",
+    "name": "Open Bible Scripture Floral Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Open Bible Scripture Floral Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_156.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 157,
+    "code": "BFH-PC-007",
+    "name": "Gates of Heaven Floral Arch Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Gates of Heaven Floral Arch Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_157.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 158,
+    "code": "BFH-PC-008",
+    "name": "Star of David Faith Floral Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Star of David Faith Floral Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_158.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 159,
+    "code": "BFH-PC-009",
+    "name": "Anchor of Hope Nautical Floral Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Anchor of Hope Nautical Floral Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_159.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 160,
+    "code": "BFH-PC-0010",
+    "name": "Peace Dove in Flight Sympathy Piece",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Peace Dove in Flight Sympathy Piece - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_160.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 161,
+    "code": "BFH-PC-0011",
+    "name": "Crown of Glory Royal Floral Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Crown of Glory Royal Floral Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_161.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 162,
+    "code": "BFH-PC-0012",
+    "name": "Butterfly Wings Metamorphosis Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Butterfly Wings Metamorphosis Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_162.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 163,
+    "code": "BFH-PC-0013",
+    "name": "Guitar / Instrument Custom Floral Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Guitar / Instrument Custom Floral Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_163.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 164,
+    "code": "BFH-PC-0014",
+    "name": "Automobile / Motorcycle Emblem Piece",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Automobile / Motorcycle Emblem Piece - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_164.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 165,
+    "code": "BFH-PC-0015",
+    "name": "Angel Wings Solid White Rose Sculpture",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Angel Wings Solid White Rose Sculpture - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_165.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 166,
+    "code": "BFH-PC-0016",
+    "name": "Pillow of Rest Inscription Floral Tribute",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Pillow of Rest Inscription Floral Tribute - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_166.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 167,
+    "code": "BFH-PC-0017",
+    "name": "Custom Number / Year Memorial Piece",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Custom Number / Year Memorial Piece - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_167.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 168,
+    "code": "BFH-PC-0018",
+    "name": "Harlem Bespoke Commission Tribute Piece",
+    "category": "custom",
+    "categoryLabel": "Custom Emblem Tribute",
+    "description": "Harlem Bespoke Commission Tribute Piece - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_168.jpg",
+    "pricing": {
+      "small": 600,
+      "medium": 600,
+      "large": 600
+    },
+    "dimensions": {
+      "small": "36\" Standard",
+      "medium": "48\" Deluxe",
+      "large": "60\" Majestic"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 169,
+    "code": "BFH-B-001",
+    "name": "Golden Sunlight Gladiolus & Lily Altar Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Golden Sunlight Gladiolus & Lily Altar Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_169.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 170,
+    "code": "BFH-B-002",
+    "name": "Pure Serenity All-White Mum & Rose Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Pure Serenity All-White Mum & Rose Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_170.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 171,
+    "code": "BFH-B-003",
+    "name": "Crimson Velvet Rose & Carnation Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Crimson Velvet Rose & Carnation Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_171.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 172,
+    "code": "BFH-B-004",
+    "name": "Pastel Garden Whisper Mixed Blossom Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Pastel Garden Whisper Mixed Blossom Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_172.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 173,
+    "code": "BFH-B-005",
+    "name": "Lavender Mist & Purple Snapdragon Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Lavender Mist & Purple Snapdragon Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_173.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 174,
+    "code": "BFH-B-006",
+    "name": "Sweetheart Pink Rose & Lily Pedestal Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Sweetheart Pink Rose & Lily Pedestal Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_174.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 175,
+    "code": "BFH-B-007",
+    "name": "Autumn Glory Copper Mum & Daisy Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Autumn Glory Copper Mum & Daisy Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_175.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 176,
+    "code": "BFH-B-008",
+    "name": "Skyward Blue Hydrangea & Ivory Altar Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Skyward Blue Hydrangea & Ivory Altar Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_176.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 177,
+    "code": "BFH-B-009",
+    "name": "Sunrise Burst Orange Lily & Carnation Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Sunrise Burst Orange Lily & Carnation Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_177.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 178,
+    "code": "BFH-B-0010",
+    "name": "Pure Peace Casablanca Lily White Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Pure Peace Casablanca Lily White Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_178.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 179,
+    "code": "BFH-B-0011",
+    "name": "Royal Fuchsia & Violet Blossom Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Royal Fuchsia & Violet Blossom Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_179.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 180,
+    "code": "BFH-B-0012",
+    "name": "Golden Harvest Sunflower & Daisy Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Golden Harvest Sunflower & Daisy Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_180.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 181,
+    "code": "BFH-B-0013",
+    "name": "Blush & Coral Garden Pedestal Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Blush & Coral Garden Pedestal Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_181.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 182,
+    "code": "BFH-B-0014",
+    "name": "Deep Ruby Red Rose Sympathy Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Deep Ruby Red Rose Sympathy Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_182.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 183,
+    "code": "BFH-B-0015",
+    "name": "Ocean Mist Blue & White Floral Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Ocean Mist Blue & White Floral Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_183.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 184,
+    "code": "BFH-B-0016",
+    "name": "Spring Symphony Pastel Mixed Pedestal Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Spring Symphony Pastel Mixed Pedestal Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_184.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 185,
+    "code": "BFH-B-0017",
+    "name": "Victorian Rose Lavender & Cream Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Victorian Rose Lavender & Cream Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_185.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 186,
+    "code": "BFH-B-0018",
+    "name": "Emerald & Ivory Gladiolus Altar Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Emerald & Ivory Gladiolus Altar Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_186.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 187,
+    "code": "BFH-B-0019",
+    "name": "Scarlet & Gold Celebration Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Scarlet & Gold Celebration Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_187.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 188,
+    "code": "BFH-B-0020",
+    "name": "Soft Peach & White Rose Pedestal Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Soft Peach & White Rose Pedestal Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_188.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 189,
+    "code": "BFH-B-0021",
+    "name": "Purple Splendor Orchid & Mum Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Purple Splendor Orchid & Mum Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_189.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 190,
+    "code": "BFH-B-0022",
+    "name": "Sunkissed Yellow Snapdragon Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Sunkissed Yellow Snapdragon Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_190.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 191,
+    "code": "BFH-B-0023",
+    "name": "Harlem Serenade White Rose & Lily Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Harlem Serenade White Rose & Lily Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_191.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  },
+  {
+    "catalogNumber": 192,
+    "code": "BFH-B-0024",
+    "name": "Grand Finale Sympathy Altar Basket",
+    "category": "basket",
+    "categoryLabel": "Altar & Pedestal Basket",
+    "description": "Grand Finale Sympathy Altar Basket - Premium handcrafted floral tribute from Daniela's Original Harlem Collection.",
+    "imageUrl": "/images/florals/danielas/daniela_192.jpg",
+    "pricing": {
+      "small": 175,
+      "medium": 175,
+      "large": 175
+    },
+    "dimensions": {
+      "small": "18\" Table/Altar",
+      "medium": "24\" Grand Altar",
+      "large": "30\" Majestic Altar"
+    },
+    "floristPartner": "Daniela's Original"
+  }
+]

@@ -135,7 +135,7 @@ How may I assist you right now?`,
             onClick={onBackToWelcome}
             className="inline-flex items-center space-x-2 px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-800 rounded-xl font-bold text-xs transition border border-neutral-300 shadow-xs group"
           >
-            <ArrowLeft className="w-4 h-4 text-[#991b1b] group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft className="w-4 h-4 text-[#800000] group-hover:-translate-x-0.5 transition-transform" />
             <span>← Back to Welcome Page</span>
           </button>
         )}
@@ -146,11 +146,11 @@ How may I assist you right now?`,
       </div>
 
       {/* Main Chat Interface Container */}
-      <div className="bg-white border border-neutral-200 rounded-3xl shadow-sm overflow-hidden flex flex-col h-[750px]">
+      <div className="bg-white border border-neutral-200 rounded-2xl shadow-sm overflow-hidden flex flex-col h-[750px]">
         {/* Header Bar */}
         <div className="bg-[#1a1815] text-white p-5 border-b border-neutral-800 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#991b1b] to-red-950 flex items-center justify-center text-amber-300 shadow-md border border-amber-500/20">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#800000] to-red-950 flex items-center justify-center text-amber-300 shadow-md border border-amber-500/20">
               <MessageSquare className="w-6 h-6" />
             </div>
             <div>
@@ -197,7 +197,7 @@ How may I assist you right now?`,
             <button
               key={idx}
               onClick={() => handleSendMessage(topic)}
-              className="whitespace-nowrap px-3 py-1 bg-white hover:bg-red-50 hover:text-[#991b1b] hover:border-red-200 text-neutral-700 font-medium rounded-full border border-neutral-200 shadow-2xs transition text-xs cursor-pointer"
+              className="whitespace-nowrap px-3 py-1 bg-white hover:bg-red-50 hover:text-[#800000] hover:border-red-200 text-neutral-700 font-medium rounded-full border border-neutral-200 shadow-2xs transition text-xs cursor-pointer"
             >
               {topic}
             </button>
@@ -214,7 +214,7 @@ How may I assist you right now?`,
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                   msg.sender === 'user'
-                    ? 'bg-[#991b1b] text-white shadow-xs'
+                    ? 'bg-[#800000] text-white shadow-xs'
                     : 'bg-gradient-to-br from-[#1a1815] to-[#2c2824] text-amber-300 border border-amber-500/30 shadow-xs'
                 }`}
               >
@@ -225,7 +225,7 @@ How may I assist you right now?`,
                 <div
                   className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-[#991b1b] text-white rounded-tr-xs shadow-xs'
+                      ? 'bg-[#800000] text-white rounded-tr-xs shadow-xs'
                       : 'bg-white text-neutral-800 rounded-tl-xs border border-neutral-200 shadow-xs'
                   }`}
                 >
@@ -286,9 +286,9 @@ How may I assist you right now?`,
               <div className="bg-white border border-neutral-200 p-4 rounded-2xl rounded-tl-xs shadow-xs space-y-1">
                 <div className="flex items-center space-x-2 text-neutral-500 text-xs font-medium">
                   <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-[#991b1b] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-2 h-2 bg-[#991b1b] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-2 h-2 bg-[#991b1b] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <div className="w-2 h-2 bg-[#800000] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 bg-[#800000] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 bg-[#800000] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                   <span>Benta Care Concierge is preparing guidance...</span>
                 </div>
@@ -308,14 +308,14 @@ How may I assist you right now?`,
               onChange={(e) => setUserInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask anything about the service, certificates, VA benefits, or message Director Jason Benta..."
-              className="flex-1 border border-neutral-300 rounded-2xl px-4 py-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#991b1b] focus:border-transparent bg-neutral-50 placeholder-neutral-400"
+              className="flex-1 border border-neutral-300 rounded-2xl px-4 py-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-[#800000] focus:border-transparent bg-neutral-50 placeholder-neutral-400"
             />
             <button
               onClick={() => handleSendMessage()}
               disabled={!userInput.trim() || isTyping}
               className={`px-5 py-3 rounded-2xl font-bold text-xs flex items-center space-x-2 transition cursor-pointer shadow-md ${
                 userInput.trim() && !isTyping
-                  ? 'bg-[#991b1b] hover:bg-red-800 text-white shadow-red-950/20'
+                  ? 'bg-[#800000] hover:bg-red-800 text-white shadow-red-950/20'
                   : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
               }`}
             >

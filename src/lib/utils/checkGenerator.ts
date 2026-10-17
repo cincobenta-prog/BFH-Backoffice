@@ -207,23 +207,80 @@ export function generateCashAdvanceChecks(
     );
   }
 
-  // 6. Bridge / Road Tolls & Chauffeur Disbursements
-  const tollsAndGratuities = (s2.bridgeAndRoadTollsAmount || 0) + (s2.gratuitiesLiveryAndStaffAmount || 0);
-  if (tollsAndGratuities > 0) {
+  // 6. Bridge & Road Tolls (MTA / Port Authority)
+  if ((s2.bridgeAndRoadTollsAmount || 0) > 0) {
     checks.push(
       createCheck({
         category: 'livery_tolls',
-        categoryLabel: 'Bridge, Tunnel & Chauffeur Pass-Through Tolls',
+        categoryLabel: 'Bridge, Tunnel & Turnpike Tolls (Pass-Through)',
         payeeName: 'MTA Bridges & Tunnels / Chauffeur Tolls Pool',
         payeeAddress: 'Triborough Bridge Station, New York, NY',
-        amount: tollsAndGratuities,
+        amount: s2.bridgeAndRoadTollsAmount,
         memoPrefix: 'Cortege Highway Tolls',
-        notes: 'Provide to lead chauffeur vehicle for RFK/George Washington Bridge and toll plazas.'
+        notes: 'Provide to lead chauffeur for cortege toll plazas and bridge crossings.'
       })
     );
   }
 
-  // 7. Custom Cash Advances
+  // 7. Livery Chauffeur & Staff Gratuities
+  if ((s2.gratuitiesLiveryAndStaffAmount || 0) > 0) {
+    checks.push(
+      createCheck({
+        category: 'pallbearer_gratuity',
+        categoryLabel: 'Livery Chauffeur & Service Staff Gratuities',
+        payeeName: 'BFH Livery & Chauffeur Gratuity Pool',
+        payeeAddress: '630 St Nicholas Ave, New York, NY 10030',
+        amount: s2.gratuitiesLiveryAndStaffAmount,
+        memoPrefix: 'Chauffeur Gratuities',
+        notes: 'Disburse to cortege chauffeurs and service attendants at committal conclusion.'
+      })
+    );
+  }
+
+  // 8. Other Specified Cash Advances (Lines 1, 2, 3)
+  if ((s2.otherCashAdvanceAmount || 0) > 0) {
+    const label = s2.otherCashAdvanceSpecify || 'Other Pass-Through Cash Advance (Line 1)';
+    checks.push(
+      createCheck({
+        category: 'custom_advance',
+        categoryLabel: label,
+        payeeName: label,
+        amount: s2.otherCashAdvanceAmount || 0,
+        memoPrefix: label.slice(0, 24),
+        notes: 'Pass-through cash advance (Line 1) designated in Section II of Form AP-47.'
+      })
+    );
+  }
+
+  if ((s2.otherCashAdvance2Amount || 0) > 0) {
+    const label = s2.otherCashAdvance2Specify || 'Other Pass-Through Cash Advance (Line 2)';
+    checks.push(
+      createCheck({
+        category: 'custom_advance',
+        categoryLabel: label,
+        payeeName: label,
+        amount: s2.otherCashAdvance2Amount || 0,
+        memoPrefix: label.slice(0, 24),
+        notes: 'Pass-through cash advance (Line 2) designated in Section II of Form AP-47.'
+      })
+    );
+  }
+
+  if ((s2.otherCashAdvance3Amount || 0) > 0) {
+    const label = s2.otherCashAdvance3Specify || 'Other Pass-Through Cash Advance (Line 3)';
+    checks.push(
+      createCheck({
+        category: 'custom_advance',
+        categoryLabel: label,
+        payeeName: label,
+        amount: s2.otherCashAdvance3Amount || 0,
+        memoPrefix: label.slice(0, 24),
+        notes: 'Pass-through cash advance (Line 3) designated in Section II of Form AP-47.'
+      })
+    );
+  }
+
+  // 9. Custom Cash Advances
   if (s2.customCashAdvances && s2.customCashAdvances.length > 0) {
     s2.customCashAdvances.forEach(custom => {
       if (custom.amount > 0) {

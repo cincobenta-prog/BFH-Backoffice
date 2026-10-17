@@ -98,23 +98,23 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
       
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#991b1b] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-amber-400/50 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#800000] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-amber-400/50 animate-bounce">
           <Sparkles className="w-5 h-5 text-amber-300" />
           <span className="text-sm font-semibold tracking-wide">{toastMessage}</span>
         </div>
       )}
 
       {/* Main Modal Container */}
-      <div className="bg-neutral-900 border border-neutral-700 rounded-3xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:bg-white print:text-neutral-900">
+      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:bg-white print:text-neutral-900">
         
         {/* Top Gold Foil Bar */}
         <div className="h-2 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 print:hidden"></div>
 
         {/* Executive Screen-Only Toolbar */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#141b2b] via-[#1a2335] to-[#141b2b] text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0 border-b border-neutral-800 print:hidden">
+        <div className="p-4 sm:p-5 bg-gradient-to-r from-[#1c1a1a] via-[#1a2335] to-[#1c1a1a] text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0 border-b border-neutral-800 print:hidden">
           
           <div className="flex items-center space-x-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-bold shadow-md border border-amber-300">
+            <div className="w-11 h-11 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-bold shadow-md border border-amber-300">
               <Compass className="w-6 h-6 text-amber-300" />
             </div>
             <div>
@@ -152,7 +152,7 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
 
             <button
               onClick={() => window.print()}
-              className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+              className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
               title="Print standard 1-page pocket folded itinerary"
             >
               <Printer className="w-3.5 h-3.5 text-amber-300" />
@@ -169,8 +169,8 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
         </div>
 
         {/* PRINT-ONLY OFFICIAL HEADER */}
-        <div className="hidden print:block p-8 border-b-2 border-[#991b1b] text-center font-serif-title">
-          <h1 className="text-2xl font-bold uppercase tracking-widest text-[#991b1b]">
+        <div className="hidden print:block p-8 border-b-2 border-[#800000] text-center font-serif-title">
+          <h1 className="text-2xl font-bold uppercase tracking-widest text-[#800000]">
             Benta’s Funeral Home, Inc.
           </h1>
           <p className="text-xs text-neutral-600 font-sans mt-0.5">
@@ -207,7 +207,7 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
               </div>
               <a
                 href={`tel:${itinerary.directorPhone.replace(/[^0-9]/g, '')}`}
-                className="ml-2 bg-[#991b1b] hover:bg-red-800 text-white p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition print:hidden"
+                className="ml-2 bg-[#800000] hover:bg-red-800 text-white p-1.5 rounded-lg flex items-center gap-1 text-[11px] font-bold transition print:hidden"
                 title="Call Director on Duty"
               >
                 <PhoneCall className="w-3 h-3 text-amber-300" />
@@ -328,7 +328,7 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
                         isCompleted
                           ? 'bg-emerald-600 border-emerald-400 text-white'
                           : isInProgress
-                          ? 'bg-[#991b1b] border-amber-400 text-amber-300 animate-pulse'
+                          ? 'bg-[#800000] border-amber-400 text-amber-300 animate-pulse'
                           : 'bg-neutral-800 border-neutral-600 text-neutral-300'
                       }`}>
                         {isCompleted ? (
@@ -464,7 +464,7 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
                         href={venue.directionsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.address)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+                        className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
                       >
                         <Navigation className="w-3.5 h-3.5 text-amber-300" />
                         <span>Google Maps</span>
@@ -588,7 +588,7 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
       {/* SHARE SMS / EMAIL LINK MODAL */}
       {isShareModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-neutral-900 border border-neutral-700 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-white animate-fadeIn">
+          <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl text-white animate-fadeIn">
             
             <div className="flex justify-between items-center border-b border-neutral-800 pb-3">
               <div className="flex items-center space-x-2">
@@ -638,7 +638,7 @@ export const DayOfServiceVIPItineraryModal: React.FC<DayOfServiceVIPItineraryMod
                   copyShareLink();
                   setIsShareModalOpen(false);
                 }}
-                className="w-full py-3 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-2xl transition border border-amber-400/40 text-xs flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#800000] hover:bg-red-800 text-white font-bold rounded-2xl transition border border-amber-400/40 text-xs flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4 text-amber-300" />
                 <span>Copy & Send to Family Group</span>

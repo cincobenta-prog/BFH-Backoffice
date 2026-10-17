@@ -23,7 +23,8 @@ import {
   Play,
   Pause,
   Printer,
-  ArrowLeft
+  ArrowLeft,
+  Smartphone
 } from 'lucide-react';
 
 interface DigitalTributeStudioViewProps {
@@ -311,7 +312,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
   const pendingCount = tributes.filter(t => t.status === 'pending').length;
 
   return (
-    <div className="min-h-[85vh] bg-[#faf7f2] text-[#191714] font-sans antialiased -mx-4 sm:-mx-6 lg:-mx-8 -my-6 sm:-my-8 p-4 sm:p-6 lg:p-8 rounded-3xl">
+    <div className="min-h-[85vh] bg-[#faf7f2] text-[#191714] font-sans antialiased -mx-4 sm:-mx-6 lg:-mx-8 -my-6 sm:-my-8 p-4 sm:p-6 lg:p-8 rounded-2xl">
       
       {/* Toast Notification */}
       {toastMessage && (
@@ -337,7 +338,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
         </div>
       </div>
 
-      <header className="bg-[#faf7f2]/95 backdrop-blur-md border border-[#ece5d8] rounded-3xl sticky top-0 z-40 px-6 py-4 flex flex-wrap items-center justify-between gap-4 mb-8 shadow-xs">
+      <header className="bg-[#faf7f2]/95 backdrop-blur-md border border-[#ece5d8] rounded-2xl sticky top-0 z-40 px-6 py-4 flex flex-wrap items-center justify-between gap-4 mb-8 shadow-xs">
         
         {/* Brand Group */}
         <div className="space-y-1">
@@ -428,7 +429,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
           </div>
 
           {/* White Card Box */}
-          <div className="bg-white border border-[#ece5d8] rounded-3xl p-6 sm:p-10 shadow-sm space-y-8">
+          <div className="bg-white border border-[#ece5d8] rounded-2xl p-6 sm:p-10 shadow-sm space-y-8">
             
             {/* Stepper Header */}
             <div className="flex items-center justify-center gap-6 sm:gap-10 border-b border-[#ece5d8] pb-5 text-xs font-semibold">
@@ -930,7 +931,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
                     <strong className="text-[#191613]">— Robert Vance</strong>, <span className="italic text-[#8c7d6b]">Husband of 52 Years</span>
                   </div>
                   <span className="bg-white border border-[#e6dac1] text-[#af893e] text-[10px] font-sans font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                    📱 Scan to Stream Voice Recording (02:14)
+                    <Smartphone className="w-3 h-3" /> Scan to Stream Voice Recording (02:14)
                   </span>
                 </div>
               </div>
@@ -990,7 +991,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
                     <strong className="text-[#191613]">— Martha Hayes</strong>, <span className="italic text-[#8c7d6b]">Childhood Friend of 63 Years</span>
                   </div>
                   <span className="bg-white border border-[#e6dac1] text-[#af893e] text-[10px] font-sans font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                    📱 Scan to Stream Voice Recording (03:02)
+                    <Smartphone className="w-3 h-3" /> Scan to Stream Voice Recording (03:02)
                   </span>
                 </div>
               </div>
@@ -1017,7 +1018,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
             </p>
           </div>
 
-          <div className="bg-white border border-[#ece5d8] rounded-3xl p-6 sm:p-8 shadow-sm overflow-x-auto">
+          <div className="bg-white border border-[#ece5d8] rounded-2xl p-6 sm:p-8 shadow-sm overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="border-b border-[#ece5d8] text-[#69635b] uppercase text-[11px] font-bold">
@@ -1104,7 +1105,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* Card 1: Database & Storage Rules */}
-            <div className="bg-white border border-[#ece5d8] rounded-3xl p-6 sm:p-8 shadow-sm space-y-3 text-xs leading-relaxed">
+            <div className="bg-white border border-[#ece5d8] rounded-2xl p-6 sm:p-8 shadow-sm space-y-3 text-xs leading-relaxed">
               <h3 className="text-base font-bold text-[#191714] border-b border-[#ece5d8] pb-2">
                 Database & Storage Rules
               </h3>
@@ -1135,7 +1136,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
             </div>
 
             {/* Card 2: Automated 90-Day Purge */}
-            <div className="bg-white border border-[#ece5d8] rounded-3xl p-6 sm:p-8 shadow-sm space-y-3 text-xs leading-relaxed">
+            <div className="bg-white border border-[#ece5d8] rounded-2xl p-6 sm:p-8 shadow-sm space-y-3 text-xs leading-relaxed">
               <h3 className="text-base font-bold text-[#191714] border-b border-[#ece5d8] pb-2">
                 Automated 90–Day Purge
               </h3>
@@ -1166,7 +1167,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
             </div>
 
             {/* Card 3: Realtime Storage Telemetry */}
-            <div className="md:col-span-2 bg-white border border-[#ece5d8] rounded-3xl p-6 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs">
+            <div className="md:col-span-2 bg-white border border-[#ece5d8] rounded-2xl p-6 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs">
               <div className="flex items-center gap-2">
                 <span className="text-base">📊</span>
                 <div>

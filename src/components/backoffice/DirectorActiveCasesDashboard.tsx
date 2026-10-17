@@ -33,6 +33,39 @@ import {
   CreditCard
 } from 'lucide-react';
 
+const NEXT_STEP_COPY: Record<string, { title: string; body: string; primary: string; secondary: string }> = {
+  intake_removal: {
+    title: 'Log the safe arrival and reassure the family',
+    body: 'Confirm physical arrival at 630 Saint Nicholas Avenue, then send the next of kin a peace-of-mind SMS.',
+    primary: 'Log removal & custody',
+    secondary: 'Open case record'
+  },
+  arrangements: {
+    title: 'Complete the arrangement conference',
+    body: 'Work through service selections with the family and finalize the itemized Form AP-47 statement of goods and services.',
+    primary: 'Open AP-47 studio',
+    secondary: 'Open case record'
+  },
+  legal_bundle: {
+    title: 'Collect next-of-kin signatures',
+    body: 'Request legally binding e-signatures on the EDRS worksheet and the crematory authorization.',
+    primary: 'Open legal e-sign pad',
+    secondary: 'Open case record'
+  },
+  permits_logistics: {
+    title: 'Transmit the permit packet',
+    body: 'Send the verified NYC EDRS permit and signed cremation authorization to Woodlawn and the officiant.',
+    primary: 'Open Woodlawn dispatch',
+    secondary: 'Open case record'
+  },
+  finalization_aftercare: {
+    title: 'Close out billing and begin aftercare',
+    body: 'Confirm ACH or insurance settlement, then activate the Day 7, 30, and 365 grief-support touchpoints.',
+    primary: 'Review case records',
+    secondary: 'Open case record'
+  }
+};
+
 export interface DirectorActiveCasesDashboardProps {
   cases: GoldenRecordCase[];
   activeCase: GoldenRecordCase;
@@ -94,9 +127,9 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
   activeCase,
   onSelectCase,
   onOpenGoldenRecord,
-  onOpenESignModal: _onOpenESignModal,
+  onOpenESignModal,
   onOpenLiveryModal: _onOpenLiveryModal,
-  onOpenWoodlawnModal: _onOpenWoodlawnModal,
+  onOpenWoodlawnModal,
   onOpenPartnerModal,
   onOpenTwoWaySmsModal,
   onOpenWebcastModal,
@@ -366,7 +399,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
           <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-neutral-300 space-y-4 animate-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center space-x-2">
-                <ShieldCheck className="w-5 h-5 text-[#991b1b]" />
+                <ShieldCheck className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-bold text-sm text-neutral-900">Managerial Case Override</h3>
               </div>
               <button onClick={() => setReassigningCaseId(null)} className="text-neutral-400 hover:text-neutral-700 text-xs font-bold">✕</button>
@@ -381,7 +414,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               <select
                 value={targetReassignDirectorId}
                 onChange={(e) => setTargetReassignDirectorId(e.target.value)}
-                className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2.5 text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                className="w-full bg-neutral-50 border border-neutral-300 rounded-lg p-2.5 text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
               >
                 <optgroup label="Managing Directors & Licensed Funeral Directors">
                   {directorProfiles.filter(d => d.isManager || d.roleType === 'manager').map(d => (
@@ -409,7 +442,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               </button>
               <button
                 onClick={handleExecuteReassign}
-                className="px-4 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-xs font-bold shadow-sm"
+                className="px-4 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-lg text-xs font-bold shadow-sm"
               >
                 Confirm Reassignment
               </button>
@@ -426,7 +459,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
           <div className="flex items-center space-x-3">
             <div 
               className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-xs border"
-              style={{ backgroundColor: activeDirector?.colorTheme?.primary || '#991b1b' }}
+              style={{ backgroundColor: activeDirector?.colorTheme?.primary || '#800000' }}
             >
               <User className="w-5 h-5 text-white" />
             </div>
@@ -438,8 +471,8 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                 </span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
                   activeDirector?.isManager || activeDirector?.roleType === 'manager' 
-                    ? 'bg-purple-100 text-purple-900 border-purple-300'
-                    : activeDirector?.colorTheme?.badgeBg || 'bg-blue-100 text-blue-900 border-blue-300'
+                    ? 'bg-brass-100 text-brass-900 border-brass-300'
+                    : activeDirector?.colorTheme?.badgeBg || 'bg-brass-100 text-brass-900 border-brass-300'
                 }`}>
                   {activeDirector?.isManager || activeDirector?.roleType === 'manager' ? 'Managing Director & LFD (Full Access)' : `Funeral Director • ${activeDirector?.colorTheme?.name}`}
                 </span>
@@ -459,7 +492,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               <select
                 value={currentDirectorId}
                 onChange={(e) => onChangeDirectorId(e.target.value)}
-                className="bg-white border border-neutral-300 text-neutral-900 font-bold rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#991b1b] cursor-pointer"
+                className="bg-white border border-neutral-300 text-neutral-900 font-bold rounded-lg px-2.5 py-1 text-xs outline-none focus:border-[#800000] cursor-pointer"
               >
                 <optgroup label="Managing Directors (Full Access & Overrides)">
                   {directorProfiles.filter(d => d.isManager || d.roleType === 'manager').map(d => (
@@ -512,6 +545,57 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
           </div>
         )}
 
+        {/* GUIDED NEXT STEP */}
+        {(() => {
+          const copy = NEXT_STEP_COPY[activeCase.currentPhase] || NEXT_STEP_COPY.intake_removal;
+          const runPrimary = () => {
+            switch (activeCase.currentPhase) {
+              case 'intake_removal':
+                return onOpenRemovalModal?.(activeCase);
+              case 'arrangements':
+                return onOpenContractModal?.(activeCase);
+              case 'legal_bundle':
+                return onOpenESignModal?.();
+              case 'permits_logistics':
+                return onOpenWoodlawnModal?.();
+              default:
+                return onOpenGoldenRecord?.(activeCase.id);
+            }
+          };
+          return (
+            <div className="flex flex-col justify-between gap-4 rounded-2xl border border-[#ecdfc4] border-l-4 border-l-[#b8860b] bg-gradient-to-b from-[#fffdf8] to-white p-5 shadow-sm md:flex-row md:items-center">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#800000] text-amber-300">
+                  <Compass className="h-5 w-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#b8860b]">
+                    Your next step
+                  </span>
+                  <h3 className="font-serif-title mt-0.5 text-base font-bold text-neutral-900">
+                    {copy.title}
+                  </h3>
+                  <p className="mt-1 max-w-2xl text-xs text-neutral-600">{copy.body}</p>
+                </div>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  onClick={runPrimary}
+                  className="rounded-xl bg-[#800000] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#680000]"
+                >
+                  {copy.primary}
+                </button>
+                <button
+                  onClick={() => onOpenGoldenRecord?.(activeCase.id)}
+                  className="rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-xs font-semibold text-neutral-800 transition hover:bg-neutral-50"
+                >
+                  {copy.secondary}
+                </button>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* SCOPE TABS & SEARCH / FILTER BAR */}
         <div className="bg-white rounded-2xl border border-neutral-200 p-4 shadow-sm space-y-4">
           
@@ -522,7 +606,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                 onClick={() => setScopeFilter('my_cases')}
                 className={`px-3.5 py-1.5 rounded-lg transition flex items-center space-x-1.5 ${
                   scopeFilter === 'my_cases'
-                    ? 'bg-[#991b1b] text-white shadow-xs'
+                    ? 'bg-[#800000] text-white shadow-xs'
                     : 'text-neutral-600 hover:text-neutral-900'
                 }`}
               >
@@ -534,7 +618,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                 onClick={() => setScopeFilter('unclaimed')}
                 className={`px-3.5 py-1.5 rounded-lg transition flex items-center space-x-1.5 ${
                   scopeFilter === 'unclaimed'
-                    ? 'bg-amber-600 text-white shadow-xs'
+                    ? 'bg-brass-600 text-white shadow-xs'
                     : 'text-neutral-600 hover:text-neutral-900'
                 }`}
               >
@@ -560,7 +644,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               {onOpenFirstCallIntake && (
                 <button
                   onClick={onOpenFirstCallIntake}
-                  className="bg-gradient-to-r from-amber-600 via-amber-700 to-[#991b1b] hover:brightness-110 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/50"
+                  className="bg-gradient-to-r from-amber-600 via-amber-700 to-[#800000] hover:brightness-110 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-brass-400/50"
                   title="Capture First Call Intake (Immediate Removal or Advance Arrangement)"
                 >
                   <PhoneCall className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
@@ -571,7 +655,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               {onOpenNewCase && (
                 <button
                   onClick={onOpenNewCase}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-brass-400/40"
                 >
                   <span>+ New Case</span>
                 </button>
@@ -588,7 +672,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                 placeholder="Search cases by decedent, case number, informant, or director..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-neutral-50 border border-neutral-200 rounded-xl text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#991b1b] focus:bg-white transition"
+                className="w-full pl-9 pr-4 py-2 bg-neutral-50 border border-neutral-200 rounded-xl text-xs text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#800000] focus:bg-white transition"
               />
             </div>
 
@@ -596,7 +680,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               <select
                 value={selectedPhaseFilter}
                 onChange={(e) => setSelectedPhaseFilter(e.target.value as any)}
-                className="bg-neutral-50 border border-neutral-200 text-xs rounded-lg px-2.5 py-2 text-neutral-800 font-medium outline-none focus:border-[#991b1b]"
+                className="bg-neutral-50 border border-neutral-200 text-xs rounded-lg px-2.5 py-2 text-neutral-800 font-medium outline-none focus:border-[#800000]"
               >
                 <option value="all">All 5 Phases</option>
                 <option value="intake_removal">1. Intake & Removal</option>
@@ -609,7 +693,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               <select
                 value={selectedUrgencyFilter}
                 onChange={(e) => setSelectedUrgencyFilter(e.target.value as any)}
-                className="bg-neutral-50 border border-neutral-200 text-xs rounded-lg px-2.5 py-2 text-neutral-800 font-medium outline-none focus:border-[#991b1b]"
+                className="bg-neutral-50 border border-neutral-200 text-xs rounded-lg px-2.5 py-2 text-neutral-800 font-medium outline-none focus:border-[#800000]"
               >
                 <option value="all">All Deadlines</option>
                 <option value="critical">🚨 Critical / Overdue</option>
@@ -620,7 +704,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="bg-neutral-50 border border-neutral-200 text-xs rounded-lg px-2.5 py-2 text-neutral-800 font-medium outline-none focus:border-[#991b1b]"
+                className="bg-neutral-50 border border-neutral-200 text-xs rounded-lg px-2.5 py-2 text-neutral-800 font-medium outline-none focus:border-[#800000]"
               >
                 <option value="urgency">Sort: Deadlines First</option>
                 <option value="case_number">Sort: Case Number</option>
@@ -651,10 +735,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
 
         {/* TOP ACTIONABLE ALERTS & STATUTORY DEADLINES STRIP */}
         {allAlertsList.length > 0 && selectedUrgencyFilter !== 'ontrack' && (
-          <div className="bg-white rounded-2xl border border-rose-200 p-4 shadow-sm space-y-3">
+          <div className="bg-white rounded-2xl border border-red-200 p-4 shadow-sm space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="w-4 h-4 text-rose-600" />
+                <AlertTriangle className="w-4 h-4 text-red-600" />
                 <span className="font-bold text-xs text-neutral-900 uppercase tracking-wider">
                   Active Statutory Deadlines & Critical Case Alerts ({allAlertsList.length})
                 </span>
@@ -669,15 +753,15 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                   onClick={() => handleAlertAction(alert)}
                   className={`p-3 rounded-xl border text-xs flex flex-col justify-between space-y-2 cursor-pointer transition hover:shadow-xs ${
                     alert.urgency === 'critical'
-                      ? 'bg-rose-50/70 border-rose-200 hover:bg-rose-50 text-rose-950'
+                      ? 'bg-red-50/70 border-red-200 hover:bg-red-50 text-red-950'
                       : 'bg-amber-50/70 border-amber-200 hover:bg-amber-50 text-amber-950'
                   }`}
                 >
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="font-mono font-bold text-[10px] text-[#991b1b]">{alert.caseNumber}</span>
+                      <span className="font-mono font-bold text-[10px] text-[#800000]">{alert.caseNumber}</span>
                       <span className={`px-1.5 py-0.2 text-[9px] font-extrabold uppercase rounded ${
-                        alert.urgency === 'critical' ? 'bg-rose-600 text-white' : 'bg-amber-600 text-white'
+                        alert.urgency === 'critical' ? 'bg-red-600 text-white' : 'bg-amber-600 text-white'
                       }`}>
                         {alert.dueTimeLabel}
                       </span>
@@ -688,7 +772,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
 
                   <div className="pt-1 border-t border-neutral-200/50 flex items-center justify-between">
                     <span className="text-[10px] font-bold text-neutral-500">{alert.categoryLabel}</span>
-                    <span className="text-[10px] font-bold text-[#991b1b] hover:underline flex items-center gap-1">
+                    <span className="text-[10px] font-bold text-[#800000] hover:underline flex items-center gap-1">
                       <span>{alert.actionLabel}</span>
                       <span>➔</span>
                     </span>
@@ -714,7 +798,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                   onClick={() => onSelectCase(c)}
                   className={`bg-white rounded-2xl border transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between overflow-hidden relative group ${
                     isCaseSelected
-                      ? 'border-[#991b1b] ring-2 ring-[#991b1b]/10'
+                      ? 'border-[#800000] ring-2 ring-[#800000]/10'
                       : isUnclaimed
                         ? 'border-amber-300 ring-2 ring-amber-400/20'
                         : 'border-neutral-200 hover:border-neutral-300'
@@ -725,7 +809,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs font-bold text-[#991b1b] bg-red-50 border border-red-200 px-2 py-0.5 rounded">
+                          <span className="font-mono text-xs font-bold text-[#800000] bg-red-50 border border-red-200 px-2 py-0.5 rounded">
                             {c.caseNumber}
                           </span>
 
@@ -751,7 +835,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                           )}
 
                           {isAssignedToMe && !isUnclaimed && (
-                            <span className="text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
+                            <span className="text-[10px] font-bold bg-brass-50 text-brass-700 border border-brass-200 px-2 py-0.5 rounded-full">
                               Your Case
                             </span>
                           )}
@@ -768,8 +852,8 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                               <span>Removal Done ➔ Needs Arrangement</span>
                             </span>
                           ) : c.arrangementAppointment?.status === 'confirmed' ? (
-                            <span className="text-[10px] font-bold bg-blue-50 text-blue-900 border border-blue-300 px-2 py-0.5 rounded-full flex items-center gap-1">
-                              <Truck className="w-3 h-3 text-blue-600" />
+                            <span className="text-[10px] font-bold bg-brass-50 text-brass-900 border border-brass-300 px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <Truck className="w-3 h-3 text-brass-600" />
                               <span>Arrangement Booked ➔ Removal Pending</span>
                             </span>
                           ) : (
@@ -779,7 +863,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                           )}
                         </div>
 
-                        <h3 className="font-serif-title font-bold text-base text-neutral-900 group-hover:text-[#991b1b] transition-colors mt-1">
+                        <h3 className="font-serif-title font-bold text-base text-neutral-900 group-hover:text-[#800000] transition-colors mt-1">
                           {c.decedent.legalName}
                         </h3>
 
@@ -798,7 +882,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             setReassigningCaseId(c.id);
                             setTargetReassignDirectorId(c.assignedDirectorId || 'dir-fd-1');
                           }}
-                          className="text-[10px] font-bold bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 px-2 py-1 rounded-lg transition"
+                          className="text-[10px] font-bold bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-200 px-2 py-1 rounded-lg transition"
                           title="Override or Reassign Director"
                         >
                           Override Lead
@@ -826,7 +910,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                           DocuSign Legal Hub
                         </span>
                         <div className="flex items-center space-x-1 font-bold text-xs text-neutral-900">
-                          <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                          <ShieldCheck className="w-3.5 h-3.5 text-brass-600" />
                           <span>
                             {c.docusignEnvelope?.status === 'completed'
                               ? 'Signed & Verified'
@@ -879,8 +963,8 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                               Vendor SMS ({caseReqs.length})
                             </span>
                             <div className="flex items-center space-x-1 font-bold text-xs">
-                              <Smartphone className={`w-3.5 h-3.5 ${hasOverdue ? 'text-[#991b1b]' : allConfirmed ? 'text-emerald-600' : 'text-[#b45309]'}`} />
-                              <span className={hasOverdue ? 'text-[#991b1b]' : allConfirmed ? 'text-emerald-700' : 'text-[#b45309]'}>
+                              <Smartphone className={`w-3.5 h-3.5 ${hasOverdue ? 'text-[#800000]' : allConfirmed ? 'text-emerald-600' : 'text-[#b45309]'}`} />
+                              <span className={hasOverdue ? 'text-[#800000]' : allConfirmed ? 'text-emerald-700' : 'text-[#b45309]'}>
                                 {hasOverdue
                                   ? '🚨 SLA Overdue!'
                                   : allConfirmed
@@ -917,9 +1001,9 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                           onSelectCase(c);
                           onOpenGoldenRecord(c.id);
                         }}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow-xs border border-amber-400/30"
+                        className="inline-flex items-center gap-1.5 h-7 px-3 rounded-lg bg-[#800000] text-white text-[11px] font-semibold whitespace-nowrap transition hover:bg-[#6a0509]"
                       >
-                        <FileText className="w-3.5 h-3.5" />
+                        <FileText className="w-3.5 h-3.5 text-brass-200" />
                         <span>Golden Record</span>
                       </button>
 
@@ -931,14 +1015,14 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenRemovalModal(c);
                           }}
-                          className={`font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs border ${
+                          className={`inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border text-[11px] font-semibold whitespace-nowrap transition ${
                             c.safeArrivalStatus === 'safe_arrival_confirmed'
                               ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-300'
-                              : 'bg-blue-50 hover:bg-blue-100 text-blue-900 border-blue-300'
+                              : 'bg-brass-50 hover:bg-brass-100 text-brass-900 border-brass-300'
                           }`}
                           title="Open First Call Removal Logistics & Custody Affidavit"
                         >
-                          <Truck className="w-3.5 h-3.5 text-blue-700" />
+                          <Truck className="w-3.5 h-3.5 text-brass-700" />
                           <span>Removal</span>
                         </button>
                       )}
@@ -951,14 +1035,14 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenAppointmentModal(c);
                           }}
-                          className={`font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs border ${
+                          className={`inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border text-[11px] font-semibold whitespace-nowrap transition ${
                             c.arrangementAppointment?.status === 'confirmed'
                               ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300'
-                              : 'bg-white hover:bg-neutral-100 text-neutral-800 border-neutral-300'
+                              : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200 hover:border-neutral-300'
                           }`}
                           title="Open Family Arrangement Conference Scheduling Studio"
                         >
-                          <Calendar className="w-3.5 h-3.5 text-amber-700" />
+                          <Calendar className="w-3.5 h-3.5 text-brass-600" />
                           <span>Arrangement</span>
                         </button>
                       )}
@@ -973,14 +1057,14 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             const targetReq = caseReqs.find(r => r.isOverdue || r.status === 'overdue_unconfirmed') || caseReqs[0];
                             onOpenTwoWaySmsModal(targetReq?.id);
                           }}
-                          className={`font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs ${
+                          className={`inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border text-[11px] font-semibold whitespace-nowrap transition ${
                             partnerRequests.some(r => r.caseId === c.id && (r.isOverdue || r.status === 'overdue_unconfirmed'))
-                              ? 'bg-red-100 text-red-900 border border-red-300 font-bold animate-pulse'
-                              : 'bg-neutral-900 hover:bg-neutral-800 text-amber-300 border border-neutral-700'
+                              ? 'bg-brass-50 text-[#800000] border-red-300 animate-pulse'
+                              : 'bg-white hover:bg-neutral-50 text-neutral-700 border-neutral-200 hover:border-neutral-300'
                           }`}
                           title="Open Two-Way Service Partner SMS Dispatch & Carrier Confirmation Hub"
                         >
-                          <Smartphone className="w-3.5 h-3.5" />
+                          <Smartphone className="w-3.5 h-3.5 text-brass-600" />
                           <span>Vendor SMS</span>
                         </button>
                       )}
@@ -993,10 +1077,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenDocuSignModal(c);
                           }}
-                          className="bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 text-[11px] font-semibold whitespace-nowrap transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900"
                           title="Open DocuSign Legal Signature Hub & SMS ID Verification"
                         >
-                          <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                          <ShieldCheck className="w-3.5 h-3.5 text-brass-600" />
                           <span>DocuSign Hub</span>
                         </button>
                       )}
@@ -1009,10 +1093,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenQuickBooksModal(c);
                           }}
-                          className="bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 text-[11px] font-semibold whitespace-nowrap transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900"
                           title="Open QuickBooks Online Invoicing & 1099 Bill Sync"
                         >
-                          <DollarSign className="w-3.5 h-3.5 text-emerald-600" />
+                          <DollarSign className="w-3.5 h-3.5 text-brass-600" />
                           <span>QuickBooks</span>
                         </button>
                       )}
@@ -1025,10 +1109,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenDiscrepancyGuardrail(c);
                           }}
-                          className="bg-red-950/10 hover:bg-red-950/20 text-[#991b1b] border border-red-300 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 text-[11px] font-semibold whitespace-nowrap transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900"
                           title="Open Zero-Slippage Discrepancy Guardrail & NYS PHL § 4201 Check"
                         >
-                          <ShieldAlert className="w-3.5 h-3.5 text-[#991b1b]" />
+                          <ShieldAlert className="w-3.5 h-3.5 text-brass-600" />
                           <span>Guardrail</span>
                         </button>
                       )}
@@ -1041,10 +1125,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenDirectorDayOfServiceHUD(c);
                           }}
-                          className="bg-amber-500/15 hover:bg-amber-500/25 text-amber-950 border border-amber-400 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-brass-300 bg-brass-50 text-brass-900 text-[11px] font-semibold whitespace-nowrap transition hover:bg-brass-100"
                           title="Open Mobile Day-of-Service Director Pocket HUD & Cortege SMS Dispatch"
                         >
-                          <Compass className="w-3.5 h-3.5 text-amber-700" />
+                          <Compass className="w-3.5 h-3.5 text-brass-700" />
                           <span>Director HUD</span>
                         </button>
                       )}
@@ -1057,10 +1141,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenFamilyProofApproval(c);
                           }}
-                          className="bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 font-semibold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-brass-300 bg-brass-50 text-brass-900 text-[11px] font-semibold whitespace-nowrap transition hover:bg-brass-100"
                           title="Open Family Proof Approval & Commercial Press Lock Hub"
                         >
-                          <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+                          <BookOpen className="w-3.5 h-3.5 text-brass-700" />
                           <span>Proof Lock</span>
                         </button>
                       )}
@@ -1073,9 +1157,9 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenContractModal(c);
                           }}
-                          className="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-brass-300 bg-brass-50 text-brass-900 text-[11px] font-semibold whitespace-nowrap transition hover:bg-brass-100"
                         >
-                          <ScrollText className="w-3.5 h-3.5 text-emerald-700" />
+                          <ScrollText className="w-3.5 h-3.5 text-brass-700" />
                           <span>AP-47 Studio</span>
                         </button>
                       )}
@@ -1088,10 +1172,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenWebcastModal(c);
                           }}
-                          className="bg-red-50 hover:bg-red-100 text-red-950 border border-red-300 font-bold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-brass-300 bg-brass-50 text-brass-900 text-[11px] font-semibold whitespace-nowrap transition hover:bg-brass-100"
                           title="Open Live 4K Webcast Hub & Multi-Cam Studio"
                         >
-                          <Video className="w-3.5 h-3.5 text-red-600" />
+                          <Video className="w-3.5 h-3.5 text-brass-700" />
                           <span>4K Webcast</span>
                         </button>
                       )}
@@ -1104,10 +1188,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onSelectCase(c);
                             onOpenStripeModal(c);
                           }}
-                          className="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 shadow-2xs"
+                          className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 text-[11px] font-semibold whitespace-nowrap transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900"
                           title="Open Stripe POS Terminal & Process Payments"
                         >
-                          <CreditCard className="w-3.5 h-3.5 text-emerald-700" />
+                          <CreditCard className="w-3.5 h-3.5 text-brass-600" />
                           <span>Stripe Pay</span>
                         </button>
                       )}
@@ -1122,7 +1206,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             onClaimCase(c.id);
                             showToast(`✓ You have claimed case ${c.caseNumber} as lead director.`);
                           }}
-                          className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-sm transition flex items-center space-x-1"
+                          className="inline-flex items-center gap-1.5 h-7 px-3 rounded-lg bg-brass-600 text-white text-[11px] font-semibold whitespace-nowrap transition hover:bg-brass-700"
                         >
                           <UserCheck className="w-3.5 h-3.5" />
                           <span>Claim Case</span>
@@ -1130,10 +1214,10 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                       ) : (
                         <button
                           onClick={(e) => handleSendMagicLink(c, e)}
-                          className="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 p-1.5 rounded-lg transition"
+                          className="inline-flex items-center justify-center h-7 w-7 rounded-lg border border-neutral-200 bg-white text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-900"
                           title="Send Family Portal Link"
                         >
-                          <Send className="w-3.5 h-3.5 text-neutral-600" />
+                          <Send className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
@@ -1178,7 +1262,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                       >
                         <td className="px-4 py-3.5">
                           <div className="font-bold text-neutral-900">{c.decedent.legalName}</div>
-                          <div className="text-[11px] font-mono text-[#991b1b]">{c.caseNumber} • {c.dispositionType.replace('_', ' ')}</div>
+                          <div className="text-[11px] font-mono text-[#800000]">{c.caseNumber} • {c.dispositionType.replace('_', ' ')}</div>
                         </td>
 
                         <td className="px-4 py-3.5">
@@ -1210,9 +1294,9 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             }}
                             className={`px-2 py-0.5 rounded text-[11px] font-bold border transition flex items-center gap-1 ${
                               hasOverdue
-                                ? 'bg-red-100 text-red-900 border-red-300 animate-pulse'
+                                ? 'bg-red-100 text-[#800000] border-red-300 animate-pulse'
                                 : allConfirmed
-                                ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                                ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
                                 : caseReqs.length > 0
                                 ? 'bg-amber-100 text-amber-900 border-amber-300'
                                 : 'bg-neutral-100 text-neutral-600 border-neutral-200'
@@ -1236,7 +1320,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                             c.docusignEnvelope?.status === 'completed'
                               ? 'bg-emerald-100 text-emerald-800'
                               : c.docusignEnvelope?.nokIdVerified
-                                ? 'bg-blue-100 text-blue-800'
+                                ? 'bg-brass-100 text-brass-800'
                                 : 'bg-neutral-100 text-neutral-600'
                           }`}>
                             {c.docusignEnvelope?.status === 'completed' ? 'Signed' : (c.docusignEnvelope?.nokIdVerified ? 'ID Verified' : 'Draft')}
@@ -1265,7 +1349,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                                   e.stopPropagation();
                                   onClaimCase(c.id);
                                 }}
-                                className="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded text-xs font-bold"
+                                className="bg-[#800000] hover:bg-[#6a0509] text-white px-2.5 py-1 rounded text-xs font-bold"
                               >
                                 Claim
                               </button>
@@ -1276,7 +1360,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                                   onSelectCase(c);
                                   onOpenGoldenRecord(c.id);
                                 }}
-                                className="bg-[#991b1b] hover:bg-red-800 text-white px-2.5 py-1 rounded text-xs font-bold"
+                                className="bg-[#800000] hover:bg-[#6a0509] text-white px-2.5 py-1 rounded text-xs font-bold"
                               >
                                 View
                               </button>

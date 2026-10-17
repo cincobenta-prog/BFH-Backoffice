@@ -6,7 +6,8 @@ import {
   RemovalAffidavit,
   DocumentItem,
   DocumentStatus,
-  CasePhase
+  CasePhase,
+  FullVitalRecordInformationSheet
 } from '../types/funeral';
 import { INITIAL_DOCUMENT_TEMPLATES } from './mockCases';
 import { getDefaultStatementOfGoodsForCase } from './generalPriceList';
@@ -25,34 +26,97 @@ export function createCaseFromFirstCall(
   const isRemovalFirst = formData.intakePathway === 'unexpected_removal_first';
   const initialPhase: CasePhase = isRemovalFirst ? 'intake_removal' : 'arrangements';
 
+  const isVet = formData.militaryStatus === 'veteran';
+  const isActiveMil = formData.militaryStatus === 'active';
+  const hasMilitaryService = isVet || isActiveMil;
+
   // Base decedent object with full vital statistics
   const decedent = {
     legalName: formData.decedentLegalName.trim(),
     gender: formData.gender,
-    dateOfBirth: formData.dateOfBirth || '1950-01-01',
+    dateOfBirth: formData.dateOfBirth || '',
     dateOfDeath: formData.dateOfDeath || dateToday,
-    placeOfDeath: `${formData.facilityName}${formData.facilityAddress ? ', ' + formData.facilityAddress : ''}`,
-    facilityName: formData.facilityName,
-    ssnMasked: formData.ssnLast4 ? `***-**-${formData.ssnLast4}` : 'XXX-XX-XXXX',
-    maritalStatus: formData.maritalStatus || ('single' as const),
-    residenceAddress: formData.residenceAddress || formData.callerAddress || 'Harlem, New York, NY',
-    city: 'New York',
-    state: 'NY',
-    zipCode: '10030',
-    veteran: false,
-    occupation: 'Not Provided at Intake',
-    industry: 'General',
-    fatherName: formData.fatherName || 'Not Provided at Intake',
-    motherMaidenName: formData.motherMaidenName || 'Not Provided at Intake'
+    placeOfDeath: [formData.placeOfDeathFacilityOrLocation || formData.facilityName, formData.facilityAddress].filter(Boolean).join(', '),
+    facilityName: formData.placeOfDeathFacilityOrLocation || formData.facilityName || '',
+    ssn: formData.ssn || (formData.ssnLast4 ? `***-**-${formData.ssnLast4}` : ''),
+    ssnMasked: formData.ssn || (formData.ssnLast4 ? `***-**-${formData.ssnLast4}` : ''),
+    maritalStatus: formData.maritalStatus === 'never_married' ? 'single' : (formData.maritalStatus === 'separated' ? 'married' : (formData.maritalStatus || 'single')),
+    residenceAddress: formData.residenceAddress || [formData.residenceStreet, formData.residenceApt, formData.residenceCity, formData.residenceState, formData.residenceZip].filter(Boolean).join(', ') || formData.callerAddress || '',
+    city: formData.residenceCity || 'New York',
+    state: formData.residenceState || 'NY',
+    zipCode: formData.residenceZip || '10030',
+    veteran: hasMilitaryService,
+    branchOfService: formData.militaryBranch || '',
+    occupation: formData.occupationTitle || '',
+    industry: formData.typeOfBusiness || '',
+    educationLevel: formData.educationLevel || '',
+    fatherName: formData.fatherName || '',
+    motherMaidenName: formData.motherFirstAndMaidenName || formData.motherMaidenName || ''
+  };
+
+  const vitalSheet: FullVitalRecordInformationSheet = formData.vitalRecordsSheet || {
+    decedentFirstName: formData.decedentFirstName || formData.decedentLegalName.split(' ')[0] || '',
+    decedentMiddleName: formData.decedentMiddleName || (formData.decedentLegalName.split(' ').length > 2 ? formData.decedentLegalName.split(' ').slice(1, -1).join(' ') : ''),
+    decedentLastName: formData.decedentLastName || (formData.decedentLegalName.split(' ').length > 1 ? formData.decedentLegalName.split(' ').slice(-1)[0] : ''),
+    otherKnownNames: formData.otherKnownNames || '',
+    residenceStreet: formData.residenceStreet || '',
+    residenceApt: formData.residenceApt || '',
+    residenceCity: formData.residenceCity || 'New York',
+    residenceState: formData.residenceState || 'NY',
+    residenceZip: formData.residenceZip || '10030',
+    dateOfDeath: formData.dateOfDeath || dateToday,
+    sex: formData.gender === 'female' ? 'female' : 'male',
+    educationLevel: formData.educationLevel || '',
+    placeOfDeathFacilityOrLocation: formData.placeOfDeathFacilityOrLocation || formData.facilityName || '',
+    placeOfDeathCity: formData.placeOfDeathCity || 'New York',
+    placeOfDeathStateOrCountry: formData.placeOfDeathStateOrCountry || 'NY, USA',
+    dateOfBirth: formData.dateOfBirth || '',
+    age: formData.age || '',
+    birthPlaceCityStateCountry: formData.birthPlaceCityStateCountry || '',
+    maritalStatus: formData.maritalStatus === 'single' ? 'never_married' : (formData.maritalStatus || 'widowed'),
+    ssn: formData.ssn || '',
+    race: formData.race || '',
+    occupationTitle: formData.occupationTitle || '',
+    typeOfBusiness: formData.typeOfBusiness || '',
+    militaryBranch: formData.militaryBranch || '',
+    militaryStatus: formData.militaryStatus || 'none',
+    fatherName: formData.fatherName || '',
+    motherFirstAndMaidenName: formData.motherFirstAndMaidenName || formData.motherMaidenName || '',
+    spouseFirstAndMaidenName: formData.spouseFirstAndMaidenName || '',
+    spouseDateOfBirth: formData.spouseDateOfBirth || '',
+
+    informantName: formData.callerName.trim(),
+    informantRelationship: formData.callerRelationship.trim(),
+    informantPhoneHome: formData.informantPhoneHome || '',
+    informantPhoneCell: formData.informantPhoneCell || formData.callerPhone.trim(),
+    informantPhoneAlt: formData.informantPhoneAlt || '',
+    informantEmail: formData.callerEmail.trim(),
+    informantAddressStreet: formData.informantAddressStreet || formData.callerAddress.trim(),
+    informantAddressApt: formData.informantAddressApt || '',
+    informantAddressCityStateCountry: formData.informantAddressCityStateCountry || 'New York, NY',
+    informantAddressZip: formData.informantAddressZip || '10030',
+
+    deedOwnerName: formData.deedOwnerName || '',
+    deedOwnerAddress: formData.deedOwnerAddress || '',
+    previousIntermentWho: formData.previousIntermentWho || '',
+    previousIntermentWhen: formData.previousIntermentWhen || '',
+    previousIntermentRelation: formData.previousIntermentRelation || '',
+
+    reviewedOrProvidedBy: formData.reviewedOrProvidedBy || formData.callerName.trim(),
+    verifiedOnDate: formData.verifiedOnDate || dateToday,
+
+    authPostObituaryWebsite: true,
+    authLiveStreamService: true,
+    authLiveStreamType: 'public'
   };
 
   // Base informant object
   const informant = {
     fullName: formData.callerName.trim(),
-    relationship: formData.callerRelationship.trim() || 'Next of Kin / Informant',
+    relationship: formData.callerRelationship.trim() || '',
     phone: formData.callerPhone.trim(),
-    email: formData.callerEmail.trim() || 'informant@harlemfamily.org',
-    address: formData.callerAddress.trim() || 'New York, NY',
+    email: formData.callerEmail.trim() || '',
+    address: formData.callerAddress.trim() || '',
     isNextOfKin: true,
     hasRightToControl: formData.hasRightToControl
   };
@@ -300,7 +364,9 @@ export function createCaseFromFirstCall(
 
   // Compile official Form AP-47 Statement of Goods
   const statementOfGoods = getDefaultStatementOfGoodsForCase(draftCase);
+  statementOfGoods.vitalRecordsSheet = vitalSheet;
   draftCase.statementOfGoods = statementOfGoods;
+  draftCase.vitalRecordsSheet = vitalSheet;
   draftCase.totalAmountDue = statementOfGoods.sectionIII.totalFuneralCharges;
 
   return draftCase;

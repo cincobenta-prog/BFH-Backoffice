@@ -74,7 +74,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
       seats: '120 Seats',
       setup: 'Dual 4K PTZ Camera Array • Pipe Organ/Piano Audio Feed • Pulpit Presets',
       badge: 'Primary Sanctuary Broadcast',
-      color: 'border-[#991b1b] bg-red-50/50'
+      color: 'border-[#800000] bg-red-50/50'
     },
     {
       id: 'chapel_2' as BroadcastVenueId,
@@ -139,13 +139,13 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-amber-400 max-h-[92vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-3xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-amber-400 max-h-[92vh] overflow-y-auto">
         
         {/* Modal Header */}
         <div className="flex justify-between items-start border-b border-neutral-200 pb-4">
           <div className="space-y-1">
             <div className="flex items-center space-x-2">
-              <span className="p-2 bg-red-100 text-[#991b1b] rounded-xl">
+              <span className="p-2 bg-red-100 text-[#800000] rounded-xl">
                 <Video className="w-5 h-5" />
               </span>
               <h3 className="font-serif-title text-xl sm:text-2xl font-bold text-neutral-900">
@@ -188,7 +188,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
             <button
               type="button"
               onClick={() => setIsEnabled(!isEnabled)}
-              className={`w-12 h-6 rounded-full transition-colors relative ${isEnabled ? 'bg-[#991b1b]' : 'bg-neutral-300'}`}
+              className={`w-12 h-6 rounded-full transition-colors relative ${isEnabled ? 'bg-[#800000]' : 'bg-neutral-300'}`}
             >
               <div className={`w-5 h-5 bg-white rounded-full transition-transform absolute top-0.5 ${isEnabled ? 'left-6.5' : 'left-0.5'}`} />
             </button>
@@ -210,15 +210,15 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                         onClick={() => setVenueId(v.id)}
                         className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${
                           isSelected 
-                            ? 'border-[#991b1b] bg-red-50/70 shadow-md ring-2 ring-red-200' 
+                            ? 'border-[#800000] bg-red-50/70 shadow-md ring-2 ring-red-200' 
                             : 'border-neutral-200 hover:border-neutral-300 bg-white'
                         }`}
                       >
                         <div className="flex justify-between items-start">
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-[#991b1b] text-white' : 'bg-neutral-100 text-neutral-600'}`}>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isSelected ? 'bg-[#800000] text-white' : 'bg-neutral-100 text-neutral-600'}`}>
                             {v.seats}
                           </span>
-                          {isSelected && <CheckCircle2 className="w-4 h-4 text-[#991b1b]" />}
+                          {isSelected && <CheckCircle2 className="w-4 h-4 text-[#800000]" />}
                         </div>
                         <h4 className="font-bold text-neutral-900 text-sm mt-2">{v.name}</h4>
                         <p className="text-[11px] text-neutral-500 mt-1 leading-snug">{v.setup}</p>
@@ -238,7 +238,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                       type="date"
                       value={broadcastDate}
                       onChange={(e) => setBroadcastDate(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                      className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
@@ -252,7 +252,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                       value={broadcastStartTime}
                       onChange={(e) => setBroadcastStartTime(e.target.value)}
                       placeholder="e.g. 10:30 AM"
-                      className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                      className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                       value={broadcastEndTime}
                       onChange={(e) => setBroadcastEndTime(e.target.value)}
                       placeholder="e.g. 01:00 PM"
-                      className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                      className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
@@ -281,7 +281,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                     value={assignedDirector}
                     onChange={(e) => setAssignedDirector(e.target.value)}
                     placeholder="e.g. Jason Benta, LFD"
-                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -294,7 +294,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                       const matched = avPartners.find(p => e.target.value.includes(p.fullName));
                       if (matched) setAvTechPhone(matched.phone);
                     }}
-                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   >
                     {avPartners.map(p => (
                       <option key={p.id} value={`${p.fullName} (${p.organization || 'AV Tech'})`}>
@@ -314,7 +314,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                   <select
                     value={streamStatus}
                     onChange={(e) => setStreamStatus(e.target.value as WebcastScheduleInfo['streamStatus'])}
-                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   >
                     <option value="scheduled">Scheduled (Awaiting Service Day)</option>
                     <option value="pre_roll">Pre-Roll Active (15-Min Buffer)</option>
@@ -330,7 +330,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="e.g. 4K PTZ Camera array active. Sanctuary soundboard direct feed."
-                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -345,7 +345,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsPinProtected(!isPinProtected)}
-                    className="text-xs text-[#991b1b] font-bold hover:underline"
+                    className="text-xs text-[#800000] font-bold hover:underline"
                   >
                     {isPinProtected ? 'Disable PIN (Public Stream)' : 'Enable Private PIN'}
                   </button>
@@ -395,7 +395,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                       type="checkbox"
                       checked={audioBoardVerified}
                       onChange={(e) => setAudioBoardVerified(e.target.checked)}
-                      className="rounded text-[#991b1b] focus:ring-0"
+                      className="rounded text-[#800000] focus:ring-0"
                     />
                     <span className="text-neutral-700">Soundboard Direct XLR Audio Feed Verified</span>
                   </label>
@@ -405,7 +405,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                       type="checkbox"
                       checked={recordingArchived}
                       onChange={(e) => setRecordingArchived(e.target.checked)}
-                      className="rounded text-[#991b1b] focus:ring-0"
+                      className="rounded text-[#800000] focus:ring-0"
                     />
                     <span className="text-neutral-700">Automatic 4K Master Cloud Recording</span>
                   </label>
@@ -413,13 +413,13 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
               </div>
 
               {/* 5. SMS DISPATCH TO DIRECTOR & AV TECH */}
-              <div className="p-4 rounded-2xl bg-sky-50 border border-sky-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="p-4 rounded-2xl bg-brass-50 border border-brass-200 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div className="space-y-0.5">
-                  <div className="font-bold text-sky-900 flex items-center space-x-1.5">
-                    <Phone className="w-3.5 h-3.5 text-sky-700" />
+                  <div className="font-bold text-brass-900 flex items-center space-x-1.5">
+                    <Phone className="w-3.5 h-3.5 text-brass-700" />
                     <span>Send Automated Dispatch to Production Crew</span>
                   </div>
-                  <p className="text-sky-700">
+                  <p className="text-brass-700">
                     Sends SMS with call time, venue ({venueOptions.find(v => v.id === venueId)?.name}), and stream credentials to <strong>{assignedAvTech}</strong> ({avTechPhone}).
                   </p>
                 </div>
@@ -427,9 +427,9 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
                 <button
                   type="button"
                   onClick={handleDispatchStaffSMS}
-                  className="bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm"
+                  className="bg-brass-700 hover:bg-brass-800 text-white font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-sm"
                 >
-                  <Send className="w-3.5 h-3.5 text-sky-200" />
+                  <Send className="w-3.5 h-3.5 text-brass-200" />
                   <span>Dispatch Crew SMS</span>
                 </button>
               </div>
@@ -457,7 +457,7 @@ export const WebcastSchedulingModal: React.FC<WebcastSchedulingModalProps> = ({
 
           <button
             onClick={handleSave}
-            className="px-6 py-2.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition shadow-md shadow-red-950/20 flex items-center space-x-2"
+            className="px-6 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition shadow-md shadow-red-950/20 flex items-center space-x-2"
           >
             <Check className="w-4 h-4 text-amber-300" />
             <span>Save & Update Webcast Schedule</span>

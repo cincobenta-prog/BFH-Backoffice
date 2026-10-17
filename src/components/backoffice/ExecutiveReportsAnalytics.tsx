@@ -34,21 +34,21 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
 
   // Disposition Percentages
   const dispositionStats = [
-    { label: 'Funeral Service with Cremation', count: 52, percent: 37, color: 'bg-[#991b1b]', revenue: '$252,200' },
+    { label: 'Funeral Service with Cremation', count: 52, percent: 37, color: 'bg-[#800000]', revenue: '$252,200' },
     { label: 'Traditional Service and Burial', count: 40, percent: 28, color: 'bg-[#b45309]', revenue: '$238,000' },
     { label: 'Cremation and Memorial Service', count: 24, percent: 17, color: 'bg-amber-600', revenue: '$76,680' },
     { label: 'Direct Cremation', count: 18, percent: 13, color: 'bg-amber-500', revenue: '$35,910' },
     { label: 'Direct Earth Burial', count: 5, percent: 3, color: 'bg-emerald-600', revenue: '$13,750' },
-    { label: 'Pre-Need Advance Life Planning', count: 3, percent: 2, color: 'bg-purple-600', revenue: '$10,500' }
+    { label: 'Pre-Need Advance Life Planning', count: 3, percent: 2, color: 'bg-brass-600', revenue: '$10,500' }
   ];
 
   // Financing / Split Billing Breakdown
   const financingStats = [
-    { source: 'Life Insurance Assignment (C&J Financial)', amount: '$366,865', percent: 54, color: 'bg-[#991b1b]' },
+    { source: 'Life Insurance Assignment (C&J Financial)', amount: '$366,865', percent: 54, color: 'bg-[#800000]' },
     { source: 'Family ACH Direct Bank Transfers', amount: '$188,960', percent: 28, color: 'bg-emerald-600' },
     { source: 'Cash & Certified Bank Checks (In-Person BFH)', amount: '$54,000', percent: 8, color: 'bg-amber-600' },
-    { source: 'Credit Card / Family Split Pay', amount: '$47,890', percent: 7, color: 'bg-blue-600' },
-    { source: 'County & Social Services Burial Aid', amount: '$26,535', percent: 3, color: 'bg-purple-600' }
+    { source: 'Credit Card / Family Split Pay', amount: '$47,890', percent: 7, color: 'bg-brass-600' },
+    { source: 'County & Social Services Burial Aid', amount: '$26,535', percent: 3, color: 'bg-brass-600' }
   ];
 
   // Room Utilization Breakdown
@@ -126,7 +126,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
             <h2 className="font-serif-title text-xl font-bold text-neutral-900">
               Executive Reports & Operational Analytics
             </h2>
-            <span className="bg-red-50 text-[#991b1b] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200">
+            <span className="bg-red-50 text-[#800000] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200">
               BFH Golden Record Intelligence
             </span>
           </div>
@@ -150,7 +150,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
                 onClick={() => setDateRange(tab.id as any)}
                 className={`px-3 py-1 rounded font-bold transition ${
                   dateRange === tab.id
-                    ? 'bg-white text-[#991b1b] shadow-sm'
+                    ? 'bg-white text-[#800000] shadow-sm'
                     : 'text-neutral-600 hover:text-neutral-900'
                 }`}
               >
@@ -164,13 +164,13 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
             className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center space-x-1.5 transition border border-neutral-300"
             title="Download CSV Spreadsheet"
           >
-            <Download className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Download className="w-3.5 h-3.5 text-[#800000]" />
             <span>Export CSV</span>
           </button>
 
           <button
             onClick={() => window.print()}
-            className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-amber-300/40"
+            className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-lg flex items-center space-x-1.5 transition shadow-sm border border-amber-300/40"
           >
             <Printer className="w-3.5 h-3.5 text-amber-300" />
             <span>Print Report</span>
@@ -185,7 +185,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm space-y-2 relative overflow-hidden">
           <div className="flex justify-between items-start">
             <span className="text-[11px] text-neutral-500 uppercase tracking-wider font-semibold">Total Case Volume</span>
-            <span className="p-2 rounded-xl bg-red-50 text-[#991b1b]">
+            <span className="p-2 rounded-xl bg-red-50 text-[#800000]">
               <Users className="w-4 h-4" />
             </span>
           </div>
@@ -214,7 +214,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm space-y-2 relative overflow-hidden">
           <div className="flex justify-between items-start">
             <span className="text-[11px] text-neutral-500 uppercase tracking-wider font-semibold">Average Case Revenue</span>
-            <span className="p-2 rounded-xl bg-blue-50 text-blue-800">
+            <span className="p-2 rounded-xl bg-brass-50 text-brass-800">
               <BarChart3 className="w-4 h-4" />
             </span>
           </div>
@@ -247,7 +247,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
         <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-5">
           <div className="flex justify-between items-center border-b border-neutral-100 pb-3">
             <div className="flex items-center space-x-2">
-              <PieChart className="w-4 h-4 text-[#991b1b]" />
+              <PieChart className="w-4 h-4 text-[#800000]" />
               <h3 className="font-serif-title text-base font-bold text-neutral-900">
                 Service Package & Disposition Breakdown
               </h3>
@@ -267,7 +267,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
                   </div>
                   <div className="flex items-center space-x-3">
                     <span className="font-mono text-neutral-700 font-semibold">{item.revenue}</span>
-                    <span className="font-bold text-[#991b1b] font-mono w-10 text-right">{item.percent}%</span>
+                    <span className="font-bold text-[#800000] font-mono w-10 text-right">{item.percent}%</span>
                   </div>
                 </div>
 
@@ -283,7 +283,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
 
           <div className="p-3 bg-red-50/60 rounded-xl border border-red-200/80 text-[11px] text-neutral-700 flex items-center justify-between">
             <span><strong>Cremation vs Burial Ratio:</strong> 60.0% Cremation (Full + Direct) vs 35.0% Earth Burial vs 5.0% Pre-Need.</span>
-            <span className="text-[#991b1b] font-bold">Harlem Trend</span>
+            <span className="text-[#800000] font-bold">Harlem Trend</span>
           </div>
         </div>
 
@@ -304,7 +304,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
               <div key={idx} className="p-3 bg-neutral-50 rounded-xl border border-neutral-200/80 space-y-1.5 text-xs">
                 <div className="flex justify-between items-center">
                   <span className="font-bold text-neutral-900">{item.source}</span>
-                  <span className="font-mono font-bold text-[#991b1b]">{item.amount}</span>
+                  <span className="font-mono font-bold text-[#800000]">{item.amount}</span>
                 </div>
                 <div className="flex justify-between items-center text-[11px] text-neutral-500">
                   <span>Share of Total Collections:</span>
@@ -334,7 +334,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
         <div className="lg:col-span-6 bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-4">
           <div className="flex justify-between items-center border-b border-neutral-100 pb-3">
             <div className="flex items-center space-x-2">
-              <Building2 className="w-4 h-4 text-[#991b1b]" />
+              <Building2 className="w-4 h-4 text-[#800000]" />
               <h3 className="font-serif-title text-base font-bold text-neutral-900">
                 Chapel & Room Utilization (630 St Nicholas)
               </h3>
@@ -351,7 +351,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
                     <p className="text-[11px] text-neutral-500">{room.desc}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <span className="font-mono text-xs font-bold text-[#991b1b] bg-white px-2 py-0.5 rounded border border-red-200">
+                    <span className="font-mono text-xs font-bold text-[#800000] bg-white px-2 py-0.5 rounded border border-red-200">
                       {room.capacity}
                     </span>
                     <span className="block text-[10px] text-neutral-500 mt-0.5">{room.hoursPerWeek} active</span>
@@ -365,7 +365,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
                   </div>
                   <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
                     <div 
-                      className={`h-full ${room.utilization > 80 ? 'bg-[#991b1b]' : 'bg-[#b45309]'} rounded-full`}
+                      className={`h-full ${room.utilization > 80 ? 'bg-[#800000]' : 'bg-[#b45309]'} rounded-full`}
                       style={{ width: `${room.utilization}%` }}
                     />
                   </div>
@@ -394,15 +394,15 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
               <p className="text-[10px] text-emerald-700">Average time from physician sign to permit issuance</p>
             </div>
 
-            <div className="p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-1">
-              <span className="text-[11px] text-blue-800 font-bold uppercase">First Call to Removal</span>
-              <p className="font-serif-title text-2xl font-bold text-blue-900">1.8 hrs</p>
-              <p className="text-[10px] text-blue-700">Average NYC hospital & home removal response time</p>
+            <div className="p-4 bg-brass-50 rounded-xl border border-brass-200 space-y-1">
+              <span className="text-[11px] text-brass-800 font-bold uppercase">First Call to Removal</span>
+              <p className="font-serif-title text-2xl font-bold text-brass-900">1.8 hrs</p>
+              <p className="text-[10px] text-brass-700">Average NYC hospital & home removal response time</p>
             </div>
 
             <div className="p-4 bg-red-50 rounded-xl border border-red-200 space-y-1">
-              <span className="text-[11px] text-[#991b1b] font-bold uppercase">14-Doc Compliance</span>
-              <p className="font-serif-title text-2xl font-bold text-[#991b1b]">98.6%</p>
+              <span className="text-[11px] text-[#800000] font-bold uppercase">14-Doc Compliance</span>
+              <p className="font-serif-title text-2xl font-bold text-[#800000]">98.6%</p>
               <p className="text-[10px] text-red-700">Legal bundle & vital forms e-signed before service</p>
             </div>
 
@@ -416,7 +416,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
           <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 text-xs space-y-2">
             <div className="flex justify-between items-center">
               <span className="font-bold text-neutral-900 flex items-center gap-1">
-                <HeartHandshake className="w-4 h-4 text-[#991b1b]" />
+                <HeartHandshake className="w-4 h-4 text-[#800000]" />
                 Harlem Community Sentiment Index:
               </span>
               <span className="font-mono font-bold text-[#b45309]">4.95 / 5.00 Stars</span>
@@ -450,7 +450,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
                 placeholder="Search case # or decedent..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg pl-8 pr-3 py-1.5 text-neutral-900 text-xs outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg pl-8 pr-3 py-1.5 text-neutral-900 text-xs outline-none focus:border-[#800000]"
               />
             </div>
 
@@ -459,7 +459,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-[#fbfbfd] border border-neutral-300 rounded-lg px-2.5 py-1.5 text-neutral-900 text-xs font-semibold outline-none focus:border-[#991b1b]"
+                className="bg-[#fbfbfd] border border-neutral-300 rounded-lg px-2.5 py-1.5 text-neutral-900 text-xs font-semibold outline-none focus:border-[#800000]"
               >
                 <option value="all">All Service Types</option>
                 <option value="full_cremation">Full Cremation</option>
@@ -489,7 +489,7 @@ export const ExecutiveReportsAnalytics: React.FC<ExecutiveReportsAnalyticsProps>
             <tbody className="divide-y divide-neutral-100">
               {filteredCases.map((c) => (
                 <tr key={c.id} className="hover:bg-neutral-50/80 transition">
-                  <td className="p-4 font-mono font-bold text-[#991b1b]">
+                  <td className="p-4 font-mono font-bold text-[#800000]">
                     {c.caseNumber}
                   </td>
                   <td className="p-4 font-bold text-neutral-900">

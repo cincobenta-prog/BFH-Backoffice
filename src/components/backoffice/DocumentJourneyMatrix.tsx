@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoldenRecordCase, DocumentItem, DocumentStatus, BFHFormType, ClothingChecklistData, JewelryItemSpec } from '../../lib/types/funeral';
+import { GoldenRecordCase, DocumentItem, DocumentStatus, BFHFormType, ClothingChecklistData, JewelryItemSpec, FullVitalRecordInformationSheet } from '../../lib/types/funeral';
 import { getDefaultStatementOfGoodsForCase } from '../../lib/data/generalPriceList';
 import { 
   FileText, 
@@ -18,7 +18,9 @@ import {
   Plus,
   Trash2,
   Save,
-  CheckCircle2
+  CheckCircle2,
+  Building2,
+  Award
 } from 'lucide-react';
 
 interface DocumentJourneyMatrixProps {
@@ -26,17 +28,22 @@ interface DocumentJourneyMatrixProps {
   onUpdateDocumentStatus: (docId: string, newStatus: DocumentStatus) => void;
   onOpenESign: (doc?: DocumentItem) => void;
   onUpdateCase?: (updatedCase: GoldenRecordCase) => void;
+  onOpenSSA721Modal?: () => void;
+  onOpenVAHonorsModal?: () => void;
 }
 
 export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
   caseData,
   onUpdateDocumentStatus,
   onOpenESign,
-  onUpdateCase
+  onUpdateCase,
+  onOpenSSA721Modal,
+  onOpenVAHonorsModal
 }) => {
   const [selectedPhase, setSelectedPhase] = useState<string>('all');
   const [previewDoc, setPreviewDoc] = useState<DocumentItem | null>(null);
   const [clothingSavedToast, setClothingSavedToast] = useState(false);
+  const [vitalRecordViewPage, setVitalRecordViewPage] = useState<'page1' | 'page2'>('page1');
 
   // Initialized Clothing Submittal Form State (Interactive & Editable)
   const [clothingData, setClothingData] = useState<ClothingChecklistData>(() => {
@@ -225,8 +232,8 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
         );
       case 'urgent':
         return (
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#991b1b] bg-red-50 px-2.5 py-1 rounded-full border border-red-200 uppercase animate-pulse">
-            <AlertTriangle className="w-3 h-3 text-[#991b1b]" />
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#800000] bg-red-50 px-2.5 py-1 rounded-full border border-red-200 uppercase animate-pulse">
+            <AlertTriangle className="w-3 h-3 text-[#800000]" />
             Urgent Action
           </span>
         );
@@ -254,171 +261,386 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
     switch (formType) {
       // -------------------------------------------------------------
-      // FORM 1: VITAL RECORD INFORMATION
+      // FORM 1: VITAL RECORD INFORMATION (2-PAGE OFFICIAL DOCUMENT)
       // -------------------------------------------------------------
-      case 'vital_records':
+      case 'vital_records': {
+        const vitals: FullVitalRecordInformationSheet = caseData.vitalRecordsSheet || caseData.statementOfGoods?.vitalRecordsSheet || {};
+        const dec = caseData.decedent || ({} as any);
+        const inf = caseData.informant || ({} as any);
+
+        const decedentFullName = [vitals.decedentFirstName, vitals.decedentMiddleName, vitals.decedentLastName]
+          .filter(Boolean)
+          .join(' ') || dec.legalName || '____________________________________';
+
         return (
-          <div className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-neutral-900 pb-4 gap-4">
+          <div className="space-y-4 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
+            
+            {/* Document Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-neutral-900 pb-3 gap-3">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-[#991b1b] text-white flex items-center justify-center font-serif-title font-bold text-base shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-base shadow-sm">
                   B
                 </div>
                 <div>
                   <h3 className="font-serif-title font-bold text-xl text-neutral-900 tracking-wide">
                     BENTA'S FUNERAL HOME, INC.
                   </h3>
-                  <p className="text-[11px] text-neutral-500 font-medium">630 St. Nicholas Avenue, New York, NY 10030 • (212) 281-8850</p>
+                  <p className="text-[11px] text-neutral-500 font-medium">
+                    630 St. Nicholas Avenue, New York, NY 10030 • (212) 281-8850
+                  </p>
                 </div>
               </div>
-              <div className="text-right sm:text-right">
-                <h4 className="font-bold text-base tracking-widest text-[#991b1b] font-serif-title uppercase">
+              <div className="text-right">
+                <h4 className="font-bold text-base tracking-widest text-[#800000] font-serif-title uppercase">
                   VITAL RECORD INFORMATION
                 </h4>
                 <p className="font-mono text-xs font-bold text-neutral-600">Case No: {caseData.caseNumber}</p>
               </div>
             </div>
 
-            {/* Decedent Identity & Residence */}
-            <div className="space-y-3">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="border-b border-neutral-300 pb-1">
-                  <span className="text-[10px] text-neutral-500 uppercase font-bold block">Name of Decedent:</span>
-                  <strong className="text-sm text-neutral-900 font-serif-title">{caseData.decedent.legalName}</strong>
-                </div>
-                <div className="border-b border-neutral-300 pb-1">
-                  <span className="text-[10px] text-neutral-500 uppercase font-bold block">Any Other Known Names of Deceased:</span>
-                  <span className="text-xs text-neutral-800 font-medium">None / N/A</span>
-                </div>
-              </div>
-
-              <div className="border-b border-neutral-300 pb-1">
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Residence of Loved One:</span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5 text-xs text-neutral-800">
-                  <div><span className="text-[9px] text-neutral-400 block">Street & Number:</span> <strong>{caseData.decedent.residenceAddress}</strong></div>
-                  <div><span className="text-[9px] text-neutral-400 block">Apt:</span> <strong>Apt 4B</strong></div>
-                  <div><span className="text-[9px] text-neutral-400 block">City & State:</span> <strong>{caseData.decedent.city}, {caseData.decedent.state}</strong></div>
-                  <div><span className="text-[9px] text-neutral-400 block">Zip:</span> <strong>{caseData.decedent.zipCode}</strong></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Demographics & Place of Death */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-b border-neutral-300 pb-3">
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Date of Death:</span>
-                <strong className="text-neutral-900">{caseData.decedent.dateOfDeath}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Sex:</span>
-                <strong className="text-neutral-900 capitalize">{caseData.decedent.gender}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Education:</span>
-                <strong className="text-neutral-900">Master's Degree / Doctorate</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Social Security #:</span>
-                <strong className="font-mono text-neutral-900">{caseData.decedent.ssnMasked}</strong>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-b border-neutral-300 pb-3">
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Place of Death:</span>
-                <strong className="text-neutral-900">{caseData.decedent.placeOfDeath}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Date of Birth & Age:</span>
-                <strong className="text-neutral-900">{caseData.decedent.dateOfBirth} (72 Years)</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Birth Place:</span>
-                <strong className="text-neutral-900">Harlem, New York, USA</strong>
-              </div>
-            </div>
-
-            {/* Marital, Race, Occupation, Military */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-b border-neutral-300 pb-3">
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Marital Status:</span>
-                <strong className="text-neutral-900 capitalize">{caseData.decedent.maritalStatus}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Race:</span>
-                <strong className="text-neutral-900">Black / African American</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Occupation & Business:</span>
-                <strong className="text-neutral-900">{caseData.decedent.occupation}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Military Status:</span>
-                <strong className="text-neutral-900">{caseData.decedent.branchOfService || 'U.S. Navy (Veteran)'}</strong>
-              </div>
-            </div>
-
-            {/* Parents & Spouse */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-b border-neutral-300 pb-3">
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Father's Name:</span>
-                <strong className="text-neutral-900">{caseData.decedent.fatherName}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Mother's Name (First & Maiden):</span>
-                <strong className="text-neutral-900">{caseData.decedent.motherMaidenName}</strong>
-              </div>
-              <div>
-                <span className="text-[10px] text-neutral-500 uppercase font-bold block">Spouse Name (First & Maiden):</span>
-                <strong className="text-neutral-900">{caseData.informant.fullName} (DOB: 04/12/1956)</strong>
-              </div>
-            </div>
-
-            {/* Informant & Next of Kin */}
-            <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-2">
-              <span className="font-bold text-xs text-[#991b1b] uppercase tracking-wider block">
-                Informant (Legal Next of Kin) Details:
+            {/* Page Tab Selector in Viewer */}
+            <div className="flex items-center justify-between bg-neutral-100 p-1.5 rounded-xl print:hidden">
+              <span className="text-[11px] font-bold text-neutral-600 px-2">
+                Official Document Page:
               </span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <div><span className="text-[9px] text-neutral-500 block">Name:</span> <strong>{caseData.informant.fullName}</strong></div>
-                <div><span className="text-[9px] text-neutral-500 block">Relationship:</span> <strong>{caseData.informant.relationship}</strong></div>
-                <div><span className="text-[9px] text-neutral-500 block">Telephone (Cell/Home):</span> <strong>{caseData.informant.phone}</strong></div>
-                <div><span className="text-[9px] text-neutral-500 block">Email:</span> <strong className="truncate block">{caseData.informant.email}</strong></div>
-              </div>
-              <div>
-                <span className="text-[9px] text-neutral-500 block">Address:</span>
-                <strong>{caseData.informant.address}</strong>
+              <div className="flex space-x-1">
+                <button
+                  type="button"
+                  onClick={() => setVitalRecordViewPage('page1')}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    vitalRecordViewPage === 'page1'
+                      ? 'bg-[#800000] text-white shadow-xs'
+                      : 'bg-white text-neutral-700 hover:bg-neutral-50'
+                  }`}
+                >
+                  Page 1: Vital Record Information
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setVitalRecordViewPage('page2')}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                    vitalRecordViewPage === 'page2'
+                      ? 'bg-[#800000] text-white shadow-xs'
+                      : 'bg-white text-neutral-700 hover:bg-neutral-50'
+                  }`}
+                >
+                  Page 2: Authorizations, Director Logistics & Story
+                </button>
               </div>
             </div>
 
-            {/* Cemetery Deed & Interment Details */}
-            <div className="border border-neutral-200 p-3.5 rounded-xl space-y-1.5 text-[11px] text-neutral-700">
-              <span className="font-bold text-neutral-900 block">Cemetery Deed & Previous Interment Information:</span>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                <div><span className="text-[9px] text-neutral-400 block">Deed Owner:</span> <span>Eleanor Vance</span></div>
-                <div><span className="text-[9px] text-neutral-400 block">Address:</span> <span>Same as residence</span></div>
-                <div><span className="text-[9px] text-neutral-400 block">Previous Interment:</span> <span>None (New Plot)</span></div>
-                <div><span className="text-[9px] text-neutral-400 block">How Related:</span> <span>Spouse</span></div>
-              </div>
-            </div>
+            {/* ------------------------------------------------------- */}
+            {/* PAGE 1: VITAL RECORD INFORMATION                        */}
+            {/* ------------------------------------------------------- */}
+            {(vitalRecordViewPage === 'page1' || typeof window === 'undefined') && (
+              <div className="space-y-4 pt-1">
+                
+                {/* Decedent Identity */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">NAME OF DECEDENT:</span>
+                    <strong className="text-sm text-neutral-900 font-serif-title">{decedentFullName}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">ANY OTHER KNOWN NAMES OF DECEASED:</span>
+                    <span className="text-xs text-neutral-800 font-medium">
+                      {vitals.otherKnownNames || 'None / N/A'}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Jurat / Verification */}
-            <div className="pt-4 border-t-2 border-neutral-900 flex flex-col sm:flex-row justify-between items-end text-xs gap-4">
-              <div>
-                <p className="text-[11px] text-neutral-700 italic">
-                  The above vital information was reviewed and verified by <strong>{caseData.informant.fullName}</strong> on <strong>{caseData.createdAt.split('T')[0]}</strong>.
-                </p>
-                <div className="border-b border-neutral-900 w-56 mt-4 mb-1" />
-                <span className="text-[10px] text-neutral-500 uppercase font-bold">Signature of Informant / Next of Kin</span>
+                {/* Residence */}
+                <div className="border-b border-neutral-300 pb-2">
+                  <span className="text-[10px] text-neutral-500 uppercase font-bold block">RESIDENCE OF LOVED ONE:</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs text-neutral-800">
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Street & Number:</span>
+                      <strong>{vitals.residenceStreet || dec.residenceAddress || '—'}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Apt # / other:</span>
+                      <strong>{vitals.residenceApt || '—'}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">City & State:</span>
+                      <strong>{vitals.residenceCity || dec.city || 'New York'}, {vitals.residenceState || dec.state || 'NY'}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Zip:</span>
+                      <strong>{vitals.residenceZip || dec.zipCode || '—'}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Demographics & Place of Death */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">DATE OF DEATH:</span>
+                    <strong className="text-neutral-900">{vitals.dateOfDeath || dec.dateOfDeath || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">SEX:</span>
+                    <strong className="text-neutral-900 capitalize">{vitals.sex || dec.gender || '—'}</strong>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">EDUCATION:</span>
+                    <strong className="text-neutral-900">{vitals.educationLevel || (dec as any).education || '—'}</strong>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">PLACE OF DEATH (FACILITY/LOCATION):</span>
+                    <strong className="text-neutral-900">{vitals.placeOfDeathFacilityOrLocation || dec.placeOfDeath || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">CITY:</span>
+                    <strong className="text-neutral-900">{vitals.placeOfDeathCity || dec.city || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">STATE OR FOREIGN COUNTRY:</span>
+                    <strong className="text-neutral-900">{vitals.placeOfDeathStateOrCountry || 'NY, USA'}</strong>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">DATE OF BIRTH:</span>
+                    <strong className="text-neutral-900">{vitals.dateOfBirth || dec.dateOfBirth || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">AGE:</span>
+                    <strong className="text-neutral-900">{vitals.age ? `${vitals.age} Years` : '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">BIRTH PLACE:</span>
+                    <strong className="text-neutral-900">{vitals.birthPlaceCityStateCountry || (dec as any).birthPlace || '—'}</strong>
+                  </div>
+                </div>
+
+                {/* Marital, SSN, Race, Occupation, Military */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">MARITAL STATUS:</span>
+                    <strong className="text-neutral-900 capitalize">{(vitals.maritalStatus || dec.maritalStatus || '—').replace('_', ' ')}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">SOCIAL SECURITY #:</span>
+                    <strong className="font-mono text-neutral-900">{vitals.ssn || dec.ssn || dec.ssnMasked || '—'}</strong>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">RACE / ETHNICITY:</span>
+                    <strong className="text-neutral-900">{vitals.race || '—'}</strong>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">OCCUPATION TITLE:</span>
+                    <strong className="text-neutral-900 font-bold">{vitals.occupationTitle || dec.occupation || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">TYPE OF BUSINESS:</span>
+                    <strong className="text-neutral-900">{vitals.typeOfBusiness || dec.industry || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">MILITARY STATUS:</span>
+                    <strong className="text-neutral-900">
+                      {vitals.militaryBranch ? `${vitals.militaryBranch} • ` : ''}
+                      {vitals.militaryStatus === 'veteran' || dec.veteran ? 'Veteran (3 Free Transcripts Applied)' : (vitals.militaryStatus === 'active' ? 'Active Duty' : 'Non-Veteran')}
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Parents & Spouse */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-b border-neutral-300 pb-2">
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">FATHER'S NAME:</span>
+                    <strong className="text-neutral-900">{vitals.fatherName || dec.fatherName || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">MOTHER'S NAME (FIRST & MAIDEN):</span>
+                    <strong className="text-neutral-900">{vitals.motherFirstAndMaidenName || dec.motherMaidenName || '—'}</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold block">NAME OF SPOUSE (FIRST & MAIDEN):</span>
+                    <strong className="text-neutral-900">
+                      {vitals.spouseFirstAndMaidenName || (inf.relationship?.toLowerCase().includes('spouse') ? inf.fullName : '—')}
+                      {vitals.spouseDateOfBirth ? ` (DOB: ${vitals.spouseDateOfBirth})` : ''}
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Informant Details */}
+                <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 space-y-2">
+                  <span className="font-bold text-xs text-[#800000] uppercase tracking-wider block">
+                    NAME OF INFORMANT (Legal Next of Kin): {vitals.informantName || inf.fullName || '—'}
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div>
+                      <span className="text-[9px] text-neutral-500 block">Relationship:</span>
+                      <strong>{vitals.informantRelationship || inf.relationship || '—'}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-500 block">Telephone (Cell):</span>
+                      <strong>{vitals.informantPhoneCell || inf.phone || '—'}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-500 block">Telephone (Home/Alt):</span>
+                      <strong>{vitals.informantPhoneHome || vitals.informantPhoneAlt || '—'}</strong>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-500 block">Email:</span>
+                      <strong className="truncate block">{vitals.informantEmail || inf.email || '—'}</strong>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-[9px] text-neutral-500 block">Address:</span>
+                    <strong>
+                      {[vitals.informantAddressStreet, vitals.informantAddressApt, vitals.informantAddressCityStateCountry, vitals.informantAddressZip].filter(Boolean).join(', ') || inf.address || '—'}
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Cemetery Deed & Previous Interments */}
+                <div className="border border-neutral-200 p-3 rounded-xl space-y-1 text-xs text-neutral-700">
+                  <span className="font-bold text-neutral-900 block">DEED OWNER & PREVIOUS INTERMENT IN GRAVE:</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-0.5">
+                    <div><span className="text-[9px] text-neutral-400 block">Deed Owner:</span> <strong>{vitals.deedOwnerName || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-400 block">Address:</span> <span>{vitals.deedOwnerAddress || '—'}</span></div>
+                    <div><span className="text-[9px] text-neutral-400 block">Previous Interment (Who / When):</span> <span>{vitals.previousIntermentWho || 'None (New Grave)'} {vitals.previousIntermentWhen ? `(${vitals.previousIntermentWhen})` : ''}</span></div>
+                    <div><span className="text-[9px] text-neutral-400 block">How Related to Decedent:</span> <span>{vitals.previousIntermentRelation || '—'}</span></div>
+                  </div>
+                </div>
+
+                {/* Verification Jurat */}
+                <div className="pt-3 border-t-2 border-neutral-900 flex flex-col sm:flex-row justify-between items-end text-xs gap-3">
+                  <div>
+                    <p className="text-[11px] text-neutral-700 italic">
+                      The above vital information was reviewed or provided by <strong>{vitals.reviewedOrProvidedBy || inf.fullName || 'Informant'}</strong> and verified on <strong>{vitals.verifiedOnDate || caseData.createdAt.split('T')[0]}</strong>.
+                    </p>
+                    <div className="border-b border-neutral-900 w-56 mt-4 mb-1" />
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold">Signature of Informant / Next of Kin</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="border-b border-neutral-900 w-56 mt-4 mb-1 ml-auto" />
+                    <span className="text-[10px] text-neutral-500 uppercase font-bold">Jason Benta, Licensed Funeral Director</span>
+                  </div>
+                </div>
+
               </div>
-              <div className="text-right">
-                <div className="border-b border-neutral-900 w-56 mt-4 mb-1 ml-auto" />
-                <span className="text-[10px] text-neutral-500 uppercase font-bold">Jason Benta, Licensed Funeral Director</span>
+            )}
+
+            {/* ------------------------------------------------------- */}
+            {/* PAGE 2: AUTHORIZATIONS, DIRECTOR LOG & STORY            */}
+            {/* ------------------------------------------------------- */}
+            {vitalRecordViewPage === 'page2' && (
+              <div className="space-y-4 pt-1">
+                
+                {/* Authorizations */}
+                <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-3">
+                  <span className="font-bold text-xs text-[#800000] uppercase tracking-wider block">
+                    Authorizations & Consents:
+                  </span>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between items-center p-2 bg-white rounded-lg border border-neutral-200">
+                      <span>1) Do you authorize Benta's Funeral Home to post the obituary and/or service information on our website?</span>
+                      <strong className="font-bold text-[#800000] px-3">
+                        {vitals.authPostObituaryWebsite !== false ? 'YES (Authorized)' : 'NO'}
+                      </strong>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded-lg border border-neutral-200">
+                      <span>2) Do you wish to have services live streamed?</span>
+                      <strong className="font-bold text-[#800000] px-3">
+                        {vitals.authLiveStreamService !== false ? `YES (${vitals.authLiveStreamType === 'private' ? 'Private PIN' : 'Public'})` : 'NO'}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section to be completed by Funeral Director */}
+                <div className="border border-neutral-300 p-4 rounded-xl space-y-3">
+                  <div className="flex justify-between items-center border-b border-neutral-300 pb-1.5">
+                    <span className="font-bold text-xs text-neutral-900 uppercase tracking-wider">
+                      ********** THIS SECTION TO BE COMPLETED BY FUNERAL DIRECTOR **********
+                    </span>
+                    <span className="text-[10px] bg-neutral-100 font-mono px-2 py-0.5 rounded border border-neutral-200">
+                      Director Logistics Record
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Date of First Viewing:</span> <strong>{vitals.directorViewingDate || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Time:</span> <strong>{vitals.directorViewingTime || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Place:</span> <strong>{vitals.directorViewingPlace || '—'}</strong></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs border-t border-neutral-200 pt-2">
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Date of Wake:</span> <strong>{vitals.directorWakeDate || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Hours:</span> <strong>From: {vitals.directorWakeHoursFrom || '—'} To: {vitals.directorWakeHoursTo || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Wake Location:</span> <strong>{vitals.directorWakeLocation || '—'}</strong></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs border-t border-neutral-200 pt-2">
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Date of Funeral:</span> <strong>{vitals.directorFuneralDate || caseData.serviceSelections?.serviceDate || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Hour:</span> <strong>{vitals.directorFuneralHour || caseData.serviceSelections?.serviceTime || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Funeral Location:</span> <strong>{vitals.directorFuneralLocation || caseData.serviceSelections?.serviceVenueName || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Address:</span> <strong>{vitals.directorFuneralAddress || '630 St. Nicholas Ave'}</strong></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs border-t border-neutral-200 pt-2">
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Date of Disposition:</span> <strong>{vitals.directorDispositionDate || caseData.serviceSelections?.serviceDate || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Due Time for Disposition:</span> <strong>{vitals.directorDispositionDueTime || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Mode of Disposition:</span> <strong className="uppercase">{(vitals.directorDispositionMode || (caseData.dispositionType?.includes('cremation') ? 'cremation' : 'burial'))}</strong></div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs border-t border-neutral-200 pt-2">
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Cemetery / Crematory:</span> <strong>{vitals.directorCemeteryCrematory || caseData.serviceSelections?.crematoryOrCemeteryName || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Location (City, State / Country):</span> <strong>{vitals.directorCemeteryLocation || 'Bronx, NY'}</strong></div>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs border-t border-neutral-200 pt-2">
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Section:</span> <strong>{vitals.directorSection || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Plot:</span> <strong>{vitals.directorPlot || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Range:</span> <strong>{vitals.directorRange || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Grave #:</span> <strong>{vitals.directorGraveNum || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 uppercase block">Lot:</span> <strong>{vitals.directorLot || '—'}</strong></div>
+                  </div>
+                </div>
+
+                {/* Additional Information & Story DNA */}
+                <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-2.5 text-xs">
+                  <span className="font-bold text-xs text-neutral-900 uppercase tracking-wider block">
+                    ADDITIONAL INFORMATION & LEGACY STORY DNA:
+                  </span>
+                  <div>
+                    <span className="text-[9px] text-neutral-500 block">Organizations / Associations:</span>
+                    <strong>{vitals.organizationsAssociations || '—'}</strong>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div><span className="text-[9px] text-neutral-500 block">Favorite Color:</span> <strong>{vitals.favoriteColor || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 block">Favorite Type of Music:</span> <strong>{vitals.favoriteMusicType || '—'}</strong></div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div><span className="text-[9px] text-neutral-500 block">Interests:</span> <strong>{vitals.interests || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 block">Known For:</span> <strong>{vitals.knownFor || '—'}</strong></div>
+                  </div>
+                  <div>
+                    <span className="text-[9px] text-neutral-500 block">Favorite Quote:</span>
+                    <strong>{vitals.favoriteQuote ? `"${vitals.favoriteQuote}"` : '—'}</strong>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div><span className="text-[9px] text-neutral-500 block">Proudest Accomplishment:</span> <strong>{vitals.proudestAccomplishment || '—'}</strong></div>
+                    <div><span className="text-[9px] text-neutral-500 block">Historical Milestone Witnessed:</span> <strong>{vitals.historicalMilestoneWitnessed || '—'}</strong></div>
+                  </div>
+                </div>
+
               </div>
-            </div>
+            )}
+
           </div>
         );
+      }
 
       // -------------------------------------------------------------
       // FORM 2: STATEMENT OF GOODS AND SERVICES SELECTED (FORM AP-47)
@@ -437,7 +659,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   <div className="font-serif-title italic font-bold text-lg text-neutral-800">
                     "A Celebration of Life"
                   </div>
-                  <h2 className="font-serif-title font-bold text-2xl text-[#991b1b] tracking-wider">
+                  <h2 className="font-serif-title font-bold text-2xl text-[#800000] tracking-wider">
                     Benta's Funeral Home, Inc.
                   </h2>
                   <p className="text-[11px] text-neutral-600">
@@ -472,22 +694,38 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 
                 {/* Left Column (A-E) */}
                 <div className="space-y-3">
-                  <h5 className="font-bold text-xs uppercase text-[#991b1b] border-b border-neutral-200 pb-1">
+                  <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1">
                     I. FUNERAL HOME CHARGES
                   </h5>
 
-                  <div className="flex justify-between">
-                    <span>A. Alternative Services:</span>
-                    <strong className="font-mono">
-                      {ap47.sectionI.A_alternativeServicesAmount > 0 
-                        ? `$${ap47.sectionI.A_alternativeServicesAmount.toFixed(2)}` 
-                        : 'N/A'}
-                    </strong>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between">
+                      <span>A. Alternative Services:</span>
+                      <strong className="font-mono">
+                        {ap47.sectionI.A_alternativeServicesAmount > 0 
+                          ? `$${ap47.sectionI.A_alternativeServicesAmount.toFixed(2)}` 
+                          : 'N/A'}
+                      </strong>
+                    </div>
+                    {((ap47.sectionI.A_otherAmount || 0) > 0 || Boolean(ap47.sectionI.A_otherSpecify)) && (
+                      <div className="flex justify-between pl-3 text-neutral-600 text-[10px]">
+                        <span>• Other: <em>{ap47.sectionI.A_otherSpecify || 'Alternative Service'}</em></span>
+                        <span className="font-mono">${(ap47.sectionI.A_otherAmount || 0).toFixed(2)}</span>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="flex justify-between">
-                    <span>B. Transfer of remains to the funeral establishment:</span>
-                    <strong className="font-mono">${ap47.sectionI.B_transferOfRemainsAmount.toFixed(2)}</strong>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between">
+                      <span>B. Transfer of remains to the funeral establishment:</span>
+                      <strong className="font-mono">${ap47.sectionI.B_transferOfRemainsAmount.toFixed(2)}</strong>
+                    </div>
+                    {((ap47.sectionI.B_otherAmount || 0) > 0 || Boolean(ap47.sectionI.B_otherSpecify)) && (
+                      <div className="flex justify-between pl-3 text-neutral-600 text-[10px]">
+                        <span>• Other: <em>{ap47.sectionI.B_otherSpecify || 'Transfer Service'}</em></span>
+                        <span className="font-mono">${(ap47.sectionI.B_otherAmount || 0).toFixed(2)}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-0.5">
@@ -520,21 +758,39 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                           <span className="font-mono">${ap47.sectionI.C2_cosmetologyAmount.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span>e. Restoration / Other:</span>
-                          <span className="font-mono">${(ap47.sectionI.C2_restorationAmount + ap47.sectionI.C2_otherAmount).toFixed(2)}</span>
+                          <span>e. Restoration:</span>
+                          <span className="font-mono">${ap47.sectionI.C2_restorationAmount.toFixed(2)}</span>
                         </div>
+                        <div className="flex justify-between">
+                          <span>f. Refrigeration:</span>
+                          <span className="font-mono">${ap47.sectionI.C2_refrigerationAmount.toFixed(2)}</span>
+                        </div>
+                        {((ap47.sectionI.C2_otherAmount || 0) > 0 || (ap47.sectionI.C_otherAmount || 0) > 0 || Boolean(ap47.sectionI.C2_otherSpecify) || Boolean(ap47.sectionI.C_otherSpecify)) && (
+                          <div className="flex justify-between text-neutral-800 font-medium">
+                            <span>g. Other: <em>{ap47.sectionI.C2_otherSpecify || ap47.sectionI.C_otherSpecify || 'Other Preparation'}</em></span>
+                            <span className="font-mono">${((ap47.sectionI.C2_otherAmount || 0) + (ap47.sectionI.C_otherAmount || 0)).toFixed(2)}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-start">
-                    <div className="max-w-[75%]">
-                      <strong>D. Arrangements:</strong>
-                      <p className="text-[9px] text-neutral-500 leading-tight">
-                        Basic arrangements: funeral director, staff, equipment and facilities to respond to initial request, conference, securing authorizations, and coordination.
-                      </p>
+                  <div className="space-y-0.5">
+                    <div className="flex justify-between items-start">
+                      <div className="max-w-[75%]">
+                        <strong>D. Arrangements:</strong>
+                        <p className="text-[9px] text-neutral-500 leading-tight">
+                          Basic arrangements: funeral director, staff, equipment and facilities to respond to initial request, conference, securing authorizations, and coordination.
+                        </p>
+                      </div>
+                      <strong className="font-mono">${ap47.sectionI.D_basicArrangementsAmount.toFixed(2)}</strong>
                     </div>
-                    <strong className="font-mono">${ap47.sectionI.D_basicArrangementsAmount.toFixed(2)}</strong>
+                    {((ap47.sectionI.D_otherAmount || 0) > 0 || Boolean(ap47.sectionI.D_otherSpecify)) && (
+                      <div className="flex justify-between pl-3 text-neutral-600 text-[10px]">
+                        <span>• Other: <em>{ap47.sectionI.D_otherSpecify || 'Arrangements Service'}</em></span>
+                        <span className="font-mono">${(ap47.sectionI.D_otherAmount || 0).toFixed(2)}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-0.5">
@@ -554,6 +810,12 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <span>3. Other supervision (Cemetery/Crematory):</span>
                         <span className="font-mono">${ap47.sectionI.E3_supervisionCemeteryCrematoryAmount.toFixed(2)}</span>
                       </div>
+                      {((ap47.sectionI.E3_otherSupervisionAmount || 0) > 0 || (ap47.sectionI.E_otherAmount || 0) > 0 || Boolean(ap47.sectionI.E3_otherSupervisionSpecify) || Boolean(ap47.sectionI.E_otherSpecify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other: <em>{ap47.sectionI.E3_otherSupervisionSpecify || ap47.sectionI.E_otherSpecify || 'Supervision Service'}</em></span>
+                          <span className="font-mono">${((ap47.sectionI.E3_otherSupervisionAmount || 0) + (ap47.sectionI.E_otherAmount || 0)).toFixed(2)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -575,6 +837,18 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <span>2. Use of facilities for funeral service:</span>
                         <span className="font-mono">${ap47.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</span>
                       </div>
+                      {ap47.sectionI.F3_repastRoomAmount > 0 && (
+                        <div className="flex justify-between">
+                          <span>3. Repast Fellowship Room:</span>
+                          <span className="font-mono">${ap47.sectionI.F3_repastRoomAmount.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionI.F_otherAmount || 0) > 0 || (ap47.sectionI.F3_otherFacilitiesAmount || 0) > 0 || Boolean(ap47.sectionI.F_otherSpecify) || Boolean(ap47.sectionI.F3_otherFacilitiesSpecify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other: <em>{ap47.sectionI.F_otherSpecify || ap47.sectionI.F3_otherFacilitiesSpecify || 'Facilities Service'}</em></span>
+                          <span className="font-mono">${((ap47.sectionI.F_otherAmount || 0) + (ap47.sectionI.F3_otherFacilitiesAmount || 0)).toFixed(2)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -590,6 +864,12 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                           <span className="font-mono">${(v.count * v.unitPrice).toFixed(2)}</span>
                         </div>
                       ))}
+                      {((ap47.sectionI.G_otherAmount || 0) > 0 || Boolean(ap47.sectionI.G_otherSpecify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other: <em>{ap47.sectionI.G_otherSpecify || 'Livery Vehicle'}</em></span>
+                          <span className="font-mono">${(ap47.sectionI.G_otherAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -606,6 +886,18 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <div className="flex justify-between">
                           <span>2. Outer Receptacle ({ap47.sectionI.H2_outerReceptacleModelName}):</span>
                           <span className="font-mono">${ap47.sectionI.H2_outerReceptacleAmount.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {ap47.sectionI.H3_urnSelected && (
+                        <div className="flex justify-between">
+                          <span>3. Urn ({ap47.sectionI.H3_urnModelName}):</span>
+                          <span className="font-mono">${ap47.sectionI.H3_urnAmount.toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionI.H_otherAmount || 0) > 0 || Boolean(ap47.sectionI.H_otherSpecify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other: <em>{ap47.sectionI.H_otherSpecify || 'Merchandise Item'}</em></span>
+                          <span className="font-mono">${(ap47.sectionI.H_otherAmount || 0).toFixed(2)}</span>
                         </div>
                       )}
                     </div>
@@ -628,12 +920,30 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <span>• Register Book & Video Tribute:</span>
                         <span className="font-mono">${(ap47.sectionI.I8_registerBookAmount + ap47.sectionI.I11_videoTributeAmount).toFixed(2)}</span>
                       </div>
+                      {((ap47.sectionI.I_otherAmount || 0) > 0 || (ap47.sectionI.I12_otherAmount || 0) > 0 || Boolean(ap47.sectionI.I_otherSpecify) || Boolean(ap47.sectionI.I12_otherSpecify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other (Line 1): <em>{ap47.sectionI.I_otherSpecify || ap47.sectionI.I12_otherSpecify || 'Additional Item (1)'}</em></span>
+                          <span className="font-mono">${((ap47.sectionI.I_otherAmount || 0) + (ap47.sectionI.I12_otherAmount || 0)).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionI.I_other2Amount || 0) > 0 || (ap47.sectionI.I12_other2Amount || 0) > 0 || Boolean(ap47.sectionI.I_other2Specify) || Boolean(ap47.sectionI.I12_other2Specify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other (Line 2): <em>{ap47.sectionI.I_other2Specify || ap47.sectionI.I12_other2Specify || 'Additional Item (2)'}</em></span>
+                          <span className="font-mono">${((ap47.sectionI.I_other2Amount || 0) + (ap47.sectionI.I12_other2Amount || 0)).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionI.I_other3Amount || 0) > 0 || (sogItem3Check => sogItem3Check > 0)(ap47.sectionI.I12_other3Amount || 0) || Boolean(ap47.sectionI.I_other3Specify) || Boolean(ap47.sectionI.I12_other3Specify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>• Other (Line 3): <em>{ap47.sectionI.I_other3Specify || ap47.sectionI.I12_other3Specify || 'Additional Item (3)'}</em></span>
+                          <span className="font-mono">${((ap47.sectionI.I_other3Amount || 0) + (ap47.sectionI.I12_other3Amount || 0)).toFixed(2)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="flex justify-between pt-2 border-t-2 border-neutral-900 font-bold text-xs text-neutral-900">
                     <span>TOTAL FUNERAL HOME CHARGES:</span>
-                    <span className="font-mono text-[#991b1b]">${ap47.sectionI.totalFuneralHomeCharges.toFixed(2)}</span>
+                    <span className="font-mono text-[#800000]">${ap47.sectionI.totalFuneralHomeCharges.toFixed(2)}</span>
                   </div>
 
                 </div>
@@ -652,7 +962,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 
                 {/* Cash Advances */}
                 <div className="space-y-2 border border-neutral-300 rounded-xl p-3.5">
-                  <h5 className="font-bold text-xs uppercase text-[#991b1b] border-b border-neutral-200 pb-1">
+                  <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1">
                     II. CASH ADVANCES (Paid to Others on Family's Behalf)
                   </h5>
                   <p className="text-[9px] text-neutral-500 italic">
@@ -680,6 +990,30 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       <span>5. Pallbearers, Tolls & Tips:</span>
                       <span className="font-mono">${(ap47.sectionII.pallbearersAmount + ap47.sectionII.bridgeAndRoadTollsAmount + ap47.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</span>
                     </div>
+                    {((ap47.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvanceSpecify)) && (
+                      <div className="flex justify-between text-neutral-800 font-medium">
+                        <span>6. Other Cash Advance (Line 1): <em>{ap47.sectionII.otherCashAdvanceSpecify || 'Pass-Through Advance (1)'}</em></span>
+                        <span className="font-mono">${(ap47.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</span>
+                      </div>
+                    )}
+                    {((ap47.sectionII.otherCashAdvance2Amount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvance2Specify)) && (
+                      <div className="flex justify-between text-neutral-800 font-medium">
+                        <span>6b. Other Cash Advance (Line 2): <em>{ap47.sectionII.otherCashAdvance2Specify || 'Pass-Through Advance (2)'}</em></span>
+                        <span className="font-mono">${(ap47.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</span>
+                      </div>
+                    )}
+                    {((ap47.sectionII.otherCashAdvance3Amount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvance3Specify)) && (
+                      <div className="flex justify-between text-neutral-800 font-medium">
+                        <span>6c. Other Cash Advance (Line 3): <em>{ap47.sectionII.otherCashAdvance3Specify || 'Pass-Through Advance (3)'}</em></span>
+                        <span className="font-mono">${(ap47.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</span>
+                      </div>
+                    )}
+                    {(ap47.sectionII.customCashAdvances || []).map((c, idx) => (
+                      <div key={c.id || idx} className="flex justify-between text-neutral-800 font-medium">
+                        <span>{7 + idx}. {c.description}:</span>
+                        <span className="font-mono">${c.amount.toFixed(2)}</span>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="flex justify-between pt-2 border-t border-neutral-300 font-bold text-xs text-neutral-900">
@@ -690,7 +1024,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
                 {/* Summary */}
                 <div className="space-y-2 bg-red-50/60 border border-red-200 rounded-xl p-3.5">
-                  <h5 className="font-bold text-xs uppercase text-[#991b1b] border-b border-red-200 pb-1">
+                  <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-red-200 pb-1">
                     III. SUMMARY OF CHARGES
                   </h5>
 
@@ -703,7 +1037,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       <span>2. Cash Advances:</span>
                       <span className="font-mono font-bold">${ap47.sectionIII.cashAdvancesTotal.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between pt-1 border-t border-red-200 text-sm font-bold text-[#991b1b]">
+                    <div className="flex justify-between pt-1 border-t border-red-200 text-sm font-bold text-[#800000]">
                       <span>TOTAL FUNERAL CHARGES:</span>
                       <span className="font-mono">${ap47.sectionIII.totalFuneralCharges.toFixed(2)}</span>
                     </div>
@@ -765,7 +1099,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300">
                   <div>
-                    <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#991b1b]">
+                    <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000]">
                       {caseData.informant.fullName} (Electronic Jurat Verified)
                     </div>
                     <span className="text-[9px] text-neutral-500 block mt-0.5">
@@ -803,7 +1137,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 AT-NEED WRITTEN STATEMENT OF PERSON HAVING THE RIGHT TO CONTROL DISPOSITION
               </h3>
               <p className="text-xs text-neutral-500 italic">(Provided to Funeral Director)</p>
-              <h4 className="font-bold text-sm tracking-widest text-[#991b1b] uppercase font-serif-title pt-1">
+              <h4 className="font-bold text-sm tracking-widest text-[#800000] uppercase font-serif-title pt-1">
                 PERSON OTHER THAN AGENT
               </h4>
             </div>
@@ -860,7 +1194,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
           <div className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
             {/* Header */}
             <div className="text-center border-b-2 border-neutral-900 pb-3 space-y-1">
-              <h2 className="font-serif-title font-bold text-2xl text-[#991b1b] tracking-wider">
+              <h2 className="font-serif-title font-bold text-2xl text-[#800000] tracking-wider">
                 BENTA'S FUNERAL HOME, INC.
               </h2>
               <p className="text-xs text-neutral-600 font-medium">
@@ -881,7 +1215,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 <strong>I, {caseData.informant.fullName}</strong>, will be financially responsible for any fees necessary related to this removal of <strong>{caseData.decedent.legalName}</strong> and for embalming, or refrigeration and or storage of the remains.
               </p>
 
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl font-bold text-xs text-[#991b1b]">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl font-bold text-xs text-[#800000]">
                 "This obligation is binding even if another funeral establishment is chosen after the services have been provided."
               </div>
             </div>
@@ -937,7 +1271,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             {/* Form Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-neutral-900 pb-4 gap-3">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-[#991b1b] text-white flex items-center justify-center font-serif-title font-bold text-base shadow-sm">
+                <div className="w-10 h-10 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-base shadow-sm">
                   B
                 </div>
                 <div>
@@ -951,7 +1285,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               </div>
 
               <div className="text-right">
-                <h4 className="font-bold text-base tracking-widest text-[#991b1b] font-serif-title uppercase">
+                <h4 className="font-bold text-base tracking-widest text-[#800000] font-serif-title uppercase">
                   CLOTHING TRANSMITTAL & JEWELRY LOG
                 </h4>
                 <div className="flex items-center justify-end space-x-2 mt-1">
@@ -1007,7 +1341,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 <button
                   type="button"
                   onClick={handleSaveClothingSubmittal}
-                  className="px-4 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shadow-sm border border-amber-300/40"
+                  className="px-4 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition shadow-sm border border-amber-300/40"
                 >
                   <Save className="w-3.5 h-3.5 text-amber-300" />
                   <span>Save & Finalize Transmittal</span>
@@ -1281,7 +1615,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             <div className="space-y-3 pt-2 border-t border-neutral-200">
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                 <div>
-                  <span className="font-bold text-xs uppercase text-[#991b1b] tracking-wider block">
+                  <span className="font-bold text-xs uppercase text-[#800000] tracking-wider block">
                     2. Jewelry & Personal Effects Inventory & Disposition:
                   </span>
                   <p className="text-[11px] text-neutral-500">
@@ -1337,7 +1671,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                               }));
                             }}
                             placeholder="Enter description, metal type, stones, markings..."
-                            className="w-full bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-neutral-800 outline-none focus:border-[#991b1b]"
+                            className="w-full bg-white border border-neutral-300 rounded px-2 py-1 text-xs text-neutral-800 outline-none focus:border-[#800000]"
                           />
                         </td>
                         <td className="p-2.5">
@@ -1365,7 +1699,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
                             <label className={`flex items-center space-x-1 cursor-pointer text-[11px] px-2 py-1 rounded border transition ${
                               jItem.disposition === 'return_to_family'
-                                ? 'bg-blue-50 border-blue-300 text-blue-900 font-bold'
+                                ? 'bg-brass-50 border-brass-300 text-brass-900 font-bold'
                                 : 'border-transparent text-neutral-500 hover:text-neutral-800'
                             }`}>
                               <input
@@ -1379,7 +1713,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                                     jewelryList: prev.jewelryList.map(j => j.id === jItem.id ? { ...j, disposition: 'return_to_family' } : j)
                                   }));
                                 }}
-                                className="text-blue-700"
+                                className="text-brass-700"
                               />
                               <span>Return to Family</span>
                             </label>
@@ -1440,7 +1774,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             {/* SECTION 3: CASKET SPECS & HAIRDRESSER ASSIGNMENT            */}
             {/* ----------------------------------------------------------- */}
             <div className="border border-neutral-200 p-4 rounded-xl space-y-3 bg-[#fafafa]">
-              <span className="font-bold text-xs uppercase text-[#991b1b] block">
+              <span className="font-bold text-xs uppercase text-[#800000] block">
                 3. Casket Specifications & Cosmetology Assignment:
               </span>
 
@@ -1452,7 +1786,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                     value={clothingData.casketNumber || ''}
                     onChange={(e) => setClothingData(prev => ({ ...prev, casketNumber: e.target.value }))}
                     placeholder="e.g. CSK-8819-CH"
-                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 font-mono outline-none focus:border-[#991b1b]"
+                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 font-mono outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -1463,7 +1797,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                     value={clothingData.casketName || ''}
                     onChange={(e) => setClothingData(prev => ({ ...prev, casketName: e.target.value }))}
                     placeholder="e.g. The St. Nicholas Heritage Cherry"
-                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -1502,7 +1836,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       hairdresserName: e.target.value,
                       hairdresserAssigned: Boolean(e.target.value)
                     }))}
-                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-xs text-neutral-900 outline-none focus:border-[#800000]"
                   >
                     <option value="">-- Select Hairdresser / Stylist --</option>
                     <option value="Kelvin Brooks (646-508-3474)">Kelvin Brooks (646-508-3474)</option>
@@ -1523,7 +1857,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   value={clothingData.cosmeticsNotes || ''}
                   onChange={(e) => setClothingData(prev => ({ ...prev, cosmeticsNotes: e.target.value }))}
                   placeholder="Specific instructions on hair parting, mustache/beard trim, makeup shade, lipstick tone, or reference photo provided..."
-                  className="w-full bg-white border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 outline-none focus:border-[#991b1b]"
+                  className="w-full bg-white border border-neutral-300 rounded-lg p-2.5 text-xs text-neutral-900 outline-none focus:border-[#800000]"
                 />
               </div>
             </div>
@@ -1580,7 +1914,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               <button
                 type="button"
                 onClick={handleSaveClothingSubmittal}
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition shadow-md border border-amber-300/40"
+                className="w-full sm:w-auto px-6 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition shadow-md border border-amber-300/40"
               >
                 <Save className="w-4 h-4 text-amber-300" />
                 <span>Save & Complete Clothing Submittal</span>
@@ -1602,7 +1936,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 <h3 className="font-serif-title font-bold text-lg text-neutral-900">
                   Client Production Package Overview
                 </h3>
-                <p className="text-xs text-[#991b1b] font-medium">Benta's Digiprint & 360° Media Suite</p>
+                <p className="text-xs text-[#800000] font-medium">Benta's Digiprint & 360° Media Suite</p>
               </div>
               <div className="text-right text-xs">
                 <p>Today's Date: <strong>{caseData.createdAt.split('T')[0]}</strong></p>
@@ -1624,7 +1958,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               {/* 1. Memorial DVD & 360 Screen Tribute */}
               <div className="border border-neutral-200 p-3.5 rounded-xl space-y-2">
                 <div className="flex justify-between items-center border-b border-neutral-100 pb-1.5">
-                  <span className="font-bold text-xs uppercase text-[#991b1b]">1. MEMORIAL DVD & 360° DIGI-TRIBUTE:</span>
+                  <span className="font-bold text-xs uppercase text-[#800000]">1. MEMORIAL DVD & 360° DIGI-TRIBUTE:</span>
                   <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">[✓] YES [ ] NO</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -1639,7 +1973,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               {/* 2. Funeral Programs */}
               <div className="border border-neutral-200 p-3.5 rounded-xl space-y-2">
                 <div className="flex justify-between items-center border-b border-neutral-100 pb-1.5">
-                  <span className="font-bold text-xs uppercase text-[#991b1b]">2. FUNERAL SERVICE PROGRAM:</span>
+                  <span className="font-bold text-xs uppercase text-[#800000]">2. FUNERAL SERVICE PROGRAM:</span>
                   <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">[✓] YES [ ] NO</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -1653,7 +1987,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               {/* 3. Prayer Cards */}
               <div className="border border-neutral-200 p-3.5 rounded-xl space-y-2">
                 <div className="flex justify-between items-center border-b border-neutral-100 pb-1.5">
-                  <span className="font-bold text-xs uppercase text-[#991b1b]">3. MEMORIAL PRAYER CARDS:</span>
+                  <span className="font-bold text-xs uppercase text-[#800000]">3. MEMORIAL PRAYER CARDS:</span>
                   <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">[✓] YES [ ] NO</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -1679,7 +2013,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               <h3 className="font-serif-title font-bold text-sm tracking-wider text-neutral-800 uppercase">
                 THE CITY OF NEW YORK DEPARTMENT OF HOSPITALS / HEALTH
               </h3>
-              <h2 className="font-serif-title font-bold text-lg text-[#991b1b] uppercase">
+              <h2 className="font-serif-title font-bold text-lg text-[#800000] uppercase">
                 FUNERAL DIRECTOR'S STATEMENT OF AUTHORITY
               </h2>
               <p className="text-[11px] text-neutral-600 italic">
@@ -1712,7 +2046,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             </div>
 
             {/* Non-Solicitation Statement */}
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl font-bold text-center text-xs text-[#991b1b]">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-xl font-bold text-center text-xs text-[#800000]">
               "THIS AUTHORIZATION HAS NOT BEEN THE RESULT OF ANY SOLICITATION BY OR IN BEHALF OF THE UNDERSIGNED."
             </div>
 
@@ -1740,7 +2074,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               <h3 className="font-serif-title font-bold text-base text-neutral-800 uppercase tracking-wide">
                 WOODLAWN CREMATORY & CEMETERY (BRONX, NY)
               </h3>
-              <h2 className="font-serif-title font-bold text-xl text-[#991b1b]">
+              <h2 className="font-serif-title font-bold text-xl text-[#800000]">
                 AUTHORIZATION FOR CREMATION AND DISPOSITION
               </h2>
               <p className="text-xs text-neutral-500 font-mono">Benta's Funeral Home Dispatch Ref #WD-2026-8819</p>
@@ -1777,7 +2111,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
         return (
           <div className="space-y-4 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
             <div className="text-center border-b border-neutral-200 pb-3">
-              <h4 className="font-bold text-base tracking-wide text-[#991b1b]">BENTA'S FUNERAL HOME, INC.</h4>
+              <h4 className="font-bold text-base tracking-wide text-[#800000]">BENTA'S FUNERAL HOME, INC.</h4>
               <p className="text-[10px] text-neutral-500">630 Saint Nicholas Avenue, New York, NY 10030 • (212) 281-8850</p>
               <p className="font-bold text-sm uppercase mt-2 text-neutral-900">{doc.name}</p>
               <p className="text-[10px] text-neutral-400">Case No: {caseData.caseNumber}</p>
@@ -1821,13 +2155,13 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             <h2 className="font-serif-title text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
               Document Journey & Delivery Matrix
             </h2>
-            <span className="bg-red-50 text-[#991b1b] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1">
+            <span className="bg-red-50 text-[#800000] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1">
               <FileCheck2 className="w-3 h-3" />
               13 Official BFH Forms
             </span>
           </div>
           <p className="text-xs text-neutral-500 mt-1 font-light">
-            Live lifecycle tracking and interactive field inspection for every official form for <strong className="text-[#991b1b] font-semibold">{caseData.decedent.legalName}</strong> ({caseData.caseNumber}).
+            Live lifecycle tracking and interactive field inspection for every official form for <strong className="text-[#800000] font-semibold">{caseData.decedent.legalName}</strong> ({caseData.caseNumber}).
           </p>
         </div>
 
@@ -1846,13 +2180,59 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               onClick={() => setSelectedPhase(pill.id)}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
                 selectedPhase === pill.id
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
               {pill.label}
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Automated Government Filings & Veterans Honors Ribbon */}
+      <div className="bg-gradient-to-r from-[#2B1B17] via-[#241f1a] to-[#800000] text-white p-4 rounded-2xl border border-[#D4AF37]/30 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-white/10 rounded-xl border border-white/20">
+            <Building2 className="w-5 h-5 text-[#E6C65B]" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="font-serif font-bold text-sm text-[#F5F2EB]">
+                Automated Government Filings & Veteran Benefits
+              </span>
+              <span className="text-[10px] bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 px-2 py-0.2 rounded-full font-semibold">
+                Federal Gateways
+              </span>
+            </div>
+            <p className="text-[11px] text-neutral-300">
+              Direct E-File Form SSA-721 to Social Security Administration & Coordinate DoD Directive 1300.15 Military Honors.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2.5">
+          {onOpenSSA721Modal && (
+            <button
+              type="button"
+              onClick={onOpenSSA721Modal}
+              className="px-3.5 py-1.5 bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-300 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer shadow-xs"
+            >
+              <Building2 className="w-3.5 h-3.5 text-red-300" />
+              <span>Form SSA-721 E-File</span>
+            </button>
+          )}
+
+          {onOpenVAHonorsModal && (
+            <button
+              type="button"
+              onClick={onOpenVAHonorsModal}
+              className="px-3.5 py-1.5 bg-brass-900/80 hover:bg-brass-800 text-brass-100 border border-brass-400/40 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer shadow-xs"
+            >
+              <Award className="w-3.5 h-3.5 text-[#E6C65B]" />
+              <span>VA Military Honors Hub {caseData.decedent.veteran ? '🎖️' : ''}</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -1878,7 +2258,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   {/* Document Name */}
                   <td className="p-4 font-bold text-neutral-900">
                     <div className="flex items-center space-x-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-red-50 text-[#991b1b] flex items-center justify-center shrink-0 border border-red-200/60 shadow-2xs">
+                      <div className="w-8 h-8 rounded-lg bg-red-50 text-[#800000] flex items-center justify-center shrink-0 border border-red-200/60 shadow-2xs">
                         <FileText className="w-4 h-4" />
                       </div>
                       <div>
@@ -1931,7 +2311,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       {doc.deliveryMethod === 'eSign Portal' && (
                         <button
                           onClick={() => onOpenESign(doc)}
-                          className="bg-[#991b1b] hover:bg-red-800 text-white font-bold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 transition shadow-sm border border-amber-300/30"
+                          className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-2.5 py-1.5 rounded-lg text-xs flex items-center gap-1 transition shadow-sm border border-amber-300/30"
                         >
                           <PenTool className="w-3 h-3 text-amber-300" />
                           <span>eSign</span>
@@ -1941,7 +2321,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       {doc.status === 'pending' && (
                         <button
                           onClick={() => onUpdateDocumentStatus(doc.id, 'completed')}
-                          className="bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-1 rounded-lg text-[10px] font-bold transition shadow-sm"
+                          className="bg-[#800000] hover:bg-[#6a0509] text-white px-2 py-1 rounded-lg text-[10px] font-bold transition shadow-sm"
                         >
                           Mark Done
                         </button>
@@ -1959,12 +2339,12 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
       {/* 3. INTERACTIVE OFFICIAL DOCUMENT FORM INSPECTION MODAL */}
       {previewDoc && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
-          <div className="bg-white border border-neutral-200 rounded-3xl max-w-4xl w-full my-6 p-6 sm:p-8 space-y-5 shadow-2xl text-neutral-900">
+          <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full my-6 p-6 sm:p-8 space-y-5 shadow-2xl text-neutral-900">
             
             {/* Modal Top Controls */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 gap-3">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center border border-red-200 shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center border border-red-200 shadow-xs">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
@@ -1972,7 +2352,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                     {previewDoc.name}
                   </h3>
                   <div className="flex items-center space-x-2 text-xs text-neutral-500 mt-0.5">
-                    <span className="font-mono text-[11px] font-bold text-[#991b1b]">{caseData.caseNumber}</span>
+                    <span className="font-mono text-[11px] font-bold text-[#800000]">{caseData.caseNumber}</span>
                     <span>•</span>
                     <span>{caseData.decedent.legalName}</span>
                     <span>•</span>
@@ -1997,7 +2377,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       setPreviewDoc(null);
                       onOpenESign(doc);
                     }}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 transition shadow-sm border border-amber-300/40"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 transition shadow-sm border border-amber-300/40"
                   >
                     <PenTool className="w-3.5 h-3.5 text-amber-300" />
                     <span>eSign Document</span>
@@ -2033,7 +2413,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       onUpdateDocumentStatus(previewDoc.id, 'completed');
                       setPreviewDoc(null);
                     }}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl transition shadow-2xs flex items-center gap-1.5"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-4 py-2 rounded-xl transition shadow-2xs flex items-center gap-1.5"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Mark Verified & Completed</span>

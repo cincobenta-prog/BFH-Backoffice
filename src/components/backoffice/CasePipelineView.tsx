@@ -37,19 +37,19 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
       id: 'intake_removal', 
       title: '1. Intake & Removal', 
       subtitle: 'Custody, Safe Arrival, Vitals Form',
-      color: 'border-blue-300 bg-blue-50 text-blue-800'
+      color: 'border-brass-300 bg-brass-50 text-brass-800'
     },
     { 
       id: 'arrangements', 
       title: '2. Arrangements', 
       subtitle: 'Consultation, GPL, Merchandise',
-      color: 'border-purple-300 bg-purple-50 text-purple-800'
+      color: 'border-brass-300 bg-brass-50 text-brass-800'
     },
     { 
       id: 'legal_bundle', 
       title: '3. Legal Bundle', 
       subtitle: 'eSign, Auths 1-3, Right to Control',
-      color: 'border-red-300 bg-red-50 text-[#991b1b]'
+      color: 'border-red-300 bg-red-50 text-[#800000]'
     },
     { 
       id: 'permits_logistics', 
@@ -75,7 +75,7 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
             <h2 className="font-serif-title text-xl font-bold text-neutral-900">
               Active Case Operations Pipeline
             </h2>
-            <span className="bg-red-50 text-[#991b1b] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200">
+            <span className="bg-red-50 text-[#800000] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200">
               {cases.length} Active Cases
             </span>
           </div>
@@ -133,13 +133,13 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
                         onClick={() => onSelectCase(c)}
                         className={`p-4 rounded-xl border transition cursor-pointer text-xs space-y-2.5 relative shadow-sm ${
                           isSelected
-                            ? 'bg-white border-[#991b1b] ring-2 ring-[#991b1b]/30 shadow-md'
+                            ? 'bg-white border-[#800000] ring-2 ring-[#800000]/30 shadow-md'
                             : 'bg-white border-neutral-200 hover:border-red-200 hover:shadow-md'
                         }`}
                       >
                         {/* Case Header */}
                         <div className="flex justify-between items-start">
-                          <span className="font-mono text-[10px] font-bold text-[#991b1b] bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                          <span className="font-mono text-[10px] font-bold text-[#800000] bg-red-50 px-2 py-0.5 rounded border border-red-200">
                             {c.caseNumber}
                           </span>
                           <span className="text-[10px] text-neutral-500 font-medium">
@@ -176,8 +176,8 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
                               Safe at 630 St Nick
                             </span>
                           ) : c.safeArrivalStatus === 'in_transit' ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
-                              <Clock className="w-3 h-3 text-blue-600 animate-pulse" />
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-brass-700 bg-brass-50 px-2 py-0.5 rounded-full border border-brass-200">
+                              <Clock className="w-3 h-3 text-brass-600 animate-pulse" />
                               Transfer In Transit
                             </span>
                           ) : (
@@ -195,46 +195,49 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
                         </div>
 
                         {/* Director Actions */}
-                        <div className="pt-2 flex gap-1.5">
+                        <div className="pt-2 flex flex-wrap items-center gap-1.5">
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               onSelectCase(c);
                               onOpenGoldenRecord();
                             }}
-                            className="flex-1 py-1.5 bg-neutral-100 hover:bg-red-50 text-neutral-800 hover:text-[#991b1b] rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition border border-neutral-200"
+                            className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 text-[11px] font-semibold whitespace-nowrap transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900"
                             title="Open Golden Record Hub"
                           >
-                            <FileText className="w-3 h-3" />
+                            <FileText className="w-3.5 h-3.5 text-brass-600" />
                             <span>Hub</span>
                           </button>
 
                           {onOpenContractModal && (
                             <button
+                              type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onSelectCase(c);
                                 onOpenContractModal(c);
                               }}
-                              className="py-1.5 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition shrink-0"
+                              className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-brass-300 bg-brass-50 text-brass-900 text-[11px] font-semibold whitespace-nowrap transition hover:bg-brass-100"
                               title="Open Arrangement Conference & Form AP-47 Contract Studio"
                             >
-                              <ScrollText className="w-3.5 h-3.5 text-emerald-700" />
+                              <ScrollText className="w-3.5 h-3.5 text-brass-700" />
                               <span>AP-47</span>
                             </button>
                           )}
 
                           {onOpenPrintAP47 && (
                             <button
+                              type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 onSelectCase(c);
                                 onOpenPrintAP47(c);
                               }}
-                              className="py-1.5 px-2 bg-red-50 hover:bg-red-100 text-[#991b1b] border border-red-300 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition shrink-0"
+                              className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 text-[11px] font-semibold whitespace-nowrap transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900"
                               title="Print Official Form AP-47 Statement (10 NYCRR § 77.8)"
                             >
-                              <Printer className="w-3.5 h-3.5 text-[#991b1b]" />
+                              <Printer className="w-3.5 h-3.5 text-brass-600" />
                               <span>Print</span>
                             </button>
                           )}
@@ -242,7 +245,9 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
                           {/* Quick phase advancement for Directors */}
                           {currentRole === 'director' && (
                             <button
+                              type="button"
                               title="Advance to next phase"
+                              aria-label="Advance case to next phase"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 const currentIndex = phases.findIndex(p => p.id === c.currentPhase);
@@ -250,9 +255,9 @@ export const CasePipelineView: React.FC<CasePipelineViewProps> = ({
                                   onUpdateCasePhase(c.id, phases[currentIndex + 1].id);
                                 }
                               }}
-                              className="px-2.5 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg transition shadow-sm"
+                              className="ml-auto inline-flex items-center justify-center h-7 w-7 shrink-0 rounded-lg bg-[#800000] text-white transition hover:bg-[#6a0509]"
                             >
-                              <ArrowRight className="w-3.5 h-3.5" />
+                              <ArrowRight className="w-3.5 h-3.5 text-brass-200" />
                             </button>
                           )}
                         </div>

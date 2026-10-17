@@ -146,15 +146,15 @@ export const ServicePartnerNetworkManager: React.FC<ServicePartnerNetworkManager
       case 'hairdresser_barber':
         return { label: 'Hairdressers & Barbers', icon: Scissors, color: 'text-amber-700 bg-amber-50 border-amber-200' };
       case 'outside_director':
-        return { label: 'Outside Trade Directors', icon: UserCheck, color: 'text-blue-700 bg-blue-50 border-blue-200' };
+        return { label: 'Outside Trade Directors', icon: UserCheck, color: 'text-brass-700 bg-brass-50 border-brass-200' };
       case 'pallbearer':
-        return { label: 'Pallbearer Guilds', icon: Users, color: 'text-purple-700 bg-purple-50 border-purple-200' };
+        return { label: 'Pallbearer Guilds', icon: Users, color: 'text-brass-700 bg-brass-50 border-brass-200' };
       case 'musician_organist':
-        return { label: 'Organists & Musicians', icon: Music, color: 'text-rose-700 bg-rose-50 border-rose-200' };
+        return { label: 'Organists & Musicians', icon: Music, color: 'text-red-700 bg-red-50 border-red-200' };
       case 'minister_clergy':
         return { label: 'Ministers & Clergy', icon: Church, color: 'text-emerald-700 bg-emerald-50 border-emerald-200' };
       case 'broadcast_av_tech':
-        return { label: 'Webcast & AV Technicians', icon: Video, color: 'text-sky-700 bg-sky-50 border-sky-200' };
+        return { label: 'Webcast & AV Technicians', icon: Video, color: 'text-brass-700 bg-brass-50 border-brass-200' };
       default:
         return { label: 'Livery & Other', icon: Users, color: 'text-neutral-700 bg-neutral-50 border-neutral-200' };
     }
@@ -169,9 +169,9 @@ export const ServicePartnerNetworkManager: React.FC<ServicePartnerNetworkManager
       case 'reminder_1_sent':
         return { label: 'Reminder #1 Sent (Awaiting Reply)', color: 'bg-amber-50 text-amber-800 border-amber-300' };
       case 'reminder_2_sent':
-        return { label: 'Reminder #2 Sent (Urgent)', color: 'bg-orange-50 text-orange-800 border-orange-300' };
+        return { label: 'Reminder #2 Sent (Urgent)', color: 'bg-amber-50 text-amber-800 border-amber-300' };
       case 'sms_sent':
-        return { label: 'SMS Sent (Awaiting Reply)', color: 'bg-blue-50 text-blue-800 border-blue-300' };
+        return { label: 'SMS Sent (Awaiting Reply)', color: 'bg-brass-50 text-brass-800 border-brass-300' };
       case 'declined':
         return { label: 'Declined (Reassign Needed)', color: 'bg-red-50 text-red-800 border-red-300' };
       case 'completed':
@@ -436,7 +436,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             <h2 className="font-serif-title text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
               Service Partner Directory & SMS Dispatch Center
             </h2>
-            <span className="bg-red-50 text-[#991b1b] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1">
+            <span className="bg-red-50 text-[#800000] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1">
               <MessageSquare className="w-3 h-3" />
               Automated SMS Reminders
             </span>
@@ -458,7 +458,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
           <button
             onClick={() => setIsAddPartnerModalOpen(true)}
-            className="px-3.5 py-2 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5 text-amber-300" />
             <span>Add New Contact</span>
@@ -475,11 +475,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('all_cases_sms')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'all_cases_sms'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Smartphone className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Smartphone className="w-3.5 h-3.5 text-[#800000]" />
             <span>All-Cases SMS Matrix</span>
             {requests.some(r => r.isOverdue || r.status === 'overdue_unconfirmed') && (
               <span className="bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full animate-pulse">
@@ -492,11 +492,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('directory')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'directory'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Users className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Users className="w-3.5 h-3.5 text-[#800000]" />
             <span>Trade Services ({partners.length})</span>
           </button>
 
@@ -504,11 +504,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('bfh_staff')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'bfh_staff'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Award className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Award className="w-3.5 h-3.5 text-[#800000]" />
             <span>BFH Staff & Directors ({BFH_OFFICIAL_STAFF.length})</span>
           </button>
 
@@ -516,11 +516,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('benta_fleet')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'benta_fleet'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Car className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Car className="w-3.5 h-3.5 text-[#800000]" />
             <span>Benta Livery Fleet ({BENTA_TRANSPORTATION_FLEET.length})</span>
           </button>
 
@@ -528,11 +528,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('churches')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'churches'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Church className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Church className="w-3.5 h-3.5 text-[#800000]" />
             <span>Churches & Clergy ({TRI_STATE_CHURCHES_DIRECTORY.length})</span>
           </button>
 
@@ -540,11 +540,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('hospitals')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'hospitals'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Building2 className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Building2 className="w-3.5 h-3.5 text-[#800000]" />
             <span>Hospitals & Morgues ({TRI_STATE_HOSPITALS_DIRECTORY.length})</span>
           </button>
 
@@ -552,7 +552,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('nursing_homes')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'nursing_homes'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
@@ -564,11 +564,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('florists')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'florists'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Flower className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Flower className="w-3.5 h-3.5 text-[#800000]" />
             <span>Florists ({FLORAL_CATALOG_DATA.length})</span>
           </button>
 
@@ -576,11 +576,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('caskets')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'caskets'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Layers className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Layers className="w-3.5 h-3.5 text-[#800000]" />
             <span>Caskets ({CASKET_MANUFACTURER_CATALOGS.length})</span>
           </button>
 
@@ -588,11 +588,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('cemeteries')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'cemeteries'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-[#991b1b]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#800000]" />
             <span>Cemeteries ({TRI_STATE_CEMETERIES_DIRECTORY.length})</span>
           </button>
 
@@ -602,11 +602,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('dispatch')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'dispatch'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Send className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Send className="w-3.5 h-3.5 text-[#800000]" />
             <span>Dispatch SMS</span>
           </button>
 
@@ -614,11 +614,11 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             onClick={() => setActiveSubTab('reminders')}
             className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
               activeSubTab === 'reminders'
-                ? 'bg-white text-[#991b1b] shadow-xs ring-1 ring-neutral-200'
+                ? 'bg-white text-[#800000] shadow-xs ring-1 ring-neutral-200'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            <Clock className="w-3.5 h-3.5 text-[#991b1b]" />
+            <Clock className="w-3.5 h-3.5 text-[#800000]" />
             <span>SMS Tracker ({requests.filter(r => r.status !== 'confirmed').length})</span>
           </button>
         </div>
@@ -632,7 +632,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               placeholder="Search directory by name, address, clergy, phone, or feature..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 pr-3 py-1.5 bg-neutral-50 border border-neutral-300 rounded-lg text-xs outline-none focus:border-[#991b1b]"
+              className="w-full pl-8 pr-3 py-1.5 bg-neutral-50 border border-neutral-300 rounded-lg text-xs outline-none focus:border-[#800000]"
             />
           </div>
           <div className="text-[11px] text-neutral-500 font-mono hidden md:block">
@@ -649,7 +649,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           
           {/* URGENT SLA OVERDUE ESCALATION BANNER */}
           {requests.some(r => r.isOverdue || r.status === 'overdue_unconfirmed') && (
-            <div className="bg-gradient-to-r from-red-600 via-red-700 to-rose-900 text-white p-4 sm:p-5 rounded-2xl shadow-md border-2 border-red-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-900 text-white p-4 sm:p-5 rounded-2xl shadow-md border-2 border-red-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div className="flex items-start sm:items-center space-x-3.5">
                 <div className="w-11 h-11 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0 border border-white/30 animate-pulse">
                   <AlertCircle className="w-6 h-6 text-white" />
@@ -680,7 +680,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                       onOpenTwoWaySmsModal(firstOverdue.id);
                     }
                   }}
-                  className="px-4 py-2 bg-white hover:bg-amber-50 text-red-900 font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5"
+                  className="px-4 py-2 bg-white hover:bg-brass-50 text-[#800000] font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5"
                 >
                   <Smartphone className="w-3.5 h-3.5 text-red-800" />
                   <span>Launch 2-Way SMS Studio</span>
@@ -694,7 +694,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-200 pb-4">
               <div>
                 <h3 className="font-serif-title font-bold text-lg text-neutral-900 flex items-center gap-2">
-                  <Smartphone className="w-5 h-5 text-[#991b1b]" />
+                  <Smartphone className="w-5 h-5 text-[#800000]" />
                   All-Cases Service Partner SMS Status Matrix
                 </h3>
                 <p className="text-xs text-neutral-600 font-light mt-0.5">
@@ -705,7 +705,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               <div className="flex items-center gap-2 text-xs">
                 <button
                   onClick={() => setActiveSubTab('dispatch')}
-                  className="px-3.5 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 border border-amber-300/40"
+                  className="px-3.5 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl transition shadow-xs flex items-center gap-1.5 border border-amber-300/40"
                 >
                   <Plus className="w-3.5 h-3.5 text-amber-300" />
                   <span>Dispatch New Partner</span>
@@ -752,7 +752,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                         {/* Case & Decedent */}
                         <td className="py-3 px-3 align-top">
                           <div className="space-y-0.5">
-                            <span className="font-mono text-[10px] font-bold text-[#991b1b] bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">
+                            <span className="font-mono text-[10px] font-bold text-[#800000] bg-red-50 border border-red-200 px-1.5 py-0.2 rounded">
                               {req.caseNumber}
                             </span>
                             <div className="font-serif-title font-bold text-sm text-neutral-900 leading-tight">
@@ -768,7 +768,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                         <td className="py-3 px-3 align-top">
                           <div className="space-y-0.5 text-neutral-700">
                             <div className="font-bold text-neutral-900 flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-[#991b1b]" />
+                              <Clock className="w-3 h-3 text-[#800000]" />
                               <span>{req.serviceDate}</span>
                             </div>
                             <div className="text-[11px] font-medium text-[#b45309]">
@@ -785,7 +785,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                           <div className="space-y-1">
                             <div className="flex items-center space-x-1.5">
                               <span className="p-1 rounded bg-neutral-100 text-neutral-700">
-                                <Icon className="w-3 h-3 text-[#991b1b]" />
+                                <Icon className="w-3 h-3 text-[#800000]" />
                               </span>
                               <strong className="font-serif-title font-bold text-neutral-900">
                                 {req.partnerName}
@@ -795,7 +795,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                               {req.roleTitle}
                             </div>
                             <div className="text-[10px] font-mono text-neutral-500 flex items-center gap-1">
-                              <Phone className="w-2.5 h-2.5 text-[#991b1b]" />
+                              <Phone className="w-2.5 h-2.5 text-[#800000]" />
                               <span>{req.partnerPhone}</span>
                               {req.honorariumFee && (
                                 <span className="text-neutral-700 font-bold ml-1">({req.honorariumFee})</span>
@@ -837,13 +837,13 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                             )}
 
                             {req.escalationStatus === 'backup_cascaded' && (
-                              <div className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                              <div className="text-[10px] font-bold text-brass-700 bg-brass-50 px-2 py-0.5 rounded border border-brass-200">
                                 ⚡ Standby Cascade Activated
                               </div>
                             )}
 
                             {req.escalationStatus === 'director_phone_confirmed' && (
-                              <div className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                              <div className="text-[10px] font-bold text-brass-700 bg-brass-50 px-2 py-0.5 rounded border border-brass-200">
                                 📞 Director Phone Override Confirmed
                               </div>
                             )}
@@ -876,7 +876,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                             {onOpenTwoWaySmsModal && (
                               <button
                                 onClick={() => onOpenTwoWaySmsModal(req.id)}
-                                className="px-2.5 py-1 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-2xs border border-amber-300/40 w-full justify-center"
+                                className="px-2.5 py-1 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-2xs border border-amber-300/40 w-full justify-center"
                                 title="Open Live Carrier 2-Way SMS Console"
                               >
                                 <Smartphone className="w-3 h-3 text-amber-300" />
@@ -892,7 +892,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                                     handleStandbyCascade(req);
                                   }
                                 }}
-                                className="px-2.5 py-1 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-2xs w-full justify-center"
+                                className="px-2.5 py-1 bg-brass-700 hover:bg-brass-800 text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-2xs w-full justify-center"
                                 title="1-Tap Waterfall Cascade: Instantly swap to Standby Backup and dispatch SMS"
                               >
                                 <span>⚡ Cascade to Standby</span>
@@ -909,7 +909,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                                 className="px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 font-bold rounded-lg text-xs transition flex items-center gap-1 w-full justify-center"
                                 title="Log Director direct verbal phone call confirmation"
                               >
-                                <Phone className="w-3 h-3 text-[#991b1b]" />
+                                <Phone className="w-3 h-3 text-[#800000]" />
                                 <span>Log Director Call</span>
                               </button>
                             )}
@@ -918,7 +918,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                             {!isConfirmed && (
                               <button
                                 onClick={() => onSimulateReminder(req.id)}
-                                className="px-2 py-0.5 text-[10px] text-neutral-600 hover:text-[#991b1b] font-medium flex items-center gap-1"
+                                className="px-2 py-0.5 text-[10px] text-neutral-600 hover:text-[#800000] font-medium flex items-center gap-1"
                                 title="Trigger next scheduled SMS reminder"
                               >
                                 <RefreshCw className="w-2.5 h-2.5" />
@@ -960,7 +960,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-serif-title text-lg font-bold text-neutral-900 flex items-center gap-2">
-                <Award className="w-5 h-5 text-[#991b1b]" />
+                <Award className="w-5 h-5 text-[#800000]" />
                 Benta's Funeral Home, Inc. — Official Staff & Licensed Funeral Directors
               </h3>
               <p className="text-xs text-neutral-600 font-light">
@@ -968,7 +968,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs bg-red-50 text-[#991b1b] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
+              <span className="text-xs bg-red-50 text-[#800000] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
                 630 St. Nicholas Ave • Est. 1928
               </span>
             </div>
@@ -980,16 +980,16 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               const q = searchQuery.toLowerCase();
               return member.name.toLowerCase().includes(q) || member.title.toLowerCase().includes(q) || member.email.toLowerCase().includes(q);
             }).map((member) => (
-              <div key={member.id} className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm space-y-4 hover:border-[#991b1b] transition flex flex-col justify-between">
+              <div key={member.id} className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm space-y-4 hover:border-[#800000] transition flex flex-col justify-between">
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-[#991b1b] font-bold text-base shadow-xs">
+                      <div className="w-12 h-12 rounded-full bg-red-50 border border-red-200 flex items-center justify-center text-[#800000] font-bold text-base shadow-xs">
                         {member.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                       </div>
                       <div>
                         <h4 className="font-serif-title font-bold text-sm text-neutral-900 leading-snug">{member.name}</h4>
-                        <p className="text-xs text-[#991b1b] font-bold">{member.title}</p>
+                        <p className="text-xs text-[#800000] font-bold">{member.title}</p>
                       </div>
                     </div>
                     {member.licenseNumber && (
@@ -1001,12 +1001,12 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
                   <div className="p-3 bg-[#fbfbfd] rounded-xl border border-neutral-200 space-y-1.5 text-xs text-neutral-700">
                     <div className="flex items-center justify-between">
-                      <span className="text-neutral-500 flex items-center gap-1"><Phone className="w-3 h-3 text-[#991b1b]" /> Direct Phone:</span>
+                      <span className="text-neutral-500 flex items-center gap-1"><Phone className="w-3 h-3 text-[#800000]" /> Direct Phone:</span>
                       <strong className="font-mono text-neutral-900">{member.phone}</strong>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-neutral-500 flex items-center gap-1"><Mail className="w-3 h-3 text-[#991b1b]" /> Official Email:</span>
-                      <a href={`mailto:${member.email}`} className="font-mono text-[#991b1b] hover:underline font-bold text-[11px] truncate max-w-[170px]">
+                      <span className="text-neutral-500 flex items-center gap-1"><Mail className="w-3 h-3 text-[#800000]" /> Official Email:</span>
+                      <a href={`mailto:${member.email}`} className="font-mono text-[#800000] hover:underline font-bold text-[11px] truncate max-w-[170px]">
                         {member.email}
                       </a>
                     </div>
@@ -1019,7 +1019,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
                 <div className="pt-2 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500">
                   <span className="capitalize font-mono">Role: {member.role}</span>
-                  <span className="text-[#991b1b] font-bold flex items-center gap-0.5">
+                  <span className="text-[#800000] font-bold flex items-center gap-0.5">
                     Verified Active <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
                   </span>
                 </div>
@@ -1041,7 +1041,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('all')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border ${
                 categoryFilter === 'all'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1052,7 +1052,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('hairdresser_barber')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
                 categoryFilter === 'hairdresser_barber'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1064,7 +1064,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('outside_director')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
                 categoryFilter === 'outside_director'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1076,7 +1076,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('pallbearer')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
                 categoryFilter === 'pallbearer'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1088,7 +1088,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('musician_organist')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
                 categoryFilter === 'musician_organist'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1100,7 +1100,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('minister_clergy')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
                 categoryFilter === 'minister_clergy'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1112,7 +1112,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               onClick={() => setCategoryFilter('broadcast_av_tech')}
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${
                 categoryFilter === 'broadcast_av_tech'
-                  ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                  ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                   : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
               }`}
             >
@@ -1169,7 +1169,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     <div className="mt-3 pt-3 border-t border-neutral-100 space-y-1.5 text-xs text-neutral-600">
                       <div className="flex items-center justify-between">
                         <span className="flex items-center gap-1 text-neutral-700 font-mono font-bold text-xs">
-                          <Phone className="w-3 h-3 text-[#991b1b]" />
+                          <Phone className="w-3 h-3 text-[#800000]" />
                           <span>{partner.phone}</span>
                         </span>
                         {partner.email && (
@@ -1201,7 +1201,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                         setDispatchPartnerId(partner.id);
                         setActiveSubTab('dispatch');
                       }}
-                      className="flex-1 bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-2xs"
+                      className="flex-1 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs py-2 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-2xs"
                     >
                       <Send className="w-3.5 h-3.5 text-amber-300" />
                       <span>Dispatch SMS Hold</span>
@@ -1222,7 +1222,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-gradient-to-r from-neutral-900 to-[#2b0f0f] text-white p-5 rounded-2xl border border-amber-500/30 flex flex-wrap items-center justify-between gap-4 shadow-sm">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="bg-[#991b1b] text-amber-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-amber-400/30">
+                <span className="bg-[#800000] text-amber-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-amber-400/30">
                   Official Benta's Fleet Affiliate
                 </span>
                 <span className="text-xs text-neutral-300 font-mono">www.bentatrans.com</span>
@@ -1248,10 +1248,10 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               const q = searchQuery.toLowerCase();
               return v.name.toLowerCase().includes(q) || v.makeModel.toLowerCase().includes(q) || v.assignedDriver.toLowerCase().includes(q);
             }).map((v) => (
-              <div key={v.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#991b1b] transition">
+              <div key={v.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#800000] transition">
                 <div className="flex justify-between items-start">
                   <div className="space-y-0.5">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#991b1b] bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#800000] bg-red-50 px-2 py-0.5 rounded border border-red-200">
                       {v.type.replace('_', ' ').toUpperCase()}
                     </span>
                     <h4 className="font-serif-title font-bold text-sm text-neutral-900 pt-1">{v.name}</h4>
@@ -1276,7 +1276,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 <div className="pt-2 border-t border-neutral-100 text-xs space-y-1">
                   <div className="flex justify-between items-center text-neutral-800 font-medium">
                     <span>Chauffeur: <strong>{v.assignedDriver}</strong></span>
-                    <a href={`tel:${v.driverPhone}`} className="text-[#991b1b] hover:underline font-mono font-bold flex items-center gap-1">
+                    <a href={`tel:${v.driverPhone}`} className="text-[#800000] hover:underline font-mono font-bold flex items-center gap-1">
                       <Phone className="w-3 h-3" />
                       {v.driverPhone}
                     </a>
@@ -1303,14 +1303,14 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-serif-title text-lg font-bold text-neutral-900 flex items-center gap-2">
-                <Church className="w-5 h-5 text-[#991b1b]" />
+                <Church className="w-5 h-5 text-[#800000]" />
                 Tri-State Historic & Prominent Churches & Clergy Directory
               </h3>
               <p className="text-xs text-neutral-600 font-light">
                 Verified sanctuaries, pastors, contacts, and organ/livestream capabilities across Harlem, NYC, NJ, and CT.
               </p>
             </div>
-            <span className="text-xs bg-red-50 text-[#991b1b] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
+            <span className="text-xs bg-red-50 text-[#800000] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
               {TRI_STATE_CHURCHES_DIRECTORY.length} Sanctuaries Cataloged
             </span>
           </div>
@@ -1321,7 +1321,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               const q = searchQuery.toLowerCase();
               return c.name.toLowerCase().includes(q) || c.seniorPastor.toLowerCase().includes(q) || c.address.toLowerCase().includes(q) || c.denomination.toLowerCase().includes(q);
             }).map((church) => (
-              <div key={church.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#991b1b] transition flex flex-col justify-between">
+              <div key={church.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#800000] transition flex flex-col justify-between">
                 <div className="space-y-2">
                   <div className="flex justify-between items-start">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
@@ -1339,7 +1339,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
                   <div className="p-2.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1 text-xs">
                     <div className="font-bold text-neutral-900 flex items-center gap-1.5">
-                      <UserCheck className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <UserCheck className="w-3.5 h-3.5 text-[#800000]" />
                       <span>{church.seniorPastor}</span>
                     </div>
                     <p className="text-[11px] text-neutral-600 italic">{church.pastorTitle}</p>
@@ -1349,10 +1349,10 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 <div className="pt-3 border-t border-neutral-100 space-y-2 text-xs">
                   <div className="flex justify-between items-center text-neutral-700">
                     <span className="font-mono font-bold flex items-center gap-1">
-                      <Phone className="w-3 h-3 text-[#991b1b]" />
+                      <Phone className="w-3 h-3 text-[#800000]" />
                       {church.phone}
                     </span>
-                    <a href={`mailto:${church.email}`} className="text-[#991b1b] hover:underline truncate max-w-[140px] text-[11px]">
+                    <a href={`mailto:${church.email}`} className="text-[#800000] hover:underline truncate max-w-[140px] text-[11px]">
                       {church.email}
                     </a>
                   </div>
@@ -1375,14 +1375,14 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-serif-title text-lg font-bold text-neutral-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-blue-700" />
+                <Building2 className="w-5 h-5 text-brass-700" />
                 Tri-State Hospitals & Pathology Morgues Directory
               </h3>
               <p className="text-xs text-neutral-600 font-light">
                 All acute care hospitals maintain dedicated pathology cold storage vaults with EDRS release permit protocols.
               </p>
             </div>
-            <span className="text-xs bg-blue-50 text-blue-800 border border-blue-200 px-3 py-1 rounded-xl font-bold font-mono">
+            <span className="text-xs bg-brass-50 text-brass-800 border border-brass-200 px-3 py-1 rounded-xl font-bold font-mono">
               {TRI_STATE_HOSPITALS_DIRECTORY.length} Acute Centers Cataloged
             </span>
           </div>
@@ -1393,13 +1393,13 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               const q = searchQuery.toLowerCase();
               return h.name.toLowerCase().includes(q) || h.address.toLowerCase().includes(q) || (h.borough && h.borough.toLowerCase().includes(q));
             }).map((hosp) => (
-              <div key={hosp.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-blue-700 transition flex flex-col justify-between">
+              <div key={hosp.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-brass-700 transition flex flex-col justify-between">
                 <div className="space-y-2">
                   <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-brass-800 bg-brass-50 px-2 py-0.5 rounded border border-brass-200">
                       {hosp.borough || hosp.city}, {hosp.state}
                     </span>
-                    <span className="text-[10px] font-bold text-blue-900 bg-blue-100 border border-blue-300 px-2 py-0.5 rounded flex items-center gap-1">
+                    <span className="text-[10px] font-bold text-brass-900 bg-brass-100 border border-brass-300 px-2 py-0.5 rounded flex items-center gap-1">
                       ❄️ Morgue Refrigeration
                     </span>
                   </div>
@@ -1409,13 +1409,13 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     <p className="text-xs text-neutral-500 pt-0.5">{hosp.address}, {hosp.city}, {hosp.state} {hosp.zip}</p>
                   </div>
 
-                  <div className="p-2.5 bg-blue-50/60 rounded-xl border border-blue-100 space-y-1 text-xs">
-                    <div className="font-bold text-blue-950 flex items-center justify-between">
+                  <div className="p-2.5 bg-brass-50/60 rounded-xl border border-brass-100 space-y-1 text-xs">
+                    <div className="font-bold text-brass-950 flex items-center justify-between">
                       <span>Morgue Direct Line:</span>
-                      <strong className="font-mono text-blue-900">{hosp.morgueOrPathologyPhone || hosp.mainPhone}</strong>
+                      <strong className="font-mono text-brass-900">{hosp.morgueOrPathologyPhone || hosp.mainPhone}</strong>
                     </div>
-                    <p className="text-[11px] text-blue-800">{hosp.refrigerationDetails}</p>
-                    <p className="text-[10px] text-blue-600 font-mono">Release: {hosp.releaseHours}</p>
+                    <p className="text-[11px] text-brass-800">{hosp.refrigerationDetails}</p>
+                    <p className="text-[10px] text-brass-600 font-mono">Release: {hosp.releaseHours}</p>
                   </div>
                 </div>
 
@@ -1461,7 +1461,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                       {nh.borough || nh.city}, {nh.state}
                     </span>
                     {nh.hasRefrigerationOnPremises ? (
-                      <span className="text-[10px] font-bold text-blue-900 bg-blue-100 border border-blue-300 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold text-brass-900 bg-brass-100 border border-brass-300 px-2 py-0.5 rounded">
                         ❄️ Holding Morgue Box
                       </span>
                     ) : (
@@ -1477,7 +1477,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   </div>
 
                   <div className={`p-2.5 rounded-xl border space-y-1 text-xs ${
-                    nh.hasRefrigerationOnPremises ? 'bg-blue-50/60 border-blue-100 text-blue-950' : 'bg-red-50/60 border-red-100 text-red-950'
+                    nh.hasRefrigerationOnPremises ? 'bg-brass-50/60 border-brass-100 text-brass-950' : 'bg-red-50/60 border-red-100 text-red-950'
                   }`}>
                     <div className="font-bold flex items-center justify-between">
                       <span>Nursing Station:</span>
@@ -1505,14 +1505,14 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-serif-title text-lg font-bold text-neutral-900 flex items-center gap-2">
-                <Flower className="w-5 h-5 text-[#991b1b]" />
+                <Flower className="w-5 h-5 text-[#800000]" />
                 Official Floral Partners & Catalogs
               </h3>
               <p className="text-xs text-neutral-600 font-light">
                 <strong>Barbara's Flowers</strong> (Harlem: 2522 Frederick Douglass Blvd • 212-234-3211) & <strong>Daniela's Flower Shop</strong> (Broadway: 3650 Broadway • 212-283-9300).
               </p>
             </div>
-            <span className="text-xs bg-red-50 text-[#991b1b] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
+            <span className="text-xs bg-red-50 text-[#800000] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
               {FLORAL_CATALOG_DATA.length} Arrangements Available
             </span>
           </div>
@@ -1523,13 +1523,13 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               const q = searchQuery.toLowerCase();
               return f.name.toLowerCase().includes(q) || f.floristName.toLowerCase().includes(q) || f.category.toLowerCase().includes(q);
             }).map((item) => (
-              <div key={item.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#991b1b] transition flex flex-col justify-between">
+              <div key={item.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#800000] transition flex flex-col justify-between">
                 <div className="space-y-2">
                   <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#991b1b] bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#800000] bg-red-50 px-2 py-0.5 rounded border border-red-200">
                       {item.floristName}
                     </span>
-                    <span className="text-sm font-bold text-[#991b1b] font-mono">
+                    <span className="text-sm font-bold text-[#800000] font-mono">
                       ${item.price}.00
                     </span>
                   </div>
@@ -1544,7 +1544,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
                 <div className="pt-3 border-t border-neutral-100 flex justify-between items-center text-xs text-neutral-500">
                   <span>Lead Time: <strong>{item.leadTimeHours} Hours</strong></span>
-                  <a href={`tel:${item.floristPhone}`} className="text-[#991b1b] font-bold hover:underline font-mono">
+                  <a href={`tel:${item.floristPhone}`} className="text-[#800000] font-bold hover:underline font-mono">
                     {item.floristPhone}
                   </a>
                 </div>
@@ -1562,7 +1562,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-serif-title text-lg font-bold text-neutral-900 flex items-center gap-2">
-                <Layers className="w-5 h-5 text-[#991b1b]" />
+                <Layers className="w-5 h-5 text-[#800000]" />
                 Official Casket & Merchandise Catalogs
               </h3>
               <p className="text-xs text-neutral-600 font-light">
@@ -1588,7 +1588,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   onClick={() => setPartnerCasketFilter('batesville')}
                   className={`px-3 py-1 rounded-lg transition ${
                     partnerCasketFilter === 'batesville'
-                      ? 'bg-[#991b1b] text-white shadow-xs font-bold'
+                      ? 'bg-[#800000] text-white shadow-xs font-bold'
                       : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
@@ -1618,7 +1618,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 placeholder="Search catalog by Item #, model name, material, exterior finish, interior lining..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs placeholder:text-neutral-400 focus:bg-white focus:ring-1 focus:ring-[#991b1b]"
+                className="w-full pl-9 pr-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs placeholder:text-neutral-400 focus:bg-white focus:ring-1 focus:ring-[#800000]"
               />
             </div>
             <div className="sm:col-span-4">
@@ -1665,17 +1665,17 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {displayList.map((item) => (
-                    <div key={item.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-2xs space-y-3 hover:border-[#991b1b] transition flex flex-col justify-between">
+                    <div key={item.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-2xs space-y-3 hover:border-[#800000] transition flex flex-col justify-between">
                       <div className="space-y-2">
                         <div className="flex justify-between items-start">
                           <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
                             item.supplier === 'Batesville Casket Company'
-                              ? 'bg-red-50 text-[#991b1b] border-red-200'
+                              ? 'bg-red-50 text-[#800000] border-red-200'
                               : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                           }`}>
                             {item.supplier}
                           </span>
-                          <span className="text-sm font-bold text-[#991b1b] font-mono">
+                          <span className="text-sm font-bold text-[#800000] font-mono">
                             ${item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                           </span>
                         </div>
@@ -1705,7 +1705,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                         <span className="text-neutral-500 font-medium">
                           {item.supplier === 'Milso Industry' ? 'Milso Wholesale Tier' : 'Batesville Master Worksheet'}
                         </span>
-                        <span className="font-mono font-bold text-[#991b1b]">
+                        <span className="font-mono font-bold text-[#800000]">
                           ${item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                         </span>
                       </div>
@@ -1726,14 +1726,14 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white p-4 rounded-2xl border border-neutral-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
               <h3 className="font-serif-title text-lg font-bold text-neutral-900 flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-[#991b1b]" />
+                <ShieldCheck className="w-5 h-5 text-[#800000]" />
                 Tri-State Cemeteries & Crematories Directory (NY, NJ, CT)
               </h3>
               <p className="text-xs text-neutral-600 font-light">
                 Complete address, dispatch telephone numbers, crematory permits, and arrival cutoff times.
               </p>
             </div>
-            <span className="text-xs bg-red-50 text-[#991b1b] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
+            <span className="text-xs bg-red-50 text-[#800000] border border-red-200 px-3 py-1 rounded-xl font-bold font-mono">
               {TRI_STATE_CEMETERIES_DIRECTORY.length} Grounds Cataloged
             </span>
           </div>
@@ -1744,7 +1744,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               const q = searchQuery.toLowerCase();
               return cem.name.toLowerCase().includes(q) || cem.city.toLowerCase().includes(q) || cem.state.toLowerCase().includes(q) || cem.county.toLowerCase().includes(q);
             }).map((cem) => (
-              <div key={cem.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#991b1b] transition flex flex-col justify-between">
+              <div key={cem.id} className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-sm space-y-3 hover:border-[#800000] transition flex flex-col justify-between">
                 <div className="space-y-2">
                   <div className="flex justify-between items-start">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">
@@ -1757,7 +1757,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                         </span>
                       )}
                       {cem.hasMausoleum && (
-                        <span className="text-[10px] font-bold text-blue-800 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-bold text-brass-800 bg-brass-50 border border-brass-200 px-1.5 py-0.5 rounded">
                           🏛️ Crypts
                         </span>
                       )}
@@ -1798,7 +1798,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           {/* Left Column: Dispatch Configuration Form */}
           <div className="lg:col-span-7 bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-4">
             <div className="flex items-center space-x-2 border-b border-neutral-200 pb-3">
-              <Send className="w-5 h-5 text-[#991b1b]" />
+              <Send className="w-5 h-5 text-[#800000]" />
               <h3 className="font-serif-title font-bold text-base text-neutral-900">
                 Compose Service Partner SMS Booking Request
               </h3>
@@ -1812,7 +1812,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 <select
                   value={dispatchCaseId}
                   onChange={(e) => setDispatchCaseId(e.target.value)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#800000]"
                 >
                   {cases.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -1829,7 +1829,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   <select
                     value={dispatchPartnerId}
                     onChange={(e) => setDispatchPartnerId(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   >
                     {partners.map((p) => (
                       <option key={p.id} value={p.id}>
@@ -1846,7 +1846,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   <select
                     value={dispatchStandbyPartnerId}
                     onChange={(e) => setDispatchStandbyPartnerId(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   >
                     {partners.map((p) => (
                       <option key={p.id} value={p.id}>
@@ -1875,7 +1875,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                       onClick={() => setDispatchSlaHours(sla.hours)}
                       className={`p-2 rounded-lg text-xs font-bold transition border text-center ${
                         dispatchSlaHours === sla.hours
-                          ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                          ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                           : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
                       }`}
                     >
@@ -1897,7 +1897,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     required
                     value={dispatchDate}
                     onChange={(e) => setDispatchDate(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -1909,7 +1909,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     placeholder="e.g. 09:30 AM"
                     value={dispatchCallTime}
                     onChange={(e) => setDispatchCallTime(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -1920,7 +1920,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     placeholder="e.g. 12:30 PM"
                     value={dispatchEndTime}
                     onChange={(e) => setDispatchEndTime(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -1935,7 +1935,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={dispatchVenue}
                     onChange={(e) => setDispatchVenue(e.target.value)}
                     placeholder="e.g. 630 St. Nicholas Ave - Prep Suite"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -1946,7 +1946,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={dispatchFee}
                     onChange={(e) => setDispatchFee(e.target.value)}
                     placeholder="e.g. $250.00 Honorarium"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -1959,14 +1959,14 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   value={dispatchInstructions}
                   onChange={(e) => setDispatchInstructions(e.target.value)}
                   placeholder="e.g. Bring styling kit. Family reference photo uploaded to digital portal. White gloves required."
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#800000]"
                 />
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-md border border-amber-300/40 flex items-center justify-center gap-2"
+                className="w-full bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs py-3 px-4 rounded-xl transition shadow-md border border-amber-300/40 flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4 text-amber-300" />
                 <span>Send SMS Request with Auto-Reminder Cycle</span>
@@ -1985,7 +1985,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
               </div>
 
               {/* Simulated Phone Shell */}
-              <div className="mt-4 bg-neutral-900 p-4 rounded-3xl border-4 border-neutral-800 shadow-xl max-w-sm mx-auto text-white">
+              <div className="mt-4 bg-neutral-900 p-4 rounded-2xl border-4 border-neutral-800 shadow-xl max-w-sm mx-auto text-white">
                 <div className="flex justify-between items-center text-[10px] text-neutral-400 pb-2 border-b border-neutral-800 font-mono">
                   <span>BFH Dispatch</span>
                   <span>To: {currentSelectedPartner?.phone}</span>
@@ -2082,7 +2082,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                       {onOpenTwoWaySmsModal && (
                         <button
                           onClick={() => onOpenTwoWaySmsModal(req.id)}
-                          className="px-3 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-lg text-xs transition shadow-2xs flex items-center gap-1.5 border border-amber-300/40"
+                          className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-xs transition shadow-2xs flex items-center gap-1.5 border border-amber-300/40"
                           title="Open Two-Way Carrier SMS Conversation Simulator"
                         >
                           <Smartphone className="w-3.5 h-3.5 text-amber-300" />
@@ -2098,13 +2098,13 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                             className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 font-bold rounded-lg text-xs transition flex items-center gap-1"
                             title="Simulate sending the next scheduled recurring reminder SMS"
                           >
-                            <RefreshCw className="w-3 h-3 text-[#991b1b]" />
+                            <RefreshCw className="w-3 h-3 text-[#800000]" />
                             <span>Send Reminder (#{req.remindersCount + 1})</span>
                           </button>
 
                           <button
                             onClick={() => onSimulateConfirm(req.id)}
-                            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition shadow-2xs flex items-center gap-1"
+                            className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-xs transition shadow-2xs flex items-center gap-1"
                             title="Simulate partner replying YES via carrier SMS"
                           >
                             <CheckCircle2 className="w-3 h-3 text-amber-200" />
@@ -2149,7 +2149,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white border border-neutral-200 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-neutral-900">
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <Users className="w-5 h-5 text-[#991b1b]" />
+                <Users className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title font-bold text-lg text-neutral-900">
                   Add Service Partner Contact
                 </h3>
@@ -2171,7 +2171,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   value={newPartnerName}
                   onChange={(e) => setNewPartnerName(e.target.value)}
                   placeholder="e.g. Danielle St. Claire"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000]"
                 />
               </div>
 
@@ -2181,7 +2181,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   <select
                     value={newPartnerCategory}
                     onChange={(e) => setNewPartnerCategory(e.target.value as PartnerCategory)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 font-bold outline-none focus:border-[#800000]"
                   >
                     <option value="hairdresser_barber">Hairdresser / Barber</option>
                     <option value="outside_director">Outside Trade Director</option>
@@ -2199,7 +2199,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={newPartnerRole}
                     onChange={(e) => setNewPartnerRole(e.target.value)}
                     placeholder="e.g. Master Restorative Barber"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -2213,7 +2213,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={newPartnerPhone}
                     onChange={(e) => setNewPartnerPhone(formatPhoneNumbersOnly(e.target.value))}
                     placeholder="(212) 555-0199"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b] font-mono"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000] font-mono"
                   />
                 </div>
 
@@ -2224,7 +2224,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={newPartnerEmail}
                     onChange={(e) => setNewPartnerEmail(e.target.value)}
                     placeholder="partner@harlem.org"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -2237,7 +2237,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={newPartnerOrg}
                     onChange={(e) => setNewPartnerOrg(e.target.value)}
                     placeholder="e.g. Harlem Choral Trust"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -2248,7 +2248,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={newPartnerRate}
                     onChange={(e) => setNewPartnerRate(e.target.value)}
                     placeholder="e.g. $250 / service"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -2260,7 +2260,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   value={newPartnerNotes}
                   onChange={(e) => setNewPartnerNotes(e.target.value)}
                   placeholder="e.g. Specialized in vintage hairstyles, cosmetic restoration, church liturgies."
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 outline-none focus:border-[#800000]"
                 />
               </div>
 
@@ -2274,7 +2274,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40"
                 >
                   Save Partner Contact
                 </button>
@@ -2292,7 +2292,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
           <div className="bg-white border border-neutral-200 rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl text-neutral-900">
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <FileSpreadsheet className="w-5 h-5 text-[#991b1b]" />
+                <FileSpreadsheet className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title font-bold text-lg text-neutral-900">
                   Upload & Import Service Partner Contacts (CSV)
                 </h3>
@@ -2312,7 +2312,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 </p>
                 <button
                   onClick={loadSampleCSVTemplate}
-                  className="text-[#991b1b] hover:underline font-bold text-xs flex items-center gap-1"
+                  className="text-[#800000] hover:underline font-bold text-xs flex items-center gap-1"
                 >
                   <Sparkles className="w-3 h-3 text-amber-500" />
                   <span>Load Sample Contacts Template</span>
@@ -2328,14 +2328,14 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 value={csvRawText}
                 onChange={(e) => setCsvRawText(e.target.value)}
                 placeholder="Paste CSV rows here..."
-                className="w-full bg-[#fbfbfd] font-mono border border-neutral-300 rounded-xl p-3 text-xs outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] font-mono border border-neutral-300 rounded-xl p-3 text-xs outline-none focus:border-[#800000]"
               />
 
               {csvFeedback && (
                 <div className={`p-3 rounded-xl text-xs font-medium flex items-center space-x-2 ${
                   csvFeedback.includes('Successfully')
                     ? 'bg-emerald-50 text-emerald-800 border border-emerald-300'
-                    : 'bg-red-50 text-[#991b1b] border border-red-300'
+                    : 'bg-red-50 text-[#800000] border border-red-300'
                 }`}>
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{csvFeedback}</span>
@@ -2358,7 +2358,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   <button
                     type="button"
                     onClick={handleParseCSV}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
                   >
                     <Upload className="w-3.5 h-3.5 text-amber-300" />
                     <span>Import Contacts</span>
@@ -2382,7 +2382,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
             <div className="bg-white border border-neutral-200 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-neutral-900 animate-fadeIn">
               <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
                 <div className="flex items-center space-x-2">
-                  <div className="p-2 bg-red-50 text-[#991b1b] rounded-xl border border-red-200">
+                  <div className="p-2 bg-red-50 text-[#800000] rounded-xl border border-red-200">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
@@ -2409,7 +2409,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Direct Phone:</span>
-                  <a href={`tel:${reqToLog.partnerPhone}`} className="font-mono text-[#991b1b] font-bold hover:underline">
+                  <a href={`tel:${reqToLog.partnerPhone}`} className="font-mono text-[#800000] font-bold hover:underline">
                     {reqToLog.partnerPhone}
                   </a>
                 </div>
@@ -2429,7 +2429,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     required
                     value={phoneLogCallerName}
                     onChange={(e) => setPhoneLogCallerName(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -2443,7 +2443,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                     value={phoneLogNotes}
                     onChange={(e) => setPhoneLogNotes(e.target.value)}
                     placeholder="Enter details of verbal conversation, confirmed arrival time, and special instructions agreed upon..."
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b] leading-relaxed"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000] leading-relaxed"
                   />
                 </div>
 
@@ -2464,7 +2464,7 @@ Gregory Hall,Licensed Trade Funeral Director,outside_director,(917) 555-6623,gha
                   </button>
                   <button
                     type="submit"
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5 text-amber-300" />
                     <span>Confirm & Log to Case Ledger</span>

@@ -84,7 +84,9 @@ export function generateDiscrepancyAudit(caseData: GoldenRecordCase): Discrepanc
   // 2. Check EDRS / eVital Vitals
   const motherMaiden = caseData.decedent.motherMaidenName;
   const fatherName = caseData.decedent.fatherName;
-  const ssn = caseData.decedent.ssnMasked;
+  const ssn = caseData.vitalRecordsSheet?.ssn || caseData.decedent.ssn || caseData.decedent.ssnMasked;
+  const rawSsnDigits = (ssn || '').replace(/\D/g, '');
+  const isCompleteSsn = rawSsnDigits.length === 9 && !rawSsnDigits.startsWith('000');
   let hasEdrsConflict = false;
 
   if (!motherMaiden || motherMaiden.trim() === '' || motherMaiden.toLowerCase().includes('unknown')) {
@@ -120,18 +122,21 @@ export function generateDiscrepancyAudit(caseData: GoldenRecordCase): Discrepanc
     });
   }
 
-  if (!ssn || ssn.trim() === '' || ssn.includes('000-00')) {
+  if (!ssn || ssn.trim() === '' || !isCompleteSsn || ssn.includes('000-00') || ssn.includes('***') || ssn.includes('XXX')) {
+    const isMaskedOrTruncated = ssn?.includes('***') || ssn?.includes('XXX') || (rawSsnDigits.length > 0 && rawSsnDigits.length < 9);
     items.push({
       id: 'disc-edrs-ssn',
       category: 'edrs_vitals',
-      title: 'EDRS Vitals: Social Security Number Pending',
-      description: 'SSN is unverified or masked placeholder.',
-      severity: 'warning',
+      title: isMaskedOrTruncated
+        ? 'EDRS Vitals: Incomplete SSN (Full 9 Digits Required for Death Certificate)'
+        : 'EDRS Vitals: Social Security Number Pending',
+      description: 'NYS EDRS death certificate electronic filing requires a complete, verified 9-digit SSN.',
+      severity: isMaskedOrTruncated ? 'warning' : 'critical',
       goldenRecordValue: ssn || 'Missing',
       conflictingDocumentName: 'NYC DOHMH eVital & SSA-721 Notice',
-      conflictingValue: 'Unverified',
-      statutoryImpact: 'Social Security Lump Sum Death Benefit ($255) and VA benefits cannot be automated.',
-      suggestedFix: 'Verify SSN card or tax document with informant.',
+      conflictingValue: rawSsnDigits.length > 0 ? `${rawSsnDigits.length}/9 Digits Provided` : 'Unverified',
+      statutoryImpact: 'NYS Department of Health death certificate and SSA lump-sum death notice cannot be finalized without full 9 digits.',
+      suggestedFix: 'Document complete 9-digit SSN from Social Security card, W-2, or informant verification.',
       status: 'active_mismatch'
     });
   }

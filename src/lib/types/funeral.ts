@@ -29,7 +29,9 @@ export type BFHFormType =
   | 'woodlawn_cremation'
   | 'edrs_permit'
   | 'service_sheet'
-  | 'general_document';
+  | 'general_document'
+  | 'ssa_721'
+  | 'va_military_packet';
 
 export interface DocumentItem {
   id: string;
@@ -55,7 +57,8 @@ export interface DecedentInfo {
   dateOfDeath: string;
   placeOfDeath: string;
   facilityName?: string;
-  ssnMasked: string;
+  ssn?: string;
+  ssnMasked?: string;
   maritalStatus: 'married' | 'single' | 'widowed' | 'divorced';
   residenceAddress: string;
   city: string;
@@ -65,6 +68,7 @@ export interface DecedentInfo {
   branchOfService?: string;
   occupation: string;
   industry: string;
+  educationLevel?: string;
   fatherName: string;
   motherMaidenName: string;
 }
@@ -349,6 +353,7 @@ export interface GoldenRecordCase {
   cortegeRoute?: LiveryCortegeRoute;
   funeralAnnouncement?: FuneralAnnouncementData;
   statementOfGoods?: StatementOfGoodsData;
+  vitalRecordsSheet?: FullVitalRecordInformationSheet;
   contractRevisions?: ContractRevisionArchiveRecord[];
   clothingSubmittal?: ClothingChecklistData;
   familySplitPayConfig?: FamilySplitPayConfig;
@@ -359,6 +364,8 @@ export interface GoldenRecordCase {
   discrepancyAudit?: DiscrepancyAuditReport;
   dayOfServiceHUD?: DayOfServiceHUDData;
   firstCallNotes?: string;
+  ssa721Filing?: SSA721Filing;
+  militaryHonors?: VAMilitaryHonorsData;
   notes: Array<{
     id: string;
     author: string;
@@ -386,16 +393,69 @@ export interface FirstCallIntakeFormData {
   callerAddress: string;
   hasRightToControl: boolean;
   
+  // Decedent Names
   decedentLegalName: string;
+  decedentFirstName?: string;
+  decedentMiddleName?: string;
+  decedentLastName?: string;
+  otherKnownNames?: string;
+  
   gender: 'male' | 'female' | 'other';
   dateOfBirth: string;
+  age?: number | string;
+  birthPlaceCityStateCountry?: string;
   dateOfDeath: string;
   isExpectedDeath: boolean;
+  ssn?: string;
   ssnLast4?: string;
-  maritalStatus?: 'married' | 'single' | 'widowed' | 'divorced';
+  maritalStatus?: 'married' | 'separated' | 'never_married' | 'widowed' | 'divorced' | 'single';
+  race?: string;
+  educationLevel?: string;
+  occupationTitle?: string;
+  typeOfBusiness?: string;
+  militaryStatus?: 'active' | 'veteran' | 'none';
+  militaryBranch?: string;
+  
+  // Parents & Spouse
   fatherName?: string;
   motherMaidenName?: string;
+  motherFirstAndMaidenName?: string;
+  spouseFirstAndMaidenName?: string;
+  spouseDateOfBirth?: string;
+  
+  // Residence & Death Location
   residenceAddress?: string;
+  residenceStreet?: string;
+  residenceApt?: string;
+  residenceCity?: string;
+  residenceState?: string;
+  residenceZip?: string;
+  placeOfDeathFacilityOrLocation?: string;
+  placeOfDeathCity?: string;
+  placeOfDeathStateOrCountry?: string;
+  
+  // Informant Extra Phones & Address Breakdown
+  informantPhoneHome?: string;
+  informantPhoneCell?: string;
+  informantPhoneAlt?: string;
+  informantAddressStreet?: string;
+  informantAddressApt?: string;
+  informantAddressCityStateCountry?: string;
+  informantAddressZip?: string;
+  
+  // Cemetery Deed & Previous Interment
+  deedOwnerName?: string;
+  deedOwnerAddress?: string;
+  previousIntermentWho?: string;
+  previousIntermentWhen?: string;
+  previousIntermentRelation?: string;
+  
+  // Verification
+  reviewedOrProvidedBy?: string;
+  verifiedOnDate?: string;
+  
+  // Full Vital Record Information Sheet (Pre-packaged if provided)
+  vitalRecordsSheet?: FullVitalRecordInformationSheet;
   
   // Removal Readiness Triage
   removalReadiness: RemovalReadinessStatus;
@@ -452,7 +512,81 @@ export type BackOfficeTab =
   | 'partners'
   | 'finances'
   | 'aftercare'
-  | 'manager';
+  | 'manager'
+  | 'preneed';
+
+export interface PreNeedTrustAccount {
+  id: string;
+  clientName: string;
+  purchaserName: string;
+  relationship: string;
+  clientDob: string;
+  clientSsnMasked: string;
+  phone: string;
+  email: string;
+  address: string;
+  trustType: 'irrevocable_medicaid' | 'revocable_standard';
+  escrowDepository: 'PrePlan (NYSFDA Trust)' | 'M&T Bank Escrow' | 'Flagstar / Signature Bank Escrow' | 'Amalgamated Bank NY';
+  accountNumber: string;
+  depositDate: string;
+  initialPrincipal: number;
+  accumulatedInterest: number;
+  adminFeeRate: number;
+  currentTotalBalance: number;
+  medicaidSpendDownCertified: boolean;
+  medicaidNoticeNumber?: string;
+  status: 'active_accumulating' | 'converted_at_need' | 'revoked_refunded';
+  selectedServices: {
+    dispositionType: DispositionType;
+    servicePackageName: string;
+    servicePackagePrice: number;
+    casketName?: string;
+    casketPrice?: number;
+    outerBurialVault?: string;
+    vaultPrice?: number;
+    cashAdvancesTotal: number;
+    totalContractPrice: number;
+  };
+  assignedDirector: string;
+  lastTaxYear1099Issued?: number;
+  notes?: string;
+  convertedCaseId?: string;
+  convertedAt?: string;
+}
+
+export interface InsuranceAssignmentClaim {
+  id: string;
+  caseId: string;
+  caseNumber: string;
+  decedentName: string;
+  carrierName: string;
+  policyNumber: string;
+  policyFaceValue: number;
+  fundingIntermediary: 'C&J Financial' | 'Express Funeral Funding' | 'Beta Capital';
+  beneficiaryName: string;
+  beneficiaryRelationship: string;
+  beneficiaryPhone: string;
+  beneficiaryEmail: string;
+  funeralHomeContractTotal: number;
+  factoringFeePercentage: number;
+  factoringFeeAmount: number;
+  wireProcessingFee: number;
+  netFuneralHomeWire: number;
+  familySurplusRefund: number;
+  claimStatus: 'draft' | 'submitted_for_verification' | 'carrier_in_review' | 'approved_wire_pending' | 'funds_cleared_in_bfh' | 'surplus_disbursed' | 'declined';
+  verificationChecklist: {
+    policyInForceVerified: boolean;
+    pastTwoYearContestability: boolean;
+    noCollateralAssignments: boolean;
+    beneficiariesConfirmed: boolean;
+    deathCertificateUploaded: boolean;
+    assignmentFormSigned: boolean;
+  };
+  signedAssignmentDate?: string;
+  wireDispatchedTimestamp?: string;
+  wireReferenceCode?: string;
+  notes?: string;
+}
 
 export type RoomId =
   | 'chapel_1'
@@ -1088,12 +1222,31 @@ export interface LovedOneBiographyInterview {
 
 export interface FloralArrangementItem {
   id: string;
-  type: 'casket_spray' | 'standing_spray' | 'heart_wreath' | 'church_basket' | 'boutonniere_corsage' | 'cross_wreath' | 'family_urn_surround' | 'wreath' | 'basket' | 'custom';
+  type: 
+    | 'casket_spray' 
+    | 'combo'
+    | 'standing_spray' 
+    | 'wreath' 
+    | 'heart' 
+    | 'cross' 
+    | 'basket' 
+    | 'urn_surround' 
+    | 'inside_casket' 
+    | 'boutonniere_corsage' 
+    | 'letter_tribute' 
+    | 'danielas' 
+    | 'heart_wreath' 
+    | 'church_basket' 
+    | 'cross_wreath' 
+    | 'family_urn_surround' 
+    | 'custom';
   code?: string;
   name?: string;
   size?: 'small' | 'medium' | 'large' | 'standard';
   ribbonText?: string;
   imageUrl?: string;
+  dimensions?: string;
+  floristPartner?: string;
   description: string;
   quantity: number;
   unitPrice: number;
@@ -1103,11 +1256,106 @@ export interface FloralArrangementItem {
 
 export interface CustomLiveryVehicleItem {
   id: string;
-  vehicleType: string; // e.g. "Cadillac Hearse", "7-Passenger Limousine", "Mercedes Sprinter 10-Pax", "Mercedes Sprinter 14-Pax", "Flower Car", "Lead Escort SUV"
+  vehicleType: string; // e.g. "Cadillac Hearse", "7-Passenger Limousine", "Mercedes Sprinter Van", "Lead Escort SUV", "Transfer/Utility Van"
   rateType: 'local_nyc' | 'calverton_long_distance' | 'custom';
+  escortType?: 'with_family' | 'without_family' | 'none'; // Notation: escorted with or without family
   count: number;
   unitPrice: number;
   totalAmount: number;
+}
+
+export interface FullVitalRecordInformationSheet {
+  // Page 1: Decedent Information
+  decedentFirstName?: string;
+  decedentMiddleName?: string;
+  decedentLastName?: string;
+  otherKnownNames?: string;
+  residenceStreet?: string;
+  residenceApt?: string;
+  residenceCity?: string;
+  residenceState?: string;
+  residenceZip?: string;
+  dateOfDeath?: string;
+  sex?: 'male' | 'female';
+  educationLevel?: string;
+  placeOfDeathFacilityOrLocation?: string;
+  placeOfDeathCity?: string;
+  placeOfDeathStateOrCountry?: string;
+  dateOfBirth?: string;
+  age?: number | string;
+  birthPlaceCityStateCountry?: string;
+  maritalStatus?: 'married' | 'separated' | 'never_married' | 'widowed' | 'divorced';
+  ssn?: string;
+  race?: string;
+  occupationTitle?: string;
+  typeOfBusiness?: string;
+  militaryBranch?: string;
+  militaryStatus?: 'active' | 'veteran' | 'none';
+  fatherName?: string;
+  motherFirstAndMaidenName?: string;
+  spouseFirstAndMaidenName?: string;
+  spouseDateOfBirth?: string;
+
+  // Informant (Legal Next of Kin)
+  informantName?: string;
+  informantRelationship?: string;
+  informantPhoneHome?: string;
+  informantPhoneCell?: string;
+  informantPhoneAlt?: string;
+  informantEmail?: string;
+  informantAddressStreet?: string;
+  informantAddressApt?: string;
+  informantAddressCityStateCountry?: string;
+  informantAddressZip?: string;
+
+  // Cemetery Deed & Previous Interment
+  deedOwnerName?: string;
+  deedOwnerAddress?: string;
+  previousIntermentWho?: string;
+  previousIntermentWhen?: string;
+  previousIntermentRelation?: string;
+
+  // Review & Verification
+  reviewedOrProvidedBy?: string;
+  verifiedOnDate?: string;
+
+  // Page 2: Authorizations
+  authPostObituaryWebsite?: boolean;
+  authLiveStreamService?: boolean;
+  authLiveStreamType?: 'public' | 'private';
+
+  // Section To Be Completed By Funeral Director
+  directorViewingDate?: string;
+  directorViewingTime?: string;
+  directorViewingPlace?: string;
+  directorWakeDate?: string;
+  directorWakeHoursFrom?: string;
+  directorWakeHoursTo?: string;
+  directorWakeLocation?: string;
+  directorFuneralDate?: string;
+  directorFuneralHour?: string;
+  directorFuneralLocation?: string;
+  directorFuneralAddress?: string;
+  directorDispositionDate?: string;
+  directorDispositionDueTime?: string;
+  directorDispositionMode?: 'burial' | 'cremation' | 'entombment';
+  directorCemeteryCrematory?: string;
+  directorCemeteryLocation?: string;
+  directorSection?: string;
+  directorPlot?: string;
+  directorRange?: string;
+  directorGraveNum?: string;
+  directorLot?: string;
+
+  // Additional Story Information
+  organizationsAssociations?: string;
+  favoriteColor?: string;
+  favoriteMusicType?: string;
+  interests?: string;
+  knownFor?: string;
+  favoriteQuote?: string;
+  proudestAccomplishment?: string;
+  historicalMilestoneWitnessed?: string;
 }
 
 export interface StationeryProgramMatrix {
@@ -1132,12 +1380,16 @@ export interface StatementOfGoodsSectionI {
   A_alternativeServicesAmount: number;
   directCremationOption?: 'customer_container' | 'alternative_container';
   directBurialOption?: 'customer_container' | 'alternative_container';
+  A_otherSpecify?: string;
+  A_otherAmount?: number;
 
   // B. Transfer of Remains
   B_transferOfRemainsAmount: number;
   B_excessMilesCount: number;
   B_excessMilesRate: number;
   B_excessMilesAmount: number;
+  B_otherSpecify?: string;
+  B_otherAmount?: number;
 
   // C. Preparation of Remains
   C1_embalmingAmount: number;
@@ -1154,9 +1406,13 @@ export interface StatementOfGoodsSectionI {
   C2_refrigerationAmount: number;
   C2_otherSpecify?: string;
   C2_otherAmount: number;
+  C_otherSpecify?: string;
+  C_otherAmount?: number;
 
   // D. Arrangements
   D_basicArrangementsAmount: number;
+  D_otherSpecify?: string;
+  D_otherAmount?: number;
 
   // E. Supervision
   E1_supervisionVisitationAmount: number;
@@ -1170,6 +1426,8 @@ export interface StatementOfGoodsSectionI {
   E3_consulateFilingFeeAmount: number;
   E3_otherSupervisionSpecify?: string;
   E3_otherSupervisionAmount: number;
+  E_otherSpecify?: string;
+  E_otherAmount?: number;
 
   // F. Use of Facilities
   F1_facilitiesVisitationAmount: number;
@@ -1179,10 +1437,16 @@ export interface StatementOfGoodsSectionI {
   F3_repastRoomAmount: number;
   F_combinedSupervisionAndFacilitiesSelected: boolean;
   F_combinedSupervisionAndFacilitiesAmount: number;
+  F_otherSpecify?: string;
+  F_otherAmount?: number;
+  F3_otherFacilitiesSpecify?: string;
+  F3_otherFacilitiesAmount?: number;
 
   // G. Livery
   G_vehicles: CustomLiveryVehicleItem[];
   G_totalLiveryAmount: number;
+  G_otherSpecify?: string;
+  G_otherAmount?: number;
 
   // H. Merchandise
   H1_casketSelected: boolean;
@@ -1204,6 +1468,9 @@ export interface StatementOfGoodsSectionI {
   H3_urnModelName: string;
   H3_urnMaterial: string;
   H3_urnAmount: number;
+
+  H_otherSpecify?: string;
+  H_otherAmount?: number;
 
   // I. Additional Services and Merchandise Selected
   I1_memorialCardsAmount: number;
@@ -1230,6 +1497,8 @@ export interface StatementOfGoodsSectionI {
 
   I8_registerBookAmount: number;
   I8_registerBookType?: string;
+  I8_registerBookQty?: number;
+  I8_registerBookUnitPrice?: number;
 
   I9_deathNoticesAmount: number;
   I9_deathNoticesPublications?: string;
@@ -1243,12 +1512,26 @@ export interface StatementOfGoodsSectionI {
   I12_casketEngravingAmount: number;
   I12_urnKeepsakeTransfersAmount: number;
   I12_equipmentSetupAmount: number;
+  I12_otherSpecify?: string;
+  I12_otherAmount?: number;
+  I12_other2Specify?: string;
+  I12_other2Amount?: number;
+  I12_other3Specify?: string;
+  I12_other3Amount?: number;
+  I_otherSpecify?: string;
+  I_otherAmount?: number;
+  I_other2Specify?: string;
+  I_other2Amount?: number;
+  I_other3Specify?: string;
+  I_other3Amount?: number;
 
   // J. Limited Services
   J1_forwardingRemainsAmount: number;
   J1_forwardingDestination?: string;
   J2_receivingRemainsAmount: number;
   J2_receivingOrigin?: string;
+  J_otherSpecify?: string;
+  J_otherAmount?: number;
 
   totalFuneralHomeCharges: number;
 }
@@ -1261,6 +1544,8 @@ export interface StatementOfGoodsSectionII {
   deathCertificateTranscriptsCount: number;
   deathCertificatePricePerCopy: number;
   deathCertificateTranscriptsAmount: number;
+  isVeteranDiscountApplied?: boolean;
+  freeVeteranTranscriptsCount?: number;
   liveryCashAdvanceAmount: number;
   pallbearersCount: number;
   pallbearersAmount: number;
@@ -1272,6 +1557,12 @@ export interface StatementOfGoodsSectionII {
   eVitalFilingFeeAmount: number;
   nycCorrectionFeeAmount: number;
   cateringReceptionAmount: number;
+  otherCashAdvanceSpecify?: string;
+  otherCashAdvanceAmount?: number;
+  otherCashAdvance2Specify?: string;
+  otherCashAdvance2Amount?: number;
+  otherCashAdvance3Specify?: string;
+  otherCashAdvance3Amount?: number;
   customCashAdvances: Array<{ id: string; description: string; amount: number }>;
   totalCashAdvances: number;
 }
@@ -1410,7 +1701,22 @@ export interface StatementOfGoodsData {
   serviceType: ServiceTypeAP47;
   purchaserName?: string;
   decedentName?: string;
+  isVeteran?: boolean;
   lovedOneBiography: LovedOneBiographyInterview;
+  vitalRecordsSheet?: FullVitalRecordInformationSheet;
+  dispositionSchedule?: {
+    sequence: 'same_day' | 'separate_day' | 'prior_to_service';
+    dateOfDisposition?: string;
+    dueTimeForDisposition?: string;
+    modeOfDisposition?: 'burial' | 'cremation' | 'entombment';
+    cemeteryOrCrematory?: string;
+    locationCityState?: string;
+    section?: string;
+    plot?: string;
+    range?: string;
+    graveNumber?: string;
+    lot?: string;
+  };
   sectionI: StatementOfGoodsSectionI;
   sectionII: StatementOfGoodsSectionII;
   sectionIII: StatementOfGoodsSectionIII;
@@ -1654,4 +1960,146 @@ export interface FamilyProofApprovalRecord {
   };
   pressJobTicketNumber?: string;
 }
+
+// -------------------------------------------------------------
+// 4. AUTOMATED GOVERNMENT FILINGS: SSA-721 STATEMENT OF DEATH
+// -------------------------------------------------------------
+
+export type SSA721Status = 'draft' | 'verified_ready' | 'transmitted' | 'acknowledged_cleared';
+
+export interface SSA721SurvivingChild {
+  name: string;
+  age: number;
+  isDisabled: boolean;
+  isStudent: boolean;
+}
+
+export interface SSA721Filing {
+  id: string;
+  caseId: string;
+  status: SSA721Status;
+  ombControlNumber: '0960-0142';
+  
+  // Section 1: Deceased Person's Information
+  decedentFullName: string;
+  ssnMasked: string;
+  ssnRaw?: string;
+  dateOfBirth: string;
+  dateOfDeath: string;
+  sex: 'Male' | 'Female';
+  
+  // Section 2: Surviving Widow / Widower
+  hasSurvivingSpouse: boolean;
+  spouseFullName?: string;
+  spouseSsnMasked?: string;
+  spouseDob?: string;
+  spousePhone?: string;
+  spouseAddress?: string;
+  livingTogetherAtDeath: boolean;
+  livingApartReason?: 'temporary_medical_facility' | 'marital_separation' | 'nursing_home' | 'other';
+  eligibleForLumpSumDeathPayment: boolean; // $255 LSDP
+  
+  // Section 3: Surviving Dependent Children
+  hasSurvivingDependentChildren: boolean;
+  survivingChildren?: SSA721SurvivingChild[];
+  
+  // Section 4: Funeral Establishment Certification
+  funeralHomeName: string;
+  funeralHomeAddress: string;
+  funeralHomePhone: string;
+  funeralHomeLicense: string;
+  certifyingDirector: string;
+  directorLicenseNumber: string;
+  dispositionType: string;
+  dispositionDate: string;
+  cemeteryOrCrematoryName: string;
+  cemeteryOrCrematoryLocation: string;
+  
+  // Transmission metadata & clearing
+  transmissionMethod: 'electronic_edrs_gateway' | 'district_office_direct' | 'certified_mail';
+  transmittedAt?: string;
+  transmissionBatchId?: string;
+  ssaConfirmationNumber?: string;
+  ssaFieldOffice?: string;
+  acknowledgedAt?: string;
+  notes?: string;
+}
+
+// -------------------------------------------------------------
+// 5. VA MILITARY HONORS & VETERANS MEMORIAL BENEFITS HUB
+// -------------------------------------------------------------
+
+export type MilitaryBranch =
+  | 'U.S. Army'
+  | 'U.S. Navy'
+  | 'U.S. Air Force'
+  | 'U.S. Marine Corps'
+  | 'U.S. Coast Guard'
+  | 'U.S. Space Force'
+  | 'Merchant Marine (WWII)';
+
+export type MilitaryDischargeType =
+  | 'honorable'
+  | 'general_under_honorable'
+  | 'other_than_honorable'
+  | 'bad_conduct'
+  | 'dishonorable';
+
+export type HonorGuardStatus = 'not_requested' | 'requested' | 'confirmed' | 'dispatched' | 'completed';
+
+export interface VAMilitaryHonorsData {
+  caseId: string;
+  isVeteran: boolean;
+  
+  // DD-214 Record Vault
+  dd214Verified: boolean;
+  dd214DocNumber?: string;
+  militaryBranch: MilitaryBranch;
+  serviceEra: 'WWII' | 'Korean War' | 'Vietnam Era' | 'Persian Gulf / Desert Storm' | 'OEF / OIF' | 'GWOT' | 'Peacetime';
+  highestRankAchieved: string;
+  serviceNumberOrSSN: string;
+  entryDate?: string;
+  separationDate?: string;
+  dischargeType: MilitaryDischargeType;
+  valorAwards?: string[];
+  
+  // VA Form 27-2008 (Burial Flag Application)
+  flagRequested: boolean;
+  flagIssuedByPostOffice?: string;
+  flagRecipientName?: string;
+  flagRecipientRelationship?: string;
+  
+  // Military Funeral Honors Detail (DoD Directive 1300.15)
+  honorGuardStatus: HonorGuardStatus;
+  honorGuardBranchDetail?: string;
+  honorGuardCoordinatorName?: string;
+  honorGuardCoordinatorPhone?: string;
+  honorGuardConfirmationCode?: string;
+  ceremonyDate?: string;
+  ceremonyTime?: string;
+  ceremonyLocation?: string;
+  detailType: '2_person_standard' | 'full_firing_party_7_person';
+  tapsType: 'live_bugler' | 'ceremonial_electronic_bugle';
+  flagFoldingRequested: boolean;
+  
+  // VA Form 40-1330 (Government Headstone / Marker / Medallion)
+  headstoneMarkerType: 'upright_marble' | 'flat_granite' | 'flat_bronze' | 'bronze_niche' | 'bronze_medallion';
+  emblemOfBelief: 'latin_cross' | 'star_of_david' | 'crescent_and_star' | 'buddhist_wheel' | 'none';
+  inscriptionLine1: string; // Name & Rank
+  inscriptionLine2: string; // Branch & War Era
+  inscriptionLine3: string; // Dates of Birth and Death
+  inscriptionLine4?: string; // Valor / Personal Inscription
+  
+  // National Cemetery Scheduling Administration (NCA)
+  nationalCemeterySelected?: 'Calverton National Cemetery' | 'Long Island National Cemetery' | 'Cypress Hills National Cemetery' | 'Private Cemetery with VA Medallion';
+  ncaConfirmationNumber?: string;
+  ncaSectionPlotNumber?: string;
+  spouseBurialReserved: boolean;
+  
+  // VA Form 21P-530EZ (Burial Allowance & Plot Allowance)
+  vaBurialAllowanceStatus: 'not_filed' | 'eligible_pending' | 'submitted' | 'approved';
+  estimatedReimbursementAmount: number;
+  presidentialMemorialCertificateRequested: boolean;
+}
+
 

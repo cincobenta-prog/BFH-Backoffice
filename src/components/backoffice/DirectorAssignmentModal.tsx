@@ -109,10 +109,10 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white border border-neutral-200 rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden font-sans">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl relative overflow-hidden font-sans">
         
         {/* Top Crimson Header Banner */}
-        <div className="p-5 sm:p-6 bg-gradient-to-r from-[#991b1b] via-[#831818] to-[#991b1b] text-white flex justify-between items-start shrink-0">
+        <div className="p-5 sm:p-6 bg-gradient-to-r from-[#800000] via-[#831818] to-[#800000] text-white flex justify-between items-start shrink-0">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-black/30 border border-amber-400/40 text-amber-300 text-[11px] font-mono font-bold">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -141,7 +141,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
               onClick={() => setActiveTab('select')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeTab === 'select'
-                  ? 'bg-white text-[#991b1b] shadow-xs border border-neutral-200'
+                  ? 'bg-white text-[#800000] shadow-xs border border-neutral-200'
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
@@ -153,7 +153,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
               onClick={() => setActiveTab('sms_simulator')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                 activeTab === 'sms_simulator'
-                  ? 'bg-white text-[#991b1b] shadow-xs border border-neutral-200'
+                  ? 'bg-white text-[#800000] shadow-xs border border-neutral-200'
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
@@ -183,7 +183,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                 <div className="space-y-1">
                   <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Venue Location</span>
                   <div className="flex items-center gap-1.5 font-semibold text-neutral-900">
-                    <MapPin className="w-3.5 h-3.5 text-[#991b1b]" />
+                    <MapPin className="w-3.5 h-3.5 text-[#800000]" />
                     <span>{assignment.venueName}</span>
                   </div>
                   <p className="text-[11px] text-neutral-500">{assignment.venueAddress}</p>
@@ -192,7 +192,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                 <div className="space-y-1">
                   <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">Attendance & Ceremony</span>
                   <div className="flex items-center gap-1.5 font-semibold text-neutral-900">
-                    <Users className="w-3.5 h-3.5 text-blue-700" />
+                    <Users className="w-3.5 h-3.5 text-brass-700" />
                     <span>~{assignment.estimatedAttendance} Guests Expected</span>
                   </div>
                   <p className="text-[11px] text-neutral-500">{assignment.vipProtocols?.join(' • ') || 'Standard Chapel Liturgy'}</p>
@@ -218,7 +218,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
               </div>
 
               {/* AI Staffing & Overtime Optimizer Card */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/90 space-y-2.5">
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-amber-50 border border-amber-200/90 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <div className="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-xs shadow-xs">
@@ -231,7 +231,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                   <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
                     assignment.costAnalysis.recommendedType === 'in_house'
                       ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                      : 'bg-blue-100 text-blue-800 border border-blue-300'
+                      : 'bg-brass-100 text-brass-800 border border-brass-300'
                   }`}>
                     {assignment.costAnalysis.recommendedType === 'in_house' ? '✅ Recommend In-House Staff' : '🤝 Recommend Outsourced Trade Guild'}
                   </span>
@@ -274,7 +274,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                       type="button"
                       onClick={() => setFilterType('all')}
                       className={`px-3 py-1 rounded-lg font-bold transition ${
-                        filterType === 'all' ? 'bg-[#991b1b] text-white shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
+                        filterType === 'all' ? 'bg-[#800000] text-white shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
                       }`}
                     >
                       All Available ({directors.length})
@@ -283,7 +283,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                       type="button"
                       onClick={() => setFilterType('in_house')}
                       className={`px-3 py-1 rounded-lg font-bold transition ${
-                        filterType === 'in_house' ? 'bg-[#991b1b] text-white shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
+                        filterType === 'in_house' ? 'bg-[#800000] text-white shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
                       }`}
                     >
                       In-House Staff ({directors.filter(d => d.type === 'in_house').length})
@@ -292,7 +292,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                       type="button"
                       onClick={() => setFilterType('outsourced')}
                       className={`px-3 py-1 rounded-lg font-bold transition ${
-                        filterType === 'outsourced' ? 'bg-[#991b1b] text-white shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
+                        filterType === 'outsourced' ? 'bg-[#800000] text-white shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
                       }`}
                     >
                       Independent Contractors ({directors.filter(d => d.type === 'outsourced').length})
@@ -311,7 +311,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                         onClick={() => setSelectedDirectorId(director.id)}
                         className={`p-4 rounded-2xl border cursor-pointer transition-all duration-200 relative text-xs flex flex-col justify-between ${
                           isSelected
-                            ? 'bg-red-50/60 border-[#991b1b] ring-2 ring-[#991b1b]/30 shadow-md'
+                            ? 'bg-red-50/60 border-[#800000] ring-2 ring-[#800000]/30 shadow-md'
                             : 'bg-white border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50/50 shadow-2xs'
                         }`}
                       >
@@ -323,10 +323,10 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                                 <h4 className="font-bold text-neutral-900 text-sm">{director.name}</h4>
                                 <span className={`text-[10px] font-bold px-2 py-0.2 rounded-full border ${
                                   director.isManager
-                                    ? 'bg-purple-50 text-purple-800 border-purple-200'
+                                    ? 'bg-brass-50 text-brass-800 border-brass-200'
                                     : isInHouse
                                     ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                                    : 'bg-blue-50 text-blue-800 border-blue-200'
+                                    : 'bg-brass-50 text-brass-800 border-brass-200'
                                 }`}>
                                   {director.isManager ? '👑 Managing Director & LFD' : isInHouse ? '👔 In-House LFD' : '🤝 Independent Contractor (Service Directing)'}
                                 </span>
@@ -344,7 +344,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                             <div className="flex items-center gap-3 text-[11px] bg-neutral-100/70 p-2 rounded-xl">
                               <div>
                                 <span className="text-neutral-400 block text-[9px]">Weekly Hours</span>
-                                <strong className={`font-mono ${director.weeklyHoursLogged! >= 38 ? 'text-[#991b1b]' : 'text-neutral-800'}`}>
+                                <strong className={`font-mono ${director.weeklyHoursLogged! >= 38 ? 'text-[#800000]' : 'text-neutral-800'}`}>
                                   {director.weeklyHoursLogged} / {director.weeklyHoursCap} hrs
                                 </strong>
                               </div>
@@ -356,7 +356,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                               <div className="h-6 w-px bg-neutral-200" />
                               <div>
                                 <span className="text-neutral-400 block text-[9px]">Overtime Risk</span>
-                                <strong className={`font-mono ${director.weeklyHoursLogged! >= 38 ? 'text-[#991b1b]' : 'text-emerald-700'}`}>
+                                <strong className={`font-mono ${director.weeklyHoursLogged! >= 38 ? 'text-[#800000]' : 'text-emerald-700'}`}>
                                   {director.weeklyHoursLogged! >= 38 ? 'High (Over 38h)' : 'Low ($0 Overtime)'}
                                 </strong>
                               </div>
@@ -393,7 +393,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                         {/* Selection Checkmark */}
                         <div className="mt-3 pt-2 border-t border-neutral-100 flex items-center justify-between text-[11px]">
                           <span className="text-neutral-500 font-mono">{director.phone}</span>
-                          <span className={`font-bold flex items-center gap-1 ${isSelected ? 'text-[#991b1b]' : 'text-neutral-400'}`}>
+                          <span className={`font-bold flex items-center gap-1 ${isSelected ? 'text-[#800000]' : 'text-neutral-400'}`}>
                             {isSelected ? '✓ Assigned Candidate' : 'Click to Select'}
                           </span>
                         </div>
@@ -414,7 +414,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                     value={callTime}
                     onChange={(e) => setCallTime(e.target.value)}
                     placeholder="e.g. 9:30 AM (90 mins prior to ceremony)"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none font-medium"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none font-medium"
                   />
                   <span className="text-[10px] text-neutral-400 mt-0.5 block">Standard protocol: 90 minutes before chapel service; 60 minutes for church.</span>
                 </div>
@@ -426,7 +426,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                   <select
                     value={attire}
                     onChange={(e) => setAttire(e.target.value as any)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none font-medium"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none font-medium"
                   >
                     <option value="BFH Formal Morning Coat">BFH Formal Morning Coat (Main Sanctuary / Civic)</option>
                     <option value="Dark Charcoal Suit">Dark Charcoal Suit with Black Tie (Standard Chapel)</option>
@@ -446,7 +446,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                   value={specialInstructions}
                   onChange={(e) => setSpecialInstructions(e.target.value)}
                   placeholder="e.g. Coordinate Navy honor guard arrival at 10:15 AM. Lead 3-limousine cortege down St. Nicholas Ave to Woodlawn Crematory."
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
             </>
@@ -480,7 +480,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                       >
                         <div className={`max-w-md rounded-2xl p-3 text-xs space-y-1 ${
                           isManager
-                            ? 'bg-[#991b1b] text-white rounded-tr-xs'
+                            ? 'bg-[#800000] text-white rounded-tr-xs'
                             : 'bg-neutral-800 text-neutral-100 rounded-tl-xs border border-neutral-700'
                         }`}>
                           <div className="flex items-center justify-between gap-2 text-[9px] opacity-70">
@@ -501,7 +501,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
                     <button
                       type="button"
                       onClick={handleSimulateDirectorAccept}
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-sm"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-sm"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5" />
                       <span>Simulate "ACCEPT" Reply</span>
@@ -550,7 +550,7 @@ export const DirectorAssignmentModal: React.FC<DirectorAssignmentModalProps> = (
               disabled={!selectedDirectorId}
               className={`font-bold text-xs px-5 py-2.5 rounded-xl flex items-center gap-2 transition shadow-sm ${
                 selectedDirectorId
-                  ? 'bg-[#991b1b] hover:bg-red-800 text-white border border-amber-400/40'
+                  ? 'bg-[#800000] hover:bg-[#6a0509] text-white border border-amber-400/40'
                   : 'bg-neutral-300 text-neutral-500 cursor-not-allowed'
               }`}
             >

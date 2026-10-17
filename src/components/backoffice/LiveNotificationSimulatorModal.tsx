@@ -302,12 +302,12 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
-      <div className="bg-white border border-neutral-200 rounded-3xl max-w-6xl w-full p-5 sm:p-7 space-y-5 shadow-2xl text-neutral-900 my-4 max-h-[92vh] flex flex-col">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-6xl w-full p-5 sm:p-7 space-y-5 shadow-2xl text-neutral-900 my-4 max-h-[92vh] flex flex-col">
         
         {/* Modal Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-neutral-200 pb-4 shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-[#991b1b] shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-[#800000] shadow-sm">
               <Smartphone className="w-5 h-5" />
             </div>
             <div>
@@ -353,7 +353,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                     setCustomBody(`Dear ${found.informant.fullName}, this is Director Jason Benta regarding ${found.decedent.legalName}.`);
                   }
                 }}
-                className="bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-1.5 text-xs font-bold text-neutral-900 focus:border-[#991b1b] outline-none"
+                className="bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-1.5 text-xs font-bold text-neutral-900 focus:border-[#800000] outline-none"
               >
                 {cases.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -368,7 +368,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
               className={`px-3 py-1.5 text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0 ${
                 activeTab === 'gateway_settings'
                   ? 'bg-[#7f1d1d] text-white ring-2 ring-amber-400'
-                  : 'bg-[#991b1b] hover:bg-[#7f1d1d] text-white'
+                  : 'bg-[#800000] hover:bg-[#7f1d1d] text-white'
               }`}
               title="Open Twilio Live SMS Cellular Gateway Configuration"
             >
@@ -427,7 +427,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
               {/* Dynamic Island / Bezel Top */}
               <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-black rounded-full z-20 flex items-center justify-center">
                 <div className="w-2.5 h-2.5 rounded-full bg-neutral-900 mr-2"></div>
-                <div className="w-2 h-2 rounded-full bg-[#991b1b]/40"></div>
+                <div className="w-2 h-2 rounded-full bg-[#800000]/40"></div>
               </div>
 
               {/* Screen Display Container */}
@@ -447,13 +447,13 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 {/* SMS Sender Header */}
                 <div className="bg-[#ffffff]/90 backdrop-blur-md px-4 py-2.5 border-b border-neutral-300 flex items-center justify-between shrink-0 shadow-xs">
                   <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-[#991b1b] text-white flex items-center justify-center font-serif font-bold text-xs shadow-xs">
+                    <div className="w-8 h-8 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif font-bold text-xs shadow-xs">
                       BFH
                     </div>
                     <div>
                       <div className="flex items-center space-x-1">
                         <span className="font-bold text-[11px] text-neutral-900">Benta's Care Alert</span>
-                        <ShieldCheck className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                        <ShieldCheck className="w-3.5 h-3.5 text-brass-600 shrink-0" />
                       </div>
                       <span className="text-[9px] text-neutral-500 font-mono">(212) 281-8850 • Verified</span>
                     </div>
@@ -498,7 +498,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                         {/* Incoming BFH Bubble */}
                         <div className="bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm border border-neutral-200/80 space-y-2">
                           <div className="flex items-center justify-between border-b border-neutral-100 pb-1">
-                            <span className="font-bold text-[10px] text-[#991b1b] flex items-center gap-1">
+                            <span className="font-bold text-[10px] text-[#800000] flex items-center gap-1">
                               <Sparkles className="w-3 h-3 text-[#d4af37]" />
                               {notif.title}
                             </span>
@@ -510,7 +510,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
 
                           {notif.actionButtonText && (
                             <div className="pt-1">
-                              <div className="w-full py-1.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-center font-bold text-[10px] flex items-center justify-center space-x-1 shadow-2xs border border-amber-300/30">
+                              <div className="w-full py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-lg text-center font-bold text-[10px] flex items-center justify-center space-x-1 shadow-2xs border border-amber-300/30">
                                 <span>{notif.actionButtonText}</span>
                                 <ExternalLink className="w-3 h-3 text-amber-300" />
                               </div>
@@ -522,7 +522,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                             <span className="text-[8px] text-neutral-400">
                               {notif.status === 'read' ? 'Read' : 'Delivered'}
                             </span>
-                            <CheckCheck className={`w-3 h-3 ${notif.status === 'read' ? 'text-blue-500' : 'text-neutral-400'}`} />
+                            <CheckCheck className={`w-3 h-3 ${notif.status === 'read' ? 'text-brass-500' : 'text-neutral-400'}`} />
                           </div>
                         </div>
                       </div>
@@ -532,13 +532,13 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   {/* Simulated Family Reply Bubble */}
                   {caseNotifications.length > 0 && (
                     <div className="flex justify-end pt-1">
-                      <div className="bg-[#007aff] text-white rounded-2xl rounded-tr-sm p-2.5 max-w-[85%] shadow-sm space-y-0.5">
+                      <div className="bg-[#9c7a30] text-white rounded-2xl rounded-tr-sm p-2.5 max-w-[85%] shadow-sm space-y-0.5">
                         <p className="text-[10px] leading-snug">
                           Thank you Director Benta. Our family truly appreciates your swift care and respect. We are tracking everything in the portal.
                         </p>
                         <div className="flex items-center justify-end space-x-1">
-                          <span className="text-[8px] text-blue-100">Delivered</span>
-                          <CheckCheck className="w-2.5 h-2.5 text-blue-200" />
+                          <span className="text-[8px] text-brass-100">Delivered</span>
+                          <CheckCheck className="w-2.5 h-2.5 text-brass-200" />
                         </div>
                       </div>
                     </div>
@@ -551,7 +551,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   <div className="flex-1 bg-neutral-100 border border-neutral-300 rounded-full px-3 py-1 text-[10px] text-neutral-400">
                     iMessage • Next of Kin
                   </div>
-                  <div className="w-6 h-6 rounded-full bg-[#007aff] text-white flex items-center justify-center shadow-xs">
+                  <div className="w-6 h-6 rounded-full bg-[#9c7a30] text-white flex items-center justify-center shadow-xs">
                     <Send className="w-3 h-3" />
                   </div>
                 </div>
@@ -573,8 +573,8 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
             <div className="p-4 bg-gradient-to-r from-red-50/70 via-white to-amber-50/50 rounded-2xl border border-red-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-bold text-[#991b1b] uppercase tracking-wider">Recipient Next of Kin</span>
-                  <span className="px-2 py-0.2 text-[9px] font-bold bg-[#991b1b] text-white rounded-full">
+                  <span className="text-xs font-bold text-[#800000] uppercase tracking-wider">Recipient Next of Kin</span>
+                  <span className="px-2 py-0.2 text-[9px] font-bold bg-[#800000] text-white rounded-full">
                     {currentCase.informant.relationship}
                   </span>
                 </div>
@@ -589,7 +589,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
               <div className="text-right sm:border-l sm:border-red-200 sm:pl-4 space-y-0.5">
                 <span className="text-[10px] text-neutral-500 block">Active Case</span>
                 <span className="font-bold text-xs text-neutral-900 block">{currentCase.decedent.legalName}</span>
-                <span className="text-[10px] text-[#991b1b] font-medium font-mono">{currentCase.caseNumber}</span>
+                <span className="text-[10px] text-[#800000] font-medium font-mono">{currentCase.caseNumber}</span>
               </div>
             </div>
 
@@ -599,7 +599,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 onClick={() => setActiveTab('quick_triggers')}
                 className={`pb-2.5 px-3 text-xs font-bold transition border-b-2 flex items-center space-x-1.5 ${
                   activeTab === 'quick_triggers'
-                    ? 'border-[#991b1b] text-[#991b1b]'
+                    ? 'border-[#800000] text-[#800000]'
                     : 'border-transparent text-neutral-500 hover:text-neutral-900'
                 }`}
               >
@@ -611,7 +611,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 onClick={() => setActiveTab('composer')}
                 className={`pb-2.5 px-3 text-xs font-bold transition border-b-2 flex items-center space-x-1.5 ${
                   activeTab === 'composer'
-                    ? 'border-[#991b1b] text-[#991b1b]'
+                    ? 'border-[#800000] text-[#800000]'
                     : 'border-transparent text-neutral-500 hover:text-neutral-900'
                 }`}
               >
@@ -623,7 +623,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 onClick={() => setActiveTab('audit_log')}
                 className={`pb-2.5 px-3 text-xs font-bold transition border-b-2 flex items-center space-x-1.5 ${
                   activeTab === 'audit_log'
-                    ? 'border-[#991b1b] text-[#991b1b]'
+                    ? 'border-[#800000] text-[#800000]'
                     : 'border-transparent text-neutral-500 hover:text-neutral-900'
                 }`}
               >
@@ -635,7 +635,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 onClick={() => setActiveTab('gateway_settings')}
                 className={`pb-2.5 px-3 text-xs font-bold transition border-b-2 flex items-center space-x-1.5 ${
                   activeTab === 'gateway_settings'
-                    ? 'border-[#991b1b] text-[#991b1b]'
+                    ? 'border-[#800000] text-[#800000]'
                     : 'border-transparent text-neutral-500 hover:text-neutral-900'
                 }`}
               >
@@ -664,10 +664,10 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <div className="w-7 h-7 rounded-lg bg-[#991b1b] text-amber-300 flex items-center justify-center font-bold text-xs">
+                        <div className="w-7 h-7 rounded-lg bg-[#800000] text-amber-300 flex items-center justify-center font-bold text-xs">
                           ✉️
                         </div>
-                        <span className="font-bold text-xs text-[#991b1b]">
+                        <span className="font-bold text-xs text-[#800000]">
                           Family Portal Access (Email + SMS)
                         </span>
                       </div>
@@ -691,7 +691,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                         <div className="w-7 h-7 rounded-lg bg-[#b45309] text-white flex items-center justify-center font-bold text-xs">
                           🎙️
                         </div>
-                        <span className="font-bold text-xs text-neutral-900 group-hover:text-[#991b1b]">
+                        <span className="font-bold text-xs text-neutral-900 group-hover:text-[#800000]">
                           Digital Tribute Friend Invite (SMS/Email)
                         </span>
                       </div>
@@ -711,14 +711,14 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                     className="p-3.5 bg-white hover:bg-red-50/40 border border-neutral-200 hover:border-red-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="w-7 h-7 rounded-lg bg-red-100/70 text-[#991b1b] flex items-center justify-center font-bold">
+                      <div className="w-7 h-7 rounded-lg bg-red-100/70 text-[#800000] flex items-center justify-center font-bold">
                         🌟
                       </div>
                       <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                         Immediate Comfort
                       </span>
                     </div>
-                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-[#991b1b]">
+                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-[#800000]">
                       1. Safe Arrival at BFH
                     </h5>
                     <p className="text-[11px] text-neutral-500 line-clamp-2">
@@ -752,17 +752,17 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   <button
                     onClick={() => handleDispatchPreset('service_schedule')}
                     disabled={isSending}
-                    className="p-3.5 bg-white hover:bg-blue-50/40 border border-neutral-200 hover:border-blue-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
+                    className="p-3.5 bg-white hover:bg-brass-50/40 border border-neutral-200 hover:border-brass-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="w-7 h-7 rounded-lg bg-blue-100/70 text-blue-900 flex items-center justify-center font-bold">
-                        <Calendar className="w-4 h-4 text-blue-800" />
+                      <div className="w-7 h-7 rounded-lg bg-brass-100/70 text-brass-900 flex items-center justify-center font-bold">
+                        <Calendar className="w-4 h-4 text-brass-800" />
                       </div>
-                      <span className="text-[10px] text-blue-800 font-bold bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                      <span className="text-[10px] text-brass-800 font-bold bg-brass-50 px-2 py-0.5 rounded-full border border-brass-200">
                         4K HD Livestream
                       </span>
                     </div>
-                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-blue-800">
+                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-brass-800">
                       3. Service Schedule & Stream URL
                     </h5>
                     <p className="text-[11px] text-neutral-500 line-clamp-2">
@@ -774,17 +774,17 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   <button
                     onClick={() => handleDispatchPreset('woodlawn_departure')}
                     disabled={isSending}
-                    className="p-3.5 bg-white hover:bg-purple-50/40 border border-neutral-200 hover:border-purple-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
+                    className="p-3.5 bg-white hover:bg-brass-50/40 border border-neutral-200 hover:border-brass-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="w-7 h-7 rounded-lg bg-purple-100/70 text-purple-900 flex items-center justify-center font-bold">
-                        <Truck className="w-4 h-4 text-purple-800" />
+                      <div className="w-7 h-7 rounded-lg bg-brass-100/70 text-brass-900 flex items-center justify-center font-bold">
+                        <Truck className="w-4 h-4 text-brass-800" />
                       </div>
-                      <span className="text-[10px] text-purple-800 font-bold bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                      <span className="text-[10px] text-brass-800 font-bold bg-brass-50 px-2 py-0.5 rounded-full border border-brass-200">
                         Logistics Escort
                       </span>
                     </div>
-                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-purple-800">
+                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-brass-800">
                       4. Woodlawn Crematory Departure
                     </h5>
                     <p className="text-[11px] text-neutral-500 line-clamp-2">
@@ -818,17 +818,17 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   <button
                     onClick={() => handleDispatchPreset('aftercare_checkin')}
                     disabled={isSending}
-                    className="p-3.5 bg-white hover:bg-rose-50/40 border border-neutral-200 hover:border-rose-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
+                    className="p-3.5 bg-white hover:bg-red-50/40 border border-neutral-200 hover:border-red-300 rounded-xl text-left transition space-y-1.5 shadow-2xs group"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="w-7 h-7 rounded-lg bg-rose-100/70 text-rose-900 flex items-center justify-center font-bold">
-                        <HeartHandshake className="w-4 h-4 text-rose-800" />
+                      <div className="w-7 h-7 rounded-lg bg-red-100/70 text-red-900 flex items-center justify-center font-bold">
+                        <HeartHandshake className="w-4 h-4 text-red-800" />
                       </div>
-                      <span className="text-[10px] text-rose-800 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                      <span className="text-[10px] text-red-800 font-bold bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
                         Grief & Nurture
                       </span>
                     </div>
-                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-rose-800">
+                    <h5 className="font-bold text-xs text-neutral-900 group-hover:text-red-800">
                       6. Day 7 / 30 Grief Support Check-in
                     </h5>
                     <p className="text-[11px] text-neutral-500 line-clamp-2">
@@ -852,7 +852,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                       required
                       value={customTitle}
                       onChange={(e) => setCustomTitle(e.target.value)}
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                     />
                   </div>
 
@@ -863,7 +863,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                       value={customActionBtnText}
                       onChange={(e) => setCustomActionBtnText(e.target.value)}
                       placeholder="e.g. Open Family Portal"
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                     />
                   </div>
                 </div>
@@ -916,7 +916,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                     required
                     value={customBody}
                     onChange={(e) => setCustomBody(e.target.value)}
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl p-3 text-neutral-900 focus:border-[#991b1b] outline-none leading-relaxed"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl p-3 text-neutral-900 focus:border-[#800000] outline-none leading-relaxed"
                   />
                 </div>
 
@@ -925,7 +925,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   <button
                     type="submit"
                     disabled={isSending}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-sm border border-amber-300/40 flex items-center space-x-1.5"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-sm border border-amber-300/40 flex items-center space-x-1.5"
                   >
                     {isSending ? (
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -950,7 +950,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   </div>
                   <button
                     onClick={() => setActiveTab('gateway_settings')}
-                    className="px-3 py-1.5 bg-[#991b1b] hover:bg-[#7f1d1d] text-white text-xs font-bold rounded-lg shrink-0 shadow-xs flex items-center gap-1 cursor-pointer transition"
+                    className="px-3 py-1.5 bg-[#800000] hover:bg-[#7f1d1d] text-white text-xs font-bold rounded-lg shrink-0 shadow-xs flex items-center gap-1 cursor-pointer transition"
                   >
                     <Key className="w-3 h-3 text-amber-300" />
                     <span>Configure Twilio Settings</span>
@@ -1032,14 +1032,14 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                 <form onSubmit={handleSaveInlineGateway} className="bg-[#f8fafc] border border-neutral-300 rounded-2xl p-4 space-y-3.5">
                   <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                     <span className="font-bold text-neutral-800 text-xs flex items-center gap-1.5">
-                      <Key className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <Key className="w-3.5 h-3.5 text-[#800000]" />
                       Twilio API Credentials &amp; Sender Phone
                     </span>
                     <a
                       href="https://console.twilio.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[11px] text-[#991b1b] hover:underline flex items-center gap-1 font-medium"
+                      className="text-[11px] text-[#800000] hover:underline flex items-center gap-1 font-medium"
                     >
                       <span>Get keys at Twilio Console</span>
                       <ExternalLink className="w-3 h-3" />
@@ -1057,7 +1057,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                         value={gatewaySid}
                         onChange={(e) => setGatewaySid(e.target.value)}
                         placeholder="e.g. ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#991b1b] outline-none shadow-xs"
+                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
                       />
                     </div>
 
@@ -1071,7 +1071,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                         value={gatewayAuthToken}
                         onChange={(e) => setGatewayAuthToken(e.target.value)}
                         placeholder="e.g. 32-character authentication token"
-                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#991b1b] outline-none shadow-xs"
+                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
                       />
                     </div>
 
@@ -1085,7 +1085,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                         value={gatewayFromNumber}
                         onChange={(e) => setGatewayFromNumber(e.target.value)}
                         placeholder="+12122818850 or MGxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#991b1b] outline-none shadow-xs"
+                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
                       />
                       <p className="text-[10px] text-neutral-500 mt-1">
                         Use full international format starting with +1 (e.g. +12122818850 for Benta's Funeral Home Harlem dispatch line).
@@ -1096,7 +1096,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                   <div className="flex justify-end pt-1">
                     <button
                       type="submit"
-                      className="px-5 py-2.5 bg-[#991b1b] hover:bg-[#7f1d1d] text-white font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                      className="px-5 py-2.5 bg-[#800000] hover:bg-[#7f1d1d] text-white font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5 cursor-pointer"
                     >
                       <ShieldCheck className="w-4 h-4 text-amber-300" />
                       <span>Save &amp; Activate Twilio Gateway</span>
@@ -1120,7 +1120,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                       value={gatewayTestPhone}
                       onChange={(e) => setGatewayTestPhone(e.target.value)}
                       placeholder="e.g. (917) 807-3995 or +19178073995"
-                      className="flex-1 bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs text-neutral-900 font-mono outline-none focus:border-[#991b1b]"
+                      className="flex-1 bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs text-neutral-900 font-mono outline-none focus:border-[#800000]"
                     />
                     <button
                       type="button"

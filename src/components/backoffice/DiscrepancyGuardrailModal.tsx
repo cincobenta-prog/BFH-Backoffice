@@ -209,7 +209,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
-      <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden flex flex-col max-h-[92vh]">
 
         {/* TOP MODAL HEADER */}
         <div className="bg-gradient-to-r from-neutral-900 via-red-950 to-neutral-900 text-white p-5 px-6 flex items-center justify-between border-b border-red-800/40 shrink-0">
@@ -300,7 +300,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
 
           {/* Gauge 2: NYS PHL § 4201 Status */}
           <div className="flex items-center space-x-3 bg-white p-3 rounded-2xl border border-neutral-200/80 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-brass-50 text-brass-700 border border-brass-200 flex items-center justify-center shrink-0">
               <Scale className="w-5 h-5" />
             </div>
             <div className="overflow-hidden">
@@ -330,7 +330,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
 
           {/* Gauge 4: Last Audit Time */}
           <div className="flex items-center space-x-3 bg-white p-3 rounded-2xl border border-neutral-200/80 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-brass-50 text-brass-700 border border-brass-200 flex items-center justify-center shrink-0">
               <FileCheck2 className="w-5 h-5" />
             </div>
             <div>
@@ -352,14 +352,14 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
               onClick={() => setActiveTab('audit')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                 activeTab === 'audit'
-                  ? 'bg-red-50 text-[#991b1b] border border-red-200 shadow-2xs'
+                  ? 'bg-brass-50 text-[#800000] border border-brass-200 shadow-2xs'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
               }`}
             >
               <AlertTriangle className="w-3.5 h-3.5" />
               <span>Discrepancy Resolution Matrix</span>
               {activeCount > 0 && (
-                <span className="px-1.5 py-0.2 bg-[#991b1b] text-white rounded-full text-[10px] font-mono font-bold">
+                <span className="px-1.5 py-0.2 bg-[#800000] text-white rounded-full text-[10px] font-mono font-bold">
                   {activeCount}
                 </span>
               )}
@@ -369,7 +369,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
               onClick={() => setActiveTab('phl4201')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                 activeTab === 'phl4201'
-                  ? 'bg-purple-50 text-purple-900 border border-purple-200 shadow-2xs'
+                  ? 'bg-brass-50 text-brass-900 border border-brass-200 shadow-2xs'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
               }`}
             >
@@ -381,7 +381,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
               onClick={() => setActiveTab('sync_hub')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                 activeTab === 'sync_hub'
-                  ? 'bg-blue-50 text-blue-900 border border-blue-200 shadow-2xs'
+                  ? 'bg-brass-50 text-brass-900 border border-brass-200 shadow-2xs'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
               }`}
             >
@@ -415,7 +415,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
           {activeTab === 'audit' && (
             <div className="space-y-4">
               {filteredItems.length === 0 ? (
-                <div className="bg-white p-12 text-center rounded-3xl border border-emerald-200 shadow-sm space-y-3">
+                <div className="bg-white p-12 text-center rounded-2xl border border-emerald-200 shadow-sm space-y-3">
                   <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-200">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
@@ -440,7 +440,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                         isRectified
                           ? 'bg-emerald-50/40 border-emerald-200 opacity-80'
                           : isException
-                            ? 'bg-purple-50/40 border-purple-200'
+                            ? 'bg-brass-50/40 border-brass-200'
                             : isCritical
                               ? 'bg-red-50/70 border-red-300 ring-2 ring-red-500/10'
                               : isWarning
@@ -457,7 +457,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                               isRectified
                                 ? 'bg-emerald-100 text-emerald-800'
                                 : isException
-                                  ? 'bg-purple-100 text-purple-800'
+                                  ? 'bg-brass-100 text-brass-800'
                                   : isCritical
                                     ? 'bg-red-600 text-white'
                                     : isWarning
@@ -482,7 +482,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                               <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider block">
                                 🌟 Authoritative Golden Record:
                               </span>
-                              <p className="font-mono font-bold text-[#991b1b] bg-red-50/60 p-1.5 rounded border border-red-200">
+                              <p className="font-mono font-bold text-[#800000] bg-red-50/60 p-1.5 rounded border border-red-200">
                                 {item.goldenRecordValue}
                               </p>
                             </div>
@@ -498,8 +498,8 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                           </div>
 
                           {/* Legal & Statutory Impact Note */}
-                          <div className="bg-[#141b2b]/5 p-2.5 rounded-xl border border-neutral-200/80 text-[11px] text-neutral-700 flex items-start space-x-2">
-                            <Scale className="w-4 h-4 text-[#991b1b] shrink-0 mt-0.5" />
+                          <div className="bg-[#1c1a1a]/5 p-2.5 rounded-xl border border-neutral-200/80 text-[11px] text-neutral-700 flex items-start space-x-2">
+                            <Scale className="w-4 h-4 text-[#800000] shrink-0 mt-0.5" />
                             <div>
                               <span className="font-bold text-neutral-900">Statutory Risk: </span>
                               <span>{item.statutoryImpact}</span>
@@ -507,7 +507,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                           </div>
 
                           {item.exceptionNote && (
-                            <div className="bg-purple-50 p-2 rounded-xl border border-purple-200 text-xs text-purple-900 font-medium">
+                            <div className="bg-brass-50 p-2 rounded-xl border border-brass-200 text-xs text-brass-900 font-medium">
                               <strong>Director Override Note:</strong> {item.exceptionNote}
                             </div>
                           )}
@@ -529,14 +529,14 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                                 onClick={() => setShowExceptionModalForId(item.id)}
                                 className="w-full sm:w-auto px-3 py-1.5 bg-white hover:bg-neutral-100 text-neutral-700 border border-neutral-300 font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1"
                               >
-                                <Scale className="w-3.5 h-3.5 text-purple-700" />
+                                <Scale className="w-3.5 h-3.5 text-brass-700" />
                                 <span>Director Exception</span>
                               </button>
 
                               {item.category === 'edrs_vitals' && onOpenEdrsRapidFill && (
                                 <button
                                   onClick={onOpenEdrsRapidFill}
-                                  className="w-full sm:w-auto text-[11px] text-[#991b1b] hover:underline font-bold"
+                                  className="w-full sm:w-auto text-[11px] text-[#800000] hover:underline font-bold"
                                 >
                                   Open EDRS RapidFill ➔
                                 </button>
@@ -569,10 +569,10 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
 
           {/* TAB 2: NYS PHL § 4201 STATUTORY HIERARCHY TREE */}
           {activeTab === 'phl4201' && (
-            <div className="bg-white p-6 rounded-3xl border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-6">
               <div>
                 <div className="flex items-center space-x-2">
-                  <Scale className="w-5 h-5 text-purple-700" />
+                  <Scale className="w-5 h-5 text-brass-700" />
                   <h3 className="font-serif-title text-xl font-bold text-neutral-900">
                     NYS Public Health Law § 4201 Statutory Right of Disposition
                   </h3>
@@ -600,7 +600,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                       key={tierItem.tier}
                       className={`p-4 rounded-2xl border transition ${
                         isCurrentInformantTier
-                          ? 'bg-purple-50/80 border-purple-400 ring-2 ring-purple-500/20 shadow-sm'
+                          ? 'bg-brass-50/80 border-brass-400 ring-2 ring-brass-500/20 shadow-sm'
                           : 'bg-neutral-50/60 border-neutral-200'
                       }`}
                     >
@@ -609,7 +609,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                           <div className="flex items-center space-x-2">
                             <span className={`w-6 h-6 rounded-full flex items-center justify-center font-mono font-bold text-xs ${
                               isCurrentInformantTier
-                                ? 'bg-purple-700 text-white'
+                                ? 'bg-brass-700 text-white'
                                 : 'bg-neutral-200 text-neutral-700'
                             }`}>
                               {tierItem.tier}
@@ -618,7 +618,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                               Tier {tierItem.tier}: {tierItem.title}
                             </h4>
                             {isCurrentInformantTier && (
-                              <span className="bg-purple-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                              <span className="bg-brass-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                                 👉 ACTIVE INFORMANT MATCH ({caseData.informant.fullName})
                               </span>
                             )}
@@ -626,7 +626,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                           <p className="text-xs text-neutral-600 font-light pl-8">
                             {tierItem.desc}
                           </p>
-                          <p className="text-[11px] text-purple-950 font-medium pl-8">
+                          <p className="text-[11px] text-brass-950 font-medium pl-8">
                             <strong>Statutory Verification:</strong> {tierItem.requiredDocs}
                           </p>
                         </div>
@@ -649,7 +649,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
 
           {/* TAB 3: 1-CLICK MASTER SYNCHRONIZATION HUB */}
           {activeTab === 'sync_hub' && (
-            <div className="bg-white p-6 rounded-3xl border border-neutral-200 shadow-sm space-y-6">
+            <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-6">
               <div>
                 <h3 className="font-serif-title text-xl font-bold text-neutral-900">
                   Golden Record Downstream Broadcast & Sync Hub
@@ -665,7 +665,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                 <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-xs text-neutral-900">NYC DOHMH EDRS eVital</span>
-                    <span className="text-[10px] font-mono bg-blue-100 text-blue-800 px-2 py-0.5 rounded">eVital 2.0</span>
+                    <span className="text-[10px] font-mono bg-brass-100 text-brass-800 px-2 py-0.5 rounded">eVital 2.0</span>
                   </div>
                   <p className="text-[11px] text-neutral-600">
                     Syncs Legal Name, SSN, DOD, DOB, Mother's Maiden Name, Father's Name, and Marital Status.
@@ -675,7 +675,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                       handleRefreshAudit();
                       setSyncToast('Propagated Golden Record vitals to EDRS rapid fill worksheet.');
                     }}
-                    className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition"
+                    className="w-full py-2 bg-brass-600 hover:bg-brass-700 text-white font-bold text-xs rounded-xl transition"
                   >
                     Sync to EDRS ➔
                   </button>
@@ -695,7 +695,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                       handleRefreshAudit();
                       setSyncToast('Propagated Golden Record to Form AP-47 contract items.');
                     }}
-                    className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition"
+                    className="w-full py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl transition"
                   >
                     Sync to AP-47 Contract ➔
                   </button>
@@ -705,7 +705,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                 <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-xs text-neutral-900">Cemetery / Woodlawn Dispatch</span>
-                    <span className="text-[10px] font-mono bg-red-100 text-[#991b1b] px-2 py-0.5 rounded">Interment Order</span>
+                    <span className="text-[10px] font-mono bg-red-100 text-[#800000] px-2 py-0.5 rounded">Interment Order</span>
                   </div>
                   <p className="text-[11px] text-neutral-600">
                     Syncs Full Middle Name, Informant Next of Kin priority, and Cremation Authorization permits.
@@ -715,7 +715,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                       handleRefreshAudit();
                       setSyncToast('Propagated Golden Record to Cemetery & Crematory order packet.');
                     }}
-                    className="w-full py-2 bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs rounded-xl transition"
+                    className="w-full py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl transition"
                   >
                     Sync to Cemetery Order ➔
                   </button>
@@ -760,7 +760,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
             <div className="bg-white max-w-lg w-full rounded-2xl p-6 space-y-4 border border-neutral-300 shadow-2xl">
               <div className="flex items-center justify-between">
                 <h4 className="font-serif-title font-bold text-base text-neutral-900 flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-purple-700" />
+                  <Scale className="w-4 h-4 text-brass-700" />
                   <span>Licensed Funeral Director Exception Override</span>
                 </h4>
                 <button onClick={() => setShowExceptionModalForId(null)} className="text-neutral-400 hover:text-neutral-700">✕</button>
@@ -779,7 +779,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                   value={exceptionNoteInput[showExceptionModalForId] || ''}
                   onChange={(e) => setExceptionNoteInput({ ...exceptionNoteInput, [showExceptionModalForId]: e.target.value })}
                   placeholder="e.g. Informant confirmed decedent never used middle name legally; birth certificate inspected and verified."
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs outline-none focus:border-[#800000]"
                 />
               </div>
 
@@ -792,7 +792,7 @@ export const DiscrepancyGuardrailModal: React.FC<DiscrepancyGuardrailModalProps>
                 </button>
                 <button
                   onClick={() => handleApproveException(showExceptionModalForId)}
-                  className="px-4 py-1.5 bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs rounded-xl"
+                  className="px-4 py-1.5 bg-brass-700 hover:bg-brass-800 text-white font-bold text-xs rounded-xl"
                 >
                   Sign & Log Director Exception
                 </button>

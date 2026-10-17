@@ -6,6 +6,7 @@ import {
   DirectorProfile
 } from '../../lib/types/funeral';
 import { FACILITY_ROOMS, INITIAL_DIRECTOR_PROFILES } from '../../lib/data/mockCases';
+import { FrontOfficeLobbyKioskModal } from './FrontOfficeLobbyKioskModal';
 import { 
   Calendar as CalendarIcon, 
   Clock, 
@@ -18,15 +19,16 @@ import {
   AlertCircle, 
   Flame, 
   User, 
-  Sparkles,
-  X,
-  FileText,
-  CalendarDays,
-  CalendarRange,
-  LayoutGrid,
-  List,
-  Check,
-  UserCheck
+  Sparkles, 
+  Tv, 
+  X, 
+  FileText, 
+  CalendarDays, 
+  CalendarRange, 
+  LayoutGrid, 
+  List, 
+  Check, 
+  UserCheck 
 } from 'lucide-react';
 
 interface FacilityCalendarViewProps {
@@ -59,6 +61,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
   
   // Modals & Detail Popups
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isLobbyKioskOpen, setIsLobbyKioskOpen] = useState(false);
   const [selectedEventDetail, setSelectedEventDetail] = useState<RoomScheduleEvent | null>(null);
 
   // New Booking Form State
@@ -95,11 +98,11 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
     if (foundByName?.colorTheme) return foundByName.colorTheme;
     return {
       name: 'Crimson Wine',
-      primary: '#991b1b',
+      primary: '#800000',
       badgeBg: 'bg-red-100 text-red-900 border-red-300',
       calendarBg: 'bg-red-50/95 border-l-4 border-red-600 shadow-xs',
       border: 'border-red-500',
-      text: 'text-[#991b1b]'
+      text: 'text-[#800000]'
     };
   };
 
@@ -311,7 +314,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             <h2 className="font-serif-title text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
               Facility & Room Availability Calendar
             </h2>
-            <span className="bg-red-50 text-[#991b1b] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1">
+            <span className="bg-red-50 text-[#800000] text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 flex items-center gap-1">
               <MapPin className="w-3 h-3" />
               630 Saint Nicholas Ave
             </span>
@@ -330,11 +333,11 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               onClick={() => setTimeframe('day')}
               className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                 timeframe === 'day'
-                  ? 'bg-white text-[#991b1b] shadow-sm ring-1 ring-neutral-200'
+                  ? 'bg-white text-[#800000] shadow-sm ring-1 ring-neutral-200'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200/60'
               }`}
             >
-              <CalendarIcon className="w-3.5 h-3.5 text-[#991b1b]" />
+              <CalendarIcon className="w-3.5 h-3.5 text-[#800000]" />
               <span>Daily</span>
             </button>
 
@@ -342,11 +345,11 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               onClick={() => setTimeframe('week')}
               className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                 timeframe === 'week'
-                  ? 'bg-white text-[#991b1b] shadow-sm ring-1 ring-neutral-200'
+                  ? 'bg-white text-[#800000] shadow-sm ring-1 ring-neutral-200'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200/60'
               }`}
             >
-              <CalendarRange className="w-3.5 h-3.5 text-[#991b1b]" />
+              <CalendarRange className="w-3.5 h-3.5 text-[#800000]" />
               <span>Weekly</span>
             </button>
 
@@ -354,14 +357,25 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               onClick={() => setTimeframe('month')}
               className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
                 timeframe === 'month'
-                  ? 'bg-white text-[#991b1b] shadow-sm ring-1 ring-neutral-200'
+                  ? 'bg-white text-[#800000] shadow-sm ring-1 ring-neutral-200'
                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200/60'
               }`}
             >
-              <CalendarDays className="w-3.5 h-3.5 text-[#991b1b]" />
+              <CalendarDays className="w-3.5 h-3.5 text-[#800000]" />
               <span>Monthly</span>
             </button>
           </div>
+
+          {/* Front Office TV Screen / Lobby Kiosk HUD Button */}
+          <button
+            onClick={() => setIsLobbyKioskOpen(true)}
+            className="bg-neutral-900 hover:bg-neutral-800 text-amber-300 font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-2 transition shadow-sm border border-amber-400/40 group hover:shadow-md"
+            title="Launch Fullscreen Front Office Lobby Calendar Screen & TV Kiosk HUD"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
+            <Tv className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+            <span>Lobby TV Screen HUD</span>
+          </button>
 
           {/* New Booking Button */}
           <button
@@ -369,7 +383,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               setBookingDate(selectedDate);
               setIsBookingModalOpen(true);
             }}
-            className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-300/40"
+            className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-300/40"
           >
             <Plus className="w-4 h-4 text-amber-300" />
             <span>Book Room / Schedule Service</span>
@@ -406,7 +420,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
           </div>
 
           <div className="flex items-center space-x-2 font-bold text-sm sm:text-base text-neutral-900 font-serif-title">
-            <CalendarIcon className="w-4 h-4 text-[#991b1b]" />
+            <CalendarIcon className="w-4 h-4 text-[#800000]" />
             <span>{getHeaderDateTitle()}</span>
           </div>
 
@@ -414,7 +428,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="bg-neutral-50 border border-neutral-300 rounded-lg px-2.5 py-1 text-xs text-neutral-700 outline-none focus:border-[#991b1b]"
+            className="bg-neutral-50 border border-neutral-300 rounded-lg px-2.5 py-1 text-xs text-neutral-700 outline-none focus:border-[#800000]"
           />
         </div>
 
@@ -425,7 +439,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               onClick={() => setDailyMode('matrix')}
               className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-bold transition ${
                 dailyMode === 'matrix'
-                  ? 'bg-white text-[#991b1b] shadow-xs'
+                  ? 'bg-white text-[#800000] shadow-xs'
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
@@ -436,7 +450,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               onClick={() => setDailyMode('timeline')}
               className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-bold transition ${
                 dailyMode === 'timeline'
-                  ? 'bg-white text-[#991b1b] shadow-xs'
+                  ? 'bg-white text-[#800000] shadow-xs'
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
@@ -447,7 +461,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               onClick={() => setDailyMode('agenda')}
               className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-bold transition ${
                 dailyMode === 'agenda'
-                  ? 'bg-white text-[#991b1b] shadow-xs'
+                  ? 'bg-white text-[#800000] shadow-xs'
                   : 'text-neutral-600 hover:text-neutral-900'
               }`}
             >
@@ -463,7 +477,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             onClick={() => { setSelectedCategory('all'); setSelectedRoomFilter('all'); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
               selectedCategory === 'all' && selectedRoomFilter === 'all'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -473,7 +487,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             onClick={() => { setSelectedCategory('chapel'); setSelectedRoomFilter('all'); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
               selectedCategory === 'chapel'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -483,7 +497,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             onClick={() => { setSelectedCategory('repast'); setSelectedRoomFilter('all'); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
               selectedCategory === 'repast'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -493,7 +507,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             onClick={() => { setSelectedCategory('suite'); setSelectedRoomFilter('all'); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
               selectedCategory === 'suite'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -503,7 +517,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             onClick={() => { setSelectedCategory('parlor'); setSelectedRoomFilter('all'); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
               selectedCategory === 'parlor'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -513,7 +527,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
             onClick={() => { setSelectedCategory('offsite'); setSelectedRoomFilter('all'); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition ${
               selectedCategory === 'offsite'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -547,7 +561,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
       <div className="bg-white p-3.5 rounded-2xl border border-neutral-200 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center space-x-2">
           <span className="font-bold text-neutral-800 text-xs flex items-center gap-1.5">
-            <UserCheck className="w-4 h-4 text-[#991b1b]" />
+            <UserCheck className="w-4 h-4 text-[#800000]" />
             <span>Director Color Board:</span>
           </span>
           <button
@@ -575,7 +589,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     : 'hover:opacity-90'
                 } ${d.colorTheme?.badgeBg || 'bg-neutral-100'}`}
               >
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.colorTheme?.primary || '#991b1b' }} />
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: d.colorTheme?.primary || '#800000' }} />
                 <span>{d.name.split(' ')[0]} ({d.colorTheme?.name})</span>
               </button>
             );
@@ -607,7 +621,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                           {room.code}
                         </span>
                         <span className="text-[11px] font-bold flex items-center gap-1 bg-white/90 px-2 py-0.5 rounded-full shadow-2xs">
-                          <Users className="w-3 h-3 text-[#991b1b]" />
+                          <Users className="w-3 h-3 text-[#800000]" />
                           <span>{room.capacity} Guests</span>
                         </span>
                       </div>
@@ -630,8 +644,8 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     <div className="px-4 py-2 bg-neutral-50 border-b border-neutral-100 flex items-center justify-between text-[11px]">
                       <span className="text-neutral-500 font-medium">Daily Status:</span>
                       {isOccupied ? (
-                        <span className="text-[#991b1b] font-bold flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-[#991b1b] animate-pulse" />
+                        <span className="text-[#800000] font-bold flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-[#800000] animate-pulse" />
                           {roomEvents.length} Service{roomEvents.length > 1 ? 's' : ''} Booked
                         </span>
                       ) : (
@@ -653,7 +667,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                               setBookingDate(selectedDate);
                               setIsBookingModalOpen(true);
                             }}
-                            className="mt-2 text-[11px] text-[#991b1b] hover:text-red-900 font-bold underline"
+                            className="mt-2 text-[11px] text-[#800000] hover:text-red-900 font-bold underline"
                           >
                             + Book this room
                           </button>
@@ -703,14 +717,14 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                                     ~{evt.estimatedGuests} guests
                                   </span>
                                   {evt.livestreamActive && (
-                                    <span className="bg-red-100 text-[#991b1b] px-1.5 py-0.2 rounded font-bold flex items-center gap-0.5">
+                                    <span className="bg-red-100 text-[#800000] px-1.5 py-0.2 rounded font-bold flex items-center gap-0.5">
                                       <Video className="w-2.5 h-2.5" /> HD Stream
                                     </span>
                                   )}
                                 </div>
                                 {evt.woodlawnDepartureTime && (
-                                  <p className="flex items-center gap-1 text-[#991b1b] font-bold">
-                                    <Flame className="w-3 h-3 text-[#991b1b]" />
+                                  <p className="flex items-center gap-1 text-[#800000] font-bold">
+                                    <Flame className="w-3 h-3 text-[#800000]" />
                                     <span>Woodlawn Departure: {evt.woodlawnDepartureTime}</span>
                                   </p>
                                 )}
@@ -737,7 +751,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                           setBookingDate(selectedDate);
                           setIsBookingModalOpen(true);
                         }}
-                        className="text-xs text-neutral-700 hover:text-[#991b1b] font-bold flex items-center justify-center gap-1 w-full"
+                        className="text-xs text-neutral-700 hover:text-[#800000] font-bold flex items-center justify-center gap-1 w-full"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>Reserve {room.code}</span>
@@ -796,7 +810,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                                   setBookingStartTime(hour);
                                   setIsBookingModalOpen(true);
                                 }}
-                                className="text-[11px] text-neutral-500 hover:text-[#991b1b] font-bold"
+                                className="text-[11px] text-neutral-500 hover:text-[#800000] font-bold"
                               >
                                 + Book Slot
                               </button>
@@ -809,7 +823,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                         const room = rooms.find(r => r.id === evt.roomId);
                         return (
                           <tr key={`${hour}-${evt.id}`} className="bg-red-50/30 hover:bg-red-50/60 transition">
-                            <td className="p-3 font-mono font-bold text-[#991b1b] border-r border-neutral-200">
+                            <td className="p-3 font-mono font-bold text-[#800000] border-r border-neutral-200">
                               {hour}
                             </td>
                             <td className="p-3">
@@ -832,7 +846,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                             <td className="p-3 text-right">
                               <button
                                 onClick={() => setSelectedEventDetail(evt)}
-                                className="px-2.5 py-1 bg-white border border-neutral-300 rounded text-neutral-800 hover:text-[#991b1b] font-bold text-[11px] transition shadow-2xs"
+                                className="px-2.5 py-1 bg-white border border-neutral-300 rounded text-neutral-800 hover:text-[#800000] font-bold text-[11px] transition shadow-2xs"
                               >
                                 Packet →
                               </button>
@@ -873,7 +887,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                       >
                         <div className="space-y-1.5 max-w-lg">
                           <div className="flex items-center space-x-2">
-                            <span className="font-mono font-bold text-[#991b1b] bg-red-50 px-2.5 py-0.5 rounded border border-red-200">
+                            <span className="font-mono font-bold text-[#800000] bg-red-50 px-2.5 py-0.5 rounded border border-red-200">
                               {evt.startTime} – {evt.endTime}
                             </span>
                             <span className="font-bold text-neutral-900 text-sm">
@@ -888,7 +902,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                         <div className="flex flex-wrap items-center gap-4 text-neutral-600 shrink-0">
                           <div className="text-right space-y-0.5">
                             <span className="font-bold text-neutral-900 block flex items-center gap-1 justify-end">
-                              <MapPin className="w-3.5 h-3.5 text-[#991b1b]" />
+                              <MapPin className="w-3.5 h-3.5 text-[#800000]" />
                               {roomInfo?.name}
                             </span>
                             <span className="text-[11px] text-neutral-500">Capacity: {roomInfo?.capacity} Guests</span>
@@ -896,7 +910,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
 
                           <div className="flex gap-2">
                             {evt.livestreamActive && (
-                              <span className="bg-red-50 text-[#991b1b] border border-red-200 px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1">
+                              <span className="bg-red-50 text-[#800000] border border-red-200 px-2 py-1 rounded text-[11px] font-bold flex items-center gap-1">
                                 <Video className="w-3 h-3" /> Live Stream
                               </span>
                             )}
@@ -934,13 +948,13 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                 <span className="text-[10px] uppercase font-bold text-neutral-500 block">Week Total Services</span>
                 <strong className="text-base text-neutral-900">{weekEvents.length} Bookings</strong>
               </div>
-              <CalendarIcon className="w-5 h-5 text-[#991b1b]" />
+              <CalendarIcon className="w-5 h-5 text-[#800000]" />
             </div>
 
             <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs flex items-center justify-between">
               <div>
                 <span className="text-[10px] uppercase font-bold text-neutral-500 block">Chapel 1 & 2 Services</span>
-                <strong className="text-base text-[#991b1b]">
+                <strong className="text-base text-[#800000]">
                   {weekEvents.filter(e => e.roomId === 'chapel_1' || e.roomId === 'chapel_2').length} Sanctuary
                 </strong>
               </div>
@@ -964,7 +978,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                   {weekEvents.filter(e => e.roomId === 'church' || !!e.woodlawnDepartureTime).length} Dispatched
                 </strong>
               </div>
-              <Flame className="w-5 h-5 text-[#991b1b]" />
+              <Flame className="w-5 h-5 text-[#800000]" />
             </div>
           </div>
 
@@ -979,7 +993,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                   key={day.date}
                   className={`bg-white rounded-2xl border flex flex-col min-h-[560px] shadow-sm transition ${
                     isSelectedDay
-                      ? 'border-[#991b1b] ring-2 ring-red-500/20'
+                      ? 'border-[#800000] ring-2 ring-red-500/20'
                       : day.isToday
                       ? 'border-amber-300'
                       : 'border-neutral-200'
@@ -992,7 +1006,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     }}
                     className={`p-3 border-b text-center cursor-pointer transition ${
                       isSelectedDay 
-                        ? 'bg-[#991b1b] text-white' 
+                        ? 'bg-[#800000] text-white' 
                         : day.isToday 
                         ? 'bg-amber-50 text-amber-950 border-amber-200' 
                         : 'bg-neutral-50 text-neutral-800 hover:bg-neutral-100'
@@ -1023,7 +1037,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                             setBookingDate(day.date);
                             setIsBookingModalOpen(true);
                           }}
-                          className="mt-2 text-[10px] text-[#991b1b] hover:underline font-bold"
+                          className="mt-2 text-[10px] text-[#800000] hover:underline font-bold"
                         >
                           + Add Booking
                         </button>
@@ -1038,7 +1052,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                             className="p-2.5 rounded-xl border border-red-200/90 bg-red-50/50 hover:bg-red-100/70 hover:border-red-300 transition cursor-pointer space-y-1.5 shadow-2xs text-left"
                           >
                             <div className="flex justify-between items-center text-[10px]">
-                              <span className="font-mono font-bold text-[#991b1b] bg-white px-1.5 py-0.5 rounded border border-red-200">
+                              <span className="font-mono font-bold text-[#800000] bg-white px-1.5 py-0.5 rounded border border-red-200">
                                 {evt.startTime}
                               </span>
                               <span className="font-bold text-[9px] text-neutral-600 bg-white px-1 py-0.5 rounded border border-neutral-200 truncate max-w-[80px]">
@@ -1057,7 +1071,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                             <div className="flex items-center justify-between pt-1 border-t border-red-100 text-[9px] text-neutral-500">
                               <span>{evt.estimatedGuests} guests</span>
                               {evt.livestreamActive && (
-                                <span className="text-[#991b1b] font-bold flex items-center gap-0.5">
+                                <span className="text-[#800000] font-bold flex items-center gap-0.5">
                                   <Video className="w-2.5 h-2.5" /> HD
                                 </span>
                               )}
@@ -1075,7 +1089,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                         setBookingDate(day.date);
                         setIsBookingModalOpen(true);
                       }}
-                      className="text-[11px] text-neutral-600 hover:text-[#991b1b] font-bold flex items-center justify-center gap-1 w-full"
+                      className="text-[11px] text-neutral-600 hover:text-[#800000] font-bold flex items-center justify-center gap-1 w-full"
                     >
                       <Plus className="w-3 h-3" />
                       <span>Book</span>
@@ -1101,13 +1115,13 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                 <span className="text-[10px] uppercase font-bold text-neutral-500 block">Month Total Services</span>
                 <strong className="text-base text-neutral-900">{currentMonthEvents.length} Bookings</strong>
               </div>
-              <CalendarDays className="w-5 h-5 text-[#991b1b]" />
+              <CalendarDays className="w-5 h-5 text-[#800000]" />
             </div>
 
             <div className="p-3 bg-white rounded-xl border border-neutral-200 shadow-2xs flex items-center justify-between">
               <div>
                 <span className="text-[10px] uppercase font-bold text-neutral-500 block">Chapels (1 & 2) Bookings</span>
-                <strong className="text-base text-[#991b1b]">
+                <strong className="text-base text-[#800000]">
                   {currentMonthEvents.filter(e => e.roomId === 'chapel_1' || e.roomId === 'chapel_2').length} Scheduled
                 </strong>
               </div>
@@ -1131,7 +1145,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                   {currentMonthEvents.filter(e => e.roomId.startsWith('parlor') || e.roomId === 'church').length} Events
                 </strong>
               </div>
-              <Flame className="w-5 h-5 text-[#991b1b]" />
+              <Flame className="w-5 h-5 text-[#800000]" />
             </div>
           </div>
 
@@ -1164,7 +1178,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                       !cell.isCurrentMonth
                         ? 'bg-neutral-50/50 text-neutral-400'
                         : isSelectedCell
-                        ? 'bg-red-50/60 ring-2 ring-inset ring-[#991b1b]'
+                        ? 'bg-red-50/60 ring-2 ring-inset ring-[#800000]'
                         : cell.isToday
                         ? 'bg-amber-50/40'
                         : 'bg-white hover:bg-neutral-50'
@@ -1174,16 +1188,16 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     <div className="flex justify-between items-start">
                       <span className={`w-6 h-6 flex items-center justify-center rounded-full font-bold text-xs ${
                         cell.isToday
-                          ? 'bg-[#991b1b] text-white'
+                          ? 'bg-[#800000] text-white'
                           : isSelectedCell
-                          ? 'bg-red-100 text-[#991b1b]'
+                          ? 'bg-red-100 text-[#800000]'
                           : 'text-neutral-800'
                       }`}>
                         {cell.dayNum}
                       </span>
 
                       {dayEvents.length > 0 && (
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-[#991b1b] border border-red-200">
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-[#800000] border border-red-200">
                           {dayEvents.length}
                         </span>
                       )}
@@ -1202,8 +1216,8 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                             className="text-[10px] p-1 rounded bg-white hover:bg-red-50 border border-neutral-200 hover:border-red-300 font-medium text-neutral-900 truncate flex items-center gap-1 shadow-2xs transition"
                             title={`${evt.startTime}: ${evt.decedentName}`}
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#991b1b] shrink-0" />
-                            <span className="font-mono font-bold text-[#991b1b]">{evt.startTime}</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#800000] shrink-0" />
+                            <span className="font-mono font-bold text-[#800000]">{evt.startTime}</span>
                             <span className="truncate">{evt.decedentName.split(' ')[0]}</span>
                           </div>
                         );
@@ -1223,7 +1237,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                           setSelectedDate(cell.date);
                           setTimeframe('day');
                         }}
-                        className="text-[#991b1b] font-bold hover:underline"
+                        className="text-[#800000] font-bold hover:underline"
                       >
                         Day View →
                       </button>
@@ -1254,7 +1268,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
           <div className="bg-white border border-neutral-200 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl text-neutral-900">
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <CalendarIcon className="w-5 h-5 text-[#991b1b]" />
+                <CalendarIcon className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title font-bold text-lg text-neutral-900">
                   Service Schedule Packet
                 </h3>
@@ -1269,7 +1283,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
 
             <div className="space-y-4 text-xs">
               <div className="p-4 bg-red-50/70 border border-red-200 rounded-xl space-y-1">
-                <span className="font-mono text-[10px] font-bold text-[#991b1b] uppercase">Case {selectedEventDetail.caseNumber}</span>
+                <span className="font-mono text-[10px] font-bold text-[#800000] uppercase">Case {selectedEventDetail.caseNumber}</span>
                 <h4 className="font-serif-title text-xl font-bold text-neutral-900">{selectedEventDetail.decedentName}</h4>
                 <p className="text-xs text-[#b45309] font-medium">{selectedEventDetail.title}</p>
               </div>
@@ -1308,10 +1322,10 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
               {selectedEventDetail.woodlawnDepartureTime && (
                 <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl flex items-center justify-between text-amber-950 font-medium text-xs">
                   <div className="flex items-center gap-2">
-                    <Flame className="w-4 h-4 text-[#991b1b]" />
+                    <Flame className="w-4 h-4 text-[#800000]" />
                     <span>Cortege Departure to Woodlawn Crematory:</span>
                   </div>
-                  <strong className="font-mono font-bold text-[#991b1b]">{selectedEventDetail.woodlawnDepartureTime} EST</strong>
+                  <strong className="font-mono font-bold text-[#800000]">{selectedEventDetail.woodlawnDepartureTime} EST</strong>
                 </div>
               )}
 
@@ -1337,13 +1351,13 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                 }}
                 className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs px-4 py-2 rounded-lg flex items-center gap-1.5 transition border border-neutral-300"
               >
-                <FileText className="w-3.5 h-3.5 text-[#991b1b]" />
+                <FileText className="w-3.5 h-3.5 text-[#800000]" />
                 <span>Open Golden Record Case</span>
               </button>
 
               <button
                 onClick={() => setSelectedEventDetail(null)}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2 rounded-lg transition"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2 rounded-lg transition"
               >
                 Done
               </button>
@@ -1360,7 +1374,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
           <div className="bg-white border border-neutral-200 rounded-2xl max-w-xl w-full p-6 sm:p-8 space-y-5 shadow-2xl text-neutral-900 my-8">
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
-                <Sparkles className="w-5 h-5 text-[#991b1b]" />
+                <Sparkles className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title font-bold text-lg text-neutral-900">
                   Book Facility Room & Schedule Service
                 </h3>
@@ -1375,8 +1389,8 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
 
             {/* Conflict Warning if overlapping */}
             {bookingConflict && (
-              <div className="p-3.5 bg-red-50 border border-red-300 text-[#991b1b] rounded-xl flex items-center space-x-2 text-xs font-medium">
-                <AlertCircle className="w-4 h-4 shrink-0 text-[#991b1b]" />
+              <div className="p-3.5 bg-red-50 border border-red-300 text-[#800000] rounded-xl flex items-center space-x-2 text-xs font-medium">
+                <AlertCircle className="w-4 h-4 shrink-0 text-[#800000]" />
                 <span>
                   <strong>Scheduling Conflict Detected:</strong> {rooms.find(r => r.id === bookingRoomId)?.name} is already booked during this time window. Please choose another time or room.
                 </span>
@@ -1391,7 +1405,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                 <select
                   value={bookingCaseId}
                   onChange={(e) => setBookingCaseId(e.target.value)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                 >
                   {cases.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -1407,7 +1421,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                 <select
                   value={bookingRoomId}
                   onChange={(e) => setBookingRoomId(e.target.value as RoomId)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                 >
                   {rooms.map((r) => (
                     <option key={r.id} value={r.id}>
@@ -1419,12 +1433,12 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
 
               {/* Broadcast Venue Capability Badge */}
               {['chapel_1', 'chapel_2', 'repast_room'].includes(bookingRoomId) ? (
-                <div className="p-3 bg-red-50 border border-red-200 text-[#991b1b] rounded-xl flex items-center justify-between text-xs">
+                <div className="p-3 bg-red-50 border border-red-200 text-[#800000] rounded-xl flex items-center justify-between text-xs">
                   <div className="flex items-center space-x-2">
                     <Video className="w-4 h-4 text-red-600 shrink-0" />
                     <span><strong>Broadcast-Enabled Venue:</strong> 4K PTZ cameras & master soundboard feeds active for {rooms.find(r => r.id === bookingRoomId)?.name}.</span>
                   </div>
-                  <span className="bg-[#991b1b] text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase">
+                  <span className="bg-[#800000] text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase">
                     Webcast Ready
                   </span>
                 </div>
@@ -1442,7 +1456,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                   <select
                     value={bookingServiceType}
                     onChange={(e) => setBookingServiceType(e.target.value as RoomScheduleEvent['serviceType'])}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                   >
                     <option value="Memorial Service">Memorial Service</option>
                     <option value="Viewing / Wake">Viewing / Wake</option>
@@ -1462,7 +1476,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     value={bookingTitle}
                     onChange={(e) => setBookingTitle(e.target.value)}
                     placeholder="e.g. Celebration of Life & Sanctuary Service"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
               </div>
@@ -1476,7 +1490,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     required
                     value={bookingDate}
                     onChange={(e) => setBookingDate(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
 
@@ -1487,7 +1501,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     required
                     value={bookingStartTime}
                     onChange={(e) => setBookingStartTime(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
 
@@ -1498,7 +1512,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     required
                     value={bookingEndTime}
                     onChange={(e) => setBookingEndTime(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
               </div>
@@ -1512,7 +1526,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     value={bookingOfficiant}
                     onChange={(e) => setBookingOfficiant(e.target.value)}
                     placeholder="e.g. Rev. Dr. Calvin Butts"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
 
@@ -1523,7 +1537,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     value={bookingMusic}
                     onChange={(e) => setBookingMusic(e.target.value)}
                     placeholder="e.g. Organist & Choral Ensemble"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
 
@@ -1533,7 +1547,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                     type="number"
                     value={bookingGuests}
                     onChange={(e) => setBookingGuests(Number(e.target.value))}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
               </div>
@@ -1545,7 +1559,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                   id="streamActive"
                   checked={bookingStreaming}
                   onChange={(e) => setBookingStreaming(e.target.checked)}
-                  className="rounded accent-[#991b1b] w-4 h-4"
+                  className="rounded accent-[#800000] w-4 h-4"
                 />
                 <label htmlFor="streamActive" className="text-xs text-neutral-700 font-medium">
                   Enable HD Live-Streaming & 360° Digi-Tribute Screen Integration
@@ -1560,7 +1574,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                   value={bookingNotes}
                   onChange={(e) => setBookingNotes(e.target.value)}
                   placeholder="e.g. Reserved seating front row for spouse. Floral delivery arriving at 10 AM."
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
@@ -1575,7 +1589,7 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
                 >
                   <Check className="w-3.5 h-3.5 text-amber-300" />
                   <span>Confirm Schedule Booking</span>
@@ -1585,6 +1599,16 @@ export const FacilityCalendarView: React.FC<FacilityCalendarViewProps> = ({
           </div>
         </div>
       )}
+
+      {/* FRONT OFFICE LOBBY KIOSK / TV FULLSCREEN HUD MODAL */}
+      <FrontOfficeLobbyKioskModal
+        isOpen={isLobbyKioskOpen}
+        onClose={() => setIsLobbyKioskOpen(false)}
+        events={events}
+        cases={cases}
+        directorProfiles={directorProfiles}
+        initialDate={selectedDate}
+      />
 
     </div>
   );

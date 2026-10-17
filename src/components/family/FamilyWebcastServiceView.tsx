@@ -191,7 +191,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
             onClick={onBackToWelcome}
             className="inline-flex items-center space-x-2 px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-800 rounded-xl font-bold text-xs transition border border-neutral-300 shadow-xs group cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#991b1b] group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft className="w-4 h-4 text-[#800000] group-hover:-translate-x-0.5 transition-transform" />
             <span>← Back to Welcome Page</span>
           </button>
         )}
@@ -203,14 +203,14 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
 
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#141b2b] text-white px-5 py-3 rounded-2xl shadow-2xl border border-amber-400 flex items-center space-x-3 text-xs font-bold animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#1c1a1a] text-white px-5 py-3 rounded-2xl shadow-2xl border border-amber-400 flex items-center space-x-3 text-xs font-bold animate-bounce">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* 1. HERO HEADER BANNER */}
-      <div className="bg-gradient-to-br from-[#141b2b] via-[#1f293d] to-[#2c1d11] text-white p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden border border-amber-500/30">
+      <div className="bg-gradient-to-br from-[#1c1a1a] via-[#1f293d] to-[#2c1d11] text-white p-6 sm:p-8 rounded-2xl shadow-xl relative overflow-hidden border border-amber-500/30">
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-3xl space-y-3 relative z-10">
           <div className="flex flex-wrap items-center gap-2">
@@ -237,7 +237,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               onClick={() => handleCopyText(webcast.streamUrl, 'Webcast URL')}
-              className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/30 cursor-pointer"
+              className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/30 cursor-pointer"
             >
               <Copy className="w-4 h-4 text-amber-300" />
               <span>Copy Direct Webcast Link ({webcast.streamUrl.replace('https://', '')})</span>
@@ -271,14 +271,14 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
         <div className="lg:col-span-7 space-y-6">
           
           {/* HD Broadcast Player Card */}
-          <div className="bg-[#0f1522] rounded-3xl overflow-hidden border-2 border-neutral-800 shadow-2xl space-y-0">
+          <div className="bg-[#0f1522] rounded-2xl overflow-hidden border-2 border-neutral-800 shadow-2xl space-y-0">
             
             {/* Player Top Bar */}
-            <div className="bg-[#141b2b] px-4 py-3 border-b border-neutral-800 flex items-center justify-between text-xs">
+            <div className="bg-[#1c1a1a] px-4 py-3 border-b border-neutral-800 flex items-center justify-between text-xs">
               <div className="flex items-center space-x-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
                 <span className="font-bold text-white uppercase tracking-wider text-[11px]">
-                  {webcast.streamStatus === 'live' ? '🔴 LIVE STREAMING NOW' : 'SANCTUARY BROADCAST FEED'}
+                  {webcast.streamStatus === 'live' ? 'LIVE STREAMING NOW' : 'SANCTUARY BROADCAST FEED'}
                 </span>
                 <span className="text-neutral-500">•</span>
                 <span className="text-amber-400 font-bold">{webcast.venueName}</span>
@@ -320,7 +320,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
               {/* Center Play Overlay / Countdown */}
               {!isPlaying ? (
                 <div className="relative z-20 text-center space-y-4 p-6 max-w-md">
-                  <div className="bg-black/80 backdrop-blur-md border border-amber-500/40 p-5 rounded-3xl shadow-2xl space-y-3">
+                  <div className="bg-black/80 backdrop-blur-md border border-amber-500/40 p-5 rounded-2xl shadow-2xl space-y-3">
                     <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">
                       Broadcast Service Countdown
                     </span>
@@ -347,7 +347,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
 
                     <button
                       onClick={() => setIsPlaying(true)}
-                      className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-3 rounded-2xl transition flex items-center justify-center space-x-2 shadow-lg shadow-red-950/40 cursor-pointer"
+                      className="w-full bg-[#800000] hover:bg-red-800 text-white font-bold text-xs py-3 rounded-2xl transition flex items-center justify-center space-x-2 shadow-lg shadow-red-950/40 cursor-pointer"
                     >
                       <Play className="w-4 h-4 fill-current text-amber-300" />
                       <span>Start Webcast Preview Stream</span>
@@ -378,7 +378,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
             </div>
 
             {/* Player Controls Toolbar */}
-            <div className="bg-[#141b2b] p-4 border-t border-neutral-800 flex flex-wrap items-center justify-between gap-4 text-xs">
+            <div className="bg-[#1c1a1a] p-4 border-t border-neutral-800 flex flex-wrap items-center justify-between gap-4 text-xs">
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
@@ -408,7 +408,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
                     onClick={() => setCurrentCameraAngle(idx)}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition cursor-pointer ${
                       currentCameraAngle === idx
-                        ? 'bg-[#991b1b] text-white font-bold'
+                        ? 'bg-[#800000] text-white font-bold'
                         : 'bg-neutral-800 text-neutral-400 hover:text-white'
                     }`}
                   >
@@ -420,14 +420,14 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
           </div>
 
           {/* Service Details Card */}
-          <div className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-4">
+          <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm space-y-4">
             <h3 className="font-serif-title text-lg font-bold text-neutral-900 border-b border-neutral-100 pb-3">
               Sanctuary Service Schedule
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-1">
                 <div className="font-bold text-neutral-900 flex items-center space-x-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#991b1b]" />
+                  <Calendar className="w-3.5 h-3.5 text-[#800000]" />
                   <span>Sanctuary Service</span>
                 </div>
                 <div className="text-neutral-600">{webcast.broadcastDate}</div>
@@ -436,7 +436,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
 
               <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200/80 space-y-1">
                 <div className="font-bold text-neutral-900 flex items-center space-x-1.5">
-                  <Church className="w-3.5 h-3.5 text-[#991b1b]" />
+                  <Church className="w-3.5 h-3.5 text-[#800000]" />
                   <span>Service Venue</span>
                 </div>
                 <div className="text-neutral-600">{webcast.venueName}</div>
@@ -450,7 +450,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
         <div className="lg:col-span-5 space-y-6">
           
           {/* Dispatch Webcast Links Card */}
-          <div className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm space-y-5">
+          <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm space-y-5">
             <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
               <div>
                 <h3 className="font-serif-title text-base font-bold text-neutral-900">
@@ -472,7 +472,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
                   onClick={() => setShareChannel('sms')}
                   className={`flex-1 py-2 rounded-xl font-bold flex items-center justify-center space-x-1.5 border transition cursor-pointer ${
                     shareChannel === 'sms'
-                      ? 'bg-[#991b1b] text-white border-transparent shadow-xs'
+                      ? 'bg-[#800000] text-white border-transparent shadow-xs'
                       : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
                   }`}
                 >
@@ -484,7 +484,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
                   onClick={() => setShareChannel('email')}
                   className={`flex-1 py-2 rounded-xl font-bold flex items-center justify-center space-x-1.5 border transition cursor-pointer ${
                     shareChannel === 'email'
-                      ? 'bg-[#991b1b] text-white border-transparent shadow-xs'
+                      ? 'bg-[#800000] text-white border-transparent shadow-xs'
                       : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
                   }`}
                 >
@@ -500,7 +500,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
                   value={recipientName}
                   onChange={(e) => setRecipientName(e.target.value)}
                   placeholder="e.g. Aunt Evelyn Vance"
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                   required
                 />
               </div>
@@ -514,14 +514,14 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
                   value={recipientContact}
                   onChange={(e) => setRecipientContact(e.target.value)}
                   placeholder={shareChannel === 'sms' ? '(212) 555-0199' : 'relative@example.com'}
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                   required
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-2.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer"
+                className="w-full bg-[#800000] hover:bg-red-800 text-white font-bold text-xs py-2.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5 text-amber-300" />
                 <span>Send {shareChannel.toUpperCase()} Webcast Invite</span>
@@ -550,7 +550,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
           </div>
 
           {/* Quick Share Link Pill */}
-          <div className="bg-amber-50/70 border border-amber-200/80 rounded-3xl p-5 space-y-3">
+          <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-5 space-y-3">
             <div className="flex items-center space-x-2 text-amber-900 font-bold text-xs">
               <Globe className="w-4 h-4 text-amber-700" />
               <span>Universal Shareable Webcast Link</span>
@@ -575,10 +575,10 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
       {/* 3. PRINTABLE BULLETIN MODAL */}
       {isPrintModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-neutral-200 shadow-2xl animate-scaleIn">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-neutral-200 shadow-2xl animate-scaleIn">
             <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
               <div className="flex items-center space-x-2">
-                <Printer className="w-5 h-5 text-[#991b1b]" />
+                <Printer className="w-5 h-5 text-[#800000]" />
                 <h3 className="font-serif-title text-xl font-bold text-neutral-900">
                   Printable Service Bulletin & Webcast Pass
                 </h3>
@@ -593,7 +593,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
 
             {/* Bulletin Preview Card */}
             <div className="border-2 border-neutral-800 p-6 rounded-2xl space-y-4 font-serif text-center bg-amber-50/20">
-              <div className="text-xs uppercase tracking-widest text-[#991b1b] font-bold">
+              <div className="text-xs uppercase tracking-widest text-[#800000] font-bold">
                 Benta's Funeral Home, Inc. • Harlem, NYC
               </div>
               <h2 className="text-2xl font-bold text-neutral-900">
@@ -631,7 +631,7 @@ export const FamilyWebcastServiceView: React.FC<FamilyWebcastServiceViewProps> =
               </button>
               <button
                 onClick={() => window.print()}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2 rounded-xl transition flex items-center space-x-2 shadow-md"
+                className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-5 py-2 rounded-xl transition flex items-center space-x-2 shadow-md"
               >
                 <Printer className="w-4 h-4 text-amber-300" />
                 <span>Print Bulletin</span>

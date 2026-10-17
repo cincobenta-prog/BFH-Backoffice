@@ -248,12 +248,12 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
       <div 
-        className={`bg-white border border-neutral-200 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden transition-all duration-300 ${
+        className={`bg-white border border-neutral-200 rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden transition-all duration-300 ${
           isShaking ? 'animate-shake' : ''
         }`}
       >
         {/* Top Gold & Crimson Banner Gradient */}
-        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#991b1b] via-[#b45309] to-[#991b1b]" />
+        <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#800000] via-[#b45309] to-[#800000]" />
 
         {/* Close Button */}
         <button
@@ -269,7 +269,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
           <button
             onClick={() => { setActiveTab('pin'); setError(null); }}
             className={`flex-1 py-1.5 rounded-xl font-bold transition flex items-center justify-center gap-1 cursor-pointer ${
-              activeTab === 'pin' ? 'bg-white text-[#991b1b] shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
+              activeTab === 'pin' ? 'bg-white text-[#800000] shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
             <KeyRound className="w-3.5 h-3.5" />
@@ -279,7 +279,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
           <button
             onClick={() => { setActiveTab('biometric'); setError(null); }}
             className={`flex-1 py-1.5 rounded-xl font-bold transition flex items-center justify-center gap-1 cursor-pointer ${
-              activeTab === 'biometric' ? 'bg-white text-[#991b1b] shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
+              activeTab === 'biometric' ? 'bg-white text-[#800000] shadow-xs' : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
             <Fingerprint className="w-3.5 h-3.5 text-amber-600" />
@@ -289,7 +289,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
           <button
             onClick={() => { setActiveTab('settings'); setError(null); }}
             className={`px-2.5 py-1.5 rounded-xl font-bold transition flex items-center justify-center text-neutral-600 hover:text-neutral-900 cursor-pointer ${
-              activeTab === 'settings' ? 'bg-white text-[#991b1b] shadow-xs' : ''
+              activeTab === 'settings' ? 'bg-white text-[#800000] shadow-xs' : ''
             }`}
             title="Configure Security & PIN"
           >
@@ -299,20 +299,20 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
 
         {/* Header Badge */}
         <div className="flex flex-col items-center text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-50 to-amber-50 border border-red-200 flex items-center justify-center text-[#991b1b] shadow-inner">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-50 to-amber-50 border border-red-200 flex items-center justify-center text-[#800000] shadow-inner">
             {isUnlocked ? (
               <CheckCircle2 className="w-8 h-8 text-emerald-600 animate-bounce" />
             ) : activeTab === 'biometric' ? (
-              <Fingerprint className={`w-8 h-8 ${isScanningBiometric ? 'text-amber-600 animate-pulse' : 'text-[#991b1b]'}`} />
+              <Fingerprint className={`w-8 h-8 ${isScanningBiometric ? 'text-amber-600 animate-pulse' : 'text-[#800000]'}`} />
             ) : activeTab === 'settings' ? (
-              <Sliders className="w-7 h-7 text-[#991b1b]" />
+              <Sliders className="w-7 h-7 text-[#800000]" />
             ) : (
-              <KeyRound className="w-7 h-7 text-[#991b1b]" />
+              <KeyRound className="w-7 h-7 text-[#800000]" />
             )}
           </div>
 
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-[#991b1b] text-[10px] font-mono font-bold uppercase tracking-wider mb-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-50 border border-red-200 text-[#800000] text-[10px] font-mono font-bold uppercase tracking-wider mb-1">
               <ShieldCheck className="w-3 h-3" />
               <span>NYS Reg #08850 Executive Authorization Gate</span>
             </div>
@@ -358,7 +358,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
                       isUnlocked
                         ? 'bg-emerald-500 scale-110 shadow-md shadow-emerald-400/50'
                         : isFilled
-                        ? 'bg-[#991b1b] scale-110 shadow-md shadow-red-900/30'
+                        ? 'bg-[#800000] scale-110 shadow-md shadow-red-900/30'
                         : 'bg-neutral-200 border border-neutral-300'
                     }`}
                   />
@@ -368,7 +368,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
 
             {/* Error Alert */}
             {error && (
-              <div className="mb-4 p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#991b1b] flex items-center gap-2 animate-fadeIn">
+              <div className="mb-4 p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#800000] flex items-center gap-2 animate-fadeIn">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span className="text-[11px] leading-tight">{error}</span>
               </div>
@@ -382,7 +382,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
                   type="button"
                   disabled={isLockedOut}
                   onClick={() => handleDigit(digit)}
-                  className="h-12 bg-neutral-50 hover:bg-neutral-100 active:bg-red-50 active:text-[#991b1b] border border-neutral-200 rounded-2xl text-lg font-bold text-neutral-800 transition shadow-xs flex items-center justify-center font-mono select-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="h-12 bg-neutral-50 hover:bg-neutral-100 active:bg-brass-50 active:text-[#800000] border border-neutral-200 rounded-2xl text-lg font-bold text-neutral-800 transition shadow-xs flex items-center justify-center font-mono select-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {digit}
                 </button>
@@ -402,7 +402,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
                 type="button"
                 disabled={isLockedOut}
                 onClick={() => handleDigit('0')}
-                className="h-12 bg-neutral-50 hover:bg-neutral-100 active:bg-red-50 active:text-[#991b1b] border border-neutral-200 rounded-2xl text-lg font-bold text-neutral-800 transition shadow-xs flex items-center justify-center font-mono select-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                className="h-12 bg-neutral-50 hover:bg-neutral-100 active:bg-brass-50 active:text-[#800000] border border-neutral-200 rounded-2xl text-lg font-bold text-neutral-800 transition shadow-xs flex items-center justify-center font-mono select-none cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 0
               </button>
@@ -436,19 +436,19 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
           <div className="my-6 space-y-5 text-center">
             <div 
               onClick={handleBiometricAuthenticate}
-              className={`w-28 h-28 mx-auto rounded-3xl border-2 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
+              className={`w-28 h-28 mx-auto rounded-2xl border-2 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
                 isScanningBiometric
                   ? 'border-amber-500 bg-amber-50 shadow-lg shadow-amber-500/20 scale-105'
                   : isUnlocked
                   ? 'border-emerald-500 bg-emerald-50 shadow-lg shadow-emerald-500/20'
-                  : 'border-neutral-300 hover:border-[#991b1b] bg-neutral-50 hover:bg-red-50/50 shadow-sm'
+                  : 'border-neutral-300 hover:border-[#800000] bg-neutral-50 hover:bg-red-50/50 shadow-sm'
               }`}
             >
               {isUnlocked ? (
                 <CheckCircle2 className="w-12 h-12 text-emerald-600 animate-bounce" />
               ) : (
                 <Fingerprint className={`w-12 h-12 transition-transform duration-300 ${
-                  isScanningBiometric ? 'text-amber-600 animate-pulse scale-110' : 'text-[#991b1b]'
+                  isScanningBiometric ? 'text-amber-600 animate-pulse scale-110' : 'text-[#800000]'
                 }`} />
               )}
               <span className="text-[10px] font-bold text-neutral-600 mt-1 uppercase tracking-wider font-mono">
@@ -468,7 +468,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
             </div>
 
             {error && (
-              <div className="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#991b1b] flex items-center gap-2 text-left">
+              <div className="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#800000] flex items-center gap-2 text-left">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span className="text-[11px] leading-tight">{error}</span>
               </div>
@@ -478,7 +478,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
               type="button"
               onClick={handleBiometricAuthenticate}
               disabled={isScanningBiometric || isLockedOut}
-              className="w-full bg-[#991b1b] hover:bg-red-800 disabled:bg-neutral-400 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition shadow-md border border-amber-400/40 cursor-pointer disabled:cursor-not-allowed"
+              className="w-full bg-[#800000] hover:bg-[#6a0509] disabled:bg-neutral-400 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition shadow-md border border-amber-400/40 cursor-pointer disabled:cursor-not-allowed"
             >
               {isScanningBiometric ? (
                 <>
@@ -512,7 +512,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
                   value={currentPinInput}
                   onChange={(e) => setCurrentPinInput(e.target.value.replace(/\D/g, ''))}
                   placeholder="Enter current 4-digit PIN"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-sm font-mono text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-sm font-mono text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
@@ -527,7 +527,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
                   value={newPinInput}
                   onChange={(e) => setNewPinInput(e.target.value.replace(/\D/g, ''))}
                   placeholder="Enter 4 new digits"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-sm font-mono text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-sm font-mono text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
@@ -542,12 +542,12 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
                   value={confirmPinInput}
                   onChange={(e) => setConfirmPinInput(e.target.value.replace(/\D/g, ''))}
                   placeholder="Re-enter 4 new digits"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-sm font-mono text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-sm font-mono text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
               {error && (
-                <div className="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#991b1b] flex items-center gap-2">
+                <div className="p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-[#800000] flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span className="text-[11px] leading-tight">{error}</span>
                 </div>
@@ -562,7 +562,7 @@ export const ManagerPinLoginModal: React.FC<ManagerPinLoginModalProps> = ({
 
               <button
                 type="submit"
-                className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-sm cursor-pointer"
+                className="w-full bg-[#800000] hover:bg-[#6a0509] text-white font-bold py-2.5 px-4 rounded-xl transition shadow-sm cursor-pointer"
               >
                 Save New PIN
               </button>

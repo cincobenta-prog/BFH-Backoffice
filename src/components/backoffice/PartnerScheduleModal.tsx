@@ -96,7 +96,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
         {/* Header */}
         <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-5 h-5 text-[#991b1b]" />
+            <Sparkles className="w-5 h-5 text-[#800000]" />
             <div>
               <h3 className="font-serif-title font-bold text-lg text-neutral-900">
                 Schedule Service Partner via SMS Dispatch
@@ -135,11 +135,11 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                   }}
                   className={`p-2.5 rounded-xl border text-left transition flex items-center space-x-2 ${
                     isSelected
-                      ? 'bg-red-50/90 border-[#991b1b] ring-2 ring-red-500/20 text-[#991b1b] font-bold shadow-xs'
+                      ? 'bg-red-50/90 border-[#800000] ring-2 ring-red-500/20 text-[#800000] font-bold shadow-xs'
                       : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isSelected ? 'text-[#991b1b]' : 'text-neutral-500'}`} />
+                  <Icon className={`w-4 h-4 ${isSelected ? 'text-[#800000]' : 'text-neutral-500'}`} />
                   <span className="text-xs">{cat.label}</span>
                 </button>
               );
@@ -159,7 +159,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                 const p = partners.find(part => part.id === e.target.value);
                 if (p?.rateInfo) setFee(p.rateInfo);
               }}
-              className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+              className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#800000]"
             >
               {categoryPartners.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -178,7 +178,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                 required
                 value={serviceDate}
                 onChange={(e) => setServiceDate(e.target.value)}
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 font-bold text-neutral-900 outline-none focus:border-[#800000]"
               />
             </div>
 
@@ -190,7 +190,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                 value={callTime}
                 onChange={(e) => setCallTime(e.target.value)}
                 placeholder="e.g. 09:30 AM"
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#800000]"
               />
             </div>
 
@@ -201,7 +201,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                 value={endTime}
                 onChange={(e) => setEndTime(e.target.value)}
                 placeholder="e.g. 12:00 PM"
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2 text-neutral-900 outline-none focus:border-[#800000]"
               />
             </div>
           </div>
@@ -215,7 +215,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                 required
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#800000]"
               />
             </div>
 
@@ -225,7 +225,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
                 type="text"
                 value={fee}
                 onChange={(e) => setFee(e.target.value)}
-                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#991b1b]"
+                className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#800000]"
               />
             </div>
           </div>
@@ -238,7 +238,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
               placeholder="e.g. Reference family portrait photo in digital portal. Bring styling kit."
-              className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#991b1b]"
+              className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 outline-none focus:border-[#800000]"
             />
           </div>
 
@@ -267,7 +267,7 @@ export const PartnerScheduleModal: React.FC<PartnerScheduleModalProps> = ({
             </button>
             <button
               type="submit"
-              className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-lg transition shadow-sm border border-amber-300/40 flex items-center gap-1.5"
             >
               <Send className="w-3.5 h-3.5 text-amber-300" />
               <span>Dispatch SMS Booking Request</span>

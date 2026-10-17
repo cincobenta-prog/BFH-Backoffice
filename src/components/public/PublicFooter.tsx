@@ -8,165 +8,77 @@ interface PublicFooterProps {
 }
 
 export const PublicFooter: React.FC<PublicFooterProps> = ({ onOpenPortal, onOpenFamilyPortal, onNavigate }) => {
+  const linkClass = 'block text-left py-1 text-[#b3a79c] hover:text-[#e7cfa6] transition cursor-pointer';
+
   return (
-    <footer className="bg-[#1c1917] text-neutral-300 border-t-2 border-[#991b1b] text-xs">
-      {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
-          
-          {/* Brand & Mission */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center space-x-3">
-              <img
-                src="/images/ebfh/BENTA_logo.png"
-                alt="Benta's Funeral Home, Inc."
-                className="h-11 w-auto object-contain brightness-110"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = '/images/ebfh/Benta-Flame-MN.png';
-                }}
-              />
-              <div>
-                <h3 className="font-serif-title text-base font-bold text-white tracking-wide leading-tight">
-                  BENTA'S FUNERAL HOME, INC.
-                </h3>
-                <p className="text-[10px] text-amber-400 uppercase font-mono font-semibold">
-                  EST. 1928 • HARLEM, NYC
-                </p>
-              </div>
-            </div>
-            <p className="text-neutral-400 leading-relaxed font-light">
-              Providing personalized, professional, and deeply compassionate funeral and cremation services to Harlem and the Greater New York community continuously since 1928.
+    <footer className="bg-[#22140f] text-[#b3a79c] text-[13px]">
+      <div className="max-w-[1200px] mx-auto px-5 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Brand */}
+          <div>
+            <h4 className="font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white mb-4">
+              Benta's Funeral Home, Inc.
+            </h4>
+            <p className="leading-relaxed flex items-start gap-2">
+              <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-[#c2a465]" />
+              <span>630 Saint Nicholas Avenue<br />New York, NY 10030</span>
             </p>
-            <div className="pt-2 text-[11px] text-amber-400 font-semibold">
-              George A. Benta (Founder) • Jason Benta (Licensed Funeral Director in Charge)
-            </div>
+            <p className="mt-3 flex items-center gap-2">
+              <Phone className="w-4 h-4 shrink-0 text-[#c2a465]" />
+              <a href="tel:+12122818850" className="hover:text-[#e7cfa6] transition">(212) 281-8850</a>
+            </p>
+            <p className="mt-2 flex items-center gap-2">
+              <Mail className="w-4 h-4 shrink-0 text-[#c2a465]" />
+              <a href="mailto:info@e-bfh.com" className="hover:text-[#e7cfa6] transition">info@e-bfh.com</a>
+            </p>
           </div>
 
-          {/* Quick Navigation */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="font-serif-title text-sm font-bold text-white uppercase tracking-wider">
-              Services & Planning
-            </h4>
-            <ul className="space-y-2 text-neutral-300">
-              <li>
-                <button onClick={() => onNavigate('services')} className="hover:text-amber-400 transition cursor-pointer">
-                  Direct Cremation & Memorials
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('services')} className="hover:text-amber-400 transition cursor-pointer">
-                  Traditional Earth Burial
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('preplan')} className="hover:text-amber-400 transition cursor-pointer">
-                  Pre-Need Planning & FDIC Trusts
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('notable')} className="hover:text-amber-400 transition cursor-pointer">
-                  Notable Services (Cicely Tyson, Langston Hughes)
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('obituaries')} className="hover:text-amber-400 transition cursor-pointer">
-                  Recent Obituaries & 360° Digi-Tributes
-                </button>
-              </li>
-            </ul>
+          {/* Explore */}
+          <div>
+            <h4 className="font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white mb-4">Explore</h4>
+            <button onClick={() => onNavigate('history')} className={linkClass}>Our History</button>
+            <button onClick={() => onNavigate('facility')} className={linkClass}>Facility</button>
+            <button onClick={() => onNavigate('notable')} className={linkClass}>Notable Services</button>
+            <button onClick={() => onNavigate('obituaries')} className={linkClass}>Obituaries</button>
+            <button onClick={() => onNavigate('contact')} className={linkClass}>Contact</button>
           </div>
 
-          {/* Grief & Support */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="font-serif-title text-sm font-bold text-white uppercase tracking-wider">
-              Healing & Community
-            </h4>
-            <ul className="space-y-2 text-neutral-300">
-              <li>
-                <button onClick={() => onNavigate('grief')} className="hover:text-amber-400 transition cursor-pointer">
-                  Four Tasks of Mourning
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('grief')} className="hover:text-amber-400 transition cursor-pointer">
-                  Grief & Resilience
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('faqs')} className="hover:text-amber-400 transition cursor-pointer">
-                  Frequently Asked Questions
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('contact')} className="hover:text-amber-400 transition cursor-pointer">
-                  Location & Contact Us
-                </button>
-              </li>
-            </ul>
+          {/* Plan Ahead */}
+          <div>
+            <h4 className="font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white mb-4">Plan Ahead</h4>
+            <button onClick={() => onNavigate('preplan')} className={linkClass}>Plan Ahead</button>
+            <button onClick={() => onNavigate('preplan')} className={linkClass}>Preplanning Checklist</button>
+            <button onClick={() => onNavigate('services')} className={linkClass}>Service Options</button>
+            <button onClick={() => onNavigate('grief')} className={linkClass}>Grief and Healing</button>
+            <button onClick={() => onNavigate('faqs')} className={linkClass}>FAQs</button>
           </div>
 
-          {/* Contact & Facility */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="font-serif-title text-sm font-bold text-white uppercase tracking-wider">
-              Harlem Sanctuary
-            </h4>
-            <div className="space-y-2.5 text-neutral-300">
-              <p className="flex items-start space-x-2">
-                <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span>630 Saint Nicholas Avenue<br />New York, NY 10030</span>
-              </p>
-              <p className="flex items-center space-x-2">
-                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <a href="tel:+12122818850" className="hover:text-amber-400 transition font-bold text-white">
-                  Phone: (212) 281-8850 (24/7)
-                </a>
-              </p>
-              <p className="flex items-center space-x-2 text-neutral-400">
-                <span>Fax: (212) 234-3600</span>
-              </p>
-              <p className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <a href="mailto:info@e-bfh.com" className="hover:text-amber-400 transition">
-                  info@e-bfh.com
-                </a>
-              </p>
-            </div>
-
-            <div className="pt-2 space-y-2">
-              {onOpenFamilyPortal && (
-                <button
-                  onClick={onOpenFamilyPortal}
-                  className="w-full bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition text-xs shadow-md border border-amber-400/40 cursor-pointer"
-                >
-                  <span>🕊️ Access Private Family Portal</span>
-                </button>
-              )}
+          {/* Portals */}
+          <div>
+            <h4 className="font-display text-[14px] font-medium uppercase tracking-[0.1em] text-white mb-4">Portals</h4>
+            {onOpenFamilyPortal && (
               <button
-                onClick={onOpenPortal}
-                className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-2.5 px-3 rounded-xl flex items-center justify-center space-x-2 transition text-xs shadow-md border border-red-700/50 cursor-pointer"
+                onClick={onOpenFamilyPortal}
+                className="btn-benta btn-benta--outline border-white/40 text-white hover:bg-white hover:text-[#22140f] w-full mb-2 cursor-pointer"
               >
-                <Lock className="w-3.5 h-3.5 text-amber-300" />
-                <span>Funeral Directors Portal</span>
+                Family Portal
               </button>
-            </div>
+            )}
+            <button
+              onClick={onOpenPortal}
+              className="btn-benta w-full cursor-pointer inline-flex items-center gap-2"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              Director / Staff Portal
+            </button>
           </div>
-
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-neutral-800 bg-[#0c0a09] py-6 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-[11px] text-neutral-400">
-          <p>© {new Date().getFullYear()} Benta's Funeral Home, Inc. - All Rights Reserved. NYS Reg #08850.</p>
-          <div className="flex space-x-6">
-            <span className="hover:text-white cursor-pointer">FTC General Price List</span>
-            <span className="hover:text-white cursor-pointer">Privacy Policy & Terms</span>
-            <span className="hover:text-white cursor-pointer">NYS Dept. of Health Compliance</span>
-          </div>
+        <div className="mt-12 pt-5 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3 text-[12px] text-[#8d8177]">
+          <span>© {new Date().getFullYear()} Benta's Funeral Home, Inc. All rights reserved.</span>
+          <span>Site design by Kreative House</span>
         </div>
       </div>
     </footer>
   );
 };
-

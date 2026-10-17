@@ -15,13 +15,15 @@ import {
   Printer, 
   Info,
   ShoppingBag,
-  Gift
+  Gift,
+  Search
 } from 'lucide-react';
+import { BFH_FLORAL_CATALOG } from '../../lib/data/floralCatalog';
 
 export interface FloralItem {
   id: string;
   name: string;
-  category: 'casket_sprays' | 'standing_sprays' | 'wreaths' | 'urn_table' | 'sympathy_baskets' | 'living_plants';
+  category: 'casket_sprays' | 'standing_sprays' | 'wreaths' | 'hearts' | 'crosses' | 'urn_table' | 'sympathy_baskets' | 'living_plants' | 'danielas' | 'letter_tributes';
   categoryLabel: string;
   floristId: 'danielas' | 'barbaras';
   floristName: string;
@@ -37,142 +39,42 @@ export interface FloralItem {
 }
 
 export const HARLEM_FLORAL_CATALOG: FloralItem[] = [
-  {
-    id: 'fl-dan-01',
-    name: 'Garden of Grace Pastel Casket Spray',
-    category: 'casket_sprays',
-    categoryLabel: 'Casket Cover / Full Spray',
-    floristId: 'danielas',
-    floristName: "Daniela's Flower Shop (Broadway)",
-    floristLocation: '3650 Broadway (at W 150th St), Harlem, NY',
-    floristPhone: '(212) 283-9300',
-    price: 395,
-    description: 'A breathtaking full-casket spray crafted with blush garden roses, lavender snapdragons, white hydrangeas, peach lisianthus, and silver dollar eucalyptus.',
-    dimensions: '48" L x 26" W',
-    leadTimeHours: 12,
-    imageUrl: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['Beloved Mother & Grandmother', 'Forever in Our Hearts', 'In God’s Eternal Grace'],
-    suggestedPalettes: ['Blush & Lavender (Classic)', 'Pure White & Ivory', 'Autumn Gold & Burgundy']
-  },
-  {
-    id: 'fl-bar-01',
-    name: 'Harlem Heritage Royal Crimson Casket Spray',
-    category: 'casket_sprays',
-    categoryLabel: 'Casket Cover / Full Spray',
-    floristId: 'barbaras',
-    floristName: "Barbara's Flowers (Frederick Douglass Blvd)",
-    floristLocation: '2522 Frederick Douglass Blvd (at W 135th St), Harlem, NY',
-    floristPhone: '(212) 234-3211',
-    price: 450,
-    description: 'Rich royal red Freedom roses paired with cascading burgundy calla lilies, emerald monstera greens, and seeded eucalyptus for a dignified resting honor.',
-    dimensions: '52" L x 28" W',
-    leadTimeHours: 12,
-    imageUrl: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['Beloved Patriarch & Father', 'Rest in Heavenly Peace', 'With Everlasting Love'],
-    suggestedPalettes: ['Royal Crimson & Red', 'White & Gold', 'Deep Violet & Magenta']
-  },
-  {
-    id: 'fl-dan-02',
-    name: 'Peace & Serenity Standing Cross',
-    category: 'wreaths',
-    categoryLabel: 'Standing Cross Tribute',
-    floristId: 'danielas',
-    floristName: "Daniela's Flower Shop (Broadway)",
-    floristLocation: '3650 Broadway (at W 150th St), Harlem, NY',
-    floristPhone: '(212) 283-9300',
-    price: 385,
-    description: 'Solid floral cross constructed with pristine white cushion mums, framed with a diagonal sash of deep purple tea roses and lavender larkspur on an easel.',
-    dimensions: '38" Cross on 60" Easel',
-    leadTimeHours: 18,
-    imageUrl: 'https://images.unsplash.com/photo-1582794543139-8ac9cb0f7b11?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['In God’s Loving Care', 'A Life Dedicated to Christ', 'Until We Meet in Glory'],
-    suggestedPalettes: ['White & Purple Tea Roses', 'White & Red Roses', 'All White Innocence']
-  },
-  {
-    id: 'fl-bar-02',
-    name: 'Eternal Circle of Love Standing Wreath',
-    category: 'wreaths',
-    categoryLabel: 'Standing Open Wreath',
-    floristId: 'barbaras',
-    floristName: "Barbara's Flowers (Frederick Douglass Blvd)",
-    floristLocation: '2522 Frederick Douglass Blvd (at W 135th St), Harlem, NY',
-    floristPhone: '(212) 234-3211',
-    price: 345,
-    description: 'A 24-inch open standing floral ring of white avalanche roses, emerald salal, baby’s breath, and dusty miller representing endless eternity.',
-    dimensions: '24" Ring on 54" Metal Easel',
-    leadTimeHours: 12,
-    imageUrl: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['Our Beloved Sister', 'Always In Our Hearts', 'Cherished Memories'],
-    suggestedPalettes: ['Ivory & Soft Peach', 'White & Soft Blue', 'Vibrant Sunrise Mixed']
-  },
-  {
-    id: 'fl-dan-03',
-    name: 'Majestic White Lily Standing Easel Spray',
-    category: 'standing_sprays',
-    categoryLabel: 'Standing Easel Spray',
-    floristId: 'danielas',
-    floristName: "Daniela's Flower Shop (Broadway)",
-    floristLocation: '3650 Broadway (at W 150th St), Harlem, NY',
-    floristPhone: '(212) 283-9300',
-    price: 295,
-    description: 'Single-ended standing spray of fragrant Casablanca lilies, white dendrobium orchids, giant spider mums, and stately palm greens.',
-    dimensions: '44" H on 54" Easel',
-    leadTimeHours: 8,
-    imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['With Deepest Sympathy', 'From the Church Family', 'In Loving Remembrance'],
-    suggestedPalettes: ['Casablanca White & Green', 'Warm Sunshine Yellow', 'Soft Lavender Mist']
-  },
-  {
-    id: 'fl-bar-03',
-    name: 'Bleeding Heart Standing Tribute',
-    category: 'wreaths',
-    categoryLabel: 'Solid Floral Heart',
-    floristId: 'barbaras',
-    floristName: "Barbara's Flowers (Frederick Douglass Blvd)",
-    floristLocation: '2522 Frederick Douglass Blvd (at W 135th St), Harlem, NY',
-    floristPhone: '(212) 234-3211',
-    price: 425,
-    description: 'Solid white carnation floral heart pierced diagonally by a bleeding trail of 24 red roses with trailing ivy.',
-    dimensions: '26" Heart on 54" Easel',
-    leadTimeHours: 18,
-    imageUrl: 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['My One and Only Love', 'Forever Your Devoted Spouse', 'Broken Hearted But Hopeful'],
-    suggestedPalettes: ['White Carnations & Red Roses', 'Pink & White Roses', 'Yellow & White']
-  },
-  {
-    id: 'fl-dan-04',
-    name: 'Memorial Urn Floral Surround & Garland',
-    category: 'urn_table',
-    categoryLabel: 'Urn Floral Garland',
-    floristId: 'danielas',
-    floristName: "Daniela's Flower Shop (Broadway)",
-    floristLocation: '3650 Broadway (at W 150th St), Harlem, NY',
-    floristPhone: '(212) 283-9300',
-    price: 195,
-    description: 'A circular table garland designed to cradle a bronze, ceramic, or wooden memorial urn with miniature spray roses, orchids, and ivy.',
-    dimensions: '18" Outer Diameter (Fits standard urns)',
-    leadTimeHours: 6,
-    imageUrl: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['Peace & Light', 'Treasured Soul', 'Always Near'],
-    suggestedPalettes: ['Ivory & Seeded Eucalyptus', 'Blush & Gold', 'Lavender Dreams']
-  },
-  {
-    id: 'fl-bar-04',
-    name: 'Celebration of Life Parlor Table Arrangement',
-    category: 'urn_table',
-    categoryLabel: 'Chapel Table Tribute',
-    floristId: 'barbaras',
-    floristName: "Barbara's Flowers (Frederick Douglass Blvd)",
-    floristLocation: '2522 Frederick Douglass Blvd (at W 135th St), Harlem, NY',
-    floristPhone: '(212) 234-3211',
-    price: 145,
-    description: 'Low-profile elegant centerpiece of white hydrangeas, cream roses, and Italian ruscus in a commemorative ceramic pedestal bowl.',
-    dimensions: '16" H x 14" W',
-    leadTimeHours: 4,
-    imageUrl: 'https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&q=80&w=800',
-    popularRibbons: ['In Celebrated Memory', 'From Your Dear Friends', 'Grace & Peace'],
-    suggestedPalettes: ['Classic Ivory & Greens', 'Pastel Garden Medley', 'Vibrant Jewels']
-  },
+  ...BFH_FLORAL_CATALOG.map((bfhItem): FloralItem => {
+    const isDaniela = bfhItem.category === 'danielas' || (bfhItem.floristPartner && bfhItem.floristPartner.includes('Daniela'));
+    
+    let cat: FloralItem['category'] = 'casket_sprays';
+    if (bfhItem.category === 'casket_spray') cat = 'casket_sprays';
+    else if (bfhItem.category === 'combo') cat = 'casket_sprays';
+    else if (bfhItem.category === 'standing_spray') cat = 'standing_sprays';
+    else if (bfhItem.category === 'wreath') cat = 'wreaths';
+    else if (bfhItem.category === 'heart') cat = 'hearts';
+    else if (bfhItem.category === 'cross') cat = 'crosses';
+    else if (bfhItem.category === 'custom') cat = 'standing_sprays';
+    else if (bfhItem.category === 'basket') cat = 'sympathy_baskets';
+    else if (bfhItem.category === 'urn_surround') cat = 'urn_table';
+    else if (bfhItem.category === 'inside_casket') cat = 'casket_sprays';
+    else if (bfhItem.category === 'boutonniere_corsage') cat = 'urn_table';
+    else if (bfhItem.category === 'letter_tribute') cat = 'letter_tributes';
+    else if (bfhItem.category === 'danielas') cat = 'danielas';
+
+    return {
+      id: bfhItem.code.toLowerCase(),
+      name: `[${bfhItem.code}] ${bfhItem.name}`,
+      category: cat,
+      categoryLabel: bfhItem.categoryLabel,
+      floristId: isDaniela ? 'danielas' : 'barbaras',
+      floristName: isDaniela ? "Daniela's Flower Shop (Broadway)" : "Barbara's Flowers (Harlem)",
+      floristLocation: isDaniela ? '3650 Broadway (at W 150th St), Harlem, NY' : '2522 Frederick Douglass Blvd (at W 135th St), Harlem, NY',
+      floristPhone: isDaniela ? '(212) 283-9300' : '(212) 234-3211',
+      price: bfhItem.pricing.medium || bfhItem.pricing.small || 350,
+      description: bfhItem.description,
+      dimensions: bfhItem.dimensions.medium || bfhItem.dimensions.large || 'Standard Tribute',
+      leadTimeHours: 12,
+      imageUrl: bfhItem.imageUrl,
+      popularRibbons: ['Loving Family', 'Beloved Mother', 'Beloved Father', 'To Our Beloved Papa', 'Forever in Our Hearts', 'In God’s Eternal Care'],
+      suggestedPalettes: ['Classic Red & White', 'Pastel Garden Harmony', 'Pure Casablanca White']
+    };
+  }),
   {
     id: 'fl-dan-05',
     name: 'Gourmet Sympathy & Fruit Comfort Basket',
@@ -238,6 +140,7 @@ export const FloralTributeShopModal: React.FC<FloralTributeShopModalProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [floristFilter, setFloristFilter] = useState<'all' | 'danielas' | 'barbaras'>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<FloralItem | null>(null);
   
   // Customization & Ordering form state
@@ -258,21 +161,29 @@ export const FloralTributeShopModal: React.FC<FloralTributeShopModalProps> = ({
 
   if (!isOpen) return null;
 
+  const categories = [
+    { id: 'all', label: `All Arrangements (${HARLEM_FLORAL_CATALOG.length})` },
+    { id: 'casket_sprays', label: 'Casket Sprays & Covers' },
+    { id: 'wreaths', label: 'Standing Wreaths' },
+    { id: 'hearts', label: 'Standing Hearts' },
+    { id: 'crosses', label: 'Standing Crosses' },
+    { id: 'standing_sprays', label: 'Standing Easel Sprays' },
+    { id: 'urn_table', label: 'Urn & Table Pieces' },
+    { id: 'danielas', label: "Uptown Daniela's (34)" },
+    { id: 'letter_tributes', label: 'Custom Letter Tributes' },
+    { id: 'sympathy_baskets', label: 'Sympathy Baskets' },
+    { id: 'living_plants', label: 'Living Plants' }
+  ];
+
   const filteredItems = HARLEM_FLORAL_CATALOG.filter(item => {
     const matchesCat = selectedCategory === 'all' || item.category === selectedCategory;
     const matchesFlorist = floristFilter === 'all' || item.floristId === floristFilter;
-    return matchesCat && matchesFlorist;
+    const matchesSearch = !searchQuery.trim() || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.id.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCat && matchesFlorist && matchesSearch;
   });
-
-  const categories = [
-    { id: 'all', label: 'All Arrangements' },
-    { id: 'casket_sprays', label: 'Casket Sprays' },
-    { id: 'standing_sprays', label: 'Standing Sprays' },
-    { id: 'wreaths', label: 'Wreaths & Crosses' },
-    { id: 'urn_table', label: 'Urn & Table Pieces' },
-    { id: 'sympathy_baskets', label: 'Gourmet Baskets' },
-    { id: 'living_plants', label: 'Living Plants' }
-  ];
 
   const handleSelectItemForCustomization = (item: FloralItem) => {
     setSelectedItem(item);
@@ -674,9 +585,56 @@ export const FloralTributeShopModal: React.FC<FloralTributeShopModalProps> = ({
             /* Catalog Grid View */
             <div className="space-y-6">
               
-              {/* Filter Tabs */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-800 pb-4">
-                <div className="flex flex-wrap gap-1.5">
+              {/* Filter Tabs & Search */}
+              <div className="space-y-3 border-b border-stone-800 pb-4">
+                <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="w-4 h-4 absolute left-3 top-2.5 text-stone-400" />
+                    <input
+                      type="text"
+                      placeholder="Search 70+ arrangements, roses, lilies, sprays, or tribute codes..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2 rounded-xl bg-stone-950 border border-stone-800 text-stone-100 text-xs focus:outline-none focus:border-amber-500"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 text-xs self-end sm:self-center">
+                    <span className="text-stone-400">Florist:</span>
+                    <button
+                      onClick={() => setFloristFilter('all')}
+                      className={`px-2.5 py-1 rounded-lg border text-[11px] font-medium ${
+                        floristFilter === 'all' 
+                          ? 'border-amber-500 text-amber-300 bg-amber-500/10' 
+                          : 'border-stone-800 text-stone-400 hover:text-stone-200'
+                      }`}
+                    >
+                      All Harlem
+                    </button>
+                    <button
+                      onClick={() => setFloristFilter('danielas')}
+                      className={`px-2.5 py-1 rounded-lg border text-[11px] font-medium ${
+                        floristFilter === 'danielas' 
+                          ? 'border-amber-500 text-amber-300 bg-amber-500/10' 
+                          : 'border-stone-800 text-stone-400 hover:text-stone-200'
+                      }`}
+                    >
+                      Daniela's (Broadway)
+                    </button>
+                    <button
+                      onClick={() => setFloristFilter('barbaras')}
+                      className={`px-2.5 py-1 rounded-lg border text-[11px] font-medium ${
+                        floristFilter === 'barbaras' 
+                          ? 'border-amber-500 text-amber-300 bg-amber-500/10' 
+                          : 'border-stone-800 text-stone-400 hover:text-stone-200'
+                      }`}
+                    >
+                      Barbara's (FDB)
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
                   {categories.map(cat => (
                     <button
                       key={cat.id}
@@ -690,40 +648,6 @@ export const FloralTributeShopModal: React.FC<FloralTributeShopModalProps> = ({
                       {cat.label}
                     </button>
                   ))}
-                </div>
-
-                <div className="flex items-center gap-2 text-xs">
-                  <span className="text-stone-400">Florist:</span>
-                  <button
-                    onClick={() => setFloristFilter('all')}
-                    className={`px-2 py-1 rounded-lg border text-[11px] ${
-                      floristFilter === 'all' 
-                        ? 'border-amber-500 text-amber-300 bg-amber-500/10' 
-                        : 'border-stone-800 text-stone-400'
-                    }`}
-                  >
-                    All Harlem
-                  </button>
-                  <button
-                    onClick={() => setFloristFilter('danielas')}
-                    className={`px-2 py-1 rounded-lg border text-[11px] ${
-                      floristFilter === 'danielas' 
-                        ? 'border-amber-500 text-amber-300 bg-amber-500/10' 
-                        : 'border-stone-800 text-stone-400'
-                    }`}
-                  >
-                    Daniela's (Broadway)
-                  </button>
-                  <button
-                    onClick={() => setFloristFilter('barbaras')}
-                    className={`px-2 py-1 rounded-lg border text-[11px] ${
-                      floristFilter === 'barbaras' 
-                        ? 'border-amber-500 text-amber-300 bg-amber-500/10' 
-                        : 'border-stone-800 text-stone-400'
-                    }`}
-                  >
-                    Barbara's (FDB)
-                  </button>
                 </div>
               </div>
 

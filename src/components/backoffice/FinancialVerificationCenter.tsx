@@ -5,7 +5,9 @@ import {
   Plus, 
   Calculator, 
   FileCheck2,
-  CreditCard
+  CreditCard,
+  Zap,
+  Landmark
 } from 'lucide-react';
 
 interface FinancialVerificationCenterProps {
@@ -14,6 +16,8 @@ interface FinancialVerificationCenterProps {
   onOpenStripeModal?: () => void;
   onOpenQuickBooks?: (targetCase: GoldenRecordCase) => void;
   onOpenCheckPrinter?: (targetCase: GoldenRecordCase) => void;
+  onOpenInsuranceBridge?: () => void;
+  onOpenPreNeedVault?: () => void;
 }
 
 export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterProps> = ({
@@ -21,7 +25,9 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
   onUpdateBilling,
   onOpenStripeModal,
   onOpenQuickBooks,
-  onOpenCheckPrinter
+  onOpenCheckPrinter,
+  onOpenInsuranceBridge,
+  onOpenPreNeedVault
 }) => {
   const [showAddPayer, setShowAddPayer] = useState(false);
   const [payerType, setPayerType] = useState<SplitBillingItem['payerType']>('Life Insurance Assignment');
@@ -98,7 +104,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
             </span>
           </div>
           <p className="text-xs text-neutral-500 mt-0.5 font-light">
-            Managing insurance assignments, ACH direct bank transfers, and split payments for Case <strong className="text-[#991b1b] font-semibold">{caseData.caseNumber}</strong>.
+            Managing insurance assignments, ACH direct bank transfers, and split payments for Case <strong className="text-[#800000] font-semibold">{caseData.caseNumber}</strong>.
           </p>
         </div>
 
@@ -106,7 +112,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
           {onOpenStripeModal && (
             <button
               onClick={onOpenStripeModal}
-              className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-emerald-400/40 cursor-pointer"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-emerald-400/40 cursor-pointer"
               title="Open Stripe Merchant Terminal, Apple Pay & Split-Pay Crowdfunding Hub"
             >
               <CreditCard className="w-3.5 h-3.5 text-emerald-200" />
@@ -117,7 +123,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
           {onOpenQuickBooks && (
             <button
               onClick={() => onOpenQuickBooks(caseData)}
-              className="bg-sky-800 hover:bg-sky-900 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-sky-400/40 cursor-pointer"
+              className="bg-brass-800 hover:bg-brass-900 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-brass-400/40 cursor-pointer"
               title="Sync Invoices & Line Items to QuickBooks Online"
             >
               <span>QuickBooks 📊</span>
@@ -127,16 +133,38 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
           {onOpenCheckPrinter && (
             <button
               onClick={() => onOpenCheckPrinter(caseData)}
-              className="bg-amber-800 hover:bg-amber-900 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40 cursor-pointer"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40 cursor-pointer"
               title="Print Cash Advance Check Voucher"
             >
               <span>Cash Advance 🖨️</span>
             </button>
           )}
 
+          {onOpenInsuranceBridge && (
+            <button
+              onClick={onOpenInsuranceBridge}
+              className="bg-gradient-to-r from-brass-700 to-brass-800 hover:from-brass-800 hover:to-brass-900 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-brass-400/40 cursor-pointer"
+              title="Launch Life Insurance Rapid-Funding & 24h Wire Bridge (C&J Financial)"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-300" />
+              <span>Insurance 24h Wire ⚡</span>
+            </button>
+          )}
+
+          {onOpenPreNeedVault && (
+            <button
+              onClick={onOpenPreNeedVault}
+              className="bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-800 hover:to-amber-950 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40 cursor-pointer"
+              title="Open NYS Pre-Need Trust & Medicaid Spend-Down Vault"
+            >
+              <Landmark className="w-3.5 h-3.5 text-amber-200" />
+              <span>Pre-Need Vault 🏛️</span>
+            </button>
+          )}
+
           <button
             onClick={() => setShowAddPayer(true)}
-            className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40 cursor-pointer"
+            className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition shadow-sm border border-amber-400/40 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5 text-amber-300" />
             <span>Add Split Source</span>
@@ -160,7 +188,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
 
         <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm space-y-1">
           <span className="text-[11px] text-neutral-500 uppercase tracking-wider font-semibold">Unallocated Balance</span>
-          <p className="font-serif-title text-2xl font-bold text-[#991b1b]">
+          <p className="font-serif-title text-2xl font-bold text-[#800000]">
             ${Math.max(0, caseData.totalAmountDue - totalAllocated).toLocaleString()}
           </p>
           <span className="text-[10px] text-neutral-400">Remaining to be settled before service</span>
@@ -173,7 +201,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
       <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
         <div className="p-4 sm:p-5 border-b border-neutral-200 bg-[#fcfbfa] flex flex-wrap justify-between items-center gap-3">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-[#991b1b]">
+            <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-[#800000]">
               <Calculator className="w-4 h-4" />
             </div>
             <div>
@@ -188,7 +216,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
 
           <button
             onClick={() => setIsCalculatorOpen(!isCalculatorOpen)}
-            className="text-xs text-[#991b1b] font-bold hover:underline"
+            className="text-xs text-[#800000] font-bold hover:underline"
           >
             {isCalculatorOpen ? 'Collapse Calculator ▲' : 'Open Calculator ▼'}
           </button>
@@ -204,7 +232,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                 <select
                   value={carrierName}
                   onChange={(e) => setCarrierName(e.target.value)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                 >
                   <option value="MetLife / Brighthouse Financial">MetLife / Brighthouse Financial</option>
                   <option value="Prudential Financial">Prudential Financial</option>
@@ -224,7 +252,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                     type="number"
                     value={policyFaceValue}
                     onChange={(e) => setPolicyFaceValue(Number(e.target.value))}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -236,7 +264,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                       step="0.25"
                       value={assignmentFeeRate}
                       onChange={(e) => setAssignmentFeeRate(Number(e.target.value))}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold text-neutral-900 outline-none focus:border-[#800000]"
                     />
                     <span className="text-neutral-500 font-bold">%</span>
                   </div>
@@ -250,7 +278,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                   value={beneficiaryName}
                   onChange={(e) => setBeneficiaryName(e.target.value)}
                   placeholder="e.g. Marcus Vance (Son & Beneficiary)"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                 />
               </div>
 
@@ -291,7 +319,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                   <span className="text-xs font-bold text-neutral-900">
                     Total Assigned from Policy:
                   </span>
-                  <strong className="font-mono text-sm text-[#991b1b] font-bold">${totalAssignedFromPolicy.toLocaleString()}</strong>
+                  <strong className="font-mono text-sm text-[#800000] font-bold">${totalAssignedFromPolicy.toLocaleString()}</strong>
                 </div>
 
                 <div className="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1">
@@ -315,10 +343,21 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                 ) : (
                   <button
                     onClick={handleApplyInsuranceAssignment}
-                    className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-2.5 rounded-xl transition shadow-sm text-xs flex items-center justify-center gap-2 border border-amber-300/40"
+                    className="w-full bg-[#800000] hover:bg-[#6a0509] text-white font-bold py-2.5 rounded-xl transition shadow-sm text-xs flex items-center justify-center gap-2 border border-amber-300/40"
                   >
                     <FileCheck2 className="w-4 h-4 text-amber-300" />
                     <span>Apply Insurance Assignment to Split Billing</span>
+                  </button>
+                )}
+
+                {onOpenInsuranceBridge && (
+                  <button
+                    type="button"
+                    onClick={onOpenInsuranceBridge}
+                    className="w-full bg-gradient-to-r from-brass-700 via-brass-700 to-brass-800 hover:from-brass-800 hover:to-brass-800 text-white font-bold py-2.5 rounded-xl transition shadow-md text-xs flex items-center justify-center gap-2 border border-brass-400/50 cursor-pointer"
+                  >
+                    <Zap className="w-4 h-4 text-amber-300" />
+                    <span>Launch 24-48h Wire Bridge (C&J Financial / Express Funding)</span>
                   </button>
                 )}
                 <span className="text-[10px] text-neutral-400 block text-center">
@@ -351,7 +390,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                   <span className="text-neutral-500">• {item.providerName}</span>
                 </div>
                 {item.policyNumber && (
-                  <p className="text-[11px] text-[#991b1b] font-mono font-medium">
+                  <p className="text-[11px] text-[#800000] font-mono font-medium">
                     Policy / Claim Number: {item.policyNumber} (Assignment to Benta's Funeral Home)
                   </p>
                 )}
@@ -377,7 +416,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                 {item.status === 'pending_verification' && (
                   <button
                     onClick={() => handleVerifyItem(idx)}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1 shadow-sm"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1 shadow-sm"
                   >
                     <CheckCircle className="w-3 h-3" />
                     <span>Verify Policy</span>
@@ -404,7 +443,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                 <select
                   value={payerType}
                   onChange={(e) => setPayerType(e.target.value as any)}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                 >
                   <option value="Cash / Certified Bank Check">Cash / Certified Bank Check (BFH Office Receipt)</option>
                   <option value="Life Insurance Assignment">Life Insurance Assignment (C&J Financial)</option>
@@ -422,7 +461,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                   value={providerName}
                   onChange={(e) => setProviderName(e.target.value)}
                   placeholder="e.g. Lincoln Heritage, New York Life, Chase ACH"
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
@@ -435,7 +474,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                     value={policyNumber}
                     onChange={(e) => setPolicyNumber(e.target.value)}
                     placeholder="e.g. NYL-882019"
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
               )}
@@ -447,7 +486,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                   required
                   value={amount}
                   onChange={(e) => setAmount(Number(e.target.value))}
-                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
@@ -461,7 +500,7 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm border border-amber-300/40"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold px-4 py-2 rounded-lg transition shadow-sm border border-amber-300/40"
                 >
                   Save Funding Source
                 </button>

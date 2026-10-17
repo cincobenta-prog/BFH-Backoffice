@@ -208,7 +208,7 @@ export function get36FieldVitalStatistics(caseData: GoldenRecordCase): Edrs36Fie
       section: 'demographics',
       fieldName: 'Social Security Number',
       fieldCode: 'DEC_SSN',
-      value: caseData.decedent.ssnMasked || 'XXX-XX-XXXX',
+      value: caseData.vitalRecordsSheet?.ssn || caseData.decedent.ssn || caseData.decedent.ssnMasked || '',
       required: true,
       status: 'valid'
     },

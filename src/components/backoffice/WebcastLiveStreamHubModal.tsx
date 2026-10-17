@@ -225,7 +225,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
       <div className="bg-slate-900 border border-amber-500/30 w-full max-w-6xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-slate-100">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-lg shadow-red-950/40">
               <Video className="w-5 h-5 text-white font-bold" />
@@ -360,7 +360,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                         : activeCamera === 'rostrum_eulogist'
                         ? 'bg-gradient-to-br from-slate-950 via-red-950/30 to-slate-900'
                         : activeCamera === 'choir_organ'
-                        ? 'bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-900'
+                        ? 'bg-gradient-to-br from-slate-950 via-brass-950/30 to-slate-900'
                         : 'bg-gradient-to-br from-slate-950 via-emerald-950/30 to-slate-900'
                     }`}>
                       {/* Grid overlay */}
@@ -453,7 +453,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                           className={`px-3.5 py-1.5 rounded-lg font-bold text-xs transition-colors flex items-center space-x-1.5 shadow ${
                             isLiveStreaming 
                               ? 'bg-red-600 hover:bg-red-700 text-white' 
-                              : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                              : 'bg-[#800000] hover:bg-[#6a0509] text-white'
                           }`}
                         >
                           <Radio className="w-3.5 h-3.5 animate-pulse" />
@@ -479,7 +479,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                             onClick={() => setActiveCamera(cam)}
                             className={`p-3 rounded-xl border text-left transition-all ${
                               isActive
-                                ? 'bg-amber-500/20 border-amber-500 text-slate-100 shadow-md shadow-amber-950/40'
+                                ? 'bg-brass-500/20 border-brass-500 text-slate-100 shadow-md shadow-amber-950/40'
                                 : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-slate-800'
                             }`}
                           >
@@ -503,7 +503,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                 <div className="space-y-4">
                   
                   {/* Audio & Video Signal Telemetry Card */}
-                  <div className="p-5 rounded-2xl bg-gradient-to-b from-slate-850 to-slate-950 border border-slate-700 shadow-xl space-y-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-950 border border-slate-700 shadow-xl space-y-4">
                     <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                       <div className="flex items-center space-x-2">
                         <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
@@ -571,7 +571,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                     </p>
                     <button
                       onClick={() => alert(`Master 4K recording queued for archival export for ${selectedCase.caseNumber}`)}
-                      className="w-full py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-200 font-semibold flex items-center justify-center space-x-1.5 transition-colors"
+                      className="w-full py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold flex items-center justify-center space-x-1.5 transition-colors"
                     >
                       <Download className="w-3.5 h-3.5 text-amber-400" />
                       <span>Download 4K Master MP4</span>
@@ -636,7 +636,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                         type="button"
                         onClick={() => setSecurityPin(Math.floor(1000 + Math.random() * 9000).toString())}
                         disabled={!isPinRequired}
-                        className="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-slate-200 transition-colors disabled:opacity-40"
+                        className="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 transition-colors disabled:opacity-40"
                       >
                         Generate Random PIN
                       </button>
@@ -658,7 +658,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                       />
                       <button
                         onClick={() => handleCopy(credentials.streamUrl)}
-                        className="py-2 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shrink-0 flex items-center space-x-1"
+                        className="py-2 px-3 rounded-lg bg-brass-500 hover:bg-brass-400 text-neutral-950 font-bold text-xs transition-colors shrink-0 flex items-center space-x-1"
                       >
                         {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                         <span>{copiedLink ? 'Copied' : 'Copy'}</span>
@@ -704,7 +704,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
 
                     <button
                       type="submit"
-                      className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center space-x-2 shadow-md shadow-emerald-950"
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs transition-colors flex items-center justify-center space-x-2 shadow-md shadow-emerald-950"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Send Webcast Link via Twilio SMS Gateway</span>
@@ -726,7 +726,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                 </div>
                 <button
                   onClick={() => alert(`Exported ${mournerMessages.length} condolence messages to family PDF keepsake.`)}
-                  className="py-2 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center space-x-1.5 transition-colors"
+                  className="py-2 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center space-x-1.5 transition-colors"
                 >
                   <Download className="w-3.5 h-3.5 text-amber-400" />
                   <span>Export Guestbook to PDF</span>
@@ -759,7 +759,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                             onClick={() => handleTogglePinMessage(msg.id)}
                             className={`px-2 py-0.5 rounded text-[10px] font-semibold transition-colors ${
                               msg.isPinned 
-                                ? 'bg-amber-500 text-slate-950 font-bold' 
+                                ? 'bg-brass-500 text-slate-950 font-bold' 
                                 : 'bg-slate-700 text-slate-300 hover:text-amber-300'
                             }`}
                           >
@@ -815,7 +815,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
 
                     <button
                       type="submit"
-                      className="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-950"
+                      className="w-full py-2.5 px-4 rounded-xl bg-brass-500 hover:bg-brass-400 text-neutral-950 font-bold text-xs transition-colors shadow-lg shadow-amber-950"
                     >
                       Post to Live Stream
                     </button>
@@ -966,7 +966,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
                     type="button"
                     onClick={handleTestConnection}
                     disabled={isTesting}
-                    className="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center space-x-2 transition-colors disabled:opacity-50"
+                    className="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center space-x-2 transition-colors disabled:opacity-50"
                   >
                     {isTesting ? <RefreshCw className="w-4 h-4 animate-spin text-amber-400" /> : <Radio className="w-4 h-4 text-emerald-400" />}
                     <span>Test RTMP Handshake & Video Ping</span>
@@ -974,7 +974,7 @@ export const WebcastLiveStreamHubModal: React.FC<WebcastLiveStreamHubModalProps>
 
                   <button
                     type="submit"
-                    className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-950"
+                    className="py-2.5 px-6 rounded-xl bg-brass-500 hover:bg-brass-400 text-neutral-950 font-bold text-xs transition-colors shadow-lg shadow-amber-950"
                   >
                     Save Webcast Configuration
                   </button>

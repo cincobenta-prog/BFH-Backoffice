@@ -232,10 +232,10 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200 font-sans">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden border border-neutral-300 my-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden border border-neutral-300 my-4">
         
         {/* Modal Header */}
-        <div className="bg-[#991b1b] text-white px-6 py-4 flex items-center justify-between shrink-0 shadow-sm border-b border-amber-400/30">
+        <div className="bg-[#800000] text-white px-6 py-4 flex items-center justify-between shrink-0 shadow-sm border-b border-amber-400/30">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
               <ShieldCheck className="w-6 h-6 text-amber-300" />
@@ -250,7 +250,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                   className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full border transition flex items-center gap-1 cursor-pointer ${
                     docuSignConfig.isLiveActive
                       ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200 hover:bg-emerald-500/30'
-                      : 'bg-amber-400/20 border-amber-300 text-amber-200 hover:bg-amber-400/30'
+                      : 'bg-brass-400/20 border-amber-300 text-brass-200 hover:bg-brass-400/30'
                   }`}
                   title="Configure DocuSign API Integration Key and Secret"
                 >
@@ -278,7 +278,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
             onClick={() => setActiveTab('envelope')}
             className={`pb-2.5 px-2 border-b-2 flex items-center space-x-1.5 transition shrink-0 ${
               activeTab === 'envelope'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-500 hover:text-neutral-900'
             }`}
           >
@@ -290,7 +290,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
             onClick={() => setActiveTab('id_verify')}
             className={`pb-2.5 px-2 border-b-2 flex items-center space-x-1.5 transition shrink-0 ${
               activeTab === 'id_verify'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-500 hover:text-neutral-900'
             }`}
           >
@@ -302,7 +302,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
             onClick={() => setActiveTab('certificate')}
             className={`pb-2.5 px-2 border-b-2 flex items-center space-x-1.5 transition shrink-0 ${
               activeTab === 'certificate'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-500 hover:text-neutral-900'
             }`}
           >
@@ -314,7 +314,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
             onClick={() => setActiveTab('settings')}
             className={`pb-2.5 px-2 border-b-2 flex items-center space-x-1.5 transition shrink-0 ${
               activeTab === 'settings'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-500 hover:text-neutral-900'
             }`}
           >
@@ -334,7 +334,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <span className="text-xs font-bold text-neutral-500">Case:</span>
-                <span className="font-bold text-sm text-[#991b1b]">{caseItem.caseNumber}</span>
+                <span className="font-bold text-sm text-[#800000]">{caseItem.caseNumber}</span>
                 <span className="text-xs font-medium text-neutral-700">• {caseItem.decedent.legalName}</span>
               </div>
               <div className="text-xs text-neutral-600 flex items-center space-x-2 flex-wrap">
@@ -352,7 +352,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                 envelope.status === 'completed'
                   ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
                   : envelope.status === 'id_verified'
-                    ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                    ? 'bg-brass-100 text-brass-800 border border-brass-300'
                     : envelope.status === 'sent'
                       ? 'bg-amber-100 text-amber-800 border border-amber-300'
                       : 'bg-neutral-200 text-neutral-700'
@@ -369,7 +369,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                   <div>
                     <h3 className="font-bold text-sm text-neutral-900 flex items-center space-x-2">
-                      <FileText className="w-4 h-4 text-[#991b1b]" />
+                      <FileText className="w-4 h-4 text-[#800000]" />
                       <span>NYS Standard Legal Documents Included in this Envelope</span>
                     </h3>
                     <p className="text-xs text-neutral-500 mt-0.5">
@@ -403,7 +403,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                             type="checkbox"
                             checked={isSelected}
                             onChange={() => {}}
-                            className="mt-1 accent-[#991b1b] rounded cursor-pointer"
+                            className="mt-1 accent-[#800000] rounded cursor-pointer"
                           />
                           <div>
                             <div className="flex items-center space-x-2">
@@ -431,12 +431,12 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                   })}
                 </div>
 
-                <div className="p-4 bg-blue-50/80 border border-blue-200 rounded-xl text-xs text-blue-950 space-y-2">
+                <div className="p-4 bg-brass-50/80 border border-brass-200 rounded-xl text-xs text-brass-950 space-y-2">
                   <div className="flex items-center space-x-2 font-bold">
-                    <Lock className="w-4 h-4 text-blue-700" />
+                    <Lock className="w-4 h-4 text-brass-700" />
                     <span>NYS Electronic Signatures and Records Act (ESRA) Compliance Notice</span>
                   </div>
-                  <p className="text-[11px] leading-relaxed text-blue-900">
+                  <p className="text-[11px] leading-relaxed text-brass-900">
                     DocuSign is fully recognized in New York State for funeral directorship contracts and authorization affidavits. Under NY State Technology Law § 304, electronic signatures with multi-factor authentication carry the exact legal weight of pen-and-ink signatures before the NYS Department of Health Bureau of Funeral Directing and NYC Office of Vital Statistics.
                   </p>
                 </div>
@@ -447,7 +447,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                 <button
                   onClick={handleSendEnvelope}
                   disabled={isSending || selectedDocIds.length === 0}
-                  className="bg-[#991b1b] hover:bg-red-800 disabled:opacity-50 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-sm flex items-center space-x-2 transition border border-amber-400/40 cursor-pointer"
+                  className="bg-[#800000] hover:bg-[#6a0509] disabled:opacity-50 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-sm flex items-center space-x-2 transition border border-amber-400/40 cursor-pointer"
                 >
                   {isSending ? (
                     <>
@@ -472,7 +472,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-bold text-sm text-neutral-900 flex items-center space-x-2">
-                      <Smartphone className="w-4 h-4 text-[#991b1b]" />
+                      <Smartphone className="w-4 h-4 text-[#800000]" />
                       <span>Next-of-Kin Multi-Factor Identity Challenge (NYS ESRA)</span>
                     </h3>
                     <p className="text-xs text-neutral-500 mt-0.5">
@@ -509,7 +509,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                         type="text"
                         value={smsOtpInput}
                         onChange={(e) => setSmsOtpInput(e.target.value)}
-                        className="w-32 bg-white border border-neutral-300 rounded-lg px-3 py-1.5 font-mono font-bold text-sm tracking-widest text-center text-neutral-900 outline-none focus:border-[#991b1b]"
+                        className="w-32 bg-white border border-neutral-300 rounded-lg px-3 py-1.5 font-mono font-bold text-sm tracking-widest text-center text-neutral-900 outline-none focus:border-[#800000]"
                         maxLength={6}
                       />
                       <button
@@ -541,7 +541,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                 <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
                   <div>
                     <h3 className="font-bold text-sm text-neutral-900 flex items-center space-x-2">
-                      <Award className="w-4 h-4 text-[#991b1b]" />
+                      <Award className="w-4 h-4 text-[#800000]" />
                       <span>Official DocuSign® Certificate of Completion</span>
                     </h3>
                     <p className="text-xs text-neutral-500 mt-0.5">
@@ -567,7 +567,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                 <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
                   <button
                     onClick={handleCompleteSigning}
-                    className="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 shadow-sm transition cursor-pointer"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 shadow-sm transition cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4 text-emerald-200" />
                     <span>Mark All Legal Documents as Executed</span>
@@ -577,7 +577,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                     onClick={() => alert(`Downloading Official DocuSign Certificate of Completion for Case ${caseItem.caseNumber}`)}
                     className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs px-4 py-2 rounded-xl border border-neutral-300 flex items-center space-x-1.5 transition cursor-pointer"
                   >
-                    <Download className="w-4 h-4 text-[#991b1b]" />
+                    <Download className="w-4 h-4 text-[#800000]" />
                     <span>Download Legal Certificate (PDF)</span>
                   </button>
                 </div>
@@ -634,14 +634,14 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
               <form onSubmit={handleSaveSettings} className="bg-white border border-neutral-200 rounded-2xl p-5 space-y-4 shadow-2xs">
                 <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                   <span className="font-bold text-neutral-800 text-xs flex items-center gap-1.5">
-                    <Key className="w-3.5 h-3.5 text-[#991b1b]" />
+                    <Key className="w-3.5 h-3.5 text-[#800000]" />
                     DocuSign Developer / Production API Credentials
                   </span>
                   <a
                     href="https://admindemo.docusign.com/apps-and-keys"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[11px] text-[#991b1b] hover:underline flex items-center gap-1 font-medium"
+                    className="text-[11px] text-[#800000] hover:underline flex items-center gap-1 font-medium"
                   >
                     <span>Get keys at DocuSign Apps &amp; Keys</span>
                     <ExternalLink className="w-3 h-3" />
@@ -659,7 +659,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                       value={integrationKeyInput}
                       onChange={(e) => setIntegrationKeyInput(e.target.value)}
                       placeholder="e.g. 2c1ecd41-421c-4fce-a8a7-a9b5a8c92fd0"
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#991b1b] outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
                     />
                   </div>
 
@@ -673,7 +673,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                       value={accountIdInput}
                       onChange={(e) => setAccountIdInput(e.target.value)}
                       placeholder="e.g. 21ece312-7bdb-416a-802a-d5c0f5f9f7fe"
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#991b1b] outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
                     />
                   </div>
 
@@ -710,7 +710,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                       value={clientSecretInput}
                       onChange={(e) => setClientSecretInput(e.target.value)}
                       placeholder="e.g. Generated Secret Key from DocuSign Console"
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#991b1b] outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
                     />
                   </div>
 
@@ -724,7 +724,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                         onClick={() => setEnvChoice('demo')}
                         className={`flex-1 py-2 rounded-xl text-xs font-bold border transition cursor-pointer ${
                           envChoice === 'demo'
-                            ? 'bg-[#991b1b] text-white border-[#991b1b]'
+                            ? 'bg-[#800000] text-white border-[#800000]'
                             : 'bg-neutral-100 text-neutral-700 border-neutral-300'
                         }`}
                       >
@@ -735,7 +735,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
                         onClick={() => setEnvChoice('production')}
                         className={`flex-1 py-2 rounded-xl text-xs font-bold border transition cursor-pointer ${
                           envChoice === 'production'
-                            ? 'bg-[#991b1b] text-white border-[#991b1b]'
+                            ? 'bg-[#800000] text-white border-[#800000]'
                             : 'bg-neutral-100 text-neutral-700 border-neutral-300'
                         }`}
                       >
@@ -762,7 +762,7 @@ export const DocuSignEnvelopeModal: React.FC<DocuSignEnvelopeModalProps> = ({
 
                   <button
                     type="submit"
-                    className="px-5 py-2 bg-[#991b1b] hover:bg-[#7f1d1d] text-white font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-2 bg-[#800000] hover:bg-[#7f1d1d] text-white font-bold text-xs rounded-xl transition shadow-sm flex items-center gap-1.5 cursor-pointer"
                   >
                     <ShieldCheck className="w-4 h-4 text-amber-300" />
                     <span>Save &amp; Activate DocuSign Gateway</span>

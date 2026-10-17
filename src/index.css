@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Jost:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,11 +16,11 @@
     --popover-foreground: 240 10% 12%;
 
     /* Benta Crimson Red */
-    --primary: 350 80% 40%;
+    --primary: 357 90% 33%;
     --primary-foreground: 0 0% 100%;
 
-    /* Harlem Gold / Warm Brass */
-    --accent: 43 75% 45%;
+    /* Harlem Brass */
+    --accent: 38 52% 40%;
     --accent-foreground: 0 0% 100%;
 
     --secondary: 0 0% 95%;
@@ -48,16 +48,170 @@
     @apply bg-[#fbfbfd] text-[#18181b];
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(185, 28, 28, 0.03) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.04) 0px, transparent 50%);
-    background-attachment: fixed;
   }
 }
 
 /* Custom styling & utilities */
 .font-serif-title {
-  font-family: 'Cinzel', serif;
+  font-family: 'Jost', 'Poppins', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Benta square button — matches e-bfh.com button-shape-square */
+.btn-benta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Jost', 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.9rem;
+  border: 1px solid #a0080e;
+  background: #a0080e;
+  color: #fff;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.btn-benta:hover {
+  background: #7d060b;
+  border-color: #7d060b;
+}
+.btn-benta--light {
+  background: #fff;
+  border-color: #fff;
+  color: #2f2f22;
+}
+.btn-benta--light:hover {
+  background: #e7e4dc;
+  border-color: #e7e4dc;
+}
+.btn-benta--outline {
+  background: transparent;
+  color: #a0080e;
+}
+.btn-benta--outline:hover {
+  background: #a0080e;
+  color: #fff;
+}
+.benta-hairline {
+  height: 1px;
+  background: #a0080e;
+  opacity: 0.5;
+}
+.benta-eyebrow {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #6f6a63;
+}
+
+/* ------------------------------------------------------------------
+   Unified surface & icon system
+   One card. One tile. One chip. One badge. One eyebrow.
+   Semantic colour is reserved: emerald = success, amber = action needed,
+   brass/vintage-maroon = brand. Never decorative.
+   ------------------------------------------------------------------ */
+@layer components {
+  .surface-card {
+    @apply bg-white border border-neutral-200 rounded-2xl shadow-sm transition-all duration-200;
+  }
+  .surface-card-hover:hover {
+    @apply shadow-md border-neutral-300;
+  }
+  .surface-tile {
+    @apply bg-neutral-50 border border-neutral-200/70 rounded-xl;
+  }
+  .surface-dark {
+    @apply text-white rounded-2xl border border-brass-400/30 relative overflow-hidden;
+    background-image: linear-gradient(135deg, #1c1a1a 0%, #241f1a 55%, #2a1d12 100%);
+  }
+
+  .icon-chip {
+    @apply inline-flex items-center justify-center shrink-0 rounded-xl bg-brass-600/10 text-[#800000];
+  }
+  .icon-chip > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 1.75;
+  }
+  .icon-chip-sm {
+    @apply p-2;
+  }
+  .icon-chip-sm > svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .icon-chip-lg {
+    @apply p-3;
+  }
+  .icon-chip-lg > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .icon-chip-on-dark {
+    @apply bg-brass-400/15 text-brass-300 border border-brass-400/30;
+  }
+
+  .chip-badge {
+    @apply inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border;
+  }
+  .chip-badge-neutral {
+    @apply bg-neutral-100 text-neutral-600 border-neutral-200;
+  }
+  .chip-badge-brand {
+    @apply bg-brass-600/10 text-[#800000] border-brass-500/30;
+  }
+  .chip-badge-action {
+    @apply bg-amber-50 text-amber-800 border-amber-200;
+  }
+  .chip-badge-success {
+    @apply bg-emerald-50 text-emerald-800 border-emerald-200;
+  }
+  .chip-badge-dark {
+    @apply bg-white/10 text-white border-white/15;
+  }
+
+  .eyebrow-label {
+    @apply text-[11px] font-bold uppercase tracking-widest;
+  }
+
+  /* Compact density — back office runs tighter than the family portal. */
+  .surface-card-compact {
+    @apply bg-white border border-neutral-200 rounded-xl shadow-sm transition-all duration-200;
+  }
+  .surface-tile-compact {
+    @apply bg-neutral-50 border border-neutral-200/70 rounded-lg;
+  }
+  .icon-chip-compact {
+    @apply inline-flex items-center justify-center shrink-0 rounded-lg bg-brass-600/10 text-[#800000];
+  }
+  .icon-chip-compact > svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 1.75;
+  }
+
+  /* Button tones — colour, border, radius and weight only.
+     Each call site keeps its own padding and font size. */
+  .btn-tool {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-white text-neutral-700 font-semibold transition hover:bg-neutral-50 hover:border-neutral-300 hover:text-neutral-900;
+  }
+  .btn-tool-dark {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 text-slate-200 font-semibold transition hover:bg-slate-700 hover:border-slate-600;
+  }
+  .btn-doc {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-brass-300 bg-brass-50 text-brass-900 font-semibold transition hover:bg-brass-100;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-1.5 rounded-lg bg-[#800000] text-white font-semibold transition hover:bg-[#6a0509];
+  }
 }
 
 .gold-gradient-text {
@@ -73,7 +227,7 @@
 }
 
 .green-gradient-text {
-  background: linear-gradient(135deg, #059669 0%, #047857 50%, #064e3b 100%);
+  background: linear-gradient(135deg, #a0080e 0%, #7d060b 60%, #6a0509 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

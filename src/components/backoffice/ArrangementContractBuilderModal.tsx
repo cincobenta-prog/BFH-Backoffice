@@ -801,12 +801,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-6xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden">
+      <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden">
         
         {/* MODAL HEADER */}
         <div className="bg-gradient-to-r from-neutral-900 via-[#181216] to-neutral-900 text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 border-b border-amber-400/40 shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#991b1b] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-md">
+            <div className="w-10 h-10 rounded-2xl bg-[#800000] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-md">
               <FileText className="w-5 h-5" />
             </div>
             <div>
@@ -828,7 +828,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
             <button
               type="button"
               onClick={() => setIsRevisionArchiveOpen(true)}
-              className="px-3 py-1.5 bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/50 text-xs rounded-xl font-bold transition flex items-center space-x-1.5 shadow-xs cursor-pointer"
+              className="px-3 py-1.5 bg-brass-400/20 hover:bg-brass-400/30 text-brass-300 border border-brass-400/50 text-xs rounded-xl font-bold transition flex items-center space-x-1.5 shadow-xs cursor-pointer"
               title="View contract revision audit timeline, diffs, and print amendment riders"
             >
               <History className="w-3.5 h-3.5 text-amber-400" />
@@ -891,7 +891,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 onClick={() => setCurrentStep(s.step as any)}
                 className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl transition whitespace-nowrap ${
                   isActive 
-                    ? 'bg-[#991b1b] text-white shadow-xs font-bold'
+                    ? 'bg-[#800000] text-white shadow-xs font-bold'
                     : isCompleted
                     ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100'
                     : 'text-neutral-600 hover:bg-neutral-200'
@@ -924,13 +924,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               <div className="space-y-6 animate-fadeIn text-xs">
                 
                 {/* 2-Page Digital Vital Record Sheet Document Container */}
-                <div className="bg-white rounded-3xl border-2 border-neutral-300 shadow-xl overflow-hidden">
+                <div className="bg-white rounded-2xl border-2 border-neutral-300 shadow-xl overflow-hidden">
                   
                   {/* Top Header of Document */}
                   <div className="bg-gradient-to-r from-neutral-900 via-[#1f1616] to-neutral-900 text-white p-5 border-b border-amber-400/40">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 rounded-2xl bg-[#991b1b] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-lg font-serif-title font-bold text-xl">
+                        <div className="w-12 h-12 rounded-2xl bg-[#800000] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-lg font-serif-title font-bold text-xl">
                           BFH
                         </div>
                         <div>
@@ -958,7 +958,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => setVitalSheetPage('page1')}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                             vitalSheetPage === 'page1'
-                              ? 'bg-[#991b1b] text-white shadow-xs border border-amber-400/40'
+                              ? 'bg-[#800000] text-white shadow-xs border border-brass-400/40'
                               : 'text-neutral-400 hover:text-white'
                           }`}
                         >
@@ -970,7 +970,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => setVitalSheetPage('page2')}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                             vitalSheetPage === 'page2'
-                              ? 'bg-[#991b1b] text-white shadow-xs border border-amber-400/40'
+                              ? 'bg-[#800000] text-white shadow-xs border border-brass-400/40'
                               : 'text-neutral-400 hover:text-white'
                           }`}
                         >
@@ -993,7 +993,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         {/* Section 1: Decedent Identity */}
                         <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
                           <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
-                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] flex items-center gap-1.5">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] flex items-center gap-1.5">
                               <ShieldCheck className="w-4 h-4" />
                               <span>1. Name & Identity of Decedent</span>
                             </h4>
@@ -1008,7 +1008,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 value={vitals.decedentFirstName || ''}
                                 onChange={(e) => updateVitalSheet({ decedentFirstName: e.target.value })}
                                 placeholder="First Name"
-                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                               />
                             </div>
                             <div>
@@ -1018,7 +1018,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 value={vitals.decedentMiddleName || ''}
                                 onChange={(e) => updateVitalSheet({ decedentMiddleName: e.target.value })}
                                 placeholder="Middle Name"
-                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                               />
                             </div>
                             <div>
@@ -1028,7 +1028,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 value={vitals.decedentLastName || ''}
                                 onChange={(e) => updateVitalSheet({ decedentLastName: e.target.value })}
                                 placeholder="Last Name"
-                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-semibold text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                               />
                             </div>
                           </div>
@@ -1041,12 +1041,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 value={vitals.otherKnownNames || ''}
                                 onChange={(e) => updateVitalSheet({ otherKnownNames: e.target.value })}
                                 placeholder="e.g. Marie 'Mimi' Brown, Maiden: Jenkins"
-                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                               />
                             </div>
                             <div>
                               <label className="text-[10px] font-bold text-neutral-600 block mb-1">
-                                Social Security Number <span className="text-[#991b1b] font-mono">(9 Digits for Death Cert)</span>:
+                                Social Security Number <span className="text-[#800000] font-mono">(9 Digits for Death Cert)</span>:
                               </label>
                               <input
                                 type="text"
@@ -1063,7 +1063,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updateVitalSheet({ ssn: formatted });
                                 }}
                                 placeholder="123-45-6789"
-                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                                className="w-full p-2 bg-white border border-neutral-300 rounded-xl font-mono text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                               />
                             </div>
                           </div>
@@ -1079,7 +1079,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     onClick={() => updateVitalSheet({ sex: s })}
                                     className={`flex-1 py-1.5 px-3 rounded-xl font-bold uppercase text-[11px] border transition cursor-pointer ${
                                       vitals.sex === s
-                                        ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                        ? 'bg-[#800000] text-white border-[#800000] shadow-2xs'
                                         : 'bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100'
                                     }`}
                                   >
@@ -1161,7 +1161,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           
                           {/* Residence of Loved One */}
                           <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
-                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-1">
                               2. Residence of Loved One
                             </h4>
                             <div>
@@ -1217,7 +1217,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                           {/* Place of Death */}
                           <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
-                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-1">
                               3. Date & Place of Passing
                             </h4>
                             <div className="grid grid-cols-2 gap-2">
@@ -1267,7 +1267,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                         {/* Section 3: Marital Status, Career & Military Service */}
                         <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
-                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-2">
                             4. Marital Status, Career & Military Status
                           </h4>
 
@@ -1288,7 +1288,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   onClick={() => updateVitalSheet({ maritalStatus: m.id as any })}
                                   className={`p-2 rounded-xl border text-center font-bold text-xs transition cursor-pointer ${
                                     vitals.maritalStatus === m.id
-                                      ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                      ? 'bg-[#800000] text-white border-[#800000] shadow-2xs'
                                       : 'bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100'
                                   }`}
                                 >
@@ -1322,9 +1322,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           </div>
 
                           {/* Military Service */}
-                          <div className="p-3.5 bg-blue-50/70 rounded-xl border border-blue-200 space-y-2">
+                          <div className="p-3.5 bg-brass-50/70 rounded-xl border border-brass-200 space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-blue-950 text-xs flex items-center gap-1.5">
+                              <span className="font-bold text-brass-950 text-xs flex items-center gap-1.5">
                                 <span>🎖️ Military Status:</span>
                               </span>
                               <div className="flex items-center space-x-2">
@@ -1342,8 +1342,8 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     }}
                                     className={`px-3 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
                                       vitals.militaryStatus === mil.id
-                                        ? 'bg-blue-900 text-white border-blue-900 shadow-2xs'
-                                        : 'bg-white text-blue-900 border-blue-300 hover:bg-blue-100'
+                                        ? 'bg-brass-900 text-white border-brass-900 shadow-2xs'
+                                        : 'bg-white text-brass-900 border-brass-300 hover:bg-brass-100'
                                     }`}
                                   >
                                     {mil.label}
@@ -1355,11 +1355,11 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             {(vitals.militaryStatus === 'veteran' || vitals.militaryStatus === 'active') && (
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                                 <div>
-                                  <label className="text-[10px] font-bold text-blue-900 block mb-1">Branch of Service:</label>
+                                  <label className="text-[10px] font-bold text-brass-900 block mb-1">Branch of Service:</label>
                                   <select
                                     value={vitals.militaryBranch || 'U.S. Army'}
                                     onChange={(e) => updateVitalSheet({ militaryBranch: e.target.value })}
-                                    className="w-full p-1.5 bg-white border border-blue-300 rounded-lg text-blue-950 font-bold"
+                                    className="w-full p-1.5 bg-white border border-brass-300 rounded-lg text-brass-950 font-bold"
                                   >
                                     <option value="U.S. Army">U.S. Army</option>
                                     <option value="U.S. Navy">U.S. Navy</option>
@@ -1370,7 +1370,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     <option value="National Guard">National Guard</option>
                                   </select>
                                 </div>
-                                <div className="flex items-center text-[11px] text-blue-900 font-medium">
+                                <div className="flex items-center text-[11px] text-brass-900 font-medium">
                                   <span>✓ Eligible for <strong>3 Free Official Death Certificates</strong>, VA Burial Allowance &amp; Presidential Flag.</span>
                                 </div>
                               </div>
@@ -1381,7 +1381,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                         {/* Section 4: Parents & Spouse */}
                         <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
-                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-2">
                             5. Parents &amp; Spouse Information
                           </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1543,7 +1543,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                         {/* Section 6: Cemetery Deed & Previous Interment */}
                         <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-3">
-                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-2">
                             7. Cemetery Deed &amp; Previous Grave Interment Record
                           </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1643,7 +1643,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         
                         {/* 1. Authorizations & Consents */}
                         <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
-                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-2">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-2">
                             1. Family Authorizations &amp; Webcast Consents
                           </h4>
 
@@ -1665,7 +1665,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   onClick={() => updateVitalSheet({ authPostObituaryWebsite: val })}
                                   className={`px-4 py-1.5 rounded-xl font-bold text-xs border transition cursor-pointer ${
                                     vitals.authPostObituaryWebsite === val
-                                      ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                      ? 'bg-[#800000] text-white border-[#800000] shadow-2xs'
                                       : 'bg-neutral-100 text-neutral-700 border-neutral-300 hover:bg-neutral-200'
                                   }`}
                                 >
@@ -1694,7 +1694,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     onClick={() => updateVitalSheet({ authLiveStreamService: val })}
                                     className={`px-4 py-1.5 rounded-xl font-bold text-xs border transition cursor-pointer ${
                                       vitals.authLiveStreamService === val
-                                        ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-2xs'
+                                        ? 'bg-[#800000] text-white border-[#800000] shadow-2xs'
                                         : 'bg-neutral-100 text-neutral-700 border-neutral-300 hover:bg-neutral-200'
                                     }`}
                                   >
@@ -1718,7 +1718,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                       onClick={() => updateVitalSheet({ authLiveStreamType: p.id as any })}
                                       className={`px-3 py-1 rounded-lg text-xs font-bold border transition cursor-pointer ${
                                         vitals.authLiveStreamType === p.id
-                                          ? 'bg-amber-600 text-white border-amber-600 shadow-2xs'
+                                          ? 'bg-brass-600 text-white border-brass-600 shadow-2xs'
                                           : 'bg-neutral-100 text-neutral-700 border-neutral-300 hover:bg-neutral-200'
                                       }`}
                                     >
@@ -1904,7 +1904,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                       }}
                                       className={`flex-1 py-1.5 px-2 rounded-lg font-bold text-[11px] border transition cursor-pointer ${
                                         vitals.directorDispositionMode === mode.id
-                                          ? 'bg-[#991b1b] text-white border-amber-400 shadow-2xs'
+                                          ? 'bg-[#800000] text-white border-brass-400 shadow-2xs'
                                           : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'
                                       }`}
                                     >
@@ -1996,7 +1996,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                         {/* 3. Additional Information & Story Questions */}
                         <div className="bg-amber-50/60 p-5 rounded-2xl border-2 border-amber-300/80 space-y-4">
-                          <div className="flex items-center space-x-2 text-[#991b1b]">
+                          <div className="flex items-center space-x-2 text-[#800000]">
                             <Heart className="w-5 h-5 text-red-600 fill-red-100" />
                             <h4 className="font-serif-title font-bold text-base text-neutral-900">
                               3. Additional Story Information &amp; Celebration DNA
@@ -2139,7 +2139,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <button
                       type="button"
                       onClick={() => setCurrentStep(2)}
-                      className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer"
                     >
                       <span>Proceed to Step 2: Select Service Type</span>
                       <ChevronRight className="w-4 h-4 text-amber-300" />
@@ -2159,7 +2159,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               
               <div className="border-b border-neutral-200 pb-2">
                 <h4 className="font-serif-title text-base font-bold text-neutral-900 flex items-center gap-2">
-                  <Building2 className="w-5 h-5 text-[#991b1b]" />
+                  <Building2 className="w-5 h-5 text-[#800000]" />
                   <span>Select Primary Service Type & Disposition Method</span>
                 </h4>
                 <p className="text-xs text-neutral-500">
@@ -2175,7 +2175,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   onClick={() => handleSelectServiceType('burial_with_service')}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-3 ${
                     statementData.serviceType === 'burial_with_service'
-                      ? 'border-[#991b1b] bg-red-50/40 ring-2 ring-red-400/40 shadow-md'
+                      ? 'border-[#800000] bg-red-50/40 ring-2 ring-red-400/40 shadow-md'
                       : 'border-neutral-200 bg-white hover:border-neutral-400'
                   }`}
                 >
@@ -2183,7 +2183,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <span className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
                       🏛️ Traditional Service and Burial
                     </span>
-                    <span className="text-[10px] bg-[#991b1b] text-white px-2 py-0.5 rounded-full font-bold">
+                    <span className="text-[10px] bg-[#800000] text-white px-2 py-0.5 rounded-full font-bold">
                       Variables Suite
                     </span>
                   </div>
@@ -2202,7 +2202,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   onClick={() => handleSelectServiceType('cremation_with_service')}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-3 ${
                     statementData.serviceType === 'cremation_with_service'
-                      ? 'border-[#991b1b] bg-red-50/40 ring-2 ring-red-400/40 shadow-md'
+                      ? 'border-[#800000] bg-red-50/40 ring-2 ring-red-400/40 shadow-md'
                       : 'border-neutral-200 bg-white hover:border-neutral-400'
                   }`}
                 >
@@ -2210,7 +2210,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <span className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
                       🕊️ Funeral Service with Cremation
                     </span>
-                    <span className="text-[10px] bg-[#991b1b] text-white px-2 py-0.5 rounded-full font-bold">
+                    <span className="text-[10px] bg-[#800000] text-white px-2 py-0.5 rounded-full font-bold">
                       Variables Suite
                     </span>
                   </div>
@@ -2229,7 +2229,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   onClick={() => handleSelectServiceType('cremation_memorial')}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-3 ${
                     statementData.serviceType === 'cremation_memorial'
-                      ? 'border-[#991b1b] bg-amber-50/50 ring-2 ring-amber-400/50 shadow-md'
+                      ? 'border-[#800000] bg-amber-50/50 ring-2 ring-amber-400/50 shadow-md'
                       : 'border-neutral-200 bg-white hover:border-neutral-400'
                   }`}
                 >
@@ -2256,7 +2256,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   onClick={() => handleSelectServiceType('direct_cremation')}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-3 ${
                     statementData.serviceType === 'direct_cremation'
-                      ? 'border-[#991b1b] bg-amber-50/50 ring-2 ring-amber-400/50 shadow-md'
+                      ? 'border-[#800000] bg-amber-50/50 ring-2 ring-amber-400/50 shadow-md'
                       : 'border-neutral-200 bg-white hover:border-neutral-400'
                   }`}
                 >
@@ -2281,7 +2281,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => handleDirectCremationContainer('customer_container')}
                           className={`p-2 rounded-xl text-left border transition ${
                             statementData.sectionI.directCremationOption === 'customer_container'
-                              ? 'bg-[#991b1b] text-white font-bold border-[#991b1b]'
+                              ? 'bg-[#800000] text-white font-bold border-[#800000]'
                               : 'bg-white text-neutral-800 border-neutral-300'
                           }`}
                         >
@@ -2294,7 +2294,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => handleDirectCremationContainer('alternative_container')}
                           className={`p-2 rounded-xl text-left border transition ${
                             statementData.sectionI.directCremationOption === 'alternative_container'
-                              ? 'bg-[#991b1b] text-white font-bold border-[#991b1b]'
+                              ? 'bg-[#800000] text-white font-bold border-[#800000]'
                               : 'bg-white text-neutral-800 border-neutral-300'
                           }`}
                         >
@@ -2311,7 +2311,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   onClick={() => handleSelectServiceType('direct_burial')}
                   className={`p-5 rounded-2xl border-2 transition-all cursor-pointer space-y-3 ${
                     statementData.serviceType === 'direct_burial'
-                      ? 'border-[#991b1b] bg-amber-50/50 ring-2 ring-amber-400/50 shadow-md'
+                      ? 'border-[#800000] bg-amber-50/50 ring-2 ring-amber-400/50 shadow-md'
                       : 'border-neutral-200 bg-white hover:border-neutral-400'
                   }`}
                 >
@@ -2336,7 +2336,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => handleDirectBurialContainer('customer_container')}
                           className={`p-2 rounded-xl text-left border transition ${
                             statementData.sectionI.directBurialOption === 'customer_container'
-                              ? 'bg-[#991b1b] text-white font-bold border-[#991b1b]'
+                              ? 'bg-[#800000] text-white font-bold border-[#800000]'
                               : 'bg-white text-neutral-800 border-neutral-300'
                           }`}
                         >
@@ -2349,7 +2349,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => handleDirectBurialContainer('alternative_container')}
                           className={`p-2 rounded-xl text-left border transition ${
                             statementData.sectionI.directBurialOption === 'alternative_container'
-                              ? 'bg-[#991b1b] text-white font-bold border-[#991b1b]'
+                              ? 'bg-[#800000] text-white font-bold border-[#800000]'
                               : 'bg-white text-neutral-800 border-neutral-300'
                           }`}
                         >
@@ -2371,7 +2371,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 {/* Header Banner */}
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-2xl bg-[#991b1b] text-amber-300 flex items-center justify-center font-bold text-2xl shadow-lg border border-amber-400/30">
+                    <div className="w-12 h-12 rounded-2xl bg-[#800000] text-amber-300 flex items-center justify-center font-bold text-2xl shadow-lg border border-amber-400/30">
                       📅
                     </div>
                     <div>
@@ -2467,7 +2467,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 }}
                                 className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer border ${
                                   isActive
-                                    ? 'bg-[#991b1b] text-white border-amber-400 shadow-xs'
+                                    ? 'bg-[#800000] text-white border-brass-400 shadow-xs'
                                     : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'
                                 }`}
                               >
@@ -2520,7 +2520,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             }}
                             className={`px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold transition cursor-pointer border ${
                               scheduleServiceTime === t
-                                ? 'bg-amber-400 text-neutral-950 border-amber-300'
+                                ? 'bg-brass-400 text-neutral-950 border-brass-300'
                                 : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'
                             }`}
                           >
@@ -2742,7 +2742,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         }}
                         className={`p-2 rounded-xl text-left border text-xs transition cursor-pointer ${
                           scheduleViewingOption === opt.id
-                            ? 'bg-[#991b1b] text-white border-amber-400 shadow-md font-bold'
+                            ? 'bg-[#800000] text-white border-brass-400 shadow-md font-bold'
                             : 'bg-neutral-800 text-neutral-300 border-neutral-700 hover:bg-neutral-700'
                         }`}
                       >
@@ -2845,7 +2845,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             }}
                             className={`p-3 rounded-xl border text-left transition cursor-pointer flex flex-col justify-between space-y-1 ${
                               isCurrent
-                                ? 'bg-[#991b1b] text-white border-amber-400 shadow-md font-bold'
+                                ? 'bg-[#800000] text-white border-brass-400 shadow-md font-bold'
                                 : 'bg-neutral-900 text-neutral-300 border-neutral-700 hover:bg-neutral-800'
                             }`}
                           >
@@ -2971,7 +2971,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         id="repastCheck"
                         checked={scheduleRepastEnabled}
                         onChange={(e) => setScheduleRepastEnabled(e.target.checked)}
-                        className="w-4 h-4 rounded text-[#991b1b] focus:ring-[#991b1b] bg-neutral-900 border-neutral-700"
+                        className="w-4 h-4 rounded text-[#800000] focus:ring-[#800000] bg-neutral-900 border-neutral-700"
                       />
                       <label htmlFor="repastCheck" className="font-bold text-neutral-200 cursor-pointer">
                         Include Post-Committal Repast Gathering in Schedule
@@ -3045,7 +3045,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               <div className="bg-gradient-to-br from-amber-50/70 via-white to-red-50/40 p-5 rounded-2xl border-2 border-amber-300 shadow-sm space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-amber-200/80 pb-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                    <div className="w-10 h-10 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-bold text-lg shadow-sm">
                       🏛️
                     </div>
                     <div>
@@ -3069,7 +3069,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <button
                     type="button"
                     onClick={() => setIsCemeteryModalOpen(true)}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20 cursor-pointer"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20 cursor-pointer"
                   >
                     <Search className="w-3.5 h-3.5 text-amber-300" />
                     <span>Browse Cemetery Directory & Pricing Matrix</span>
@@ -3092,7 +3092,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       {statementData.sectionII.cemeteryOrCrematoryName || activeCase.serviceSelections.crematoryOrCemeteryName || "The Woodlawn Cemetery & Crematory"}
                     </div>
                     <p className="text-[11px] text-neutral-500 flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <MapPin className="w-3.5 h-3.5 text-[#800000]" />
                       <span>Bronx, New York • Primary BFH Harlem partner facility (4199 Webster Ave)</span>
                     </p>
                   </div>
@@ -3108,7 +3108,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </div>
                     <div className="flex items-baseline justify-between pt-1 border-t border-neutral-100">
                       <span className="text-xs text-neutral-600 font-medium">Invoice Total:</span>
-                      <span className="font-mono font-black text-base text-[#991b1b]">
+                      <span className="font-mono font-black text-base text-[#800000]">
                         ${statementData.sectionII.cemeteryOrCrematoryAmount.toFixed(2)}
                       </span>
                     </div>
@@ -3144,13 +3144,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }}
                           className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer ${
                             isActive
-                              ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-xs'
+                              ? 'bg-[#800000] text-white border-[#800000] shadow-xs'
                               : 'bg-white hover:bg-neutral-100 text-neutral-800 border-neutral-300'
                           }`}
                         >
                           <span>{quick.icon}</span>
                           <span>{quick.label}</span>
-                          <span className={`font-mono text-[11px] ${isActive ? 'text-amber-300' : 'text-[#991b1b]'}`}>
+                          <span className={`font-mono text-[11px] ${isActive ? 'text-amber-300' : 'text-[#800000]'}`}>
                             {quick.fee === 0 ? '$0.00' : `$${quick.fee}`}
                           </span>
                         </button>
@@ -3166,7 +3166,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               <div className="bg-white p-5 rounded-2xl border-2 border-neutral-200 shadow-sm space-y-4">
                 <div className="border-b border-neutral-200 pb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="p-1.5 bg-red-100 text-[#991b1b] rounded-lg font-bold text-xs">
+                    <span className="p-1.5 bg-red-100 text-[#800000] rounded-lg font-bold text-xs">
                       ✍️
                     </span>
                     <h4 className="font-serif-title text-base font-bold text-neutral-900">
@@ -3212,7 +3212,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.A_otherAmount = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
@@ -3250,7 +3250,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.B_otherAmount = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
@@ -3290,7 +3290,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.C2_otherAmount = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
@@ -3328,7 +3328,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.D_otherAmount = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
@@ -3368,7 +3368,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.E3_otherSupervisionAmount = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          className="w-full pl-6 pr-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
@@ -3388,7 +3388,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="font-mono font-bold text-base text-[#991b1b]">
+                  <span className="font-mono font-bold text-base text-[#800000]">
                     ${statementData.sectionI.totalFuneralHomeCharges.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -3406,7 +3406,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 <button
                   type="button"
                   onClick={() => setCurrentStep(3)}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                 >
                   <span>Proceed to Step 3: Variables, Catalogs & Custom Entries</span>
                   <ChevronRight className="w-4 h-4 text-amber-300" />
@@ -3437,7 +3437,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     onClick={() => setActiveVariablesCategory(tab.id as any)}
                     className={`px-3 py-2 rounded-xl transition whitespace-nowrap flex items-center space-x-1.5 ${
                       activeVariablesCategory === tab.id
-                        ? 'bg-[#991b1b] text-white shadow-xs'
+                        ? 'bg-[#800000] text-white shadow-xs'
                         : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                     }`}
                   >
@@ -3462,7 +3462,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       </h4>
                       <p className="text-xs text-neutral-500">Standard rates per BFH General Price List (NYC Local vs Calverton National Cemetery). Notation for escorted with or without family.</p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-[#991b1b] bg-red-50 border border-red-200 px-3 py-1.5 rounded-xl">
+                    <span className="text-xs font-mono font-bold text-[#800000] bg-red-50 border border-red-200 px-3 py-1.5 rounded-xl">
                       Total Livery: ${statementData.sectionI.G_totalLiveryAmount.toFixed(2)}
                     </span>
                   </div>
@@ -3488,7 +3488,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           onClick={() => handleAddPresetVehicle(preset.type, preset.price, preset.escort)}
                           className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition flex items-center space-x-1.5 cursor-pointer shadow-2xs ${
                             preset.highlight
-                              ? 'bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-400 font-extrabold ring-1 ring-amber-400/50'
+                              ? 'bg-brass-100 hover:bg-brass-200 text-brass-950 border-brass-400 font-extrabold ring-1 ring-amber-400/50'
                               : 'bg-white hover:bg-neutral-100 text-neutral-800 border-neutral-300'
                           }`}
                         >
@@ -3577,18 +3577,18 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     placeholder="0.00"
                                     onFocus={(e) => e.target.select()}
                                     onChange={(e) => handleUpdateVehicleUnitPrice(v.id, e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-                                    className="w-24 text-right font-mono text-xs p-1.5 bg-white border border-neutral-300 rounded-lg focus:border-[#991b1b] focus:ring-1 focus:ring-[#991b1b]"
+                                    className="w-24 text-right font-mono text-xs p-1.5 bg-white border border-neutral-300 rounded-lg focus:border-[#800000] focus:ring-1 focus:ring-[#800000]"
                                   />
                                 </div>
                               </td>
-                              <td className="p-3 text-right font-mono font-bold text-[#991b1b]">
+                              <td className="p-3 text-right font-mono font-bold text-[#800000]">
                                 ${(v.count * v.unitPrice).toFixed(2)}
                               </td>
                               <td className="p-3 text-center">
                                 <button
                                   type="button"
                                   onClick={() => handleRemoveVehicle(v.id)}
-                                  className="p-1.5 text-neutral-400 hover:text-red-700 transition cursor-pointer"
+                                  className="p-1.5 text-neutral-400 hover:text-[#800000] transition cursor-pointer"
                                   title="Remove vehicle"
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -3604,7 +3604,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   {/* Custom Vehicle Manual Entry Builder */}
                   <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
                     <span className="font-bold text-xs text-neutral-800 block flex items-center gap-1.5">
-                      <Plus className="w-4 h-4 text-[#991b1b]" />
+                      <Plus className="w-4 h-4 text-[#800000]" />
                       <span>Custom Vehicle / Fleet Allocation Builder:</span>
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 text-xs">
@@ -3651,14 +3651,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           placeholder="0.00"
                           onFocus={(e) => e.target.select()}
                           onChange={(e) => setNewCustomVehiclePrice(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-[#991b1b]"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={handleAddCustomVehicle}
-                      className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
+                      className="px-4 py-2 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
                     >
                       + Add Custom Vehicle to Fleet Lineup
                     </button>
@@ -3699,7 +3699,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               updated.sectionI.G_otherAmount = val;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                           />
                         </div>
                       </div>
@@ -3716,7 +3716,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4 text-xs">
                     <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                       <div className="flex items-center space-x-2">
-                        <Package className="w-5 h-5 text-[#991b1b]" />
+                        <Package className="w-5 h-5 text-[#800000]" />
                         <div>
                           <h4 className="font-bold text-sm text-neutral-900 font-serif-title">
                             Casket or Alternative Container (GPL Range: $130.00 – $41,340.00)
@@ -3735,7 +3735,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.H1_casketSelected = e.target.checked;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="rounded text-[#991b1b] focus:ring-[#991b1b]"
+                          className="rounded text-[#800000] focus:ring-[#800000]"
                         />
                         <span className="font-bold text-neutral-800">Include Casket in Contract</span>
                       </label>
@@ -3766,7 +3766,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   onClick={() => setCasketManufacturerFilter('batesville')}
                                   className={`px-3 py-1 rounded-md transition flex items-center space-x-1 ${
                                     casketManufacturerFilter === 'batesville'
-                                      ? 'bg-[#991b1b] text-white shadow-2xs font-bold'
+                                      ? 'bg-[#800000] text-white shadow-2xs font-bold'
                                       : 'text-neutral-600 hover:text-neutral-900'
                                   }`}
                                 >
@@ -3791,7 +3791,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <button
                               type="button"
                               onClick={() => setShowFullCasketGallery(!showFullCasketGallery)}
-                              className="text-[11px] text-[#991b1b] hover:text-red-900 font-bold flex items-center space-x-1 underline"
+                              className="text-[11px] text-[#800000] hover:text-[#800000] font-bold flex items-center space-x-1 underline"
                             >
                               <span>{showFullCasketGallery ? 'Collapse Catalog Cards' : 'Browse Visual Catalog Cards'}</span>
                             </button>
@@ -3805,7 +3805,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 placeholder="Search by item #, model name, material, finish, or interior..."
                                 value={casketSearchQuery}
                                 onChange={(e) => setCasketSearchQuery(e.target.value)}
-                                className="w-full p-2 bg-neutral-50 border border-neutral-300 rounded-lg text-xs placeholder:text-neutral-400 focus:bg-white focus:ring-1 focus:ring-[#991b1b]"
+                                className="w-full p-2 bg-neutral-50 border border-neutral-300 rounded-lg text-xs placeholder:text-neutral-400 focus:bg-white focus:ring-1 focus:ring-[#800000]"
                               />
                             </div>
                             <div className="sm:col-span-5">
@@ -3864,7 +3864,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                         showToast(`Selected: ${found.displayText}`);
                                       }
                                     }}
-                                    className="w-full p-2.5 bg-white border border-neutral-300 rounded-xl text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                    className="w-full p-2.5 bg-white border border-neutral-300 rounded-xl text-xs font-semibold text-neutral-900 focus:ring-2 focus:ring-[#800000] focus:border-[#800000]"
                                   >
                                     <option value="">-- Choose from Catalog ({filteredList.length} items matching filter) --</option>
                                     {filteredList.map((item) => (
@@ -3936,7 +3936,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                         }}
                                         className={`p-3 rounded-xl border text-left cursor-pointer transition flex flex-col justify-between ${
                                           isSelected
-                                            ? 'bg-red-50/80 border-[#991b1b] ring-2 ring-red-400/50 shadow-xs'
+                                            ? 'bg-red-50/80 border-[#800000] ring-2 ring-red-400/50 shadow-xs'
                                             : 'bg-white border-neutral-200 hover:border-neutral-400 hover:shadow-2xs'
                                         }`}
                                       >
@@ -3967,12 +3967,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                         </div>
 
                                         <div className="pt-2 mt-2 border-t border-neutral-100 flex items-center justify-between">
-                                          <div className="font-mono font-bold text-xs text-[#991b1b]">
+                                          <div className="font-mono font-bold text-xs text-[#800000]">
                                             ${item.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                                           </div>
                                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg transition ${
                                             isSelected
-                                              ? 'bg-[#991b1b] text-white'
+                                              ? 'bg-[#800000] text-white'
                                               : 'bg-neutral-100 text-neutral-700 group-hover:bg-neutral-200'
                                           }`}>
                                             {isSelected ? '✓ In Contract' : 'Select'}
@@ -4079,7 +4079,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.H1_casketAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-36 p-2 bg-white border border-red-300 rounded-lg text-sm font-mono font-bold text-[#991b1b] text-right focus:ring-2 focus:ring-[#991b1b]"
+                                className="w-36 p-2 bg-white border border-red-300 rounded-lg text-sm font-mono font-bold text-[#800000] text-right focus:ring-2 focus:ring-[#800000]"
                               />
                             </div>
                           </div>
@@ -4093,7 +4093,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4 text-xs">
                     <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                       <h4 className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
-                        <ShieldCheck className="w-4 h-4 text-[#991b1b]" />
+                        <ShieldCheck className="w-4 h-4 text-[#800000]" />
                         <span>Outer Interment Receptacle / Vault (GPL Range: $895.00 – $14,580.00)</span>
                       </h4>
                       <label className="flex items-center space-x-1.5 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-neutral-200 shadow-2xs hover:bg-neutral-50 transition">
@@ -4105,7 +4105,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.H2_outerReceptacleSelected = e.target.checked;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="rounded text-[#991b1b] focus:ring-[#991b1b]"
+                          className="rounded text-[#800000] focus:ring-[#800000]"
                         />
                         <span className="font-bold text-neutral-800">Include Vault in Contract</span>
                       </label>
@@ -4128,13 +4128,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               }}
                               className={`p-2.5 rounded-xl border text-left transition ${
                                 statementData.sectionI.H2_outerReceptacleModelName === v.model
-                                  ? 'bg-red-50 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
+                                  ? 'bg-brass-50 border-[#800000] ring-2 ring-red-400/40 shadow-xs'
                                   : 'bg-white border-neutral-200 hover:bg-neutral-100'
                               }`}
                             >
                               <div className="font-bold text-neutral-900 text-[11px]">{v.model}</div>
                               <div className="text-[10px] text-neutral-500">{v.material}</div>
-                              <div className="font-mono font-bold text-[#991b1b] text-xs mt-1">
+                              <div className="font-mono font-bold text-[#800000] text-xs mt-1">
                                 ${v.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                               </div>
                             </button>
@@ -4181,7 +4181,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.H2_outerReceptacleAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                             />
                           </div>
                         </div>
@@ -4194,7 +4194,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4 text-xs">
                     <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                       <div className="flex items-center space-x-2">
-                        <Heart className="w-5 h-5 text-[#991b1b]" />
+                        <Heart className="w-5 h-5 text-[#800000]" />
                         <div>
                           <h4 className="font-bold text-sm text-neutral-900 font-serif-title">
                             Urn & Keepsake Merchandise (Batesville & Milso)
@@ -4213,7 +4213,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.H3_urnSelected = e.target.checked;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="rounded text-[#991b1b] focus:ring-[#991b1b]"
+                          className="rounded text-[#800000] focus:ring-[#800000]"
                         />
                         <span className="font-bold text-neutral-800">Include Urn in Contract</span>
                       </label>
@@ -4242,7 +4242,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 onClick={() => setUrnManufacturerFilter('batesville')}
                                 className={`px-2.5 py-0.5 rounded-md transition ${
                                   urnManufacturerFilter === 'batesville'
-                                    ? 'bg-[#991b1b] text-white font-bold shadow-2xs'
+                                    ? 'bg-[#800000] text-white font-bold shadow-2xs'
                                     : 'text-neutral-600 hover:text-neutral-900'
                                 }`}
                               >
@@ -4350,7 +4350,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.H3_urnAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                             />
                           </div>
                         </div>
@@ -4394,7 +4394,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               updated.sectionI.H_otherAmount = val;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                           />
                         </div>
                       </div>
@@ -4410,7 +4410,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="flex flex-wrap justify-between items-center gap-3">
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="p-1.5 bg-rose-100 text-rose-800 rounded-lg">💐</span>
+                        <span className="p-1.5 bg-red-100 text-red-800 rounded-lg">💐</span>
                         <h4 className="font-bold text-sm text-neutral-900 font-serif-title">Flowers & Floral Tributes (Benta&apos;s Florist Collection)</h4>
                       </div>
                       <p className="text-xs text-neutral-500 mt-0.5">
@@ -4431,8 +4431,8 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         />
                         <span className="font-bold text-neutral-800">No Flowers (In Lieu of Flowers)</span>
                       </label>
-                      <div className="px-3 py-1 bg-rose-50 border border-rose-200 rounded-xl">
-                        <span className="text-xs font-mono font-bold text-[#991b1b]">
+                      <div className="px-3 py-1 bg-red-50 border border-red-200 rounded-xl">
+                        <span className="text-xs font-mono font-bold text-[#800000]">
                           Total Floral: ${(statementData.sectionI.I6_totalFlowersAmount || 0).toFixed(2)}
                         </span>
                       </div>
@@ -4467,7 +4467,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               }}
                               className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                                 selectedFloralBook === 'danielas_original'
-                                  ? 'bg-[#991b1b] text-white shadow-xs'
+                                  ? 'bg-[#800000] text-white shadow-xs'
                                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                               }`}
                             >
@@ -4483,7 +4483,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               }}
                               className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                                 selectedFloralBook === 'other_floral_book'
-                                  ? 'bg-[#991b1b] text-white shadow-xs'
+                                  ? 'bg-[#800000] text-white shadow-xs'
                                   : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                               }`}
                             >
@@ -4496,7 +4496,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <button
                               type="button"
                               onClick={() => setShowVisualFloralGallery(!showVisualFloralGallery)}
-                              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white hover:bg-amber-50 border border-amber-300 text-amber-900 rounded-xl text-xs font-bold transition shadow-2xs cursor-pointer"
+                              className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-brass-50 hover:bg-brass-100 border border-brass-300 text-brass-900 rounded-xl text-xs font-bold transition shadow-2xs cursor-pointer"
                             >
                               <ImageIcon className="w-3.5 h-3.5 text-amber-600" />
                               <span>{showVisualFloralGallery ? 'Hide Photo Gallery' : 'Browse Visual Photo Gallery'}</span>
@@ -4555,7 +4555,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     onClick={() => setSelectedFloralCategory(cat.id)}
                                     className={`px-3 py-1 rounded-xl font-bold whitespace-nowrap transition cursor-pointer flex items-center gap-1.5 ${
                                       isCatActive
-                                        ? 'bg-[#991b1b] text-white shadow-xs'
+                                        ? 'bg-[#800000] text-white shadow-xs'
                                         : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-700'
                                     }`}
                                   >
@@ -4608,8 +4608,8 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                         }}
                                         className={`p-2 rounded-xl border text-left transition relative group overflow-hidden cursor-pointer flex flex-col justify-between ${
                                           isSelected 
-                                            ? 'border-[#991b1b] bg-rose-50/80 ring-2 ring-[#991b1b]/30 shadow-md' 
-                                            : 'border-neutral-200 bg-neutral-50 hover:border-amber-400 hover:bg-white hover:shadow-xs'
+                                            ? 'border-[#800000] bg-brass-50/80 ring-2 ring-[#800000]/30 shadow-md' 
+                                            : 'border-neutral-200 bg-neutral-50 hover:border-brass-400 hover:bg-white hover:shadow-xs'
                                         }`}
                                       >
                                         <div className="aspect-square w-full rounded-lg overflow-hidden bg-white mb-1.5 relative border border-neutral-100 shadow-2xs">
@@ -4621,7 +4621,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                           />
                                           {/* Catalog Number Badge */}
                                           {item.catalogNumber && (
-                                            <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-[#991b1b] text-white text-[9px] font-bold font-mono rounded shadow-xs">
+                                            <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-[#800000] text-white text-[9px] font-bold font-mono rounded shadow-xs">
                                               #{item.catalogNumber}
                                             </span>
                                           )}
@@ -4637,7 +4637,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                           </div>
                                           <div className="flex items-center justify-between text-[9px] text-neutral-500 mt-0.5">
                                             <span className="font-mono font-bold text-neutral-700">{item.code}</span>
-                                            <span className="font-bold text-[#991b1b]">
+                                            <span className="font-bold text-[#800000]">
                                               ${item.pricing.medium}
                                             </span>
                                           </div>
@@ -4764,12 +4764,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                           onClick={() => setSelectedFloralSize(sizeKey)}
                                           className={`p-2.5 rounded-xl border text-center transition cursor-pointer flex flex-col items-center justify-between ${
                                             isSelected
-                                              ? 'border-[#991b1b] bg-rose-50 text-[#991b1b] ring-2 ring-[#991b1b]/20 font-bold shadow-xs'
+                                              ? 'border-[#800000] bg-brass-50 text-[#800000] ring-2 ring-[#800000]/20 font-bold shadow-xs'
                                               : 'border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700'
                                           }`}
                                         >
                                           <span className="text-xs uppercase tracking-wider">{sizeKey}</span>
-                                          <span className="text-sm font-mono font-bold mt-1 text-[#991b1b]">${price.toFixed(2)}</span>
+                                          <span className="text-sm font-mono font-bold mt-1 text-[#800000]">${price.toFixed(2)}</span>
                                           <span className="text-[10px] text-neutral-500 mt-0.5 line-clamp-1">{dim}</span>
                                         </button>
                                       );
@@ -4882,7 +4882,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     </div>
 
                                     {selectedFloralRibbon.trim() && (
-                                      <div className="absolute bottom-2 left-2 right-2 bg-[#991b1b]/95 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[10px] font-bold text-center truncate shadow-md border border-amber-300/40">
+                                      <div className="absolute bottom-2 left-2 right-2 bg-[#800000]/95 backdrop-blur-sm text-white px-2.5 py-1 rounded-md text-[10px] font-bold text-center truncate shadow-md border border-amber-300/40">
                                         🎗️ Ribbon Sash: &quot;{selectedFloralRibbon.trim()}&quot;
                                       </div>
                                     )}
@@ -4904,14 +4904,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 <div className="mt-4 pt-3 border-t border-neutral-200">
                                   <div className="flex items-center justify-between mb-3">
                                     <span className="text-xs font-bold text-neutral-700">Total Item Price:</span>
-                                    <span className="text-base font-mono font-bold text-[#991b1b]">
+                                    <span className="text-base font-mono font-bold text-[#800000]">
                                       ${currentTotal.toFixed(2)}
                                     </span>
                                   </div>
                                   <button
                                     type="button"
                                     onClick={handleAddBFHFloral}
-                                    className="w-full py-2.5 bg-[#991b1b] hover:bg-[#7f1d1d] text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
+                                    className="w-full py-2.5 bg-[#800000] hover:bg-[#7f1d1d] text-white rounded-xl font-bold text-xs shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
                                   >
                                     <Plus className="w-4 h-4" />
                                     <span>Add to Form AP-47 Contract &amp; Merchandise Schedule</span>
@@ -4930,7 +4930,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                             <span>Included Floral Tribute Schedule ({(statementData.sectionI.I6_flowerItems || []).length} items):</span>
                           </span>
-                          <span className="text-xs font-mono font-bold text-[#991b1b]">
+                          <span className="text-xs font-mono font-bold text-[#800000]">
                             Total: ${(statementData.sectionI.I6_totalFlowersAmount || 0).toFixed(2)}
                           </span>
                         </div>
@@ -4964,7 +4964,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                           className="w-12 h-12 rounded-lg object-cover border border-neutral-200 shrink-0 shadow-xs"
                                         />
                                       ) : (
-                                        <div className="w-12 h-12 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-800 shrink-0">
+                                        <div className="w-12 h-12 rounded-lg bg-red-50 border border-red-200 flex items-center justify-center text-red-800 shrink-0">
                                           💐
                                         </div>
                                       )}
@@ -4990,7 +4990,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                       </span>
                                     )}
                                     {f.ribbonText ? (
-                                      <span className="text-rose-700 italic text-[10px] block">
+                                      <span className="text-red-700 italic text-[10px] block">
                                         &quot;{f.ribbonText}&quot;
                                       </span>
                                     ) : (
@@ -5037,16 +5037,16 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                         placeholder="0.00"
                                         onFocus={(e) => e.target.select()}
                                         onChange={(e) => handleUpdateFlowerUnitPrice(f.id, e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-                                        className="w-20 text-right font-mono text-xs p-1 bg-white border border-neutral-300 rounded-lg focus:border-[#991b1b] focus:ring-1 focus:ring-[#991b1b]"
+                                        className="w-20 text-right font-mono text-xs p-1 bg-white border border-neutral-300 rounded-lg focus:border-[#800000] focus:ring-1 focus:ring-[#800000]"
                                       />
                                     </div>
                                   </td>
-                                  <td className="p-3 text-right font-mono font-bold text-[#991b1b]">${(f.quantity * f.unitPrice).toFixed(2)}</td>
+                                  <td className="p-3 text-right font-mono font-bold text-[#800000]">${(f.quantity * f.unitPrice).toFixed(2)}</td>
                                   <td className="p-3 text-center">
                                     <button
                                       type="button"
                                       onClick={() => handleRemoveFlower(f.id)}
-                                      className="p-1.5 text-neutral-400 hover:text-red-700 transition cursor-pointer"
+                                      className="p-1.5 text-neutral-400 hover:text-[#800000] transition cursor-pointer"
                                       title="Remove floral item"
                                     >
                                       <Trash2 className="w-4 h-4" />
@@ -5062,7 +5062,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       {/* Custom Flower Manual Entry */}
                       <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3 text-xs">
                         <span className="font-bold text-neutral-800 block flex items-center gap-1.5">
-                          <Plus className="w-4 h-4 text-[#991b1b]" />
+                          <Plus className="w-4 h-4 text-[#800000]" />
                           <span>Custom / Special Florist Arrangement Entry (Off-Catalog):</span>
                         </span>
                         <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
@@ -5113,7 +5113,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               placeholder="0.00"
                               onFocus={(e) => e.target.select()}
                               onChange={(e) => setNewCustomFlowerPrice(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                             />
                           </div>
                         </div>
@@ -5140,10 +5140,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
                     <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                       <h4 className="font-bold text-sm text-neutral-900 flex items-center gap-1.5">
-                        <FileText className="w-4 h-4 text-[#991b1b]" />
+                        <FileText className="w-4 h-4 text-[#800000]" />
                         <span>Memorial Programs & Booklets Matrix (Type, Size, Quantity)</span>
                       </h4>
-                      <span className="font-mono font-bold text-xs text-[#991b1b]">
+                      <span className="font-mono font-bold text-xs text-[#800000]">
                         Total Programs: ${statementData.sectionI.I10_programsMatrix.totalAmount.toFixed(2)}
                       </span>
                     </div>
@@ -5167,12 +5167,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }}
                           className={`p-3 rounded-xl border text-left transition cursor-pointer ${
                             statementData.sectionI.I10_programsMatrix.programType === p.id
-                              ? 'bg-red-50 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
+                              ? 'bg-brass-50 border-[#800000] ring-2 ring-red-400/40 shadow-xs'
                               : 'bg-white border-neutral-200 hover:bg-neutral-100'
                           }`}
                         >
                           <div className="font-bold text-neutral-900 text-[11px]">{p.label}</div>
-                          <div className="font-mono font-bold text-xs text-[#991b1b] mt-1">${p.price.toFixed(2)}</div>
+                          <div className="font-mono font-bold text-xs text-[#800000] mt-1">${p.price.toFixed(2)}</div>
                         </button>
                       ))}
                     </div>
@@ -5252,7 +5252,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             updated.sectionI.I10_programsMatrix.unitPrice = val;
                             setStatementData(calculateAP47Totals(updated));
                           }}
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-[#991b1b]"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-[#800000]"
                         />
                       </div>
                       <div className="flex items-center pt-4">
@@ -5265,7 +5265,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               updated.sectionI.I10_programsMatrix.lateFeeApplied = e.target.checked;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="rounded text-[#991b1b]"
+                            className="rounded text-[#800000]"
                           />
                           <span className="font-bold text-neutral-800 text-[11px]">
                             Production Late Fee (+$125 if &lt;48h)
@@ -5294,7 +5294,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       </div>
                       <div className="text-right">
                         <span className="text-[10px] text-neutral-500 block">Register Books Line Total</span>
-                        <span className="font-mono font-bold text-sm text-[#991b1b]">
+                        <span className="font-mono font-bold text-sm text-[#800000]">
                           ${statementData.sectionI.I8_registerBookAmount.toFixed(2)}
                         </span>
                       </div>
@@ -5307,7 +5307,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         onClick={() => handleSelectRegisterBookOption('standard')}
                         className={`p-3.5 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
                           statementData.sectionI.I8_registerBookUnitPrice === BFH_GPL_2026.stationery.registerBookBase && (statementData.sectionI.I8_registerBookQty || 0) > 0
-                            ? 'bg-amber-50/90 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
+                            ? 'bg-brass-50/90 border-[#800000] ring-2 ring-red-400/40 shadow-xs'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -5315,7 +5315,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <div className="font-bold text-neutral-900 text-xs">Standard Padded Leatherette Book</div>
                           <div className="text-[10px] text-neutral-500 mt-0.5">Gold foil Benta crest • Padded vinyl cover</div>
                         </div>
-                        <div className="text-right font-mono font-bold text-sm text-[#991b1b]">
+                        <div className="text-right font-mono font-bold text-sm text-[#800000]">
                           ${BFH_GPL_2026.stationery.registerBookBase.toFixed(2)} / book
                         </div>
                       </button>
@@ -5325,7 +5325,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         onClick={() => handleSelectRegisterBookOption('deluxe')}
                         className={`p-3.5 rounded-xl border text-left transition cursor-pointer flex items-center justify-between ${
                           statementData.sectionI.I8_registerBookUnitPrice === BFH_GPL_2026.stationery.registerBookDeluxe && (statementData.sectionI.I8_registerBookQty || 0) > 0
-                            ? 'bg-amber-50/90 border-[#991b1b] ring-2 ring-red-400/40 shadow-xs'
+                            ? 'bg-brass-50/90 border-[#800000] ring-2 ring-red-400/40 shadow-xs'
                             : 'bg-white border-neutral-200 hover:bg-neutral-50'
                         }`}
                       >
@@ -5333,7 +5333,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <div className="font-bold text-neutral-900 text-xs">Deluxe Heirloom Hardbound Book</div>
                           <div className="text-[10px] text-neutral-500 mt-0.5">Hand-stitched leather • Gold gilded page edges</div>
                         </div>
-                        <div className="text-right font-mono font-bold text-sm text-[#991b1b]">
+                        <div className="text-right font-mono font-bold text-sm text-[#800000]">
                           ${BFH_GPL_2026.stationery.registerBookDeluxe.toFixed(2)} / book
                         </div>
                       </button>
@@ -5384,7 +5384,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             placeholder="50.00"
                             onFocus={(e) => e.target.select()}
                             onChange={(e) => handleUpdateRegisterBookUnitPrice(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-                            className="w-full pl-6 pr-3 p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-xs text-[#991b1b]"
+                            className="w-full pl-6 pr-3 p-2 bg-white border border-neutral-300 rounded-lg font-mono font-bold text-xs text-[#800000]"
                           />
                         </div>
                       </div>
@@ -5392,7 +5392,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3 bg-white rounded-xl border border-amber-200">
                         <span className="text-[10px] text-neutral-500 block">Calculation Preview:</span>
                         <div className="font-mono text-xs font-bold text-neutral-900 mt-0.5">
-                          {statementData.sectionI.I8_registerBookQty || 0} books × ${(statementData.sectionI.I8_registerBookUnitPrice || 50).toFixed(2)} = <span className="text-[#991b1b]">${statementData.sectionI.I8_registerBookAmount.toFixed(2)}</span>
+                          {statementData.sectionI.I8_registerBookQty || 0} books × ${(statementData.sectionI.I8_registerBookUnitPrice || 50).toFixed(2)} = <span className="text-[#800000]">${statementData.sectionI.I8_registerBookAmount.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>
@@ -5415,12 +5415,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }}
                           className={`p-2 rounded-lg border text-left cursor-pointer transition ${
                             statementData.sectionI.I1_memorialCardsType === 'plain_50'
-                              ? 'bg-[#991b1b] text-white font-bold'
+                              ? 'bg-[#800000] text-white font-bold'
                               : 'bg-white hover:bg-neutral-100'
                           }`}
                         >
                           <div>Plain Text (50 pk)</div>
-                          <div className={`font-mono text-xs ${statementData.sectionI.I1_memorialCardsType === 'plain_50' ? 'text-amber-300' : 'text-[#991b1b]'}`}>$145.00</div>
+                          <div className={`font-mono text-xs ${statementData.sectionI.I1_memorialCardsType === 'plain_50' ? 'text-amber-300' : 'text-[#800000]'}`}>$145.00</div>
                         </button>
 
                         <button
@@ -5433,12 +5433,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }}
                           className={`p-2 rounded-lg border text-left cursor-pointer transition ${
                             statementData.sectionI.I1_memorialCardsType === 'with_photo_50'
-                              ? 'bg-[#991b1b] text-white font-bold'
+                              ? 'bg-[#800000] text-white font-bold'
                               : 'bg-white hover:bg-neutral-100'
                           }`}
                         >
                           <div>With Photo (50 pk)</div>
-                          <div className={`font-mono text-xs ${statementData.sectionI.I1_memorialCardsType === 'with_photo_50' ? 'text-amber-300' : 'text-[#991b1b]'}`}>$200.00</div>
+                          <div className={`font-mono text-xs ${statementData.sectionI.I1_memorialCardsType === 'with_photo_50' ? 'text-amber-300' : 'text-[#800000]'}`}>$200.00</div>
                         </button>
                       </div>
                     </div>
@@ -5489,7 +5489,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         >
                           +
                         </button>
-                        <span className="text-neutral-500">cards = <strong className="text-[#991b1b] font-mono">${statementData.sectionI.I2_acknowledgementCardsAmount.toFixed(2)}</strong></span>
+                        <span className="text-neutral-500">cards = <strong className="text-[#800000] font-mono">${statementData.sectionI.I2_acknowledgementCardsAmount.toFixed(2)}</strong></span>
                       </div>
                     </div>
 
@@ -5502,7 +5502,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         <span className="font-bold text-neutral-800 block text-xs">I. Other Additional Services &amp; Merchandise (3 Lines Available):</span>
                         <span className="text-[10px] text-neutral-500">Custom portrait canvas, digital livestream recording, bookmark keepsakes, crucifix, or specialty tribute items</span>
                       </div>
-                      <span className="font-mono font-bold text-xs text-[#991b1b]">
+                      <span className="font-mono font-bold text-xs text-[#800000]">
                         ${((statementData.sectionI.I_otherAmount || 0) + (statementData.sectionI.I_other2Amount || 0) + (statementData.sectionI.I_other3Amount || 0)).toFixed(2)}
                       </span>
                     </div>
@@ -5541,7 +5541,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.I12_otherAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                             />
                           </div>
                         </div>
@@ -5582,7 +5582,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.I12_other2Amount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                             />
                           </div>
                         </div>
@@ -5623,7 +5623,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.I12_other3Amount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                              className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                             />
                           </div>
                         </div>
@@ -5676,7 +5676,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                         <div className="p-3 bg-white rounded-xl border border-neutral-200">
                           <span className="text-[10px] text-neutral-500 block">Room Base Fee</span>
-                          <strong className="font-mono text-sm text-[#991b1b]">${statementData.sectionI.F3_repastRoomAmount.toFixed(2)}</strong>
+                          <strong className="font-mono text-sm text-[#800000]">${statementData.sectionI.F3_repastRoomAmount.toFixed(2)}</strong>
                           <span className="text-[10px] text-neutral-500 block">Per BFH GPL Section I.F3</span>
                         </div>
                         <div className="p-3 bg-white rounded-xl border border-neutral-200">
@@ -5704,7 +5704,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           Manage facility usage and licensed staff supervision line items for visitations, wakes, funeral ceremonies, and memorial services.
                         </p>
                       </div>
-                      <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#991b1b] bg-red-50 border border-red-200 px-3 py-1 rounded-lg shrink-0">
+                      <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#800000] bg-red-50 border border-red-200 px-3 py-1 rounded-lg shrink-0">
                         <span>Combined Subtotal:</span>
                         <span>
                           ${(
@@ -5727,7 +5727,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
                           <strong className="text-neutral-900 text-xs">Visitation / Viewing Facilities</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F1_facilitiesVisitationAmount.toFixed(2)}</span>
+                          <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionI.F1_facilitiesVisitationAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Use of funeral home viewing parlor / chapel facilities for family viewing, wake, or public visitation gathering.
@@ -5745,7 +5745,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.F1_facilitiesVisitationAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs"
                             />
                             <span className="text-[10px] text-neutral-500">Facility ($)</span>
                           </div>
@@ -5767,7 +5767,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
                           <strong className="text-neutral-900 text-xs">Supervision for Visitation / Viewing</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.E1_supervisionVisitationAmount.toFixed(2)}</span>
+                          <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionI.E1_supervisionVisitationAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Licensed Funeral Director supervision and staff ushering during viewings, wakes, or visitations.
@@ -5785,7 +5785,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.E1_supervisionVisitationAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs"
                             />
                             <span className="text-[10px] text-neutral-500">Supervision ($)</span>
                           </div>
@@ -5821,7 +5821,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
                           <strong className="text-neutral-900 text-xs">Funeral Service Facilities</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</span>
+                          <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Use of Chapel A (120 seats), Chapel B, or sanctuary facilities for funeral ceremony celebration.
@@ -5839,7 +5839,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.F2_facilitiesFuneralServiceAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs"
                             />
                             <span className="text-[10px] text-neutral-500">Facility ($)</span>
                           </div>
@@ -5861,7 +5861,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
                           <strong className="text-neutral-900 text-xs">Supervision for Funeral Service</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.E2_supervisionFuneralServiceAmount.toFixed(2)}</span>
+                          <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionI.E2_supervisionFuneralServiceAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Licensed Funeral Director supervision and ceremonial staff direction for funeral service.
@@ -5879,7 +5879,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.E2_supervisionFuneralServiceAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs"
                             />
                             <span className="text-[10px] text-neutral-500">Supervision ($)</span>
                           </div>
@@ -5901,7 +5901,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
                           <strong className="text-neutral-900 text-xs">Memorial Service Facilities (Chapel)</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.F3_facilitiesMemorialServiceAmount.toFixed(2)}</span>
+                          <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionI.F3_facilitiesMemorialServiceAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Use of Chapel A (120 seats) or Chapel B (110 seats) for memorial service celebration.
@@ -5919,7 +5919,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.F3_facilitiesMemorialServiceAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs"
                             />
                             <span className="text-[10px] text-neutral-500">Facility ($)</span>
                           </div>
@@ -5941,7 +5941,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-2">
                         <div className="flex justify-between items-center">
                           <strong className="text-neutral-900 text-xs">Supervision for Memorial Service</strong>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionI.E3_supervisionMemorialAmount.toFixed(2)}</span>
+                          <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionI.E3_supervisionMemorialAmount.toFixed(2)}</span>
                         </div>
                         <p className="text-[11px] text-neutral-600">
                           Licensed Funeral Director supervision and staff ushering for memorial service.
@@ -5959,7 +5959,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.E3_supervisionMemorialAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#991b1b] text-xs"
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs"
                             />
                             <span className="text-[10px] text-neutral-500">Supervision ($)</span>
                           </div>
@@ -5984,7 +5984,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <span className="text-amber-800 font-bold text-xs">✨ Additional Staff Supervision</span>
                             <span className="text-[10px] text-amber-900 bg-amber-100 border border-amber-200 px-1.5 py-0.5 rounded font-medium">Services, Wakes &amp; Viewings Service Line Item</span>
                           </div>
-                          <span className="font-mono font-bold text-xs text-[#991b1b]">
+                          <span className="font-mono font-bold text-xs text-[#800000]">
                             ${((statementData.sectionI.E3_otherSupervisionAmount || 0) + (statementData.sectionI.E_otherAmount || 0)).toFixed(2)}
                           </span>
                         </div>
@@ -6026,7 +6026,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   }
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                               />
                             </div>
                           </div>
@@ -6049,7 +6049,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.E_otherSpecify = p.desc;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="px-2 py-0.5 bg-white border border-amber-300 hover:bg-amber-100 rounded text-[10px] text-amber-900 font-medium"
+                              className="px-2 py-0.5 bg-white border border-brass-300 hover:bg-brass-100 rounded text-[10px] text-brass-900 font-medium"
                             >
                               {p.label}
                             </button>
@@ -6097,7 +6097,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               updated.sectionI.F3_otherFacilitiesAmount = val;
                               setStatementData(calculateAP47Totals(updated));
                             }}
-                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                            className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                           />
                         </div>
                       </div>
@@ -6112,9 +6112,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 <div className="space-y-4 text-xs">
                   
                   {/* Executive Pass-Through Check Generator Banner */}
-                  <div className="bg-gradient-to-r from-[#141b2b] via-[#1e2738] to-[#141b2b] text-white p-4 rounded-2xl border-2 border-amber-400/80 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-3">
+                  <div className="bg-gradient-to-r from-[#1c1a1a] via-[#241f1a] to-[#1c1a1a] text-white p-4 rounded-2xl border-2 border-amber-400/80 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div className="flex items-center space-x-3">
-                      <div className="w-9 h-9 rounded-xl bg-[#991b1b] text-white flex items-center justify-center font-bold shadow border border-amber-300">
+                      <div className="w-9 h-9 rounded-xl bg-[#800000] text-white flex items-center justify-center font-bold shadow border border-amber-300">
                         <HandCoins className="w-5 h-5 text-amber-300" />
                       </div>
                       <div>
@@ -6139,7 +6139,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <button
                         type="button"
                         onClick={() => setIsCheckPrinterOpen(true)}
-                        className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-md border border-amber-400/50"
+                        className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow-md border border-brass-400/50"
                       >
                         <Printer className="w-4 h-4 text-amber-300" />
                         <span>🖨️ Preview &amp; Print Checks (${statementData.sectionII.totalCashAdvances.toFixed(2)})</span>
@@ -6152,7 +6152,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <h4 className="font-bold text-sm text-neutral-900">Cash Advance Items (Actual Third-Party Invoices)</h4>
                       <p className="text-xs text-neutral-500">Edit any pass-through item. Changes dynamically update printed checks and Form AP-47.</p>
                     </div>
-                    <span className="font-mono font-bold text-sm text-[#991b1b]">
+                    <span className="font-mono font-bold text-sm text-[#800000]">
                       Total Cash Advances: ${statementData.sectionII.totalCashAdvances.toFixed(2)}
                     </span>
                   </div>
@@ -6175,7 +6175,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                         <button
                           type="button"
                           onClick={() => setIsCemeteryModalOpen(true)}
-                          className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs cursor-pointer"
+                          className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl transition flex items-center space-x-1.5 shadow-xs cursor-pointer"
                         >
                           <Search className="w-3.5 h-3.5 text-amber-300" />
                           <span>Select Cemetery from Directory</span>
@@ -6209,13 +6209,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 }}
                                 className={`p-2 rounded-xl border text-center transition cursor-pointer flex flex-col justify-between ${
                                   isSelected
-                                    ? 'bg-[#991b1b] text-white border-[#991b1b] font-bold shadow-xs'
+                                    ? 'bg-[#800000] text-white border-[#800000] font-bold shadow-xs'
                                     : 'bg-neutral-50 hover:bg-neutral-100 text-neutral-800 border-neutral-200'
                                 }`}
                               >
                                 <span className="text-xs">{tier.icon}</span>
                                 <span className="text-[10px] truncate">{tier.label}</span>
-                                <span className={`font-mono text-[10px] font-bold ${isSelected ? 'text-amber-300' : 'text-[#991b1b]'}`}>
+                                <span className={`font-mono text-[10px] font-bold ${isSelected ? 'text-amber-300' : 'text-[#800000]'}`}>
                                   {tier.amount === 0 ? '$0.00' : `$${tier.amount}`}
                                 </span>
                               </button>
@@ -6245,7 +6245,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionII.cemeteryOrCrematoryAmount = val;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="w-32 pl-6 pr-3 py-1.5 bg-neutral-50 border border-neutral-300 rounded-xl font-mono font-bold text-xs focus:bg-white focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                              className="w-32 pl-6 pr-3 py-1.5 bg-neutral-50 border border-neutral-300 rounded-xl font-mono font-bold text-xs focus:bg-white focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                             />
                           </div>
                         </div>
@@ -6338,7 +6338,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </button>
                           </div>
                           <span className="text-neutral-500 font-mono text-xs">
-                            copies = <strong className="text-[#991b1b] font-mono">${statementData.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</strong>
+                            copies = <strong className="text-[#800000] font-mono">${statementData.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</strong>
                           </span>
                         </div>
 
@@ -6390,7 +6390,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               }}
                               className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold cursor-pointer ${
                                 statementData.sectionII.pallbearersAmount === tier.amount
-                                  ? 'bg-[#991b1b] text-white shadow-xs'
+                                  ? 'bg-[#800000] text-white shadow-xs'
                                   : 'bg-neutral-200 hover:bg-neutral-300 text-neutral-700'
                               }`}
                             >
@@ -6419,7 +6419,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
                       <div className="flex justify-between items-center">
                         <label className="font-bold text-neutral-800 block">6. Bridge &amp; Road Tolls (Pass-Through):</label>
-                        <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionII.bridgeAndRoadTollsAmount.toFixed(2)}</span>
+                        <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionII.bridgeAndRoadTollsAmount.toFixed(2)}</span>
                       </div>
                       <input
                         type="number"
@@ -6441,7 +6441,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
                       <div className="flex justify-between items-center">
                         <label className="font-bold text-neutral-800 block">7. Livery Chauffeur &amp; Staff Gratuities:</label>
-                        <span className="font-mono font-bold text-xs text-[#991b1b]">${statementData.sectionII.gratuitiesLiveryAndStaffAmount.toFixed(2)}</span>
+                        <span className="font-mono font-bold text-xs text-[#800000]">${statementData.sectionII.gratuitiesLiveryAndStaffAmount.toFixed(2)}</span>
                       </div>
                       <input
                         type="number"
@@ -6466,7 +6466,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <label className="font-bold text-neutral-800 block text-xs">8. Other Cash Advances (3 Dedicated Lines):</label>
                           <span className="text-[10px] text-neutral-500">Disbursed at actual third-party billing (100% pass-through, 0% markup)</span>
                         </div>
-                        <span className="font-mono font-bold text-xs text-[#991b1b]">
+                        <span className="font-mono font-bold text-xs text-[#800000]">
                           ${((statementData.sectionII.otherCashAdvanceAmount || 0) + (statementData.sectionII.otherCashAdvance2Amount || 0) + (statementData.sectionII.otherCashAdvance3Amount || 0)).toFixed(2)}
                         </span>
                       </div>
@@ -6503,7 +6503,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionII.otherCashAdvanceAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                               />
                             </div>
                           </div>
@@ -6542,7 +6542,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionII.otherCashAdvance2Amount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                               />
                             </div>
                           </div>
@@ -6581,7 +6581,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionII.otherCashAdvance3Amount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                               />
                             </div>
                           </div>
@@ -6610,7 +6610,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 <button
                                   type="button"
                                   onClick={() => handleRemoveCustomCashAdvance(c.id)}
-                                  className="p-1 text-neutral-400 hover:text-red-700"
+                                  className="p-1 text-neutral-400 hover:text-[#800000]"
                                   title="Remove cash advance item"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -6626,7 +6626,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   {/* Custom Cash Advance Builder */}
                   <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
                     <span className="font-bold text-neutral-800 block flex items-center gap-1.5">
-                      <Plus className="w-4 h-4 text-[#991b1b]" />
+                      <Plus className="w-4 h-4 text-[#800000]" />
                       <span>Add Other Specific Cash Advance:</span>
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -6646,14 +6646,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           placeholder="Amount ($)"
                           onFocus={(e) => e.target.select()}
                           onChange={(e) => setNewCashAdvAmount(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
-                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#991b1b]"
+                          className="w-full p-2 bg-white border border-neutral-300 rounded-lg text-xs font-mono font-bold text-[#800000]"
                         />
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={handleAddCustomCashAdvance}
-                      className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl text-xs font-bold transition shadow-xs"
+                      className="px-4 py-2 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl text-xs font-bold transition shadow-xs"
                     >
                       + Add Cash Advance
                     </button>
@@ -6663,7 +6663,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-2">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center space-x-2">
-                        <HandCoins className="w-4 h-4 text-[#991b1b]" />
+                        <HandCoins className="w-4 h-4 text-[#800000]" />
                         <span className="font-bold text-xs text-neutral-900 uppercase tracking-wider">
                           Auto-Generated Check Vouchers for Date of Service:
                         </span>
@@ -6671,7 +6671,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <button
                         type="button"
                         onClick={() => setIsCheckPrinterOpen(true)}
-                        className="text-xs text-[#991b1b] font-bold hover:underline flex items-center gap-1"
+                        className="text-xs text-[#800000] font-bold hover:underline flex items-center gap-1"
                       >
                         <span>Open 3-Part Voucher Printer</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -6680,7 +6680,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                     <div className="text-[11px] text-neutral-700 space-y-1">
                       <p>
-                        • <strong>Memo format on each check:</strong> <code className="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-mono text-[10px] text-[#991b1b]">{activeCase.decedent.legalName} • Case #{activeCase.caseNumber} • Svc Date: {statementData.agreementDate || '09/24/2026'}</code>
+                        • <strong>Memo format on each check:</strong> <code className="bg-white px-1.5 py-0.5 rounded border border-amber-300 font-mono text-[10px] text-[#800000]">{activeCase.decedent.legalName} • Case #{activeCase.caseNumber} • Svc Date: {statementData.agreementDate || '09/24/2026'}</code>
                       </p>
                       <p>
                         • <strong>Bank account:</strong> JPMorgan Chase Operating Pass-Through (**4892)
@@ -6706,7 +6706,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 <button
                   type="button"
                   onClick={() => setCurrentStep(4)}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                 >
                   <span>Proceed to Step 4: Live Official Form AP-47 Contract Preview</span>
                   <ChevronRight className="w-4 h-4 text-amber-300" />
@@ -6756,7 +6756,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <button
                     type="button"
                     onClick={handleSaveToGoldenRecord}
-                    className="px-5 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white rounded-xl font-bold transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
+                    className="px-5 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
                   >
                     <Save className="w-3.5 h-3.5 text-amber-300" />
                     <span>Save & Sync to Case</span>
@@ -6779,7 +6779,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       <div className="font-serif-title italic font-bold text-lg text-neutral-800">
                         "A Celebration of Life"
                       </div>
-                      <h2 className="font-serif-title font-bold text-2xl text-[#991b1b] tracking-wider">
+                      <h2 className="font-serif-title font-bold text-2xl text-[#800000] tracking-wider">
                         Benta's Funeral Home, Inc.
                       </h2>
                       <p className="text-[11px] text-neutral-600">
@@ -6814,7 +6814,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     
                     {/* Left Column (A through E) */}
                     <div className="space-y-3">
-                      <h5 className="font-bold text-xs uppercase text-[#991b1b] border-b border-neutral-200 pb-1">
+                      <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1">
                         I. FUNERAL HOME CHARGES
                       </h5>
 
@@ -6840,7 +6840,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.A_otherSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -6856,7 +6856,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.A_otherAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -6881,7 +6881,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.B_otherSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -6897,7 +6897,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.B_otherAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -6954,7 +6954,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.C2_otherSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -6971,7 +6971,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.C2_otherAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -7001,7 +7001,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.D_otherSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7017,7 +7017,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.D_otherAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -7062,7 +7062,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.E3_otherSupervisionSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7079,7 +7079,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.E3_otherSupervisionAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -7131,7 +7131,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.F3_otherFacilitiesSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7148,7 +7148,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.F3_otherFacilitiesAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -7181,7 +7181,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.G_otherSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7197,7 +7197,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.G_otherAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -7239,7 +7239,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                 updated.sectionI.H_otherSpecify = e.target.value;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                              className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                             />
                             <div className="relative w-28 shrink-0">
                               <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7255,7 +7255,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.H_otherAmount = val;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                             </div>
                           </div>
@@ -7310,7 +7310,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.I12_otherSpecify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7327,7 +7327,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionI.I12_otherAmount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7347,7 +7347,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.I12_other2Specify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7364,7 +7364,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionI.I12_other2Amount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7384,7 +7384,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.I12_other3Specify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7401,7 +7401,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionI.I12_other3Amount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7441,7 +7441,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionI.J_otherSpecify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7457,7 +7457,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionI.J_otherAmount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7468,7 +7468,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       {/* Section I Total */}
                       <div className="flex justify-between pt-2 border-t-2 border-neutral-900 font-bold text-xs text-neutral-900">
                         <span>TOTAL OF FUNERAL HOME CHARGES:</span>
-                        <span className="font-mono text-[#991b1b]">${statementData.sectionI.totalFuneralHomeCharges.toFixed(2)}</span>
+                        <span className="font-mono text-[#800000]">${statementData.sectionI.totalFuneralHomeCharges.toFixed(2)}</span>
                       </div>
 
                     </div>
@@ -7491,13 +7491,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     {/* Left Column: Cash Advances */}
                     <div className="space-y-3 border border-neutral-300 rounded-xl p-3.5">
                       <div className="flex justify-between items-center border-b border-neutral-200 pb-1">
-                        <h5 className="font-bold text-xs uppercase text-[#991b1b]">
+                        <h5 className="font-bold text-xs uppercase text-[#800000]">
                           II. CASH ADVANCES (Paid to Others on Family's Behalf)
                         </h5>
                         <button
                           type="button"
                           onClick={() => setIsCheckPrinterOpen(true)}
-                          className="px-2.5 py-1 bg-[#991b1b] hover:bg-red-800 text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1 shadow-xs border border-amber-300/40 cursor-pointer"
+                          className="px-2.5 py-1 bg-[#800000] hover:bg-[#6a0509] text-white rounded-lg text-[10px] font-bold transition flex items-center gap-1 shadow-xs border border-brass-300/40 cursor-pointer"
                         >
                           <Printer className="w-3 h-3 text-amber-300" />
                           <span>Print Checks (${statementData.sectionII.totalCashAdvances.toFixed(2)})</span>
@@ -7562,7 +7562,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionII.otherCashAdvanceSpecify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7578,7 +7578,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionII.otherCashAdvanceAmount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7597,7 +7597,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionII.otherCashAdvance2Specify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7613,7 +7613,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionII.otherCashAdvance2Amount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7632,7 +7632,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                   updated.sectionII.otherCashAdvance3Specify = e.target.value;
                                   setStatementData(calculateAP47Totals(updated));
                                 }}
-                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                className="flex-1 px-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                               />
                               <div className="relative w-28 shrink-0">
                                 <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-[11px]">$</span>
@@ -7648,7 +7648,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                                     updated.sectionII.otherCashAdvance3Amount = val;
                                     setStatementData(calculateAP47Totals(updated));
                                   }}
-                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#991b1b] focus:border-[#991b1b]"
+                                  className="w-full pl-6 pr-2.5 py-1 bg-white border border-neutral-300 rounded-lg text-[11px] font-mono text-right font-bold text-neutral-900 focus:ring-1 focus:ring-[#800000] focus:border-[#800000]"
                                 />
                               </div>
                             </div>
@@ -7664,7 +7664,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                     {/* Right Column: Summary of Charges & Balances */}
                     <div className="space-y-3 bg-red-50/60 border border-red-200 rounded-xl p-3.5">
-                      <h5 className="font-bold text-xs uppercase text-[#991b1b] border-b border-red-200 pb-1">
+                      <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-red-200 pb-1">
                         III. SUMMARY OF CHARGES
                       </h5>
 
@@ -7677,7 +7677,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <span>2. Cash Advances:</span>
                           <span className="font-mono font-bold">${statementData.sectionIII.cashAdvancesTotal.toFixed(2)}</span>
                         </div>
-                        <div className="flex justify-between pt-1 border-t border-red-200 text-sm font-bold text-[#991b1b]">
+                        <div className="flex justify-between pt-1 border-t border-red-200 text-sm font-bold text-[#800000]">
                           <span>TOTAL FUNERAL CHARGES:</span>
                           <span className="font-mono">${statementData.sectionIII.totalFuneralCharges.toFixed(2)}</span>
                         </div>
@@ -7761,7 +7761,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     {/* Dual Signatures */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300">
                       <div>
-                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#991b1b]">
+                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000]">
                           {activeCase.informant.fullName} (Electronic Jurat Verified)
                         </div>
                         <span className="text-[9px] text-neutral-500 block mt-0.5">
@@ -7797,7 +7797,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                 <button
                   type="button"
                   onClick={handleSaveToGoldenRecord}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-8 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-8 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
                 >
                   <Save className="w-4 h-4 text-amber-300" />
                   <span>Save & Complete Form AP-47 Statement</span>
@@ -7828,7 +7828,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
       {/* Family Portal PIN & Onboarding Guidance Modal */}
       {isFamilyPortalPinModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-200">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-neutral-200">
             
             <div className="flex justify-between items-center border-b border-neutral-200 pb-3">
               <div className="flex items-center space-x-2">
@@ -7874,7 +7874,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     navigator.clipboard.writeText(`Benta's Funeral Home - Family Portal Access\nCase: ${activeCase.caseNumber} (${activeCase.decedent.legalName})\nAccess URL: https://e-bfh.com\nFamily PIN: 1948 (or Manager PIN: 3995)`);
                     showToast('✓ Family Portal credentials copied to clipboard!');
                   }}
-                  className="w-full bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 font-bold text-xs py-2 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-xs"
+                  className="w-full bg-brass-50 hover:bg-brass-100 text-brass-900 border border-brass-300 font-bold text-xs py-2 rounded-xl transition flex items-center justify-center space-x-1.5 shadow-xs"
                 >
                   <Copy className="w-3.5 h-3.5 text-amber-700" />
                   <span>Copy Family Credentials & Portal Link</span>
@@ -7918,7 +7918,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   setIsFamilyPortalPinModalOpen(false);
                   onClose();
                 }}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-md"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition shadow-md"
               >
                 Close & Return to Dashboard
               </button>

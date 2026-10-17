@@ -87,3 +87,32 @@ export function validateLifeDates(
 
   return { isValid: true };
 }
+
+/**
+ * Formats a 9-digit Social Security Number into standard AAA-GG-SSSS (XXX-XX-XXXX) format.
+ * Strips all non-digit characters and ensures exact 9-digit length limit.
+ */
+export function formatSSN(value: string): string {
+  if (!value) return '';
+  const digits = value.replace(/\D/g, '').slice(0, 9);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 5) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5, 9)}`;
+}
+
+/**
+ * Validates whether an SSN contains all required 9 digits for NYS EDRS Death Certificate filing.
+ */
+export function isValidSSN(value: string): boolean {
+  if (!value) return false;
+  const digits = value.replace(/\D/g, '');
+  if (digits.length !== 9) return false;
+  if (/^(.)\1{8}$/.test(digits)) return false; // all same digits like 000000000 or 999999999
+  const area = digits.slice(0, 3);
+  const group = digits.slice(3, 5);
+  const serial = digits.slice(5, 9);
+  if (area === '000' || area === '666' || parseInt(area, 10) >= 900) return false;
+  if (group === '00') return false;
+  if (serial === '0000') return false;
+  return true;
+}

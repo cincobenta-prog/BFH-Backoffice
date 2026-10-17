@@ -312,9 +312,9 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
       <div className="bg-slate-900 border border-emerald-500/30 w-full max-w-6xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-slate-100 font-sans">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-800 flex items-center justify-center shadow-lg shadow-emerald-950/40">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-brass-800 flex items-center justify-center shadow-lg shadow-emerald-950/40">
               <CreditCard className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -490,7 +490,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                     </div>
                     <button
                       onClick={() => setPaymentSuccessReceipt(null)}
-                      className="text-xs bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 px-3 py-1 rounded-lg border border-emerald-600 cursor-pointer"
+                      className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1 rounded-lg border border-emerald-600 cursor-pointer"
                     >
                       Dismiss Receipt
                     </button>
@@ -539,7 +539,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                         onClick={() => setPaymentMethod(m.id as PaymentMethodType)}
                         className={`p-3 rounded-xl border text-left transition-all ${
                           paymentMethod === m.id
-                            ? 'bg-emerald-600/20 border-emerald-500 text-white shadow-md shadow-emerald-950/30'
+                            ? 'bg-brass-500/20 border-brass-500 text-white shadow-md shadow-emerald-950/30'
                             : 'bg-slate-800/70 border-slate-700 text-slate-300 hover:border-slate-600 hover:bg-slate-800'
                         }`}
                       >
@@ -711,7 +711,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                     <button
                       type="submit"
                       disabled={isProcessing || chargeAmount <= 0}
-                      className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-950/40 border border-emerald-400/40 flex items-center justify-center space-x-2 transition cursor-pointer disabled:opacity-50"
+                      className="w-full py-3.5 bg-gradient-to-r from-brass-600 to-[#800000] hover:from-brass-500 hover:to-[#6a0509] text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-950/40 border border-emerald-400/40 flex items-center justify-center space-x-2 transition cursor-pointer disabled:opacity-50"
                     >
                       {isProcessing ? (
                         <>
@@ -821,7 +821,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                 {/* Progress Bar */}
                 <div className="w-full bg-slate-900 rounded-full h-3 border border-slate-700 overflow-hidden">
                   <div 
-                    className="bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 h-full transition-all duration-500 rounded-full"
+                    className="bg-gradient-to-r from-emerald-500 via-brass-400 to-emerald-300 h-full transition-all duration-500 rounded-full"
                     style={{ width: `${Math.min(100, Math.max(8, (totalRaisedCrowdfund / crowdfundGoal) * 100))}%` }}
                   />
                 </div>
@@ -831,7 +831,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={handleCopyLink}
-                      className="px-3 py-1 bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-200 rounded-lg border border-emerald-500/50 font-semibold flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-emerald-500/50 font-semibold flex items-center gap-1 cursor-pointer"
                     >
                       <Copy className="w-3.5 h-3.5" />
                       <span>{copiedLink ? 'Link Copied!' : 'Copy Shareable Memorial Link'}</span>
@@ -933,7 +933,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                     <button
                       type="submit"
                       disabled={isProcessing || crowdfundAmount <= 0 || !crowdfundDonorName.trim()}
-                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md border border-emerald-400/40 flex items-center justify-center space-x-2 transition cursor-pointer disabled:opacity-50"
+                      className="w-full py-3 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl shadow-md border border-emerald-400/40 flex items-center justify-center space-x-2 transition cursor-pointer disabled:opacity-50"
                     >
                       {isProcessing ? (
                         <>
@@ -1096,7 +1096,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                       onClick={() => setTestModeInput(!testModeInput)}
                       className={`px-3 py-1 text-xs font-bold rounded-lg border transition ${
                         testModeInput
-                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/50'
+                          ? 'bg-brass-500/20 text-brass-300 border-brass-500/50'
                           : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50'
                       }`}
                     >
@@ -1204,7 +1204,7 @@ export const StripePaymentGatewayModal: React.FC<StripePaymentGatewayModalProps>
                   <div className="flex items-center space-x-3 pt-2">
                     <button
                       type="submit"
-                      className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-sm border border-emerald-400/40 transition cursor-pointer"
+                      className="px-5 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl shadow-sm border border-emerald-400/40 transition cursor-pointer"
                     >
                       Save Stripe Gateway Credentials
                     </button>

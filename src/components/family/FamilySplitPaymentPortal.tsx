@@ -336,11 +336,11 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
   };
 
   return (
-    <div className="bg-neutral-900 text-neutral-100 rounded-3xl border border-neutral-800 shadow-2xl overflow-hidden font-sans">
+    <div className="bg-neutral-900 text-neutral-100 rounded-2xl border border-neutral-800 shadow-2xl overflow-hidden font-sans">
       
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-[#991b1b] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-amber-400/40 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-[#800000] text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-amber-400/40 animate-bounce">
           <Sparkles className="w-5 h-5 text-amber-300" />
           <span className="text-sm font-semibold tracking-wide">{toastMessage}</span>
         </div>
@@ -354,7 +354,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           
           <div className="flex items-start space-x-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#991b1b] to-red-950 border border-amber-400/50 flex items-center justify-center text-white shadow-xl shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#800000] to-red-950 border border-amber-400/50 flex items-center justify-center text-white shadow-xl shrink-0">
               <HandCoins className="w-7 h-7 text-amber-300" />
             </div>
             <div>
@@ -427,7 +427,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
             <span className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
               Direct Paid (${(directFamilyPaid + communityPaid).toLocaleString()})
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block ml-2"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-brass-400 inline-block ml-2"></span>
               Insurance Assignment (${insuranceFunded.toLocaleString()})
             </span>
             <span className="font-bold text-white">
@@ -439,13 +439,13 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
             {/* Direct Paid Green Segment */}
             <div 
               style={{ width: `${Math.min(100, ((directFamilyPaid + communityPaid) / totalContract) * 100)}%` }} 
-              className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-l-full transition-all duration-700"
+              className="bg-gradient-to-r from-emerald-500 to-emerald-400 h-full rounded-l-full transition-all duration-700"
               title={`Direct Cash & Card: $${(directFamilyPaid + communityPaid).toLocaleString()}`}
             />
             {/* Insurance Blue Segment */}
             <div 
               style={{ width: `${Math.min(100 - ((directFamilyPaid + communityPaid) / totalContract) * 100, (insuranceFunded / totalContract) * 100)}%` }} 
-              className="bg-gradient-to-r from-blue-500 to-indigo-400 h-full transition-all duration-700"
+              className="bg-gradient-to-r from-brass-600 to-brass-400 h-full transition-all duration-700"
               title={`Insurance Assignment: $${insuranceFunded.toLocaleString()}`}
             />
           </div>
@@ -494,7 +494,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
               onClick={() => setActiveSubTab('checkout')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
                 activeSubTab === 'checkout'
-                  ? 'bg-[#991b1b] text-white border border-amber-300 shadow-md'
+                  ? 'bg-[#800000] text-white border border-amber-300 shadow-md'
                   : 'bg-neutral-800/80 text-amber-300 hover:bg-neutral-800'
               }`}
             >
@@ -568,7 +568,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                 </button>
                 <button
                   onClick={() => setIsAddPayerModalOpen(true)}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-400/40"
+                  className="bg-[#800000] hover:bg-red-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-400/40"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>Custom Payer</span>
@@ -647,7 +647,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                                 Funded & Paid
                               </span>
                             ) : item.status === 'verified_active' ? (
-                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-blue-950 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/40">
+                              <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider bg-brass-950 text-brass-300 px-2 py-0.5 rounded-full border border-brass-500/40">
                                 <ShieldCheck className="w-3 h-3" />
                                 Policy Verified
                               </span>
@@ -742,7 +742,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
 
               <button
                 onClick={() => setIsAddPayerModalOpen(true)}
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+                className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Family Co-Payer</span>
@@ -837,7 +837,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                             setCheckoutAmount(shareAmount - paidAmt);
                             setActiveSubTab('checkout');
                           }}
-                          className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1 shadow-sm"
+                          className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1 shadow-sm"
                         >
                           <CreditCard className="w-3 h-3 text-amber-300" />
                           <span>Pay ${shareAmount.toLocaleString()}</span>
@@ -910,7 +910,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                     setCheckoutAmount(250);
                     setActiveSubTab('checkout');
                   }}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-5 py-3 rounded-xl transition flex items-center gap-2 shadow-lg border border-amber-400/50"
+                  className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-5 py-3 rounded-xl transition flex items-center gap-2 shadow-lg border border-amber-400/50"
                 >
                   <Gift className="w-4 h-4 text-amber-300" />
                   <span>Custom Love Gift</span>
@@ -990,10 +990,10 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
 
         {/* 4. MAKE A PAYMENT / SPONSOR SHARE (CHECKOUT GATEWAY) */}
         {activeSubTab === 'checkout' && (
-          <div className="max-w-2xl mx-auto bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 shadow-2xl space-y-6">
+          <div className="max-w-2xl mx-auto bg-neutral-950 p-6 md:p-8 rounded-2xl border border-neutral-800 shadow-2xl space-y-6">
             
             <div className="text-center space-y-1">
-              <div className="w-12 h-12 rounded-2xl bg-[#991b1b] border border-amber-400/40 text-amber-300 flex items-center justify-center mx-auto shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-[#800000] border border-amber-400/40 text-amber-300 flex items-center justify-center mx-auto shadow-lg">
                 <CreditCard className="w-6 h-6" />
               </div>
               <h3 className="font-serif-title text-2xl font-bold text-white mt-2">
@@ -1089,7 +1089,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                       onClick={() => setCheckoutMethod(meth.id as any)}
                       className={`p-3 rounded-xl flex flex-col items-center justify-center space-y-1 text-xs font-bold border transition ${
                         isSelected
-                          ? 'bg-gradient-to-b from-[#991b1b] to-red-950 border-amber-400 text-white shadow-md'
+                          ? 'bg-gradient-to-b from-[#800000] to-red-950 border-amber-400 text-white shadow-md'
                           : 'bg-neutral-900 border-neutral-800 text-neutral-300 hover:border-neutral-700'
                       }`}
                     >
@@ -1183,7 +1183,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
             <button
               onClick={handleExecutePayment}
               disabled={isProcessingPayment || checkoutAmount <= 0}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#991b1b] via-red-800 to-[#991b1b] text-white font-bold text-sm tracking-wide shadow-xl flex items-center justify-center space-x-2 border border-amber-400/50 hover:brightness-110 active:scale-[0.99] transition disabled:opacity-50"
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#800000] via-red-800 to-[#800000] text-white font-bold text-sm tracking-wide shadow-xl flex items-center justify-center space-x-2 border border-amber-400/50 hover:brightness-110 active:scale-[0.99] transition disabled:opacity-50"
             >
               {isProcessingPayment ? (
                 <>
@@ -1224,7 +1224,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition border border-amber-400/40"
+                  className="bg-[#800000] hover:bg-red-800 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition border border-amber-400/40"
                 >
                   <Printer className="w-3.5 h-3.5 text-amber-300" />
                   <span>Print Receipt</span>
@@ -1233,7 +1233,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
             </div>
 
             {/* Printable Digital Receipt Card */}
-            <div className="bg-white text-neutral-900 p-8 rounded-3xl border border-neutral-300 shadow-2xl font-sans relative overflow-hidden">
+            <div className="bg-white text-neutral-900 p-8 rounded-2xl border border-neutral-300 shadow-2xl font-sans relative overflow-hidden">
               
               {/* Watermark Crest */}
               <div className="absolute right-6 top-6 opacity-10 pointer-events-none">
@@ -1241,9 +1241,9 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
               </div>
 
               {/* Header */}
-              <div className="border-b-2 border-[#991b1b] pb-5 flex justify-between items-start">
+              <div className="border-b-2 border-[#800000] pb-5 flex justify-between items-start">
                 <div>
-                  <h3 className="font-serif-title text-xl font-bold text-[#991b1b] tracking-wider uppercase">
+                  <h3 className="font-serif-title text-xl font-bold text-[#800000] tracking-wider uppercase">
                     Benta’s Funeral Home, Inc.
                   </h3>
                   <p className="text-xs text-neutral-600 font-light mt-0.5">
@@ -1303,7 +1303,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-serif-title font-bold text-2xl text-[#991b1b]">
+                    <span className="font-serif-title font-bold text-2xl text-[#800000]">
                       ${lastReceiptData.amount.toLocaleString()}
                     </span>
                   </div>
@@ -1335,7 +1335,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
       {/* MODAL: ADD CO-PAYER / SPLIT SHARE */}
       {isAddPayerModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-neutral-900 border border-neutral-700 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl text-white animate-fadeIn">
+          <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl text-white animate-fadeIn">
             
             <div className="flex justify-between items-center border-b border-neutral-800 pb-3">
               <div className="flex items-center space-x-2">
@@ -1469,7 +1469,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
 
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#991b1b] hover:bg-red-800 text-white font-bold transition flex items-center space-x-1.5 shadow-lg border border-amber-400/40 text-xs"
+                  className="px-5 py-2.5 rounded-xl bg-[#800000] hover:bg-red-800 text-white font-bold transition flex items-center space-x-1.5 shadow-lg border border-amber-400/40 text-xs"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Create & Send Link</span>
@@ -1484,7 +1484,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
       {/* MODAL: SHARE PRIVATE PAYMENT LINK */}
       {isShareModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-neutral-900 border border-neutral-700 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl text-white animate-fadeIn">
+          <div className="bg-neutral-900 border border-neutral-700 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl text-white animate-fadeIn">
             
             <div className="flex justify-between items-center border-b border-neutral-800 pb-3">
               <div className="flex items-center space-x-2">
@@ -1534,7 +1534,7 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
                   copyShareLink(selectedSharePayer || undefined);
                   setIsShareModalOpen(false);
                 }}
-                className="w-full py-3 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-2xl transition border border-amber-400/40 text-xs flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#800000] hover:bg-red-800 text-white font-bold rounded-2xl transition border border-amber-400/40 text-xs flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4 text-amber-300" />
                 <span>Copy & Send Message</span>

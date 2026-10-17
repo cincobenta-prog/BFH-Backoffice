@@ -156,10 +156,10 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
-      <div className="bg-white text-neutral-900 w-full max-w-6xl rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden flex flex-col max-h-[94vh]">
+      <div className="bg-white text-neutral-900 w-full max-w-6xl rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden flex flex-col max-h-[94vh]">
 
         {/* TOP MODAL HEADER */}
-        <div className="bg-gradient-to-r from-neutral-900 via-[#991b1b] to-neutral-900 text-white p-5 px-6 flex items-center justify-between border-b border-red-800/40 shrink-0">
+        <div className="bg-gradient-to-r from-neutral-900 via-[#800000] to-neutral-900 text-white p-5 px-6 flex items-center justify-between border-b border-red-800/40 shrink-0">
           <div className="flex items-center space-x-3.5">
             <div className={`p-2.5 rounded-2xl border ${
               isLocked 
@@ -220,7 +220,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                   onClick={() => setPreviewDocType('program')}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
                     previewDocType === 'program'
-                      ? 'bg-[#991b1b] text-white shadow-xs'
+                      ? 'bg-[#800000] text-white shadow-xs'
                       : 'text-neutral-600 hover:bg-neutral-100'
                   }`}
                 >
@@ -247,7 +247,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
             </div>
 
             {/* Document Visual Render Canvas */}
-            <div className="bg-white rounded-3xl p-6 border border-neutral-200 shadow-md space-y-6 text-center">
+            <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-md space-y-6 text-center">
               
               {previewDocType === 'program' ? (
                 <div className="space-y-4">
@@ -274,7 +274,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                   <div className="border-t border-b border-amber-200/60 py-3 text-xs text-neutral-700 space-y-1">
                     <p className="font-bold">{caseData.serviceSelections.serviceDate || 'Tuesday, September 22, 2026'} • 11:00 AM</p>
                     <p className="text-neutral-600">{caseData.serviceSelections.viewingParlor || "Benta's Funeral Home Chapel • 630 St. Nicholas Ave, Harlem"}</p>
-                    <p className="text-[11px] text-[#991b1b] font-medium">{caseData.serviceSelections.officiantName || 'Rev. Dr. Calvin Butts IV, Officiating'}</p>
+                    <p className="text-[11px] text-[#800000] font-medium">{caseData.serviceSelections.officiantName || 'Rev. Dr. Calvin Butts IV, Officiating'}</p>
                   </div>
 
                   <div className="text-left bg-[#fbfbfd] p-4 rounded-2xl border border-neutral-200 text-xs space-y-2">
@@ -288,7 +288,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="p-4 bg-[#141b2b] text-white rounded-2xl border border-amber-400/40 text-center space-y-2">
+                  <div className="p-4 bg-[#1c1a1a] text-white rounded-2xl border border-amber-400/40 text-center space-y-2">
                     <span className="text-[10px] text-amber-300 font-mono uppercase tracking-widest font-bold block">
                       Museum-Grade Hardbound Gold-Foil Keepsake
                     </span>
@@ -312,7 +312,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     </div>
 
                     <div className="p-3 bg-amber-50/60 rounded-xl border border-amber-200 text-xs space-y-1 text-center flex flex-col items-center justify-center">
-                      <QrCode className="w-8 h-8 text-[#991b1b]" />
+                      <QrCode className="w-8 h-8 text-[#800000]" />
                       <span className="text-[10px] font-mono text-neutral-600 font-bold block">
                         Scan-to-Stream Audio QR Pills
                       </span>
@@ -330,7 +330,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
           {/* RIGHT: LEGAL VERIFICATION & COMMERCIAL PRESS SIGN-OFF (5 COLUMNS) */}
           <div className="lg:col-span-5 space-y-4">
             
-            <div className="bg-white p-6 rounded-3xl border border-neutral-200 shadow-sm space-y-5">
+            <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm space-y-5">
               
               <div className="border-b border-neutral-200 pb-3">
                 <h3 className="font-serif-title font-bold text-base text-neutral-900 flex items-center gap-2">
@@ -351,7 +351,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     checked={spellingsChecked}
                     disabled={isLocked}
                     onChange={(e) => setSpellingsChecked(e.target.checked)}
-                    className="mt-0.5 rounded text-[#991b1b] focus:ring-red-500 h-4 w-4 shrink-0"
+                    className="mt-0.5 rounded text-[#800000] focus:ring-red-500 h-4 w-4 shrink-0"
                   />
                   <div className="text-xs">
                     <span className="font-bold text-neutral-900 block">1. Spelling & Chronological Dates Verified</span>
@@ -367,7 +367,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     checked={photosChecked}
                     disabled={isLocked}
                     onChange={(e) => setPhotosChecked(e.target.checked)}
-                    className="mt-0.5 rounded text-[#991b1b] focus:ring-red-500 h-4 w-4 shrink-0"
+                    className="mt-0.5 rounded text-[#800000] focus:ring-red-500 h-4 w-4 shrink-0"
                   />
                   <div className="text-xs">
                     <span className="font-bold text-neutral-900 block">2. Archival Photos & Digi-Tributes Approved</span>
@@ -383,7 +383,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     checked={legalLockChecked}
                     disabled={isLocked}
                     onChange={(e) => setLegalLockChecked(e.target.checked)}
-                    className="mt-0.5 rounded text-[#991b1b] focus:ring-red-500 h-4 w-4 shrink-0"
+                    className="mt-0.5 rounded text-[#800000] focus:ring-red-500 h-4 w-4 shrink-0"
                   />
                   <div className="text-xs">
                     <span className="font-bold text-amber-950 block">3. Commercial Press Lock Acknowledgment</span>
@@ -404,7 +404,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     disabled={isLocked}
                     value={programQty}
                     onChange={(e) => setProgramQty(Number(e.target.value))}
-                    className="w-full bg-white border border-neutral-300 rounded-xl p-2 font-mono font-bold text-xs outline-none focus:border-[#991b1b]"
+                    className="w-full bg-white border border-neutral-300 rounded-xl p-2 font-mono font-bold text-xs outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -415,7 +415,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     disabled={isLocked}
                     value={keepsakeQty}
                     onChange={(e) => setKeepsakeQty(Number(e.target.value))}
-                    className="w-full bg-white border border-neutral-300 rounded-xl p-2 font-mono font-bold text-xs outline-none focus:border-[#991b1b]"
+                    className="w-full bg-white border border-neutral-300 rounded-xl p-2 font-mono font-bold text-xs outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -429,7 +429,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     disabled={isLocked}
                     value={signatureName}
                     onChange={(e) => setSignatureName(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-[#800000]"
                   />
                 </div>
 
@@ -440,7 +440,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                     disabled={isLocked}
                     value={signatureRelation}
                     onChange={(e) => setSignatureRelation(e.target.value)}
-                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs outline-none focus:border-[#991b1b]"
+                    className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 text-xs outline-none focus:border-[#800000]"
                   />
                 </div>
               </div>
@@ -460,7 +460,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                   <div className="flex justify-center space-x-2 pt-1">
                     <button
                       onClick={() => window.print()}
-                      className="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl transition flex items-center space-x-1"
+                      className="px-3.5 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl transition flex items-center space-x-1"
                     >
                       <Printer className="w-3.5 h-3.5" />
                       <span>Print PDF</span>
@@ -483,7 +483,7 @@ export const FamilyProofApprovalModal: React.FC<FamilyProofApprovalModalProps> =
                   disabled={!allCheckboxesPassed}
                   className={`w-full py-3 rounded-2xl font-bold text-xs transition shadow-md flex items-center justify-center space-x-2 ${
                     allCheckboxesPassed
-                      ? 'bg-gradient-to-r from-emerald-600 via-emerald-700 to-[#991b1b] hover:brightness-110 text-white border border-amber-300/40 cursor-pointer'
+                      ? 'bg-gradient-to-r from-emerald-600 via-emerald-700 to-[#800000] hover:brightness-110 text-white border border-amber-300/40 cursor-pointer'
                       : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
                   }`}
                 >

@@ -172,20 +172,20 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 font-sans animate-fadeIn">
-      <div className="bg-white border border-neutral-200 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         
         {/* Header Bar */}
-        <div className="p-4 sm:p-5 bg-gradient-to-r from-neutral-900 via-neutral-900 to-indigo-950 text-white flex items-center justify-between shrink-0 border-b border-neutral-800">
+        <div className="p-4 sm:p-5 bg-gradient-to-r from-neutral-900 via-neutral-900 to-brass-950 text-white flex items-center justify-between shrink-0 border-b border-neutral-800">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/40 text-indigo-300 flex items-center justify-center font-bold shadow-inner">
-              <Bot className="w-5 h-5 text-indigo-400 animate-pulse" />
+            <div className="w-10 h-10 rounded-2xl bg-brass-500/20 border border-brass-400/40 text-brass-300 flex items-center justify-center font-bold shadow-inner">
+              <Bot className="w-5 h-5 text-brass-400 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <h3 className="font-serif-title text-base sm:text-lg font-bold text-white tracking-wide">
                   AI Family Care Concierge &amp; Whisper Audio Hub
                 </h3>
-                <span className="px-2.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] font-mono font-bold rounded-full">
+                <span className="px-2.5 py-0.5 bg-brass-500/20 text-brass-300 border border-brass-500/30 text-[10px] font-mono font-bold rounded-full">
                   GPT-4o &amp; WHISPER READY
                 </span>
               </div>
@@ -220,11 +220,11 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`py-2.5 px-4 font-bold text-xs rounded-t-xl transition flex items-center space-x-2 cursor-pointer border-t border-x ${
                   isActive
-                    ? 'bg-white text-indigo-950 border-neutral-200 border-b-transparent shadow-2xs'
+                    ? 'bg-white text-brass-950 border-neutral-200 border-b-transparent shadow-2xs'
                     : 'text-neutral-600 hover:text-neutral-900 border-transparent hover:bg-neutral-100'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-indigo-700' : 'text-neutral-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-brass-700' : 'text-neutral-400'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -238,11 +238,11 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
           {activeTab === 'concierge' && (
             <div className="space-y-4">
               
-              <div className="p-3.5 bg-gradient-to-r from-indigo-950 to-neutral-900 text-white rounded-2xl border border-indigo-800/60 flex items-center justify-between shadow-md">
+              <div className="p-3.5 bg-gradient-to-r from-brass-950 to-neutral-900 text-white rounded-2xl border border-brass-800/60 flex items-center justify-between shadow-md">
                 <div className="space-y-0.5">
                   <div className="flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-indigo-300 animate-pulse" />
-                    <h5 className="font-bold text-xs uppercase tracking-wider text-indigo-200">
+                    <Sparkles className="w-4 h-4 text-brass-300 animate-pulse" />
+                    <h5 className="font-bold text-xs uppercase tracking-wider text-brass-200">
                       Active Case Context: {currentCase.decedent.legalName} ({currentCase.caseNumber})
                     </h5>
                   </div>
@@ -266,12 +266,12 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     >
                       <div className={`p-3 rounded-2xl max-w-[85%] space-y-1 ${
                         msg.sender === 'user'
-                          ? 'bg-[#991b1b] text-white rounded-br-none'
-                          : 'bg-indigo-50/80 border border-indigo-100 text-neutral-900 rounded-bl-none'
+                          ? 'bg-[#800000] text-white rounded-br-none'
+                          : 'bg-brass-50/80 border border-brass-100 text-neutral-900 rounded-bl-none'
                       }`}>
                         <div className="whitespace-pre-line leading-relaxed">{msg.text}</div>
                         {msg.citation && (
-                          <div className="text-[10px] text-indigo-800/80 font-mono pt-1 border-t border-indigo-200/50">
+                          <div className="text-[10px] text-brass-800/80 font-mono pt-1 border-t border-brass-200/50">
                             {msg.citation}
                           </div>
                         )}
@@ -280,7 +280,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                   ))}
                   {isGeneratingChat && (
                     <div className="flex items-center space-x-2 text-neutral-500 text-xs italic bg-neutral-100 p-2.5 rounded-2xl w-fit">
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-600" />
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-brass-600" />
                       <span>Concierge is drafting a gentle answer...</span>
                     </div>
                   )}
@@ -301,7 +301,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       onClick={() => {
                         setTestPrompt(promptText);
                       }}
-                      className="text-[10px] bg-neutral-100 hover:bg-indigo-50 hover:text-indigo-900 text-neutral-700 font-medium px-2.5 py-1 rounded-lg border border-neutral-200 transition cursor-pointer"
+                      className="text-[10px] bg-neutral-100 hover:bg-brass-50 hover:text-brass-900 text-neutral-700 font-medium px-2.5 py-1 rounded-lg border border-neutral-200 transition cursor-pointer"
                     >
                       {promptText}
                     </button>
@@ -315,12 +315,12 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     value={testPrompt}
                     onChange={(e) => setTestPrompt(e.target.value)}
                     placeholder="Ask the AI Concierge about funeral traditions, costs, or NYS law..."
-                    className="flex-1 bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 outline-none focus:border-indigo-600"
+                    className="flex-1 bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 outline-none focus:border-brass-600"
                   />
                   <button
                     type="submit"
                     disabled={isGeneratingChat || !testPrompt.trim()}
-                    className="bg-indigo-700 hover:bg-indigo-800 disabled:opacity-50 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1 transition cursor-pointer shadow-xs"
+                    className="bg-brass-700 hover:bg-brass-800 disabled:opacity-50 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1 transition cursor-pointer shadow-xs"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Send</span>
@@ -338,7 +338,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
               <div className="bg-white border border-neutral-200 rounded-2xl p-4 shadow-2xs space-y-3">
                 <div className="flex items-center justify-between border-b border-neutral-200 pb-2">
                   <div className="flex items-center space-x-2">
-                    <FileText className="w-4 h-4 text-indigo-700" />
+                    <FileText className="w-4 h-4 text-brass-700" />
                     <h5 className="font-bold text-xs uppercase tracking-wider text-neutral-900">
                       9-Part Biographical Obituary Generator
                     </h5>
@@ -371,7 +371,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                         id="includeScriptureCheck"
                         checked={includeScripture}
                         onChange={(e) => setIncludeScripture(e.target.checked)}
-                        className="w-4 h-4 text-indigo-600 rounded"
+                        className="w-4 h-4 text-brass-600 rounded"
                       />
                       <label htmlFor="includeScriptureCheck" className="text-neutral-700 text-xs font-medium cursor-pointer">
                         Include Sacred Scripture (2 Tim 4:7)
@@ -383,7 +383,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     <button
                       onClick={handleGenerateObituary}
                       disabled={isGeneratingObit}
-                      className="w-full bg-indigo-700 hover:bg-indigo-800 disabled:opacity-60 text-white font-bold text-xs py-2 rounded-xl flex items-center justify-center space-x-1.5 transition shadow-xs cursor-pointer"
+                      className="w-full bg-brass-700 hover:bg-brass-800 disabled:opacity-60 text-white font-bold text-xs py-2 rounded-xl flex items-center justify-center space-x-1.5 transition shadow-xs cursor-pointer"
                     >
                       <Sparkles className={`w-3.5 h-3.5 ${isGeneratingObit ? 'animate-spin' : ''}`} />
                       <span>{isGeneratingObit ? 'Writing 9-Part Draft...' : 'Generate Full Obituary'}</span>
@@ -410,7 +410,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       onClick={handleCopyObituary}
                       className="bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition cursor-pointer"
                     >
-                      <Copy className="w-3.5 h-3.5 text-indigo-300" />
+                      <Copy className="w-3.5 h-3.5 text-brass-300" />
                       <span>Copy Text</span>
                     </button>
                   </div>
@@ -428,9 +428,9 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
           {activeTab === 'whisper' && (
             <div className="space-y-4">
               
-              <div className="p-3.5 bg-gradient-to-r from-neutral-900 to-indigo-950 text-white rounded-2xl border border-indigo-800/60 flex items-center justify-between shadow-md">
+              <div className="p-3.5 bg-gradient-to-r from-neutral-900 to-brass-950 text-white rounded-2xl border border-brass-800/60 flex items-center justify-between shadow-md">
                 <div className="flex items-center space-x-3">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center font-bold">
+                  <div className="w-9 h-9 rounded-xl bg-brass-500/20 text-brass-400 border border-brass-500/30 flex items-center justify-center font-bold">
                     <Volume2 className="w-5 h-5" />
                   </div>
                   <div>
@@ -441,7 +441,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                   </div>
                 </div>
 
-                <span className="text-[10px] font-mono px-2.5 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full font-bold">
+                <span className="text-[10px] font-mono px-2.5 py-1 bg-brass-500/20 text-brass-300 border border-brass-500/30 rounded-full font-bold">
                   WHISPER-V3 NEURAL ENGINE
                 </span>
               </div>
@@ -459,13 +459,13 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       onClick={() => setSelectedVoiceId(v.id)}
                       className={`w-full text-left p-3 rounded-xl border transition cursor-pointer space-y-1 block ${
                         selectedVoiceId === v.id
-                          ? 'bg-indigo-50 border-indigo-400 shadow-2xs'
+                          ? 'bg-brass-50 border-brass-400 shadow-2xs'
                           : 'bg-white border-neutral-200 hover:bg-neutral-50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-xs text-neutral-900 truncate">{v.speakerName}</span>
-                        <span className="text-[10px] font-mono text-indigo-700 font-bold">{v.audioDuration}</span>
+                        <span className="text-[10px] font-mono text-brass-700 font-bold">{v.audioDuration}</span>
                       </div>
                       <p className="text-[10px] text-neutral-500 truncate">{v.rawTranscript}</p>
                     </button>
@@ -495,7 +495,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Key Highlighted Memory Quotes:</span>
                     <div className="space-y-1">
                       {activeVoice.keyQuotes.map((q, idx) => (
-                        <div key={idx} className="p-2 bg-indigo-50/60 rounded-lg text-[11px] text-indigo-950 font-serif italic border border-indigo-100">
+                        <div key={idx} className="p-2 bg-brass-50/60 rounded-lg text-[11px] text-brass-950 font-serif italic border border-brass-100">
                           {q}
                         </div>
                       ))}
@@ -521,7 +521,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
               
               <div className="p-3.5 bg-gradient-to-r from-neutral-900 to-neutral-800 text-white rounded-2xl border border-neutral-700 flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center font-bold">
+                  <div className="w-9 h-9 rounded-xl bg-brass-500/20 text-brass-400 border border-brass-500/30 flex items-center justify-center font-bold">
                     <Server className="w-5 h-5" />
                   </div>
                   <div>
@@ -559,7 +559,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       value={openaiKeyInput}
                       onChange={(e) => setOpenaiKeyInput(e.target.value)}
                       placeholder="e.g. sk-proj-..."
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-indigo-600 outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-brass-600 outline-none shadow-xs"
                     />
                   </div>
 
@@ -570,7 +570,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     <select
                       value={modelChoice}
                       onChange={(e) => setModelChoice(e.target.value)}
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 focus:border-indigo-600 outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs text-neutral-900 focus:border-brass-600 outline-none shadow-xs"
                     >
                       <option value="gpt-4o">OpenAI GPT-4o (State of the Art)</option>
                       <option value="gpt-4o-mini">OpenAI GPT-4o-mini (Fast &amp; Cost-Effective)</option>
@@ -588,7 +588,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       value={geminiKeyInput}
                       onChange={(e) => setGeminiKeyInput(e.target.value)}
                       placeholder="e.g. AIzaSy..."
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-indigo-600 outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-brass-600 outline-none shadow-xs"
                     />
                   </div>
 
@@ -601,7 +601,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       value={anthropicKeyInput}
                       onChange={(e) => setAnthropicKeyInput(e.target.value)}
                       placeholder="e.g. sk-ant-..."
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-indigo-600 outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-brass-600 outline-none shadow-xs"
                     />
                   </div>
 
@@ -616,7 +616,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       step="0.05"
                       value={temperatureVal}
                       onChange={(e) => setTemperatureVal(parseFloat(e.target.value))}
-                      className="w-full accent-indigo-600 cursor-pointer"
+                      className="w-full accent-brass-600 cursor-pointer"
                     />
                   </div>
 
@@ -628,7 +628,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                       rows={3}
                       value={personaText}
                       onChange={(e) => setPersonaText(e.target.value)}
-                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-indigo-600 outline-none shadow-xs"
+                      className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-brass-600 outline-none shadow-xs"
                     />
                   </div>
                 </div>
@@ -638,7 +638,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     type="button"
                     onClick={handleTestAI}
                     disabled={isTesting}
-                    className="bg-neutral-900 hover:bg-neutral-800 text-indigo-300 font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 transition border border-indigo-400/30 cursor-pointer shadow-xs"
+                    className="bg-neutral-900 hover:bg-neutral-800 text-brass-300 font-bold text-xs px-4 py-2 rounded-xl flex items-center space-x-1.5 transition border border-brass-400/30 cursor-pointer shadow-xs"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} />
                     <span>{isTesting ? 'Authenticating...' : 'Test AI Gateway'}</span>
@@ -646,9 +646,9 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
 
                   <button
                     type="submit"
-                    className="bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-xs px-5 py-2 rounded-xl transition shadow-xs cursor-pointer flex items-center space-x-1.5"
+                    className="bg-brass-700 hover:bg-brass-800 text-white font-bold text-xs px-5 py-2 rounded-xl transition shadow-xs cursor-pointer flex items-center space-x-1.5"
                   >
-                    <CheckCircle2 className="w-4 h-4 text-indigo-200" />
+                    <CheckCircle2 className="w-4 h-4 text-brass-200" />
                     <span>Save AI Gateway Configuration</span>
                   </button>
                 </div>
@@ -679,7 +679,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
         {/* Footer Bar */}
         <div className="p-3.5 bg-neutral-100 border-t border-neutral-200 flex flex-wrap items-center justify-between text-xs text-neutral-600 shrink-0">
           <div className="flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-brass-500 animate-pulse" />
             <span>AI Provider: <strong>{config.model.toUpperCase()} ({config.provider})</strong></span>
           </div>
 

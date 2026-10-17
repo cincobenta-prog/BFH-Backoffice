@@ -317,13 +317,13 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-4xl w-full border border-neutral-300 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white rounded-2xl max-w-4xl w-full border border-neutral-300 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         
         {/* Top Header */}
-        <div className="bg-gradient-to-r from-[#141b2b] via-[#1e2738] to-[#141b2b] text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-400/80 shrink-0">
+        <div className="bg-gradient-to-r from-[#1c1a1a] via-[#241f1a] to-[#1c1a1a] text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-400/80 shrink-0">
           
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-bold shadow-sm border border-amber-300">
+            <div className="w-10 h-10 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-bold shadow-sm border border-amber-300">
               <Calendar className="w-5 h-5 text-amber-300" />
             </div>
             <div>
@@ -393,7 +393,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   onClose();
                   onOpenRemovalModal(caseData);
                 }}
-                className="bg-red-800 hover:bg-red-700 text-white font-bold text-xs px-3 py-1 rounded-lg shadow-sm flex items-center gap-1.5 transition border border-red-400/40"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3 py-1 rounded-lg shadow-sm flex items-center gap-1.5 transition border border-brass-400/40"
                 title="Dispatch First Call Removal Logistics with pre-filled facility and physician details from this arrangement"
               >
                 <Truck className="w-3.5 h-3.5 text-amber-200" />
@@ -409,7 +409,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
             onClick={() => setActiveTab('setup_dispatch')}
             className={`px-4 py-2.5 rounded-t-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === 'setup_dispatch'
-                ? 'bg-white text-[#991b1b] border-t-2 border-x border-[#991b1b] shadow-xs'
+                ? 'bg-white text-[#800000] border-t-2 border-x border-[#800000] shadow-xs'
                 : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200'
             }`}
           >
@@ -421,7 +421,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
             onClick={() => setActiveTab('family_simulator')}
             className={`px-4 py-2.5 rounded-t-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === 'family_simulator'
-                ? 'bg-white text-[#991b1b] border-t-2 border-x border-[#991b1b] shadow-xs'
+                ? 'bg-white text-[#800000] border-t-2 border-x border-[#800000] shadow-xs'
                 : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200'
             }`}
           >
@@ -433,7 +433,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
             onClick={() => setActiveTab('confirmed_details')}
             className={`px-4 py-2.5 rounded-t-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === 'confirmed_details'
-                ? 'bg-white text-[#991b1b] border-t-2 border-x border-[#991b1b] shadow-xs'
+                ? 'bg-white text-[#800000] border-t-2 border-x border-[#800000] shadow-xs'
                 : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200'
             }`}
           >
@@ -445,11 +445,11 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
             onClick={() => setActiveTab('what_to_bring')}
             className={`px-4 py-2.5 rounded-t-xl text-xs font-bold transition flex items-center gap-1.5 ${
               activeTab === 'what_to_bring'
-                ? 'bg-white text-[#991b1b] border-t-2 border-x border-[#991b1b] shadow-xs'
+                ? 'bg-white text-[#800000] border-t-2 border-x border-[#800000] shadow-xs'
                 : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200'
             }`}
           >
-            <Mail className="w-3.5 h-3.5 text-blue-600" />
+            <Mail className="w-3.5 h-3.5 text-brass-600" />
             <span>4. What to Bring & Family Packet (Email / Print)</span>
           </button>
         </div>
@@ -501,7 +501,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                 {/* Column A: Meeting Specs */}
                 <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-4">
                   <h4 className="font-serif-title font-bold text-xs uppercase tracking-wider text-neutral-900 border-b border-neutral-100 pb-2 flex items-center gap-1.5">
-                    <Building className="w-4 h-4 text-[#991b1b]" />
+                    <Building className="w-4 h-4 text-[#800000]" />
                     <span>Conference Logistics & Director Assignment</span>
                   </h4>
 
@@ -510,7 +510,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                     <select
                       value={assignedDirector}
                       onChange={(e) => setAssignedDirector(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                     >
                       <option value="Jason Benta, LFD #08850">Jason Benta, LFD #08850 (President & Lead Director)</option>
                       <option value="Senior Director Davis, LFD #07421">Senior Director Davis, LFD #07421</option>
@@ -536,7 +536,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                             onClick={() => setMeetingFormat(fmt.id as any)}
                             className={`p-2.5 rounded-xl border text-center font-bold text-[11px] transition flex flex-col items-center justify-center gap-1 ${
                               isSel
-                                ? 'bg-red-50 text-[#991b1b] border-[#991b1b] shadow-xs'
+                                ? 'bg-brass-50 text-[#800000] border-[#800000] shadow-xs'
                                 : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:bg-neutral-100'
                             }`}
                           >
@@ -553,7 +553,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                     <select
                       value={locationVenue}
                       onChange={(e) => setLocationVenue(e.target.value)}
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                     >
                       <option value="630 St. Nicholas Ave - Arrangement Suite A">630 St. Nicholas Ave - Arrangement Suite A (Seats 6)</option>
                       <option value="630 St. Nicholas Ave - Arrangement Suite B">630 St. Nicholas Ave - Arrangement Suite B (Seats 8)</option>
@@ -573,7 +573,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                           onClick={() => setInvitationChannel(ch)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex-1 capitalize ${
                             invitationChannel === ch
-                              ? 'bg-[#991b1b] text-white shadow-2xs'
+                              ? 'bg-[#800000] text-white shadow-2xs'
                               : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                           }`}
                         >
@@ -605,7 +605,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                           <div className="space-y-0.5">
                             <strong className="text-neutral-900 font-bold block">{slot.dateLabel}</strong>
                             <div className="flex items-center gap-2 text-neutral-600">
-                              <span className="font-mono text-[#991b1b] font-bold">{slot.time}</span>
+                              <span className="font-mono text-[#800000] font-bold">{slot.time}</span>
                               <span>•</span>
                               <span>{slot.durationMinutes} Minutes Consultation</span>
                             </div>
@@ -644,7 +644,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                       <button
                         type="button"
                         onClick={handleAddSlot}
-                        className="w-full py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-1"
+                        className="w-full py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-xs transition flex items-center justify-center gap-1"
                       >
                         <Plus className="w-3.5 h-3.5" />
                         <span>Add Timeslot to Invitation</span>
@@ -657,7 +657,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                     <button
                       type="button"
                       onClick={handleDispatchAvailableTimes}
-                      className="w-full py-3 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2 border border-amber-300/40"
+                      className="w-full py-3 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition shadow-md flex items-center justify-center gap-2 border border-amber-300/40"
                     >
                       <Send className="w-4 h-4 text-amber-300" />
                       <span>Dispatch Available Times via SMS & Email to Family</span>
@@ -679,7 +679,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
               
               <div className="bg-amber-50 border border-amber-300 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs text-amber-950">
                 <div className="flex items-center space-x-2.5">
-                  <Smartphone className="w-5 h-5 text-[#991b1b] shrink-0" />
+                  <Smartphone className="w-5 h-5 text-[#800000] shrink-0" />
                   <div>
                     <h4 className="font-bold text-sm text-neutral-900">
                       Family Interactive Selection Simulation
@@ -696,11 +696,11 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
               </div>
 
               {/* Family Interactive Booking Card */}
-              <div className="bg-white border-2 border-amber-400/80 rounded-3xl p-6 sm:p-8 shadow-lg max-w-2xl mx-auto space-y-6">
+              <div className="bg-white border-2 border-amber-400/80 rounded-2xl p-6 sm:p-8 shadow-lg max-w-2xl mx-auto space-y-6">
                 
                 {/* Family Header */}
                 <div className="text-center space-y-1.5 border-b border-neutral-200 pb-4">
-                  <div className="w-10 h-10 rounded-2xl bg-[#991b1b] text-white flex items-center justify-center font-bold text-sm mx-auto border border-amber-300 shadow-xs">
+                  <div className="w-10 h-10 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-bold text-sm mx-auto border border-amber-300 shadow-xs">
                     BFH
                   </div>
                   <h3 className="font-serif-title text-xl font-bold text-neutral-900">
@@ -727,19 +727,19 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                           onClick={() => setFamilySelectedSlotId(slot.id)}
                           className={`w-full p-4 rounded-2xl border text-left transition flex items-center justify-between ${
                             isSelected
-                              ? 'bg-red-50/90 border-[#991b1b] ring-2 ring-red-500/30 shadow-sm'
+                              ? 'bg-red-50/90 border-[#800000] ring-2 ring-red-500/30 shadow-sm'
                               : 'bg-neutral-50 border-neutral-200 hover:bg-neutral-100'
                           }`}
                         >
                           <div className="flex items-center space-x-3">
                             <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                              isSelected ? 'border-[#991b1b] bg-[#991b1b]' : 'border-neutral-400 bg-white'
+                              isSelected ? 'border-[#800000] bg-[#800000]' : 'border-neutral-400 bg-white'
                             }`}>
                               {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                             </div>
 
                             <div>
-                              <strong className={`text-sm font-bold block ${isSelected ? 'text-[#991b1b]' : 'text-neutral-900'}`}>
+                              <strong className={`text-sm font-bold block ${isSelected ? 'text-[#800000]' : 'text-neutral-900'}`}>
                                 {slot.dateLabel}
                               </strong>
                               <span className="text-xs text-neutral-600 font-medium">
@@ -749,7 +749,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                           </div>
 
                           <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
-                            isSelected ? 'bg-[#991b1b] text-white' : 'bg-neutral-200 text-neutral-700'
+                            isSelected ? 'bg-[#800000] text-white' : 'bg-neutral-200 text-neutral-700'
                           }`}>
                             {isSelected ? 'Selected Time' : 'Available'}
                           </span>
@@ -772,7 +772,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                         max={12}
                         value={familyAttendeesCount}
                         onChange={(e) => setFamilyAttendeesCount(parseInt(e.target.value) || 1)}
-                        className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#991b1b]"
+                        className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 font-bold outline-none focus:border-[#800000]"
                       />
                     </div>
 
@@ -785,7 +785,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                         value={familyAttendeesNames}
                         onChange={(e) => setFamilyAttendeesNames(e.target.value)}
                         placeholder="e.g. Eleanor Vance, Marcus Jr."
-                        className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                        className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                       />
                     </div>
                   </div>
@@ -799,7 +799,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                       value={familySpecialNotes}
                       onChange={(e) => setFamilySpecialNotes(e.target.value)}
                       placeholder="e.g. Bringing military discharge records, requested low-step wheelchair access..."
-                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#991b1b]"
+                      className="w-full bg-[#fbfbfd] border border-neutral-300 rounded-xl p-2.5 outline-none focus:border-[#800000]"
                     />
                   </div>
                 </div>
@@ -809,7 +809,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   <button
                     type="button"
                     onClick={handleFamilyConfirmSelection}
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-sm transition shadow-md flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-2xl text-sm transition shadow-md flex items-center justify-center gap-2"
                   >
                     <CheckCircle2 className="w-5 h-5 text-amber-200" />
                     <span>Confirm In-Person Appointment at Benta's</span>
@@ -831,7 +831,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
             <div className="space-y-5">
               
               {existingAppt?.status === 'confirmed' && existingAppt.confirmedSlot ? (
-                <div className="bg-white border-2 border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-md space-y-6">
+                <div className="bg-white border-2 border-emerald-500/30 rounded-2xl p-6 sm:p-8 shadow-md space-y-6">
                   
                   {/* Confirmed Banner */}
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 pb-4">
@@ -859,7 +859,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                     <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
                       <span className="text-neutral-500 text-[10px] uppercase font-bold block">Assigned Director</span>
-                      <strong className="text-[#991b1b] text-sm block">{existingAppt.assignedDirectorName}</strong>
+                      <strong className="text-[#800000] text-sm block">{existingAppt.assignedDirectorName}</strong>
                       <span className="text-neutral-600 font-mono text-[11px] block">{existingAppt.assignedDirectorPhone}</span>
                     </div>
 
@@ -901,7 +901,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                             onClose();
                             onOpenRemovalModal(caseData);
                           }}
-                          className="px-4 py-2.5 bg-red-800 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm border border-red-400/40"
+                          className="px-4 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm border border-brass-400/40"
                           title="Dispatch First Call Removal Logistics with pre-filled facility and physician details from this arrangement"
                         >
                           <Truck className="w-3.5 h-3.5 text-amber-200" />
@@ -949,7 +949,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                             onClose();
                             onOpenContractModal();
                           }}
-                          className="px-4 py-2.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
+                          className="px-4 py-2.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-xl text-xs transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
                         >
                           <ScrollText className="w-3.5 h-3.5 text-amber-300" />
                           <span>Open Form AP-47 Studio</span>
@@ -960,7 +960,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
 
                 </div>
               ) : (
-                <div className="bg-neutral-50 p-8 rounded-3xl border border-neutral-200 text-center space-y-3">
+                <div className="bg-neutral-50 p-8 rounded-2xl border border-neutral-200 text-center space-y-3">
                   <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto">
                     <Clock className="w-5 h-5" />
                   </div>
@@ -973,7 +973,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   <button
                     type="button"
                     onClick={() => setActiveTab('family_simulator')}
-                    className="px-4 py-2 bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs rounded-xl transition shadow-sm"
+                    className="px-4 py-2 bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs rounded-xl transition shadow-sm"
                   >
                     Go to Family Selection Simulator →
                   </button>
@@ -987,7 +987,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
           {activeTab === 'what_to_bring' && (
             <div className="space-y-6 animate-fadeIn pb-6">
               {/* Header & Quick Action Bar */}
-              <div className="bg-gradient-to-r from-neutral-900 to-[#1e2738] text-white p-5 rounded-2xl border border-amber-400/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+              <div className="bg-gradient-to-r from-neutral-900 to-[#241f1a] text-white p-5 rounded-2xl border border-amber-400/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
                 <div>
                   <div className="flex items-center space-x-2">
                     <span className="text-[10px] font-mono uppercase tracking-widest text-amber-300 font-bold bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">
@@ -1045,7 +1045,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                     onClick={() => window.print()}
                     className="px-3.5 py-2 bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 border border-neutral-600 shadow-xs"
                   >
-                    <Printer className="w-3.5 h-3.5 text-blue-300" />
+                    <Printer className="w-3.5 h-3.5 text-brass-300" />
                     <span>Print Guide</span>
                   </button>
 
@@ -1072,7 +1072,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                       }
                       showToast(`Arrangement packet & What to Bring guide emailed to ${caseData.informant.email}!`);
                     }}
-                    className="px-4 py-2 bg-gradient-to-r from-[#991b1b] to-red-800 hover:brightness-110 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
+                    className="px-4 py-2 bg-gradient-to-r from-[#800000] to-red-800 hover:brightness-110 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-sm border border-amber-300/40"
                   >
                     <Send className="w-3.5 h-3.5 text-amber-300" />
                     <span>Resend Email to Family</span>
@@ -1106,10 +1106,10 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                 </div>
 
                 {/* 2. Clothing & Grooming */}
-                <div className="bg-blue-50/60 p-4 rounded-2xl border border-blue-200/80 shadow-2xs space-y-2.5">
+                <div className="bg-brass-50/60 p-4 rounded-2xl border border-brass-200/80 shadow-2xs space-y-2.5">
                   <div className="flex items-center space-x-2">
-                    <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span>
-                    <h5 className="font-bold text-xs text-blue-950 uppercase tracking-wide">
+                    <span className="w-6 h-6 rounded-full bg-brass-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span>
+                    <h5 className="font-bold text-xs text-brass-950 uppercase tracking-wide">
                       Clothing, Grooming & Presentation
                     </h5>
                   </div>
@@ -1138,10 +1138,10 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                 </div>
 
                 {/* 4. Tribute & Memorial */}
-                <div className="bg-purple-50/60 p-4 rounded-2xl border border-purple-200/80 shadow-2xs space-y-2.5">
+                <div className="bg-brass-50/60 p-4 rounded-2xl border border-brass-200/80 shadow-2xs space-y-2.5">
                   <div className="flex items-center space-x-2">
-                    <span className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">4</span>
-                    <h5 className="font-bold text-xs text-purple-950 uppercase tracking-wide">
+                    <span className="w-6 h-6 rounded-full bg-brass-600 text-white flex items-center justify-center text-xs font-bold shrink-0">4</span>
+                    <h5 className="font-bold text-xs text-brass-950 uppercase tracking-wide">
                       Memorial Program, Photos & Music
                     </h5>
                   </div>
@@ -1156,7 +1156,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
               </div>
 
               {/* LIVE EMAIL PACKET PREVIEW */}
-              <div className="border border-neutral-300 rounded-3xl overflow-hidden shadow-md bg-white">
+              <div className="border border-neutral-300 rounded-2xl overflow-hidden shadow-md bg-white">
                 
                 {/* Simulated Email Client Top Bar */}
                 <div className="bg-neutral-800 text-neutral-300 px-4 py-2.5 text-xs flex items-center justify-between border-b border-neutral-700">
@@ -1178,7 +1178,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   
                   {/* BFH Header Seal */}
                   <div className="text-center space-y-1 border-b pb-4">
-                    <div className="w-12 h-12 rounded-full bg-[#991b1b] text-white flex items-center justify-center font-serif text-xl font-bold mx-auto border-2 border-amber-300 shadow-sm">
+                    <div className="w-12 h-12 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif text-xl font-bold mx-auto border-2 border-amber-300 shadow-sm">
                       B
                     </div>
                     <h3 className="font-serif-title font-bold text-lg text-neutral-900 tracking-wide">
@@ -1201,9 +1201,9 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   </div>
 
                   {/* Confirmed Appointment Card */}
-                  <div className="bg-white p-4 rounded-2xl border-2 border-[#991b1b] shadow-sm space-y-3">
+                  <div className="bg-white p-4 rounded-2xl border-2 border-[#800000] shadow-sm space-y-3">
                     <div className="flex items-center justify-between border-b pb-2">
-                      <span className="text-xs font-bold text-[#991b1b] uppercase tracking-wider">
+                      <span className="text-xs font-bold text-[#800000] uppercase tracking-wider">
                         📅 Scheduled Arrangement Conference
                       </span>
                       <span className="text-[10px] font-mono text-neutral-500">
@@ -1258,7 +1258,7 @@ export const ArrangementAppointmentModal: React.FC<ArrangementAppointmentModalPr
                   </div>
 
                   {/* Online Vital Records Pre-Fill Button */}
-                  <div className="bg-gradient-to-r from-neutral-900 to-[#1e2738] text-white p-4 rounded-2xl text-center space-y-2">
+                  <div className="bg-gradient-to-r from-neutral-900 to-[#241f1a] text-white p-4 rounded-2xl text-center space-y-2">
                     <h6 className="font-bold text-xs text-amber-300">
                       ✨ Save Time: Pre-Fill Vital Records Online
                     </h6>

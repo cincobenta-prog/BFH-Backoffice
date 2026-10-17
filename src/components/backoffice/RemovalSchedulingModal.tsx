@@ -304,7 +304,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm animate-fade-in overflow-y-auto">
       {/* Toast Alert */}
       {toastAlert && (
-        <div className="fixed top-6 right-6 z-60 bg-[#141b2b] text-white px-5 py-3.5 rounded-xl shadow-2xl border border-amber-400/40 flex items-center gap-3 animate-fade-in">
+        <div className="fixed top-6 right-6 z-60 bg-[#1c1a1a] text-white px-5 py-3.5 rounded-xl shadow-2xl border border-amber-400/40 flex items-center gap-3 animate-fade-in">
           <Sparkles className="w-5 h-5 text-amber-400 shrink-0 animate-pulse" />
           <p className="text-xs font-medium">{toastAlert}</p>
         </div>
@@ -313,10 +313,10 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
       <div className="bg-white text-neutral-900 w-full max-w-5xl rounded-2xl shadow-2xl border border-neutral-300 flex flex-col max-h-[92vh] overflow-hidden">
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#141b2b] via-[#1a233a] to-[#2b0f0f] text-white p-5 border-b border-amber-500/20 flex flex-wrap items-center justify-between gap-4 shrink-0">
+        <div className="bg-gradient-to-r from-[#1c1a1a] via-[#1a233a] to-[#2b0f0f] text-white p-5 border-b border-amber-500/20 flex flex-wrap items-center justify-between gap-4 shrink-0">
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="bg-[#991b1b] text-amber-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-amber-400/30 flex items-center gap-1">
+              <span className="bg-[#800000] text-amber-300 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-amber-400/30 flex items-center gap-1">
                 <Truck className="w-3.5 h-3.5" />
                 First Call Transfer & Custody Engine
               </span>
@@ -340,7 +340,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 className="bg-transparent text-white font-bold text-xs focus:outline-none cursor-pointer"
               >
                 {cases.map(c => (
-                  <option key={c.id} value={c.id} className="bg-[#141b2b] text-white">
+                  <option key={c.id} value={c.id} className="bg-[#1c1a1a] text-white">
                     {c.caseNumber} • {c.decedent.legalName}
                   </option>
                 ))}
@@ -357,7 +357,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
         </div>
 
         {/* BI-DIRECTIONAL INFORMATION BRIDGE BANNER */}
-        <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-[#991b1b] text-white px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs border-b border-amber-400/20 shrink-0">
+        <div className="bg-gradient-to-r from-neutral-900 via-neutral-950 to-[#800000] text-white px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs border-b border-amber-400/20 shrink-0">
           <div className="flex items-center space-x-2">
             <span className="text-[10px] font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-400/30 uppercase tracking-wider">
               Bi-Directional Case Bridge
@@ -388,7 +388,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   onClose();
                   onOpenAppointmentModal(currentCase);
                 }}
-                className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-1 rounded-lg shadow-sm flex items-center gap-1.5 transition border border-amber-300/40"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3 py-1 rounded-lg shadow-sm flex items-center gap-1.5 transition border border-amber-300/40"
                 title="Transfer all decedent, informant, and safe arrival information to the Arrangement Conference Studio"
               >
                 <Calendar className="w-3.5 h-3.5 text-amber-200" />
@@ -404,7 +404,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
             onClick={() => setActiveTab('schedule')}
             className={`pb-3 px-3 text-xs font-bold border-b-2 transition flex items-center gap-2 ${
               activeTab === 'schedule'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-600 hover:text-neutral-900'
             }`}
           >
@@ -416,7 +416,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
             onClick={() => setActiveTab('sms')}
             className={`pb-3 px-3 text-xs font-bold border-b-2 transition flex items-center gap-2 ${
               activeTab === 'sms'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-600 hover:text-neutral-900'
             }`}
           >
@@ -428,7 +428,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
             onClick={() => setActiveTab('affidavit')}
             className={`pb-3 px-3 text-xs font-bold border-b-2 transition flex items-center gap-2 ${
               activeTab === 'affidavit'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-600 hover:text-neutral-900'
             }`}
           >
@@ -452,7 +452,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Decedent Subject to Transfer</div>
                   <div className="text-base font-bold text-neutral-900 font-serif-title flex items-center gap-2">
                     {currentCase.decedent.legalName}
-                    <span className="font-mono text-xs text-[#991b1b] bg-red-50 px-2 py-0.5 rounded border border-red-200 font-sans">
+                    <span className="font-mono text-xs text-[#800000] bg-red-50 px-2 py-0.5 rounded border border-red-200 font-sans">
                       {currentCase.caseNumber}
                     </span>
                   </div>
@@ -467,7 +467,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                     removalStatus === 'safe_arrival_completed'
                       ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                       : removalStatus === 'custody_acquired_in_transit'
-                      ? 'bg-blue-50 text-blue-800 border-blue-200'
+                      ? 'bg-brass-50 text-brass-800 border-brass-200'
                       : 'bg-amber-50 text-amber-800 border-amber-200'
                   }`}>
                     <span className="w-2 h-2 rounded-full bg-current animate-pulse"></span>
@@ -482,7 +482,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 {/* Left Column: Pickup Location & Urgency */}
                 <div className="bg-white p-5 rounded-xl border border-neutral-200 shadow-xs space-y-4">
                   <h3 className="font-bold text-sm text-neutral-900 flex items-center gap-2 border-b border-neutral-100 pb-2">
-                    <MapPin className="w-4 h-4 text-[#991b1b]" />
+                    <MapPin className="w-4 h-4 text-[#800000]" />
                     Pickup Location & Urgency Options
                   </h3>
 
@@ -507,7 +507,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                             onClick={() => setLocationType(loc.id as RemovalLocationType)}
                             className={`p-2.5 rounded-lg border text-left text-xs font-semibold transition flex flex-col gap-1.5 ${
                               isSelected
-                                ? 'bg-red-50 border-[#991b1b] text-[#991b1b] shadow-xs'
+                                ? 'bg-brass-50 border-[#800000] text-[#800000] shadow-xs'
                                 : 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100'
                             }`}
                           >
@@ -522,7 +522,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   {/* Quick Select from Tri-State Directory */}
                   <div className="p-3 bg-red-50/60 border border-red-200 rounded-xl space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-xs font-bold text-[#991b1b] flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-[#800000] flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                         Quick Select Tri-State Hospital or Nursing Home:
                       </span>
@@ -554,7 +554,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                           }
                         }
                       }}
-                      className="w-full text-xs p-2 bg-white border border-red-300 rounded-lg font-bold text-neutral-800 outline-none focus:ring-2 focus:ring-[#991b1b]"
+                      className="w-full text-xs p-2 bg-white border border-red-300 rounded-lg font-bold text-neutral-800 outline-none focus:ring-2 focus:ring-[#800000]"
                     >
                       <option value="">-- Choose Verified Tri-State Medical Facility --</option>
                       <optgroup label="🏥 Tri-State Hospitals (Morgues with Refrigeration)">
@@ -582,18 +582,18 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                       if (fac) {
                         if (fac.hasRefrigerationOnPremises) {
                           return (
-                            <div className="p-2 bg-blue-50 border border-blue-200 rounded-lg text-[11px] text-blue-900 space-y-0.5">
+                            <div className="p-2 bg-brass-50 border border-brass-200 rounded-lg text-[11px] text-brass-900 space-y-0.5">
                               <div className="font-bold flex items-center gap-1">
                                 <span>❄️ Refrigeration on Premises Available</span>
-                                <span className="bg-blue-200 text-blue-800 text-[9px] px-1.5 py-0.2 rounded font-mono">Hospital Morgue</span>
+                                <span className="bg-brass-200 text-brass-800 text-[9px] px-1.5 py-0.2 rounded font-mono">Hospital Morgue</span>
                               </div>
-                              <p className="text-blue-700">{fac.refrigerationDetails}</p>
-                              <p className="text-[10px] text-blue-600 font-mono">Release Hours: {fac.releaseHours}</p>
+                              <p className="text-brass-700">{fac.refrigerationDetails}</p>
+                              <p className="text-[10px] text-brass-600 font-mono">Release Hours: {fac.releaseHours}</p>
                             </div>
                           );
                         } else {
                           return (
-                            <div className="p-2 bg-red-100 border border-red-300 rounded-lg text-[11px] text-[#991b1b] space-y-0.5">
+                            <div className="p-2 bg-red-100 border border-red-300 rounded-lg text-[11px] text-[#800000] space-y-0.5">
                               <div className="font-bold flex items-center gap-1">
                                 <span>🚨 NO REFRIGERATION ON PREMISES</span>
                                 <span className="bg-red-200 text-red-900 text-[9px] px-1.5 py-0.2 rounded font-mono">URGENT 2-4 HR PROTOCOL</span>
@@ -615,7 +615,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         type="text"
                         value={facilityName}
                         onChange={(e) => setFacilityName(e.target.value)}
-                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] focus:bg-white"
+                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] focus:bg-white"
                         placeholder="e.g. Mount Sinai Morningside Hospital"
                       />
                     </div>
@@ -626,7 +626,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         type="text"
                         value={facilityAddress}
                         onChange={(e) => setFacilityAddress(e.target.value)}
-                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] focus:bg-white"
+                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] focus:bg-white"
                         placeholder="e.g. 411 W 114th St, New York, NY 10025"
                       />
                     </div>
@@ -638,7 +638,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                           type="text"
                           value={facilityFloorRoom}
                           onChange={(e) => setFacilityFloorRoom(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] focus:bg-white"
+                          className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] focus:bg-white"
                         />
                       </div>
                       <div>
@@ -647,7 +647,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                           type="text"
                           value={facilityContactPhone}
                           onChange={(e) => setFacilityContactPhone(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] focus:bg-white font-mono"
+                          className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] focus:bg-white font-mono"
                         />
                       </div>
                     </div>
@@ -658,7 +658,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         type="text"
                         value={morgueAttendantOrNurse}
                         onChange={(e) => setMorgueAttendantOrNurse(e.target.value)}
-                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b] focus:bg-white"
+                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#800000] focus:bg-white"
                       />
                     </div>
                   </div>
@@ -703,7 +703,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                                   setEstimatedArrivalMinutes(0);
                                 }
                               }}
-                              className="accent-[#991b1b]"
+                              className="accent-[#800000]"
                             />
                             <span className="text-[11px] font-bold">{t.label}</span>
                           </div>
@@ -717,7 +717,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 {/* Right Column: Director, Vehicle & Equipment */}
                 <div className="bg-white p-5 rounded-xl border border-neutral-200 shadow-xs space-y-4">
                   <h3 className="font-bold text-sm text-neutral-900 flex items-center gap-2 border-b border-neutral-100 pb-2">
-                    <ShieldCheck className="w-4 h-4 text-[#991b1b]" />
+                    <ShieldCheck className="w-4 h-4 text-[#800000]" />
                     Assigned Funeral Director, Crew & Vehicle
                   </h3>
 
@@ -740,7 +740,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                             setDirectorPhone('(646) 555-3390');
                           }
                         }}
-                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-bold text-neutral-900 focus:ring-2 focus:ring-[#991b1b]"
+                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-bold text-neutral-900 focus:ring-2 focus:ring-[#800000]"
                       >
                         <option value="Jason Benta, LFD">Jason Benta, LFD (Managing Director #08850)</option>
                         <option value="Anthony Washington, LFD">Anthony Washington, LFD (NYS Lic #09124)</option>
@@ -760,7 +760,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         type="text"
                         value={secondaryCrewMember}
                         onChange={(e) => setSecondaryCrewMember(e.target.value)}
-                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#991b1b]"
+                        className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-medium focus:ring-2 focus:ring-[#800000]"
                       />
                     </div>
 
@@ -790,7 +790,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                           type="text"
                           value={vehiclePlate}
                           onChange={(e) => setVehiclePlate(e.target.value)}
-                          className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-mono uppercase font-bold text-[#991b1b]"
+                          className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg font-mono uppercase font-bold text-[#800000]"
                         />
                       </div>
                     </div>
@@ -815,7 +815,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                             onClick={() => toggleEquipment(item)}
                             className={`p-2 rounded-lg border cursor-pointer flex items-center gap-2 transition text-[11px] ${
                               checked
-                                ? 'bg-blue-50/80 border-blue-400 text-blue-950 font-bold'
+                                ? 'bg-brass-50/80 border-brass-400 text-brass-950 font-bold'
                                 : 'bg-neutral-50 border-neutral-200 text-neutral-600'
                             }`}
                           >
@@ -823,7 +823,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                               type="checkbox"
                               checked={checked}
                               onChange={() => {}}
-                              className="accent-blue-600 rounded"
+                              className="accent-brass-600 rounded"
                             />
                             <span>{item}</span>
                           </label>
@@ -839,7 +839,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                       rows={2}
                       value={specialInstructions}
                       onChange={(e) => setSpecialInstructions(e.target.value)}
-                      className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-[#991b1b] focus:bg-white"
+                      className="w-full text-xs p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-[#800000] focus:bg-white"
                       placeholder="Access codes, freight elevators, security desk clearance..."
                     />
                   </div>
@@ -863,7 +863,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   </button>
                   <button
                     onClick={() => handleSimulateStatus('safe_arrival_completed', 'Safe Arrival Confirmed at 630 St Nicholas')}
-                    className="text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-2 rounded-lg border border-emerald-300 transition flex items-center gap-1"
+                    className="text-xs font-bold bg-brass-50 hover:bg-brass-100 text-brass-900 px-3 py-2 rounded-lg border border-brass-300 transition flex items-center gap-1"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     3. Safe Arrival
@@ -880,7 +880,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         onClose();
                         onOpenAppointmentModal(currentCase);
                       }}
-                      className="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-md flex items-center gap-1.5 border border-amber-300/40"
+                      className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-md flex items-center gap-1.5 border border-amber-300/40"
                     >
                       <Calendar className="w-3.5 h-3.5 text-amber-200" />
                       <span>➔ Transfer to Arrangement</span>
@@ -895,7 +895,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   </button>
                   <button
                     onClick={handleSaveAndDispatch}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition shadow-md shadow-red-950/20 border border-amber-400/40"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold px-5 py-2.5 rounded-lg transition shadow-md shadow-red-950/20 border border-amber-400/40"
                   >
                     Save Transfer Record
                   </button>
@@ -919,7 +919,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 </div>
                 <button
                   onClick={handleDispatchAllSms}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-4 py-2 rounded-lg transition shadow-lg shadow-red-950/40 border border-amber-300/40 flex items-center gap-1.5 shrink-0"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-4 py-2 rounded-lg transition shadow-lg shadow-red-950/40 border border-amber-300/40 flex items-center gap-1.5 shrink-0"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                   ⚡ Dispatch All 3 SMS Alerts
@@ -933,13 +933,13 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 <div className="bg-white rounded-xl border border-neutral-200 shadow-xs flex flex-col justify-between overflow-hidden">
                   <div className="p-4 bg-red-50/70 border-b border-red-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <User className="w-4 h-4 text-[#991b1b]" />
+                      <User className="w-4 h-4 text-[#800000]" />
                       <div>
                         <h4 className="font-bold text-xs text-neutral-900">1. Assigned Director SMS</h4>
                         <div className="text-[10px] text-neutral-500">{assignedDirector} • {directorPhone}</div>
                       </div>
                     </div>
-                    <span className="bg-red-100 text-[#991b1b] text-[9px] font-bold px-1.5 py-0.5 rounded font-mono">
+                    <span className="bg-red-100 text-[#800000] text-[9px] font-bold px-1.5 py-0.5 rounded font-mono">
                       DIRECTOR
                     </span>
                   </div>
@@ -957,7 +957,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         📞 <strong>Morgue Desk:</strong> {facilityContactPhone}<br />
                         🚐 <strong>Vehicle:</strong> {vehicleType} [{vehiclePlate}]
                       </p>
-                      <p className="text-[11px] text-[#991b1b] font-bold">
+                      <p className="text-[11px] text-[#800000] font-bold">
                         📜 Completed NYS Removal Affidavit linked: https://e-bfh.com/affidavit/{currentCase.caseNumber}
                       </p>
                     </div>
@@ -970,7 +970,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                           className="bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 text-[11px] font-semibold py-1.5 px-2.5 rounded-lg text-left flex items-center justify-between"
                         >
                           <span>📱 Reply: "1 - ACCEPT & EN ROUTE"</span>
-                          <Check className="w-3 h-3 text-blue-600" />
+                          <Check className="w-3 h-3 text-brass-600" />
                         </button>
                         <button
                           onClick={() => handleSimulateStatus('on_scene', 'Director On Scene at Morgue')}
@@ -993,15 +993,15 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
 
                 {/* 2. Facility / Morgue SMS */}
                 <div className="bg-white rounded-xl border border-neutral-200 shadow-xs flex flex-col justify-between overflow-hidden">
-                  <div className="p-4 bg-blue-50/70 border-b border-blue-100 flex items-center justify-between">
+                  <div className="p-4 bg-brass-50/70 border-b border-brass-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Building2 className="w-4 h-4 text-blue-700" />
+                      <Building2 className="w-4 h-4 text-brass-700" />
                       <div>
                         <h4 className="font-bold text-xs text-neutral-900">2. Facility Morgue Desk SMS</h4>
                         <div className="text-[10px] text-neutral-500">{facilityName} • {facilityContactPhone}</div>
                       </div>
                     </div>
-                    <span className="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded font-mono">
+                    <span className="bg-brass-100 text-brass-800 text-[9px] font-bold px-1.5 py-0.5 rounded font-mono">
                       HOSPITAL
                     </span>
                   </div>
@@ -1022,9 +1022,9 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                       </p>
                     </div>
 
-                    <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 text-xs text-blue-950 space-y-1">
+                    <div className="bg-brass-50 p-3 rounded-lg border border-brass-200 text-xs text-brass-950 space-y-1">
                       <span className="font-bold block text-[11px]">Security Dock Fast-Pass:</span>
-                      <p className="text-[10px] text-blue-800">
+                      <p className="text-[10px] text-brass-800">
                         Provides hospital security with director license number and vehicle registration for gate access.
                       </p>
                     </div>
@@ -1084,7 +1084,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 </button>
                 <button
                   onClick={() => setActiveTab('affidavit')}
-                  className="bg-[#991b1b] hover:bg-red-800 text-white text-xs font-bold px-5 py-2.5 rounded-lg transition flex items-center gap-1.5 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold px-5 py-2.5 rounded-lg transition flex items-center gap-1.5 shadow-md shadow-red-950/20"
                 >
                   Next: View Completed Removal Affidavit
                   <FileText className="w-3.5 h-3.5" />
@@ -1114,7 +1114,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                     onClick={handleSendAffidavitToDirector}
                     className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold px-3 py-2 rounded-lg border border-neutral-300 transition flex items-center gap-1.5"
                   >
-                    <Share2 className="w-3.5 h-3.5 text-blue-600" />
+                    <Share2 className="w-3.5 h-3.5 text-brass-600" />
                     SMS Affidavit to Director ({directorPhone})
                   </button>
                   <button
@@ -1126,7 +1126,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   </button>
                   <button
                     onClick={handleSaveAndDispatch}
-                    className="bg-[#991b1b] hover:bg-red-800 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md shadow-red-950/20"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-md shadow-red-950/20"
                   >
                     Save & Attach to Case
                   </button>
@@ -1148,7 +1148,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                   <h3 className="font-serif-title italic text-sm text-neutral-700">
                     "Dignity, Integrity, and Reverent Heritage"
                   </h3>
-                  <h1 className="font-serif-title font-bold text-2xl sm:text-3xl text-[#991b1b] tracking-wider">
+                  <h1 className="font-serif-title font-bold text-2xl sm:text-3xl text-[#800000] tracking-wider">
                     Benta's Funeral Home, Inc.
                   </h1>
                   <p className="text-xs text-neutral-600 font-semibold">
@@ -1161,7 +1161,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
 
                 {/* Section A: Decedent & Passing Details */}
                 <div className="space-y-2">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-1">
                     SECTION I: DECEDENT IDENTIFICATION & FACILITY OF PASSING
                   </h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-neutral-50 p-3.5 rounded-xl border border-neutral-200">
@@ -1171,7 +1171,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                     </div>
                     <div>
                       <span className="text-[10px] text-neutral-500 block uppercase">Case Number:</span>
-                      <strong className="font-mono text-[#991b1b]">{currentCase.caseNumber}</strong>
+                      <strong className="font-mono text-[#800000]">{currentCase.caseNumber}</strong>
                     </div>
                     <div>
                       <span className="text-[10px] text-neutral-500 block uppercase">Date / Time of Passing:</span>
@@ -1194,7 +1194,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
 
                 {/* Section B: Informant Right to Control Disposition Jurat */}
                 <div className="space-y-2">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-1">
                     SECTION II: STATUTORY AUTHORITY OF PERSON ENGAGING SERVICES (NYS PHL § 4201)
                   </h4>
                   <div className="bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 text-xs space-y-2">
@@ -1210,7 +1210,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
 
                 {/* Section C: Assigned Funeral Director & Transport Crew */}
                 <div className="space-y-2">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b] border-b border-neutral-200 pb-1">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000] border-b border-neutral-200 pb-1">
                     SECTION III: LICENSED FUNERAL DIRECTOR & CUSTODIAL TRANSFER LOG
                   </h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-neutral-50 p-3.5 rounded-xl border border-neutral-200">
@@ -1236,7 +1236,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                 {/* Section D: Personal Effects & Property Custody Ledger */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between border-b border-neutral-200 pb-1">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-[#991b1b]">
+                    <h4 className="font-bold text-xs uppercase tracking-wider text-[#800000]">
                       SECTION IV: PERSONAL EFFECTS & VALUABLES CUSTODY INVENTORY ({personalEffects.length} Items Logged)
                     </h4>
                     <button
@@ -1272,7 +1272,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                                 type="text"
                                 value={pe.description}
                                 onChange={(e) => handleUpdatePersonalEffect(pe.id, 'description', e.target.value)}
-                                className="w-full text-xs p-1 bg-transparent border-b border-transparent hover:border-neutral-300 focus:border-[#991b1b] focus:outline-none"
+                                className="w-full text-xs p-1 bg-transparent border-b border-transparent hover:border-neutral-300 focus:border-[#800000] focus:outline-none"
                               />
                             </td>
                             <td className="p-2.5 text-neutral-600 text-[11px]">
@@ -1318,7 +1318,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                         <button
                           onClick={() => setFacilitySigned(!facilitySigned)}
                           className={`text-[10px] font-bold px-2 py-0.5 rounded print:hidden ${
-                            facilitySigned ? 'bg-emerald-100 text-emerald-800' : 'bg-neutral-200 text-neutral-700'
+                            facilitySigned ? 'bg-brass-100 text-brass-900' : 'bg-neutral-200 text-neutral-700'
                           }`}
                         >
                           {facilitySigned ? '✓ Verified Signed' : 'Sign Stamp'}
@@ -1336,7 +1336,7 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
 
                   {/* Licensed Funeral Director Signature */}
                   <div className="space-y-2">
-                    <span className="font-bold text-[#991b1b] uppercase block text-[11px]">
+                    <span className="font-bold text-[#800000] uppercase block text-[11px]">
                       B. Licensed Funeral Director Receiving Custody:
                     </span>
                     <p className="text-[11px] text-neutral-600 leading-tight">
@@ -1351,12 +1351,12 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                             setDirectorSignatureTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' ' + new Date().toISOString().split('T')[0]);
                             showToast(`✍️ Director electronic signature applied with NYS LFD Seal #${directorLicenseNumber}.`);
                           }}
-                          className="text-[10px] font-bold bg-[#991b1b] hover:bg-red-800 text-white px-2 py-0.5 rounded print:hidden"
+                          className="text-[10px] font-bold bg-[#800000] hover:bg-[#6a0509] text-white px-2 py-0.5 rounded print:hidden"
                         >
                           {directorSigned ? '✓ Seal Applied' : 'Apply Director Seal PIN'}
                         </button>
                       </div>
-                      <div className="font-serif italic text-lg text-[#991b1b] border-b border-red-300 pb-1 font-bold">
+                      <div className="font-serif italic text-lg text-[#800000] border-b border-red-300 pb-1 font-bold">
                         {directorSigned ? `${assignedDirector}, NYS LFD` : '____________________________________'}
                       </div>
                       <div className="text-[10px] text-neutral-600 flex justify-between">

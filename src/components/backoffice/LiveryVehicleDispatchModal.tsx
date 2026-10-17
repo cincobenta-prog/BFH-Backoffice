@@ -172,12 +172,12 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
-      <div className="bg-white border border-neutral-200 rounded-3xl max-w-5xl w-full p-5 sm:p-7 space-y-5 shadow-2xl text-neutral-900 my-4 max-h-[92vh] flex flex-col">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-5xl w-full p-5 sm:p-7 space-y-5 shadow-2xl text-neutral-900 my-4 max-h-[92vh] flex flex-col">
         
         {/* Modal Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-neutral-200 pb-4 shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-[#991b1b] shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-[#800000] shadow-sm">
               <Car className="w-5 h-5" />
             </div>
             <div>
@@ -185,7 +185,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                 <h3 className="font-serif-title font-bold text-xl text-neutral-900">
                   Livery & Transport Vendor Vehicle Hold Engine
                 </h3>
-                <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-red-50 text-[#991b1b] border border-red-300">
+                <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-red-50 text-[#800000] border border-red-300">
                   48-Hour Routing Protocol
                 </span>
               </div>
@@ -200,7 +200,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
             <select
               value={selectedCaseId}
               onChange={(e) => setSelectedCaseId(e.target.value)}
-              className="bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-1.5 text-xs font-bold text-neutral-900 focus:border-[#991b1b] outline-none"
+              className="bg-[#f8fafc] border border-neutral-300 rounded-xl px-3 py-1.5 text-xs font-bold text-neutral-900 focus:border-[#800000] outline-none"
             >
               {cases.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -234,7 +234,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
         {/* Active Case Context Bar */}
         <div className="p-3 bg-gradient-to-r from-red-50/80 via-white to-amber-50/50 rounded-2xl border border-red-200 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
           <div className="flex items-center space-x-3">
-            <span className="font-bold text-[#991b1b] bg-white px-2.5 py-1 rounded-md border border-red-200 font-mono">
+            <span className="font-bold text-[#800000] bg-white px-2.5 py-1 rounded-md border border-red-200 font-mono">
               {currentCase.caseNumber}
             </span>
             <div>
@@ -245,7 +245,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
 
           <div className="flex items-center space-x-4 text-[11px] text-neutral-600">
             <span>Service Date: <strong className="text-neutral-900 font-bold">{currentCase.serviceSelections.serviceDate || 'Upcoming'}</strong></span>
-            <span>Active Holds: <strong className="text-[#991b1b] font-bold">{currentCaseHolds.length} Vehicles</strong></span>
+            <span>Active Holds: <strong className="text-[#800000] font-bold">{currentCaseHolds.length} Vehicles</strong></span>
           </div>
         </div>
 
@@ -255,7 +255,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
             onClick={() => setActiveTab('request_hold')}
             className={`pb-2.5 px-3 text-xs font-bold transition border-b-2 flex items-center space-x-1.5 ${
               activeTab === 'request_hold'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-500 hover:text-neutral-900'
             }`}
           >
@@ -267,7 +267,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
             onClick={() => setActiveTab('active_fleet')}
             className={`pb-2.5 px-3 text-xs font-bold transition border-b-2 flex items-center space-x-1.5 ${
               activeTab === 'active_fleet'
-                ? 'border-[#991b1b] text-[#991b1b]'
+                ? 'border-[#800000] text-[#800000]'
                 : 'border-transparent text-neutral-500 hover:text-neutral-900'
             }`}
           >
@@ -289,7 +289,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                 <select
                   value={vendorName}
                   onChange={(e) => handleSelectPresetVendor(e.target.value)}
-                  className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#f8fafc] border border-neutral-300 rounded-xl p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                 >
                   {VENDOR_PRESETS.map((v) => (
                     <option key={v.name} value={v.name}>
@@ -308,7 +308,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                     required
                     value={vendorPhone}
                     onChange={(e) => setVendorPhone(e.target.value)}
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none font-mono"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none font-mono"
                   />
                 </div>
 
@@ -330,7 +330,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                   <select
                     value={vehicleType}
                     onChange={(e) => setVehicleType(e.target.value as VehicleType)}
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                   >
                     <option value="Limo Bus">Limo Bus</option>
                     <option value="Limo">Limo</option>
@@ -346,7 +346,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                   <select
                     value={vehicleSize}
                     onChange={(e) => setVehicleSize(e.target.value as VehicleSize)}
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                   >
                     <option value="Limo Bus 16-seater">Limo Bus (16-seater)</option>
                     <option value="Limo Bus 10-seater">Limo Bus (10-seater)</option>
@@ -365,7 +365,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                     max={5}
                     value={quantity}
                     onChange={(e) => setQuantity(Number(e.target.value))}
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 font-bold focus:border-[#800000] outline-none"
                   />
                 </div>
               </div>
@@ -379,7 +379,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                     required
                     value={serviceDate}
                     onChange={(e) => setServiceDate(e.target.value)}
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
 
@@ -390,7 +390,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                     value={serviceTime}
                     onChange={(e) => setServiceTime(e.target.value)}
                     placeholder="e.g. 10:30 AM"
-                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                    className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                   />
                 </div>
               </div>
@@ -403,7 +403,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                   required
                   checked={notice48Hr}
                   onChange={(e) => setNotice48Hr(e.target.checked)}
-                  className="rounded accent-[#991b1b] w-4 h-4 mt-0.5"
+                  className="rounded accent-[#800000] w-4 h-4 mt-0.5"
                 />
                 <label htmlFor="notice48" className="text-xs text-amber-950 leading-relaxed font-medium">
                   <strong>Mandatory 48-Hour Clause:</strong> I confirm notice to vendor that the family has not yet finalized pickup/drop-off addresses and all final routing will be dispatched at least <strong>48 hours prior to service</strong>.
@@ -418,7 +418,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="e.g. Family request front flower tray on hearse."
-                  className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#991b1b] outline-none"
+                  className="w-full bg-[#f8fafc] border border-neutral-300 rounded-lg p-2.5 text-neutral-900 focus:border-[#800000] outline-none"
                 />
               </div>
 
@@ -426,7 +426,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
               <button
                 type="submit"
                 disabled={isSending}
-                className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs py-3 rounded-xl transition shadow-md border border-amber-300/40 flex items-center justify-center space-x-2"
+                className="w-full bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs py-3 rounded-xl transition shadow-md border border-amber-300/40 flex items-center justify-center space-x-2"
               >
                 {isSending ? (
                   <RefreshCw className="w-4 h-4 animate-spin" />
@@ -441,7 +441,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
             <div className="lg:col-span-5 bg-[#f8fafc] rounded-2xl border border-neutral-200 p-4 flex flex-col justify-between space-y-4">
               <div className="space-y-3">
                 <div className="flex items-center space-x-2 border-b border-neutral-200 pb-2">
-                  <Smartphone className="w-4 h-4 text-[#991b1b]" />
+                  <Smartphone className="w-4 h-4 text-[#800000]" />
                   <span className="font-bold text-xs text-neutral-900">Live SMS Dispatch Preview</span>
                 </div>
 
@@ -485,7 +485,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                 <p className="text-xs font-medium">No vehicle holds requested for this case yet.</p>
                 <button
                   onClick={() => setActiveTab('request_hold')}
-                  className="text-xs font-bold text-[#991b1b] hover:underline"
+                  className="text-xs font-bold text-[#800000] hover:underline"
                 >
                   Click here to dispatch a vehicle hold SMS
                 </button>
@@ -499,7 +499,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                   >
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-neutral-100 pb-2.5">
                       <div className="flex items-center space-x-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-red-50 text-[#991b1b] flex items-center justify-center font-bold">
+                        <div className="w-8 h-8 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center font-bold">
                           <Car className="w-4 h-4" />
                         </div>
                         <div>
@@ -527,8 +527,8 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                           </span>
                         )}
                         {hold.status === 'route_48h_dispatched' && (
-                          <span className="px-2.5 py-1 bg-blue-50 text-blue-800 border border-blue-300 rounded-full font-bold text-[10px] flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-blue-600" />
+                          <span className="px-2.5 py-1 bg-brass-50 text-brass-800 border border-brass-300 rounded-full font-bold text-[10px] flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-brass-600" />
                             48h Route Dispatched to Driver
                           </span>
                         )}
@@ -568,7 +568,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                         {hold.status === 'hold_requested' && (
                           <button
                             onClick={() => handleSimulateVendorConfirmation(hold)}
-                            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-[10px] transition flex items-center gap-1 shadow-2xs"
+                            className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-[10px] transition flex items-center gap-1 shadow-2xs"
                           >
                             <CheckCircle className="w-3 h-3" />
                             <span>Simulate Vendor Confirmation</span>
@@ -578,7 +578,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                         {hold.status !== 'route_48h_dispatched' && (
                           <button
                             onClick={() => setActiveRouteHoldId(hold.id)}
-                            className="px-3 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-lg text-[10px] transition flex items-center gap-1 shadow-2xs"
+                            className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg text-[10px] transition flex items-center gap-1 shadow-2xs"
                           >
                             <MapPin className="w-3 h-3 text-amber-300" />
                             <span>Input & Dispatch 48h Final Route</span>
@@ -591,7 +591,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                     {activeRouteHoldId === hold.id && (
                       <div className="mt-3 p-3.5 bg-red-50/50 rounded-xl border border-red-200 space-y-3 animate-fadeIn">
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-[#991b1b] flex items-center gap-1.5">
+                          <span className="font-bold text-xs text-[#800000] flex items-center gap-1.5">
                             <MapPin className="w-3.5 h-3.5" />
                             48-Hour Final Routing Dispatch Form
                           </span>
@@ -610,7 +610,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                               type="text"
                               value={pickupAddress}
                               onChange={(e) => setPickupAddress(e.target.value)}
-                              className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#991b1b] outline-none font-sans"
+                              className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#800000] outline-none font-sans"
                             />
                           </div>
                           <div>
@@ -619,7 +619,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                               type="text"
                               value={dropoffAddress}
                               onChange={(e) => setDropoffAddress(e.target.value)}
-                              className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#991b1b] outline-none font-sans"
+                              className="w-full bg-white border border-neutral-300 rounded-lg p-2 text-neutral-900 focus:border-[#800000] outline-none font-sans"
                             />
                           </div>
                         </div>
@@ -633,7 +633,7 @@ PLEASE REPLY "CONFIRM" TO HOLD VEHICLE.`;
                           </button>
                           <button
                             onClick={() => handleDispatch48HourRoute(hold)}
-                            className="px-4 py-1.5 bg-[#991b1b] hover:bg-red-800 text-white font-bold rounded-lg shadow-sm flex items-center gap-1.5"
+                            className="px-4 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white font-bold rounded-lg shadow-sm flex items-center gap-1.5"
                           >
                             <Send className="w-3 h-3 text-amber-300" />
                             <span>Transmit Final Route to Vendor</span>

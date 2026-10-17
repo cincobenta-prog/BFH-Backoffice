@@ -253,12 +253,12 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-fadeIn">
-      <div className="bg-white rounded-3xl max-w-5xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-neutral-300 max-h-[92vh] flex flex-col overflow-hidden">
+      <div className="bg-white rounded-2xl max-w-5xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border-2 border-neutral-300 max-h-[92vh] flex flex-col overflow-hidden">
         
         {/* Header */}
         <div className="flex justify-between items-start border-b border-neutral-200 pb-4 shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-11 h-11 rounded-2xl bg-red-50 text-[#991b1b] flex items-center justify-center font-bold text-xl border border-red-200">
+            <div className="w-11 h-11 rounded-2xl bg-red-50 text-[#800000] flex items-center justify-center font-bold text-xl border border-red-200">
               🏛️
             </div>
             <div>
@@ -296,7 +296,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
             {currentFeeAmount !== undefined && (
               <div className="flex items-center space-x-2 font-mono">
                 <span className="text-neutral-600">Active Pass-Through Fee:</span>
-                <strong className="text-[#991b1b] text-sm font-bold">${currentFeeAmount.toFixed(2)}</strong>
+                <strong className="text-[#800000] text-sm font-bold">${currentFeeAmount.toFixed(2)}</strong>
               </div>
             )}
           </div>
@@ -309,7 +309,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
             onClick={() => setActiveTab('directory')}
             className={`px-4 py-2 rounded-xl transition flex items-center space-x-1.5 cursor-pointer ${
               activeTab === 'directory'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -322,7 +322,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
             onClick={() => setActiveTab('custom')}
             className={`px-4 py-2 rounded-xl transition flex items-center space-x-1.5 cursor-pointer ${
               activeTab === 'custom'
-                ? 'bg-[#991b1b] text-white shadow-xs'
+                ? 'bg-[#800000] text-white shadow-xs'
                 : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
             }`}
           >
@@ -345,7 +345,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by cemetery name, borough, town, or zip code (e.g. Woodlawn, Ferncliff, Bronx, 10470)..."
-                    className="w-full bg-neutral-50 border border-neutral-300 rounded-xl pl-10 pr-4 py-2 text-xs text-neutral-900 focus:bg-white focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                    className="w-full bg-neutral-50 border border-neutral-300 rounded-xl pl-10 pr-4 py-2 text-xs text-neutral-900 focus:bg-white focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                   />
                   {searchQuery && (
                     <button
@@ -361,7 +361,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                 <select
                   value={capabilityFilter}
                   onChange={(e) => setCapabilityFilter(e.target.value as any)}
-                  className="bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2 text-xs font-bold text-neutral-800 focus:bg-white focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2 text-xs font-bold text-neutral-800 focus:bg-white focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 >
                   <option value="all">All Service Types</option>
                   <option value="crematory">🔥 Has On-Site Crematory</option>
@@ -413,7 +413,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                       setSelectedRegion('all');
                       setCapabilityFilter('all');
                     }}
-                    className="text-xs font-bold text-[#991b1b] hover:underline"
+                    className="text-xs font-bold text-[#800000] hover:underline"
                   >
                     Reset all filters
                   </button>
@@ -429,7 +429,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                       key={cemetery.id}
                       className={`p-4 sm:p-5 rounded-2xl border-2 transition-all space-y-4 bg-white ${
                         isSelected
-                          ? 'border-[#991b1b] ring-2 ring-red-400/30 shadow-md bg-red-50/10'
+                          ? 'border-[#800000] ring-2 ring-red-400/30 shadow-md bg-red-50/10'
                           : 'border-neutral-200 hover:border-neutral-300 shadow-xs'
                       }`}
                     >
@@ -453,7 +453,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                           
                           <div className="text-xs text-neutral-600 flex flex-wrap items-center gap-x-3 gap-y-1">
                             <span className="flex items-center gap-1">
-                              <MapPin className="w-3.5 h-3.5 text-[#991b1b]" />
+                              <MapPin className="w-3.5 h-3.5 text-[#800000]" />
                               <span>{cemetery.address}, {cemetery.city}, {cemetery.state} {cemetery.zip}</span>
                             </span>
                             <span className="flex items-center gap-1">
@@ -518,7 +518,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                                 onClick={() => handleSelectPredefined(cemetery, fee)}
                                 className={`p-3 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 cursor-pointer ${
                                   isFeeActive
-                                    ? 'bg-[#991b1b] text-white border-[#991b1b] shadow-sm'
+                                    ? 'bg-[#800000] text-white border-[#800000] shadow-sm'
                                     : 'bg-neutral-50 hover:bg-red-50/50 hover:border-red-300 text-neutral-900 border-neutral-200'
                                 }`}
                               >
@@ -535,7 +535,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                                   <span className="text-[10px] uppercase font-bold tracking-wider">
                                     {isFeeActive ? '✓ Selected' : '1-Click Apply'}
                                   </span>
-                                  <span className={`font-mono font-black text-xs ${isFeeActive ? 'text-amber-300' : 'text-[#991b1b]'}`}>
+                                  <span className={`font-mono font-black text-xs ${isFeeActive ? 'text-amber-300' : 'text-[#800000]'}`}>
                                     {fee.amount === 0 ? 'FREE (VA Benefit)' : `$${fee.amount.toFixed(2)}`}
                                   </span>
                                 </div>
@@ -576,7 +576,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                   value={customName}
                   onChange={(e) => setCustomName(e.target.value)}
                   placeholder="e.g. Mount Hebron Cemetery or Pinelawn Private Family Crypt"
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 />
               </div>
 
@@ -587,7 +587,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                   value={customPhone}
                   onChange={(e) => setCustomPhone(e.target.value)}
                   placeholder="e.g. (718) 555-0199"
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 />
               </div>
 
@@ -598,7 +598,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                   value={customAddress}
                   onChange={(e) => setCustomAddress(e.target.value)}
                   placeholder="e.g. 130-04 Horace Harding Expy"
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 />
               </div>
 
@@ -609,7 +609,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                   value={customCityStateZip}
                   onChange={(e) => setCustomCityStateZip(e.target.value)}
                   placeholder="e.g. Flushing, NY 11367"
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 />
               </div>
 
@@ -618,7 +618,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                 <select
                   value={customFeeType}
                   onChange={(e) => setCustomFeeType(e.target.value as any)}
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs font-bold text-neutral-800 focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs font-bold text-neutral-800 focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 >
                   <option value="ground_burial">⚰️ Ground Burial (Interment Opening & Closing)</option>
                   <option value="cremation">🔥 Direct Cremation Processing</option>
@@ -639,7 +639,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                   value={customFeeAmount}
                   onChange={(e) => setCustomFeeAmount(parseFloat(e.target.value) || 0)}
                   placeholder="1850.00"
-                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono font-bold focus:ring-2 focus:ring-[#991b1b] focus:outline-hidden"
+                  className="w-full border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono font-bold focus:ring-2 focus:ring-[#800000] focus:outline-hidden"
                 />
               </div>
             </div>
@@ -650,7 +650,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
                 id="customVault"
                 checked={customRequiresVault}
                 onChange={(e) => setCustomRequiresVault(e.target.checked)}
-                className="w-4 h-4 text-[#991b1b] rounded focus:ring-red-500"
+                className="w-4 h-4 text-[#800000] rounded focus:ring-red-500"
               />
               <label htmlFor="customVault" className="font-medium text-neutral-800 cursor-pointer">
                 Outer Burial Container / Concrete Vault required by cemetery bylaws
@@ -667,7 +667,7 @@ export const CemeterySelectionModal: React.FC<CemeterySelectionModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="bg-[#991b1b] hover:bg-red-800 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
+                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-6 py-2.5 rounded-xl transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
               >
                 <Check className="w-4 h-4 text-amber-300" />
                 <span>Apply Custom Cemetery & Fee (${customFeeAmount.toFixed(2)})</span>

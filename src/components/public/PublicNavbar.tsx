@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Lock, Sparkles } from 'lucide-react';
+import { Phone, Lock } from 'lucide-react';
 
 interface PublicNavbarProps {
   onOpenPortal: () => void;
@@ -9,179 +9,186 @@ interface PublicNavbarProps {
   onNavigate: (section: string) => void;
 }
 
+interface NavItem {
+  id: string;
+  label: string;
+  children?: { id: string; label: string }[];
+}
+
 export const PublicNavbar: React.FC<PublicNavbarProps> = ({
   onOpenPortal,
   onOpenFamilyPortal,
-  onOpenArranger,
-  activeSection,
-  onNavigate
+  onNavigate,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navLinks = [
-    { id: 'home', label: 'Home' },
-    { id: 'history', label: 'Our History' },
-    { id: 'facility', label: 'Facility' },
-    { id: 'services', label: 'Services & Products' },
-    { id: 'preplan', label: 'Pre-Plan' },
-    { id: 'notable', label: 'Notable Services' },
+  const navLinks: NavItem[] = [
+    {
+      id: 'home',
+      label: 'BFH',
+      children: [
+        { id: 'home', label: 'Home' },
+        { id: 'history', label: 'Our History' },
+        { id: 'facility', label: 'Facility' },
+        { id: 'notable', label: 'Notable Services' },
+      ],
+    },
+    { id: 'history', label: 'Legacy' },
     { id: 'obituaries', label: 'Obituaries' },
-    { id: 'grief', label: 'Grief & Healing' },
-    { id: 'faqs', label: 'FAQs' },
-    { id: 'contact', label: 'Contact' }
+    {
+      id: 'preplan',
+      label: 'Pre-Plan',
+      children: [
+        { id: 'preplan', label: 'Plan Ahead' },
+        { id: 'preplan', label: 'Preplanning Checklist' },
+        { id: 'preplan', label: 'Where to Begin' },
+      ],
+    },
+    { id: 'services', label: 'Services' },
+    {
+      id: 'grief',
+      label: 'Resources',
+      children: [
+        { id: 'grief', label: 'Grief and Healing' },
+        { id: 'grief', label: 'Quotes and Affirmations' },
+        { id: 'faqs', label: 'FAQs' },
+      ],
+    },
+    { id: 'faqs', label: 'FAQ' },
+    { id: 'contact', label: 'Contact' },
   ];
 
+  const go = (id: string) => {
+    onNavigate(id);
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-red-900/10 shadow-sm text-neutral-900">
-      {/* Top Banner: Benta Crimson Red Bar */}
-      <div className="bg-[#991b1b] text-white py-1.5 px-4 text-xs font-medium border-b border-amber-400/30">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-          <div className="flex items-center space-x-3 text-amber-200">
-            <span className="inline-flex items-center px-2 py-0.5 rounded bg-black/20 border border-amber-300/40 text-[11px] text-amber-200 font-bold tracking-wide">
-              EST. 1928 • HARLEM, NYC
-            </span>
-            <span className="hidden sm:inline text-red-200">|</span>
-            <span className="hidden sm:inline text-white/90">630 Saint Nicholas Ave, New York, NY 10030</span>
-          </div>
-          
-          <div className="flex items-center space-x-3">
-            <a 
-              href="tel:+12122818850" 
-              className="flex items-center space-x-1.5 text-amber-300 hover:text-white font-bold transition"
-            >
-              <Phone className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-              <span>24/7 Careline: (212) 281-8850</span>
+    <header className="sticky top-0 z-50 bg-white border-b border-neutral-200 text-neutral-800">
+      {/* Maroon notice bar */}
+      <div className="bg-[#43060a] text-[#f0e3d5] text-[11.5px] tracking-wide">
+        <div className="max-w-[1200px] mx-auto px-5 py-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <span>630 Saint Nicholas Avenue, New York, NY 10030</span>
+          <span className="flex items-center gap-3">
+            <a href="tel:+12122818850" className="inline-flex items-center gap-1.5 hover:text-white">
+              <Phone className="w-3 h-3" />
+              (212) 281-8850
             </a>
-
-            {onOpenFamilyPortal && (
-              <button
-                onClick={onOpenFamilyPortal}
-                className="flex items-center space-x-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 px-2.5 py-1 rounded text-xs transition border border-amber-300/40 font-bold cursor-pointer"
-                title="Open Family Portal with 360 Digi-Tribute & 9-Part Memorial Suite"
-              >
-                <span>🕊️ Family Portal</span>
-              </button>
-            )}
-
-            <button
-              onClick={onOpenPortal}
-              className="flex items-center space-x-1 bg-black/25 hover:bg-black/40 text-amber-200 px-2.5 py-1 rounded text-xs transition border border-amber-300/30 cursor-pointer"
-              title="Open Funeral Directors Back-Office Portal"
-            >
-              <Lock className="w-3 h-3 text-amber-300" />
-              <span>Funeral Directors Portal</span>
-            </button>
-          </div>
+            <span className="hidden sm:inline opacity-60">·</span>
+            <span className="hidden sm:inline">Serving Harlem families since 1928</span>
+          </span>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        {/* Official Brand Logo & Title from e-bfh.com */}
-        <div 
-          onClick={() => onNavigate('home')} 
-          className="flex items-center space-x-3 cursor-pointer group shrink-0"
-        >
+      {/* Main bar */}
+      <div className="max-w-[1200px] mx-auto px-5 py-3.5 flex items-center justify-between gap-6">
+        {/* Logo */}
+        <button onClick={() => go('home')} className="shrink-0 cursor-pointer" aria-label="Benta's Funeral Home home">
           <img
             src="/images/ebfh/BENTA_logo.png"
             alt="Benta's Funeral Home, Inc."
-            className="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105"
+            className="h-11 sm:h-12 w-auto object-contain"
             onError={(e) => {
-              // Fallback to flame icon if logo image fails
-              const target = e.target as HTMLImageElement;
-              target.src = '/images/ebfh/Benta-Flame-MN.png';
+              (e.target as HTMLImageElement).src = '/images/ebfh/Benta-Flame-MN.png';
             }}
           />
-          <div className="hidden sm:block">
-            <h1 className="font-serif-title text-lg sm:text-xl font-bold tracking-wide text-[#991b1b] group-hover:text-red-700 transition leading-tight">
-              BENTA'S FUNERAL HOME
-            </h1>
-            <p className="text-[10px] text-[#b45309] tracking-widest uppercase font-semibold">
-              Four Generations of Compassion & Dignity
-            </p>
-          </div>
-        </div>
+        </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden xl:flex items-center space-x-1">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => onNavigate(link.id)}
-              className={`px-2.5 py-1.5 rounded-md text-xs font-semibold tracking-wide transition cursor-pointer ${
-                activeSection === link.id
-                  ? 'text-[#991b1b] bg-red-50 border border-red-200'
-                  : 'text-neutral-700 hover:text-[#991b1b] hover:bg-neutral-50'
-              }`}
-            >
-              {link.label}
-            </button>
-          ))}
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center">
+          <ul className="flex items-center">
+            {navLinks.map((item) => (
+              <li key={item.label} className="relative group">
+                <button
+                  onClick={() => go(item.id)}
+                  className="px-3 py-2 font-display text-[12.5px] font-medium uppercase tracking-[0.11em] text-neutral-600 hover:text-[#a0080e] transition cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  {item.label}
+                  {item.children && (
+                    <span className="block w-1 h-1 border-r border-b border-current rotate-45 translate-y-[-1px]" />
+                  )}
+                </button>
+                {item.children && (
+                  <div className="absolute left-0 top-full hidden group-hover:block min-w-[230px] bg-white border border-neutral-200 shadow-[0_18px_40px_rgba(60,20,25,0.12)] py-2 z-50">
+                    {item.children.map((child, i) => (
+                      <button
+                        key={`${child.label}-${i}`}
+                        onClick={() => go(child.id)}
+                        className="block w-full text-left px-5 py-2 text-[13.5px] text-neutral-600 hover:bg-[#e7e4dc] hover:text-[#a0080e] cursor-pointer"
+                      >
+                        {child.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
         </nav>
 
-        {/* Primary Action Button: Crimson with Gold Accent */}
-        <div className="hidden sm:flex items-center space-x-2.5">
-          <button
-            onClick={onOpenArranger}
-            className="flex items-center space-x-1.5 bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-white font-bold text-xs uppercase tracking-wider px-3.5 py-2 rounded-lg shadow-md shadow-red-950/20 hover:shadow-lg transition transform active:scale-95 border border-amber-400/40 cursor-pointer"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Plan Online / Get Started</span>
+        {/* CTAs */}
+        <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+          {onOpenFamilyPortal && (
+            <button onClick={onOpenFamilyPortal} className="btn-benta btn-benta--outline text-[11px] px-4 py-2.5 cursor-pointer">
+              Family Portal
+            </button>
+          )}
+          <button onClick={onOpenPortal} className="btn-benta text-[11px] px-4 py-2.5 cursor-pointer inline-flex items-center gap-1.5">
+            <Lock className="w-3 h-3" />
+            Staff Portal
           </button>
         </div>
 
-        {/* Mobile menu trigger */}
-        <div className="xl:hidden flex items-center space-x-2">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded text-neutral-700 hover:text-red-800 hover:bg-neutral-100 cursor-pointer"
-            aria-label="Toggle menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* Mobile trigger */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden p-2 text-neutral-700 hover:text-[#a0080e] cursor-pointer"
+          aria-label="Toggle menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {mobileMenuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-red-100 px-4 pt-2 pb-4 space-y-2 shadow-lg">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => {
-                onNavigate(link.id);
-                setMobileMenuOpen(false);
-              }}
-              className="block w-full text-left px-3 py-2 rounded text-sm font-medium text-neutral-700 hover:bg-red-50 hover:text-[#991b1b]"
-            >
-              {link.label}
-            </button>
+        <div className="lg:hidden bg-white border-t border-neutral-200 px-5 py-3">
+          {navLinks.map((item) => (
+            <div key={item.label}>
+              <button
+                onClick={() => go(item.id)}
+                className="block w-full text-left px-2 py-2.5 font-display text-[13px] uppercase tracking-[0.1em] text-neutral-700 hover:text-[#a0080e] cursor-pointer"
+              >
+                {item.label}
+              </button>
+              {item.children && (
+                <div className="pl-4 border-l border-neutral-200 ml-2">
+                  {item.children.map((child, i) => (
+                    <button
+                      key={`${child.label}-m-${i}`}
+                      onClick={() => go(child.id)}
+                      className="block w-full text-left px-2 py-1.5 text-[13px] text-neutral-500 hover:text-[#a0080e] cursor-pointer"
+                    >
+                      {child.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
-          <div className="pt-2 border-t border-neutral-200 flex flex-col gap-2">
-            <button
-              onClick={() => {
-                onOpenArranger();
-                setMobileMenuOpen(false);
-              }}
-              className="w-full bg-[#991b1b] hover:bg-red-800 text-white font-bold py-2 rounded text-xs uppercase text-center border border-amber-400/40"
-            >
-              Plan Online / Get Started
-            </button>
-            <button
-              onClick={() => {
-                onOpenPortal();
-                setMobileMenuOpen(false);
-              }}
-              className="w-full bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-semibold py-2 rounded text-xs text-center border border-neutral-300 flex items-center justify-center space-x-2"
-            >
-              <Lock className="w-3.5 h-3.5 text-[#991b1b]" />
-              <span>Director / Family Portal</span>
+          <div className="pt-3 mt-2 border-t border-neutral-200 flex flex-col gap-2">
+            {onOpenFamilyPortal && (
+              <button onClick={onOpenFamilyPortal} className="btn-benta btn-benta--outline cursor-pointer">
+                Family Portal
+              </button>
+            )}
+            <button onClick={onOpenPortal} className="btn-benta cursor-pointer">
+              Director / Staff Portal
             </button>
           </div>
         </div>
