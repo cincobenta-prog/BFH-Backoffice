@@ -1050,90 +1050,385 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             </div>
 
             {/* PAGE 2: STATUTORY AUTHORIZATIONS & SIGNATURES */}
-            <div className="space-y-4 pt-2 ap47-page-break print:break-before-page print:pt-4 print:space-y-4">
-              
-              <div className="flex justify-between items-center border-b border-neutral-300 pb-2 text-[11px] text-neutral-600">
-                <span className="font-serif-title font-bold text-[#800000]">
-                  Benta's Funeral Home, Inc. • Statement of Goods and Services Selected
-                </span>
-                <span className="font-mono text-[10px]">
-                  Deceased: <strong>{caseData.decedent.legalName}</strong> • Date: <strong>{ap47.agreementDate}</strong>
-                </span>
-              </div>
+            {(() => {
+              const combinedVisitation = 
+                ap47.sectionIV.combinedVisitationCharge || 
+                ((ap47.sectionI.F1_facilitiesVisitationAmount || 0) + (ap47.sectionI.E1_supervisionVisitationAmount || 0));
 
-              <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1.5 bg-neutral-100 rounded border border-neutral-200">
-                STATEMENT OF GOODS AND SERVICES SELECTED — PAGE 2
-                <span className="block text-[10px] font-sans font-normal text-neutral-600 normal-case mt-0.5">
-                  Statutory Disclosures, Authorizations & Legally Binding Signatures
-                </span>
-              </div>
+              const combinedFuneral = 
+                ap47.sectionIV.combinedFuneralServiceCharge || 
+                ((ap47.sectionI.F2_facilitiesFuneralServiceAmount || 0) + (ap47.sectionI.E2_supervisionFuneralServiceAmount || 0));
 
-              {/* Section IV Explanations & Signatures */}
-              <div className="border border-neutral-300 rounded-xl p-3.5 space-y-3 text-[10px] text-neutral-700">
-                <h5 className="font-bold text-xs uppercase text-neutral-900 border-b border-neutral-200 pb-1">
-                  IV. EXPLANATION OF CHARGES & STATUTORY AUTHORIZATIONS
-                </h5>
+              const combinedMemorial = 
+                ap47.sectionIV.combinedOtherCharge || 
+                ((ap47.sectionI.F3_facilitiesMemorialServiceAmount || 0) + (ap47.sectionI.E3_supervisionMemorialAmount || 0));
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 print-grid-cols-2 print:grid-cols-2">
-                  <div className="p-2.5 bg-neutral-50 rounded-lg border border-neutral-200">
-                    <div className="font-bold text-neutral-900 flex items-center gap-1">
-                      <span className="text-emerald-700">☑</span>
-                      <span>Custody Authorization:</span>
-                    </div>
-                    <p className="text-[9px] text-neutral-500 mt-0.5">
-                      "The undersigned hereby authorizes Benta's Funeral Home, Inc. to obtain physical custody of the remains."
-                    </p>
-                    <span className="font-bold text-neutral-800 block text-[9px] mt-1">
-                      Authorized by: {caseData.informant.fullName} ({caseData.informant.relationship})
+              const rawAddress = caseData.informant.address || '';
+              const addrParts = rawAddress.split(',').map((s) => s.trim()).filter(Boolean);
+              let billToStreet = rawAddress;
+              let billToCityStateZip = '';
+              if (addrParts.length >= 3) {
+                billToStreet = addrParts.slice(0, addrParts.length - 2).join(', ');
+                billToCityStateZip = addrParts.slice(addrParts.length - 2).join(', ');
+              } else if (addrParts.length === 2) {
+                billToStreet = addrParts[0];
+                billToCityStateZip = addrParts[1];
+              } else if (!rawAddress) {
+                billToStreet = '9 Dennis Lane';
+                billToCityStateZip = 'Pleasantville, NY 10570';
+              }
+
+              const informantInitials = caseData.informant.fullName
+                ? caseData.informant.fullName
+                    .split(' ')
+                    .filter(Boolean)
+                    .map((n) => n[0])
+                    .join('')
+                    .toUpperCase()
+                : 'MD';
+
+              const isEmbalmingSelected = ap47.sectionIV.embalmingAuthorization.choice === 'embalm';
+              const directorName = caseData.assignedDirector || 'Leatrice Henry';
+
+              return (
+                <div className="space-y-3 pt-2 ap47-page-break print:break-before-page print:pt-3 print:space-y-2.5">
+                  
+                  {/* Page 2 Official Top Reference Strip */}
+                  <div className="flex justify-between items-center border-b border-neutral-300 pb-1.5 text-[10px] text-neutral-600">
+                    <span className="font-serif-title font-bold text-[#800000]">
+                      Benta's Funeral Home, Inc. • Statement of Goods and Services Selected
+                    </span>
+                    <span className="font-mono text-[9.5px]">
+                      Deceased: <strong>{caseData.decedent.legalName}</strong> • Date: <strong>{ap47.agreementDate}</strong> • Inv: <strong>#{ap47.invoiceNumber || `${caseData.caseNumber}-AP47`}</strong>
                     </span>
                   </div>
 
-                  <div className="p-2.5 bg-neutral-50 rounded-lg border border-neutral-200">
-                    <div className="font-bold text-neutral-900 flex items-center gap-1">
-                      <span className="text-emerald-700">☑</span>
-                      <span>Embalming Authorization (10 NYCRR § 77.7):</span>
-                    </div>
-                    <p className="text-[9px] text-neutral-500 mt-0.5">
-                      "The undersigned hereby authorizes Benta's Funeral Home [✓] to embalm [ ] not to embalm the remains."
-                    </p>
-                    <span className="font-bold text-neutral-800 block text-[9px] mt-1">
-                      Embalming Authorized for Public Viewing
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-2 bg-amber-50 rounded-lg border border-amber-200 text-[9px] space-y-0.5 text-neutral-700">
-                  <p className="font-bold text-neutral-900">
-                    "Charges are only for those items that are used. If we are required by law to use any items, we will explain the reasons in writing below."
+                  {/* Top Statutory Notice Sentence */}
+                  <p className="text-[9.5px] leading-snug text-neutral-800">
+                    The following are the charges for the services, merchandise and livery you have selected. You will not be charged for any item you did not choose unless it is necessary because of other selections you have made. Any such charges are explained below.
                   </p>
-                  <p>
-                    "Prior to the discussion of these funeral arrangements, I was presented with a copy of this funeral firm's 'General Price List' for which I hereby acknowledge receipt, and have had an opportunity to review the firm's Casket Price List and Outer Interment Receptacle Price List."
-                  </p>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300 print-grid-cols-2 print:grid-cols-2">
-                  <div>
-                    <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000]">
-                      {caseData.informant.fullName} (Electronic Jurat Verified)
-                    </div>
-                    <span className="text-[9px] text-neutral-500 block mt-0.5">
-                      Signature of Purchaser / Next of Kin • {ap47.agreementDate}
-                    </span>
+                  {/* IV. EXPLANATION OF CHARGES Title & Mandatory Prompt */}
+                  <div className="space-y-0.5">
+                    <h4 className="font-bold text-[11px] uppercase text-neutral-900 tracking-wider">
+                      IV. EXPLANATION OF CHARGES
+                    </h4>
+                    <p className="text-[9px] leading-normal text-neutral-700">
+                      Explain charges for embalming and for any items that are not required by law but may be necessary because of cemetery requirements, crematory requirements or any other selections made.
+                    </p>
                   </div>
 
-                  <div>
-                    <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-neutral-900">
-                      {caseData.assignedDirector || 'Jason Benta, NYS LFD #08850'}
+                  {/* Combined Facilities/Staff Charges (Left) & Acknowledgement of Receipt (Right) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 print-grid-cols-2 print:grid-cols-2 items-stretch">
+                    
+                    {/* Combined Charges Box */}
+                    <div className="space-y-1.5 text-[9px] text-neutral-800 border border-neutral-800 rounded p-2.5 bg-white flex flex-col justify-between">
+                      <div className="flex justify-between items-baseline border-b border-neutral-200 pb-1">
+                        <span>Combined charge for Facilities and Staff for visitation is:</span>
+                        <span className="font-mono font-bold shrink-0 ml-2">
+                          $ {combinedVisitation > 0 ? combinedVisitation.toFixed(2) : '-'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-baseline border-b border-neutral-200 pb-1">
+                        <span>Combined charge for Facilities and Staff for funeral service is:</span>
+                        <span className="font-mono font-bold shrink-0 ml-2">
+                          $ {combinedFuneral > 0 ? combinedFuneral.toFixed(2) : '-'}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-baseline">
+                        <span>Combined charge for Facilities and Staff for memorial service is:</span>
+                        <span className="font-mono font-bold shrink-0 ml-2">
+                          $ {combinedMemorial > 0 ? combinedMemorial.toFixed(2) : '-'}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-[9px] text-neutral-500 block mt-0.5">
-                      Signature of Licensed Funeral Director • Benta's Funeral Home, Inc.
-                    </span>
+
+                    {/* Acknowledgement of Receipt Box */}
+                    <div className="border border-neutral-800 rounded p-2.5 bg-white space-y-1.5">
+                      <div className="font-bold text-[9.5px] uppercase text-neutral-900 tracking-wider text-center border-b border-neutral-200 pb-0.5">
+                        ACKNOWLEDGEMENT OF RECEIPT
+                      </div>
+                      <p className="text-[8.5px] text-neutral-700 leading-tight">
+                        I have received this itemization of funeral services and merchandise selected.
+                      </p>
+                      <div className="grid grid-cols-3 gap-2 pt-1 items-end text-[8.5px]">
+                        <div className="col-span-2 border-b border-neutral-800 pb-0.5 min-h-[16px]">
+                          <span className="font-serif italic text-neutral-900 text-[9.5px]">
+                            {caseData.informant.fullName}
+                          </span>
+                        </div>
+                        <div className="border-b border-neutral-800 pb-0.5 font-mono text-[9px] text-center min-h-[16px]">
+                          {ap47.agreementDate}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-[7.5px] text-neutral-500 uppercase tracking-wider">
+                        <div className="col-span-2">Signature</div>
+                        <div className="text-center">Date</div>
+                      </div>
+                    </div>
+
                   </div>
+
+                  {/* Director Signature & Public Notice */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 print-grid-cols-2 print:grid-cols-2 items-start text-[9px]">
+                    
+                    {/* Left: Signature of Licensed Funeral Director */}
+                    <div className="space-y-2 pt-0.5">
+                      <div className="grid grid-cols-3 gap-2 items-end">
+                        <div className="col-span-2 border-b border-neutral-800 pb-0.5 min-h-[18px]">
+                          <span className="font-serif italic text-neutral-900 text-[10px]">
+                            {directorName}
+                          </span>
+                        </div>
+                        <div className="border-b border-neutral-800 pb-0.5 font-mono text-[9px] text-center min-h-[18px]">
+                          {ap47.agreementDate}
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-[8px] text-neutral-600">
+                        <div className="col-span-2">Signature of Licensed Funeral Director</div>
+                        <div className="text-center">Date</div>
+                      </div>
+
+                      <div className="pt-1">
+                        <div className="border-b border-neutral-800 pb-0.5 font-sans font-medium text-neutral-900 text-[9.5px]">
+                          {directorName}
+                        </div>
+                        <div className="text-[8px] text-neutral-600 mt-0.5">
+                          Printed or Typed Name of Funeral Director
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Official Public Notice (Troy, NY DOH) */}
+                    <div className="border border-neutral-800 rounded p-2 bg-neutral-50/50 space-y-1 text-[8.5px] leading-relaxed">
+                      <div className="font-bold text-neutral-900 uppercase">
+                            PUBLIC NOTICE:
+                      </div>
+                      <p className="text-neutral-700">
+                        The New York State Department of Health is responsible for licensing and regulating New York State funeral directing under the Public Health Law. You may contact the Department at:
+                      </p>
+                      <div className="font-semibold text-neutral-900 pt-0.5 text-[8px] leading-tight">
+                        Bureau of Funeral Directing, New York State Department of Health<br />
+                        Hedley Park, 6th Floor<br />
+                        433 River Street<br />
+                        Troy, New York 12180
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Custody Authorization Box */}
+                  <div className="border border-neutral-800 rounded p-2 bg-white space-y-1 text-[9px]">
+                    <div className="flex flex-wrap items-baseline gap-1">
+                      <span className="text-neutral-800">
+                        The undersigned hereby authorizes the above funeral establishment or its representatives to obtain custody of the remains of
+                      </span>
+                      <span className="font-bold border-b border-neutral-800 px-2 text-neutral-900 grow min-w-[180px]">
+                        {caseData.decedent.legalName}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-0.5 text-[8.5px] text-neutral-700">
+                      <span>Initial and state your relation to deceased</span>
+                      <span className="border border-neutral-800 px-2 py-0.2 font-bold font-mono text-neutral-900">
+                        {informantInitials}
+                      </span>
+                      <span className="border-b border-neutral-800 px-2 font-medium text-neutral-900 grow">
+                        {caseData.informant.relationship}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Embalming Authorization Box */}
+                  <div className="border border-neutral-800 rounded p-2 bg-white space-y-1 text-[9px]">
+                    <div className="flex flex-wrap items-baseline gap-2">
+                      <span className="text-neutral-800">
+                        The undersigned hereby authorizes the above funeral establishment or its representatives
+                      </span>
+                      <span className="inline-flex items-center gap-1 font-semibold text-neutral-900">
+                        <span className="border border-neutral-800 px-1 py-0.2 font-mono text-[8px]">{isEmbalmingSelected ? '✓' : ' '}</span> to embalm
+                      </span>
+                      <span className="inline-flex items-center gap-1 font-semibold text-neutral-900">
+                        <span className="border border-neutral-800 px-1 py-0.2 font-mono text-[8px]">{!isEmbalmingSelected ? '✓' : ' '}</span> not to embalm
+                      </span>
+                      <span className="text-neutral-800">the remains of</span>
+                      <span className="font-bold border-b border-neutral-800 px-2 text-neutral-900 grow min-w-[160px]">
+                        {caseData.decedent.legalName}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-0.5 text-[8.5px] text-neutral-700">
+                      <span>Initial and state your relation to deceased</span>
+                      <span className="border border-neutral-800 px-2 py-0.2 font-bold font-mono text-neutral-900">
+                        {informantInitials}
+                      </span>
+                      <span className="border-b border-neutral-800 px-2 font-medium text-neutral-900 grow">
+                        {caseData.informant.relationship}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Two-Column: Billing Information (Left) & Exclusion of Warranty (Right) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 print-grid-cols-2 print:grid-cols-2 border border-neutral-800 rounded p-2.5 bg-white text-[9px]">
+                    
+                    {/* Left: Billing Information */}
+                    <div className="space-y-1 pr-1 sm:border-r border-neutral-300">
+                      <div className="font-bold uppercase tracking-wider text-neutral-900 text-[9.5px] pb-0.5 border-b border-neutral-200">
+                        BILLING INFORMATION
+                      </div>
+                      <div className="space-y-1 pt-0.5 text-[8.5px]">
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-neutral-600 font-medium">Bill To:</span>
+                          <span className="font-semibold text-neutral-900 border-b border-neutral-400 grow ml-2 pb-0.2">
+                            {caseData.informant.fullName || 'Mary Daniels'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-neutral-600 font-medium">Relationship to Decedent:</span>
+                          <span className="font-semibold text-neutral-900 border-b border-neutral-400 grow ml-2 pb-0.2">
+                            {caseData.informant.relationship || 'Daughter'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-neutral-600 font-medium">Address:</span>
+                          <span className="font-semibold text-neutral-900 border-b border-neutral-400 grow ml-2 pb-0.2">
+                            {billToStreet}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-neutral-600 font-medium">City-State-Zip:</span>
+                          <span className="font-semibold text-neutral-900 border-b border-neutral-400 grow ml-2 pb-0.2">
+                            {billToCityStateZip}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-baseline">
+                          <span className="text-neutral-600 font-medium">Phone Number:</span>
+                          <span className="font-semibold font-mono text-neutral-900 border-b border-neutral-400 grow ml-2 pb-0.2">
+                            {caseData.informant.phone || '(646) 474-2377'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right: Exclusion of Warranty & FTC Notice */}
+                    <div className="space-y-1.5 pl-0 sm:pl-2 text-[8.5px] text-neutral-800 leading-normal">
+                      <div>
+                        <span className="font-bold uppercase text-neutral-900">EXCLUSION OF WARRANTY. </span>
+                        <span>
+                          The only warranties, express or implied, granted in connection with the goods sold with this funeral service are the express written warranties, if any, extended by the manufacturers thereof. No other warranties and no warranties of merchantability or fitness for a particular purpose are extended by the funeral director.
+                        </span>
+                      </div>
+                      <div className="italic text-neutral-700 bg-neutral-50 p-1 rounded border border-neutral-200 text-[8px] leading-tight">
+                        "Charges are only for those items that are used. If we are required by law to use any items, we will explain the reasons in writing below."
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Payment Agreement, GPL Prior Receipt & Terms */}
+                  <div className="space-y-1 text-[8.5px] text-neutral-800 leading-tight">
+                    <p>
+                      The foregoing statement has been read by (to) me and I hereby acknowledge receipt of a copy of same and agree to pay the above funeral account and for such additional services and materials as are ordered by me, on or before <span className="border-b border-neutral-800 px-2 font-semibold text-neutral-900 inline-block min-w-[120px]">{ap47.agreementDate}</span>. In the event that this account is not paid in accordance with the terms of this agreement, the undersigned hereby agrees to pay any and all costs and attorney's fees.
+                    </p>
+                    <p>
+                      Prior to the discussion of these funeral arrangements, I was presented with a copy of this funeral firm's "General Price List" for which I hereby acknowledge receipt, and
+                    </p>
+                    <p>
+                      <strong className="text-neutral-900">TERMS: </strong>This account becomes due <span className="border-b border-neutral-800 px-2 font-medium text-neutral-900 inline-block min-w-[120px]">upon arrangement completion</span>. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
+                    </p>
+                  </div>
+
+                  {/* Dual Family Signatures & By Line */}
+                  <div className="space-y-1.5 pt-0.5 text-[8.5px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 print-grid-cols-2 print:grid-cols-2">
+                      <div>
+                        <div className="border-b border-neutral-800 pb-0.5 min-h-[18px] font-serif italic text-sm text-[#800000]">
+                          {caseData.informant.fullName} (Electronic Jurat Verified)
+                        </div>
+                        <div className="text-[8px] text-neutral-600 mt-0.5">Signature</div>
+                        <div className="text-[8px] text-neutral-800 font-medium">
+                          Relation to Deceased: <span className="border-b border-neutral-400 px-1">{caseData.informant.relationship}</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="border-b border-neutral-800 pb-0.5 min-h-[18px]"></div>
+                        <div className="text-[8px] text-neutral-600 mt-0.5">Signature</div>
+                        <div className="text-[8px] text-neutral-800 font-medium">
+                          Relation to Deceased: <span className="border-b border-neutral-400 px-6 inline-block"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-0.5 flex items-baseline gap-2 text-[8.5px]">
+                      <span className="font-bold text-neutral-800 shrink-0">By</span>
+                      <span className="border-b border-neutral-800 grow pb-0.2 font-medium text-neutral-900">
+                        {caseData.informant.fullName}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* ADDITIONS OR ALTERATIONS OF SERVICES AND MERCHANDISE SELECTED Box */}
+                  <div className="border border-neutral-800 rounded p-2 bg-white space-y-1 text-[8.5px]">
+                    <div className="font-bold uppercase text-[9px] text-neutral-900">
+                      ADDITIONS OR ALTERATIONS OF SERVICES AND MERCHANDISE SELECTED
+                      <span className="block font-normal normal-case text-neutral-700 text-[8px] mt-0.2">
+                        The following changes represent items of service and/or merchandise ordered or altered:
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 print-grid-cols-2 print:grid-cols-2 pt-0.5">
+                      
+                      {/* Left: Authorization Initial Rows */}
+                      <div className="space-y-1">
+                        <div className="text-[7.5px] font-bold uppercase tracking-wider text-neutral-600">
+                          AUTHORIZATION INITIAL
+                        </div>
+                        <div className="space-y-0.8 text-[8px]">
+                          <div className="flex items-center gap-1.5">
+                            <span className="border border-neutral-800 px-1.5 py-0.2 font-mono text-[7.5px] text-neutral-400">[ &nbsp;&nbsp; ]</span>
+                            <span className="border-b border-neutral-400 grow h-3"></span>
+                            <span className="border-b border-neutral-400 w-14 h-3"></span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="border border-neutral-800 px-1.5 py-0.2 font-mono text-[7.5px] text-neutral-400">[ &nbsp;&nbsp; ]</span>
+                            <span className="border-b border-neutral-400 grow h-3"></span>
+                            <span className="border-b border-neutral-400 w-14 h-3"></span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="border border-neutral-800 px-1.5 py-0.2 font-mono text-[7.5px] text-neutral-400">[ &nbsp;&nbsp; ]</span>
+                            <span className="border-b border-neutral-400 grow h-3"></span>
+                            <span className="border-b border-neutral-400 w-14 h-3"></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right: Adjustments Financial Reconciliation */}
+                      <div className="space-y-0.5 text-[8.5px] border-t sm:border-t-0 sm:border-l border-neutral-200 sm:pl-2.5 pt-0.5 sm:pt-0">
+                        <div className="flex justify-between items-baseline border-b border-neutral-200 pb-0.2">
+                          <span className="text-neutral-700">Total Adjustments to Funeral Charges:</span>
+                          <span className="font-mono font-medium">$ -</span>
+                        </div>
+                        <div className="flex justify-between items-baseline border-b border-neutral-200 pb-0.2">
+                          <span className="text-neutral-700 font-bold uppercase">ADJUSTED TOTAL:</span>
+                          <span className="font-mono font-bold">${ap47.sectionIII.totalFuneralCharges.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between items-baseline border-b border-neutral-200 pb-0.2 text-emerald-800">
+                          <span>CREDIT:</span>
+                          <span className="font-mono font-medium">
+                            ${ap47.sectionIII.lessCreditsAndInsurance > 0 ? ap47.sectionIII.lessCreditsAndInsurance.toFixed(2) : '-'}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-baseline pt-0.2 text-neutral-900 font-bold">
+                          <span>BALANCE DUE:</span>
+                          <span className="font-mono text-[9.5px] text-red-900">${ap47.sectionIII.balanceDue.toFixed(2)}</span>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
                 </div>
-
-              </div>
-
-            </div>
+              );
+            })()}
 
           </div>
         );
