@@ -648,10 +648,10 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
       case 'statement_goods_services': {
         const ap47 = caseData.statementOfGoods || getDefaultStatementOfGoodsForCase(caseData);
         return (
-          <div className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-10 rounded-xl border-2 border-neutral-400 shadow-sm print:p-0 print:border-none">
+          <div id="official-form-ap47-matrix" className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-10 rounded-xl border-2 border-neutral-400 shadow-sm print:p-0 print:border-none print:shadow-none print:rounded-none print:m-0 print:w-full print:space-y-4">
             
             {/* PAGE 1 */}
-            <div className="space-y-4 pb-6 border-b-2 border-neutral-900">
+            <div className="space-y-4 pb-6 border-b-2 border-neutral-900 print:pb-0 print:border-b-0 print:space-y-3">
               
               {/* Header */}
               <div className="flex justify-between items-start border-b-2 border-neutral-900 pb-3">
@@ -674,7 +674,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               </div>
 
               {/* Case & Invoice Metadata */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-neutral-50 p-2.5 rounded-lg border border-neutral-300 text-[11px]">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-neutral-50 p-2.5 rounded-lg border border-neutral-300 text-[11px] print-grid-cols-4 print:grid-cols-4">
                 <div><span className="text-[9px] text-neutral-500 block">Name of Deceased:</span> <strong>{caseData.decedent.legalName}</strong></div>
                 <div><span className="text-[9px] text-neutral-500 block">Date of Death:</span> <strong>{caseData.decedent.dateOfDeath}</strong></div>
                 <div><span className="text-[9px] text-neutral-500 block">Place of Death:</span> <strong>{caseData.decedent.facilityName || 'Mount Sinai Morningside'}</strong></div>
@@ -690,7 +690,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               </p>
 
               {/* Section I: Funeral Home Charges */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] border-t border-neutral-300 pt-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] border-t border-neutral-300 pt-3 print-grid-cols-2 print:grid-cols-2 print:gap-5">
                 
                 {/* Left Column (A-E) */}
                 <div className="space-y-3">
@@ -953,12 +953,12 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             </div>
 
             {/* PAGE 2 */}
-            <div className="space-y-4 pt-2">
+            <div className="space-y-4 pt-2 ap47-page-break print:break-before-page print:pt-4 print:space-y-3">
               <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1 bg-neutral-100 rounded">
                 STATEMENT OF GOODS AND SERVICES SELECTED — PAGE 2
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] print-grid-cols-2 print:grid-cols-2 print:gap-5">
                 
                 {/* Cash Advances */}
                 <div className="space-y-2 border border-neutral-300 rounded-xl p-3.5">
@@ -1060,7 +1060,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   IV. EXPLANATION OF CHARGES & STATUTORY AUTHORIZATIONS
                 </h5>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 print-grid-cols-2 print:grid-cols-2">
                   <div className="p-2.5 bg-neutral-50 rounded-lg border border-neutral-200">
                     <div className="font-bold text-neutral-900 flex items-center gap-1">
                       <span className="text-emerald-700">☑</span>
@@ -1097,7 +1097,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300 print-grid-cols-2 print:grid-cols-2">
                   <div>
                     <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000]">
                       {caseData.informant.fullName} (Electronic Jurat Verified)
@@ -2338,11 +2338,11 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
       {/* 3. INTERACTIVE OFFICIAL DOCUMENT FORM INSPECTION MODAL */}
       {previewDoc && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans">
-          <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full my-6 p-6 sm:p-8 space-y-5 shadow-2xl text-neutral-900">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto font-sans contract-print-modal-backdrop print:static print:p-0 print:m-0 print:bg-white print:overflow-visible print:block print:w-full">
+          <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full my-6 p-6 sm:p-8 space-y-5 shadow-2xl text-neutral-900 contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
             
             {/* Modal Top Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 gap-3 print:hidden">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center border border-red-200 shadow-xs">
                   <FileText className="w-5 h-5" />

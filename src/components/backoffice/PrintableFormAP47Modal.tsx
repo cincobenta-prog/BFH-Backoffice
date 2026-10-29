@@ -50,10 +50,10 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 print:p-0 font-sans animate-fadeIn">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 print:p-0 font-sans animate-fadeIn contract-print-modal-backdrop print:static print:bg-white print:overflow-visible print:block print:w-full">
       
       {/* Modal Container */}
-      <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
         
         {/* Screen-Only Header Bar */}
         <div className="p-4 sm:p-5 bg-neutral-900 text-white flex items-center justify-between shrink-0 print:hidden">
@@ -105,7 +105,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
         </div>
 
         {/* Printable Document Body */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white text-neutral-900 space-y-6 text-xs print:p-0 print:overflow-visible">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white text-neutral-900 space-y-6 text-xs contract-print-modal-body print:p-0 print:overflow-visible">
           
           {/* Official Letterhead */}
           <div className="text-center space-y-1 pb-4 border-b-2 border-neutral-900">
