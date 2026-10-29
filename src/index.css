@@ -283,6 +283,15 @@
     margin: 0.35in 0.4in;
   }
 
+  *,
+  *::before,
+  *::after {
+    -webkit-animation: none !important;
+    animation: none !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+
   html, body {
     background: #ffffff !important;
     color: #171717 !important;
@@ -312,12 +321,10 @@
   }
 
   /* Isolate modal content when printing from contract studio or document matrix */
-  body:has(#official-form-ap47-contract) > #root > div > *:not(:has(#official-form-ap47-contract)),
   body:has(#official-form-ap47-contract) nav,
   body:has(#official-form-ap47-contract) header,
   body:has(#official-form-ap47-contract) aside,
   body:has(#official-form-ap47-contract) footer,
-  body:has(#official-form-ap47-matrix) > #root > div > *:not(:has(#official-form-ap47-matrix)),
   body:has(#official-form-ap47-matrix) nav,
   body:has(#official-form-ap47-matrix) header,
   body:has(#official-form-ap47-matrix) aside,
@@ -362,27 +369,16 @@
     display: block !important;
   }
 
-  /* Unconditionally suppress modal header and wizard bar from container children */
-  .contract-print-modal-container > div:first-child,
-  .contract-print-modal-container > div:nth-child(2),
-  .contract-print-modal-container > div:nth-child(3) {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-  }
-
+  /* Ensure the modal body containing the AP-47 contract is strictly visible and unconstrained */
   .contract-print-modal-body {
+    display: block !important;
+    visibility: visible !important;
     padding: 0 !important;
     margin: 0 !important;
     overflow: visible !important;
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
-    display: block !important;
   }
 
   /* The AP-47 Contract Canvas */
