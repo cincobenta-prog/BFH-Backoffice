@@ -378,39 +378,45 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
   const s3 = { ...data.sectionIII };
 
   // Calculate Livery Total
-  const liveryTotal = (s1.G_vehicles || []).reduce((acc, v) => acc + (v.count * v.unitPrice), 0);
+  const calculatedLivery = (s1.G_vehicles && s1.G_vehicles.length > 0)
+    ? s1.G_vehicles.reduce((acc, v) => acc + (v.count * v.unitPrice), 0)
+    : (s1.G_totalLiveryAmount || 0);
+  const liveryTotal = calculatedLivery;
   s1.G_totalLiveryAmount = liveryTotal;
 
   // Calculate Merchandise Total (Casket + Outer Receptacle + Urn)
-  const casketTotal = s1.H1_casketSelected ? s1.H1_casketAmount : 0;
-  const outerTotal = s1.H2_outerReceptacleSelected ? s1.H2_outerReceptacleAmount : 0;
-  const urnTotal = s1.H3_urnSelected ? s1.H3_urnAmount : 0;
+  const casketTotal = (s1.H1_casketSelected || (s1.H1_casketAmount && s1.H1_casketAmount > 0)) ? (s1.H1_casketAmount || 0) : 0;
+  const outerTotal = (s1.H2_outerReceptacleSelected || (s1.H2_outerReceptacleAmount && s1.H2_outerReceptacleAmount > 0)) ? (s1.H2_outerReceptacleAmount || 0) : 0;
+  const urnTotal = (s1.H3_urnSelected || (s1.H3_urnAmount && s1.H3_urnAmount > 0)) ? (s1.H3_urnAmount || 0) : 0;
 
   // Calculate Flowers Total
-  const flowersTotal = (!s1.I6_noFlowersRequested && s1.I6_flowersSelected)
-    ? (s1.I6_flowerItems || []).reduce((acc, f) => acc + (f.quantity * f.unitPrice), 0)
-    : 0;
+  const flowersCalculated = (!s1.I6_noFlowersRequested && s1.I6_flowersSelected && s1.I6_flowerItems && s1.I6_flowerItems.length > 0)
+    ? s1.I6_flowerItems.reduce((acc, f) => acc + (f.quantity * f.unitPrice), 0)
+    : (s1.I6_totalFlowersAmount || 0);
+  const flowersTotal = flowersCalculated;
   s1.I6_totalFlowersAmount = flowersTotal;
 
   // Calculate Programs Matrix Total
-  const programsTotal = s1.I10_programsMatrix.quantity > 0 
+  const programsTotal = (s1.I10_programsMatrix && s1.I10_programsMatrix.quantity > 0) 
     ? s1.I10_programsMatrix.unitPrice + (s1.I10_programsMatrix.lateFeeApplied ? s1.I10_programsMatrix.lateFeeAmount : 0)
-    : 0;
-  s1.I10_programsMatrix.totalAmount = programsTotal;
+    : (s1.I10_programsMatrix?.totalAmount || 0);
+  if (s1.I10_programsMatrix) {
+    s1.I10_programsMatrix.totalAmount = programsTotal;
+  }
 
   // Transfer of Remains excess miles
-  const excessMilesTotal = s1.B_excessMilesCount * s1.B_excessMilesRate;
+  const excessMilesTotal = (s1.B_excessMilesCount || 0) * (s1.B_excessMilesRate || 0);
   s1.B_excessMilesAmount = excessMilesTotal;
 
   // Custodial Care & Refrigeration
-  const custodialTotal = s1.C2_custodialCareDays * s1.C2_custodialCareRatePerDay;
+  const custodialTotal = (s1.C2_custodialCareDays || 0) * (s1.C2_custodialCareRatePerDay || 0);
   s1.C2_custodialCareAmount = custodialTotal;
-  const refrigerationTotal = s1.C2_refrigerationDays * s1.C2_refrigerationRatePerDay;
-  s1.C2_refrigerationAmount = refrigerationTotal;
+  const refrigerationTotal = (s1.C2_refrigerationDays || 0) * (s1.C2_refrigerationRatePerDay || 0);
+  s1.C2_refrigerationAmount = refrigerationTotal > 0 ? refrigerationTotal : (s1.C2_refrigerationAmount || 0);
 
   // Register Book calculation
   const regBookUnit = s1.I8_registerBookUnitPrice || BFH_GPL_2026.stationery.registerBookBase;
-  const regBookQty = s1.I8_registerBookQty !== undefined ? s1.I8_registerBookQty : (s1.I8_registerBookAmount > 0 ? Math.round(s1.I8_registerBookAmount / regBookUnit) : 0);
+  const regBookQty = s1.I8_registerBookQty !== undefined ? s1.I8_registerBookQty : (s1.I8_registerBookAmount > 0 ? 1 : 0);
   s1.I8_registerBookQty = regBookQty;
   s1.I8_registerBookUnitPrice = regBookUnit;
   s1.I8_registerBookAmount = regBookQty * regBookUnit;
@@ -431,49 +437,51 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
 
   let sectionITotal = 0;
   if (data.serviceType === 'direct_cremation' || data.serviceType === 'direct_burial') {
-    sectionITotal = s1.A_alternativeServicesAmount + aOther + excessMilesTotal + bOther + custodialTotal + refrigerationTotal + cOther + dOther + eOther + fOther +
-      casketTotal + outerTotal + urnTotal + hOther + flowersTotal + programsTotal + s1.I1_memorialCardsAmount +
-      s1.I2_acknowledgementCardsAmount + s1.I3_casketPlateAmount + s1.I8_registerBookAmount +
-      s1.I11_videoTributeAmount + s1.I12_capPanelsAmount + s1.I12_easelPhotosAmount +
-      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + iOther;
+    sectionITotal = (s1.A_alternativeServicesAmount || 0) + aOther + excessMilesTotal + bOther + custodialTotal + (s1.C2_refrigerationAmount || refrigerationTotal) + cOther + dOther + eOther + fOther +
+      casketTotal + outerTotal + urnTotal + hOther + flowersTotal + programsTotal + (s1.I1_memorialCardsAmount || 0) +
+      (s1.I2_acknowledgementCardsAmount || 0) + (s1.I3_casketPlateAmount || 0) + s1.I8_registerBookAmount +
+      (s1.I11_videoTributeAmount || 0) + (s1.I12_capPanelsAmount || 0) + (s1.I12_easelPhotosAmount || 0) +
+      (s1.I12_casketEngravingAmount || 0) + (s1.I12_urnKeepsakeTransfersAmount || 0) + (s1.I12_equipmentSetupAmount || 0) + iOther;
   } else if (data.serviceType === 'cremation_memorial') {
     // Cremation and Memorial Service (Direct Cremation Base + Memorial Supervision & Facilities + Variables)
-    sectionITotal = s1.A_alternativeServicesAmount + aOther + s1.E3_supervisionMemorialAmount + eOther + s1.F3_facilitiesMemorialServiceAmount +
-      s1.F3_repastRoomAmount + fOther + excessMilesTotal + bOther + custodialTotal + refrigerationTotal + cOther + dOther +
-      urnTotal + hOther + flowersTotal + programsTotal + s1.I1_memorialCardsAmount +
-      s1.I2_acknowledgementCardsAmount + s1.I3_casketPlateAmount + s1.I8_registerBookAmount +
-      s1.I11_videoTributeAmount + s1.I12_capPanelsAmount + s1.I12_easelPhotosAmount +
-      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + iOther + liveryTotal + gOther;
+    sectionITotal = (s1.A_alternativeServicesAmount || 0) + aOther + (s1.B_transferOfRemainsAmount || 0) + (s1.D_basicArrangementsAmount || 0) +
+      (s1.E3_supervisionMemorialAmount || 0) + eOther + (s1.F3_facilitiesMemorialServiceAmount || 0) +
+      (s1.F3_repastRoomAmount || 0) + fOther + excessMilesTotal + bOther + custodialTotal + (s1.C2_refrigerationAmount || refrigerationTotal) + cOther + dOther +
+      casketTotal + outerTotal + urnTotal + hOther + flowersTotal + programsTotal + (s1.I1_memorialCardsAmount || 0) +
+      (s1.I2_acknowledgementCardsAmount || 0) + (s1.I3_casketPlateAmount || 0) + s1.I8_registerBookAmount +
+      (s1.I11_videoTributeAmount || 0) + (s1.I12_capPanelsAmount || 0) + (s1.I12_easelPhotosAmount || 0) +
+      (s1.I12_casketEngravingAmount || 0) + (s1.I12_urnKeepsakeTransfersAmount || 0) + (s1.I12_equipmentSetupAmount || 0) + iOther + liveryTotal + gOther;
   } else if (data.serviceType === 'forwarding_remains') {
-    sectionITotal = s1.J1_forwardingRemainsAmount + jOther + excessMilesTotal + bOther + casketTotal + hOther;
+    sectionITotal = (s1.J1_forwardingRemainsAmount || 0) + jOther + excessMilesTotal + bOther + casketTotal + hOther;
   } else if (data.serviceType === 'receiving_remains') {
-    sectionITotal = s1.J2_receivingRemainsAmount + jOther + excessMilesTotal + bOther + casketTotal + hOther;
+    sectionITotal = (s1.J2_receivingRemainsAmount || 0) + jOther + excessMilesTotal + bOther + casketTotal + hOther;
   } else {
     // Traditional Service and Burial / Funeral Service with Cremation
     sectionITotal = 
-      s1.B_transferOfRemainsAmount + excessMilesTotal + bOther +
-      (s1.C1_embalmingSelected ? s1.C1_embalmingAmount : 0) +
-      s1.C2_topicalDisinfectionAmount + custodialTotal + s1.C2_dressingCasketingAmount +
-      s1.C2_cosmetologyAmount + s1.C2_restorationAmount + refrigerationTotal + cOther +
-      s1.D_basicArrangementsAmount + dOther +
-      s1.E1_supervisionVisitationAmount + s1.E2_supervisionFuneralServiceAmount +
-      s1.E3_supervisionCemeteryCrematoryAmount + s1.E3_supervisionGravesideAmount +
-      s1.E3_supervisionMemorialAmount + s1.E3_supervisionDisintermentAmount +
-      s1.E3_consulateFilingFeeAmount + eOther +
-      s1.F1_facilitiesVisitationAmount + s1.F2_facilitiesFuneralServiceAmount +
-      s1.F3_facilitiesMemorialServiceAmount + s1.F3_prepRoomCeremonialAmount +
-      s1.F3_repastRoomAmount + fOther +
+      (s1.B_transferOfRemainsAmount || 0) + excessMilesTotal + bOther +
+      ((s1.C1_embalmingSelected || (s1.C1_embalmingAmount && s1.C1_embalmingAmount > 0)) ? s1.C1_embalmingAmount : 0) +
+      (s1.C2_topicalDisinfectionAmount || 0) + custodialTotal + (s1.C2_dressingCasketingAmount || 0) +
+      (s1.C2_cosmetologyAmount || 0) + (s1.C2_restorationAmount || 0) + (s1.C2_refrigerationAmount || refrigerationTotal) + cOther +
+      (s1.D_basicArrangementsAmount || 0) + dOther +
+      (s1.E1_supervisionVisitationAmount || 0) + (s1.E2_supervisionFuneralServiceAmount || 0) +
+      (s1.E3_supervisionCemeteryCrematoryAmount || 0) + (s1.E3_supervisionGravesideAmount || 0) +
+      (s1.E3_supervisionMemorialAmount || 0) + (s1.E3_supervisionDisintermentAmount || 0) +
+      (s1.E3_consulateFilingFeeAmount || 0) + eOther +
+      (s1.F1_facilitiesVisitationAmount || 0) + (s1.F2_facilitiesFuneralServiceAmount || 0) +
+      (s1.F3_facilitiesMemorialServiceAmount || 0) + (s1.F3_prepRoomCeremonialAmount || 0) +
+      (s1.F3_repastRoomAmount || 0) + fOther +
       (s1.F_combinedSupervisionAndFacilitiesSelected ? s1.F_combinedSupervisionAndFacilitiesAmount : 0) +
       liveryTotal + gOther +
       casketTotal + outerTotal + urnTotal + hOther +
-      s1.I1_memorialCardsAmount + s1.I2_acknowledgementCardsAmount + s1.I3_casketPlateAmount +
-      s1.I4_crucifixCrossAmount + s1.I5_hairdressingAmount + flowersTotal +
-      s1.I7_clothingBurialGarmentsAmount + s1.I8_registerBookAmount + s1.I9_deathNoticesAmount +
-      programsTotal + s1.I11_videoTributeAmount + s1.I12_capPanelsAmount + s1.I12_easelPhotosAmount +
-      s1.I12_casketEngravingAmount + s1.I12_urnKeepsakeTransfersAmount + s1.I12_equipmentSetupAmount + iOther +
+      (s1.I1_memorialCardsAmount || 0) + (s1.I2_acknowledgementCardsAmount || 0) + (s1.I3_casketPlateAmount || 0) +
+      (s1.I4_crucifixCrossAmount || 0) + (s1.I5_hairdressingAmount || 0) + flowersTotal +
+      (s1.I7_clothingBurialGarmentsAmount || 0) + s1.I8_registerBookAmount + (s1.I9_deathNoticesAmount || 0) +
+      programsTotal + (s1.I11_videoTributeAmount || 0) + (s1.I12_capPanelsAmount || 0) + (s1.I12_easelPhotosAmount || 0) +
+      (s1.I12_casketEngravingAmount || 0) + (s1.I12_urnKeepsakeTransfersAmount || 0) + (s1.I12_equipmentSetupAmount || 0) + iOther +
       aOther + jOther;
   }
 
+  sectionITotal = Math.round(sectionITotal * 100) / 100;
   s1.totalFuneralHomeCharges = sectionITotal;
 
   // Calculate Section II: Cash Advances
@@ -483,7 +491,9 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
   s2.isVeteranDiscountApplied = isVet;
   s2.freeVeteranTranscriptsCount = freeVetTranscripts;
   const billableTranscriptsCount = Math.max(0, s2.deathCertificateTranscriptsCount - freeVetTranscripts);
-  const transcriptsTotal = billableTranscriptsCount * s2.deathCertificatePricePerCopy;
+  const transcriptsTotal = Math.round(((s2.deathCertificatePricePerCopy > 0)
+    ? (billableTranscriptsCount * s2.deathCertificatePricePerCopy)
+    : (s2.deathCertificateTranscriptsAmount || 0)) * 100) / 100;
   s2.deathCertificateTranscriptsAmount = transcriptsTotal;
 
   const customCashTotal = (s2.customCashAdvances || []).reduce((acc, c) => acc + c.amount, 0);
@@ -491,30 +501,34 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
                                 (s2.otherCashAdvance2Amount || 0) +
                                 (s2.otherCashAdvance3Amount || 0);
 
-  const sectionIITotal = 
-    s2.cemeteryOrCrematoryAmount +
-    s2.clergyHonorariaAmount +
+  const rawSectionIITotal = 
+    (s2.cemeteryOrCrematoryAmount || 0) +
+    (s2.clergyHonorariaAmount || 0) +
     transcriptsTotal +
-    s2.liveryCashAdvanceAmount +
-    s2.pallbearersAmount +
-    s2.publicTransportationShippingAmount +
-    s2.gratuitiesLiveryAndStaffAmount +
-    s2.bridgeAndRoadTollsAmount +
-    s2.organistMusicianAmount +
-    s2.eVitalFilingFeeAmount +
-    s2.nycCorrectionFeeAmount +
-    s2.cateringReceptionAmount +
+    (s2.liveryCashAdvanceAmount || 0) +
+    (s2.pallbearersAmount || 0) +
+    (s2.publicTransportationShippingAmount || 0) +
+    (s2.gratuitiesLiveryAndStaffAmount || 0) +
+    (s2.bridgeAndRoadTollsAmount || 0) +
+    (s2.organistMusicianAmount || 0) +
+    (s2.eVitalFilingFeeAmount || 0) +
+    (s2.nycCorrectionFeeAmount || 0) +
+    (s2.dispositionPermitAmount || 0) +
+    (s2.insuranceFunderFeeAmount || 0) +
+    (s2.cateringReceptionAmount || 0) +
     otherCashAdvanceTotal +
     customCashTotal;
 
+  const sectionIITotal = Math.round(rawSectionIITotal * 100) / 100;
   s2.totalCashAdvances = sectionIITotal;
 
   // Calculate Section III: Summary
-  const grandTotal = sectionITotal + sectionIITotal;
+  const grandTotal = Math.round((sectionITotal + sectionIITotal) * 100) / 100;
   s3.funeralHomeChargesTotal = sectionITotal;
   s3.cashAdvancesTotal = sectionIITotal;
   s3.totalFuneralCharges = grandTotal;
-  s3.balanceDue = Math.max(0, grandTotal - s3.lessCreditsAndInsurance);
+  s3.lessCreditsAndInsurance = s3.lessCreditsAndInsurance !== undefined ? s3.lessCreditsAndInsurance : 0;
+  s3.balanceDue = Math.max(0, Math.round((grandTotal - s3.lessCreditsAndInsurance) * 100) / 100);
 
   return {
     ...data,

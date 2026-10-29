@@ -981,9 +981,39 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <span>5. Pallbearers, Tolls & Tips:</span>
                         <span className="font-mono">${(ap47.sectionII.pallbearersAmount + ap47.sectionII.bridgeAndRoadTollsAmount + ap47.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</span>
                       </div>
+                      {((ap47.sectionII.dispositionPermitAmount || 0) > 0) && (
+                        <div className="flex justify-between">
+                          <span>6. {ap47.sectionII.dispositionPermitType || 'NY Disposition Permit'}:</span>
+                          <span className="font-mono">${(ap47.sectionII.dispositionPermitAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionII.insuranceFunderFeeAmount || 0) > 0) && (
+                        <div className="flex justify-between">
+                          <span>7. Insurance Funder Fee:</span>
+                          <span className="font-mono">${(ap47.sectionII.insuranceFunderFeeAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionII.eVitalFilingFeeAmount || 0) > 0) && (
+                        <div className="flex justify-between">
+                          <span>8. Electronic Vital Filing Fee:</span>
+                          <span className="font-mono">${(ap47.sectionII.eVitalFilingFeeAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionII.nycCorrectionFeeAmount || 0) > 0) && (
+                        <div className="flex justify-between">
+                          <span>9. NYC Correction Fee:</span>
+                          <span className="font-mono">${(ap47.sectionII.nycCorrectionFeeAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionII.publicTransportationShippingAmount || 0) > 0) && (
+                        <div className="flex justify-between">
+                          <span>10. Shipping / Transportation:</span>
+                          <span className="font-mono">${(ap47.sectionII.publicTransportationShippingAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
                       {((ap47.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvanceSpecify)) && (
                         <div className="flex justify-between text-neutral-800 font-medium">
-                          <span>6. Other Cash Advance (Line 1): <em>{ap47.sectionII.otherCashAdvanceSpecify || 'Pass-Through Advance (1)'}</em></span>
+                          <span>11. Other Cash Advance (Line 1): <em>{ap47.sectionII.otherCashAdvanceSpecify || 'Pass-Through Advance (1)'}</em></span>
                           <span className="font-mono">${(ap47.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</span>
                         </div>
                       )}

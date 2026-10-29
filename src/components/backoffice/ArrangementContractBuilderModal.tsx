@@ -7599,9 +7599,39 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <span>7. Livery Chauffeur &amp; Staff Gratuities:</span>
                           <span className="font-mono">${statementData.sectionII.gratuitiesLiveryAndStaffAmount.toFixed(2)}</span>
                         </div>
+                        {((statementData.sectionII.dispositionPermitAmount || 0) > 0) && (
+                          <div className="flex justify-between">
+                            <span>8. {statementData.sectionII.dispositionPermitType || 'NY Disposition Permit'}:</span>
+                            <span className="font-mono">${(statementData.sectionII.dispositionPermitAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        {((statementData.sectionII.insuranceFunderFeeAmount || 0) > 0) && (
+                          <div className="flex justify-between">
+                            <span>9. Insurance Funder Fee:</span>
+                            <span className="font-mono">${(statementData.sectionII.insuranceFunderFeeAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        {((statementData.sectionII.eVitalFilingFeeAmount || 0) > 0) && (
+                          <div className="flex justify-between">
+                            <span>10. Electronic Vital Filing Fee:</span>
+                            <span className="font-mono">${(statementData.sectionII.eVitalFilingFeeAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        {((statementData.sectionII.nycCorrectionFeeAmount || 0) > 0) && (
+                          <div className="flex justify-between">
+                            <span>11. NYC Correction Fee:</span>
+                            <span className="font-mono">${(statementData.sectionII.nycCorrectionFeeAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        {((statementData.sectionII.publicTransportationShippingAmount || 0) > 0) && (
+                          <div className="flex justify-between">
+                            <span>12. Shipping / Transportation:</span>
+                            <span className="font-mono">${(statementData.sectionII.publicTransportationShippingAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
                         {(statementData.sectionII.customCashAdvances || []).map((c, idx) => (
                           <div key={idx} className="flex justify-between">
-                            <span>{8 + idx}. {c.description}:</span>
+                            <span>{13 + idx}. {c.description}:</span>
                             <span className="font-mono">${c.amount.toFixed(2)}</span>
                           </div>
                         ))}

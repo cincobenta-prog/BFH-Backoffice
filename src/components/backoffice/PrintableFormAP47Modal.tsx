@@ -553,10 +553,50 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                     <td className="py-1.5 text-right font-mono">${(sog.sectionII.bridgeAndRoadTollsAmount + sog.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</td>
                   </tr>
                 )}
+                {((sog.sectionII.dispositionPermitAmount || 0) > 0) && (
+                  <tr>
+                    <td className="py-1.5">
+                      7. {sog.sectionII.dispositionPermitType || 'NY Disposition Permit'}
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.dispositionPermitAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionII.eVitalFilingFeeAmount || 0) > 0) && (
+                  <tr>
+                    <td className="py-1.5">
+                      8. NYC EDRS / Electronic Vital Filing Fee
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.eVitalFilingFeeAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionII.nycCorrectionFeeAmount || 0) > 0) && (
+                  <tr>
+                    <td className="py-1.5">
+                      9. NYC Death Certificate Correction Fee
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.nycCorrectionFeeAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionII.insuranceFunderFeeAmount || 0) > 0) && (
+                  <tr>
+                    <td className="py-1.5">
+                      10. Insurance Funder Fee / Assignment Processing
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.insuranceFunderFeeAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
+                {((sog.sectionII.publicTransportationShippingAmount || 0) > 0) && (
+                  <tr>
+                    <td className="py-1.5">
+                      11. Public Transportation / Common Carrier Shipping
+                    </td>
+                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.publicTransportationShippingAmount || 0).toFixed(2)}</td>
+                  </tr>
+                )}
                 {((sog.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvanceSpecify)) && (
                   <tr>
                     <td className="py-1.5">
-                      7. Other Cash Advance (Line 1): <em>{sog.sectionII.otherCashAdvanceSpecify || 'Pass-Through Cash Disbursement (1)'}</em>
+                      12. Other Cash Advance (Line 1): <em>{sog.sectionII.otherCashAdvanceSpecify || 'Pass-Through Cash Disbursement (1)'}</em>
                     </td>
                     <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</td>
                   </tr>
@@ -564,7 +604,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {((sog.sectionII.otherCashAdvance2Amount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvance2Specify)) && (
                   <tr>
                     <td className="py-1.5">
-                      7b. Other Cash Advance (Line 2): <em>{sog.sectionII.otherCashAdvance2Specify || 'Pass-Through Cash Disbursement (2)'}</em>
+                      12b. Other Cash Advance (Line 2): <em>{sog.sectionII.otherCashAdvance2Specify || 'Pass-Through Cash Disbursement (2)'}</em>
                     </td>
                     <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</td>
                   </tr>
@@ -572,7 +612,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {((sog.sectionII.otherCashAdvance3Amount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvance3Specify)) && (
                   <tr>
                     <td className="py-1.5">
-                      7c. Other Cash Advance (Line 3): <em>{sog.sectionII.otherCashAdvance3Specify || 'Pass-Through Cash Disbursement (3)'}</em>
+                      12c. Other Cash Advance (Line 3): <em>{sog.sectionII.otherCashAdvance3Specify || 'Pass-Through Cash Disbursement (3)'}</em>
                     </td>
                     <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</td>
                   </tr>
@@ -580,7 +620,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 {(sog.sectionII.customCashAdvances || []).map((c, idx) => (
                   <tr key={c.id || idx}>
                     <td className="py-1.5">
-                      {8 + idx}. {c.description}
+                      {13 + idx}. {c.description}
                     </td>
                     <td className="py-1.5 text-right font-mono">${c.amount.toFixed(2)}</td>
                   </tr>

@@ -1556,6 +1556,9 @@ export interface StatementOfGoodsSectionII {
   organistMusicianAmount: number;
   eVitalFilingFeeAmount: number;
   nycCorrectionFeeAmount: number;
+  dispositionPermitAmount?: number;
+  dispositionPermitType?: string;
+  insuranceFunderFeeAmount?: number;
   cateringReceptionAmount: number;
   otherCashAdvanceSpecify?: string;
   otherCashAdvanceAmount?: number;
