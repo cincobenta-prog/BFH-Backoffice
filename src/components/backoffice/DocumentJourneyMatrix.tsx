@@ -948,110 +948,124 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
                 </div>
 
+                {/* SECTION II: CASH ADVANCES & SECTION III: SUMMARY (CONSOLIDATED ONTO PAGE 1) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] pt-4 border-t-2 border-neutral-900 print-grid-cols-2 print:grid-cols-2 print:gap-5 print:pt-2">
+                  
+                  {/* Cash Advances */}
+                  <div className="space-y-2 border border-neutral-300 rounded-xl p-3.5 print:p-2.5">
+                    <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1">
+                      II. CASH ADVANCES (Paid to Others on Family's Behalf)
+                    </h5>
+                    <p className="text-[9px] text-neutral-500 italic">
+                      Charges actually paid to third parties on the family's behalf.
+                    </p>
+
+                    <div className="space-y-1 text-[10px]">
+                      <div className="flex justify-between">
+                        <span>1. Cemetery or Crematory:</span>
+                        <span className="font-mono">${ap47.sectionII.cemeteryOrCrematoryAmount.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>2. Clergy Honoraria / Church:</span>
+                        <span className="font-mono">${ap47.sectionII.clergyHonorariaAmount.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>3. Death Certificate Transcripts ({ap47.sectionII.deathCertificateTranscriptsCount}x):</span>
+                        <span className="font-mono">${ap47.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>4. Organist / Musician:</span>
+                        <span className="font-mono">${ap47.sectionII.organistMusicianAmount.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>5. Pallbearers, Tolls & Tips:</span>
+                        <span className="font-mono">${(ap47.sectionII.pallbearersAmount + ap47.sectionII.bridgeAndRoadTollsAmount + ap47.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</span>
+                      </div>
+                      {((ap47.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvanceSpecify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>6. Other Cash Advance (Line 1): <em>{ap47.sectionII.otherCashAdvanceSpecify || 'Pass-Through Advance (1)'}</em></span>
+                          <span className="font-mono">${(ap47.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionII.otherCashAdvance2Amount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvance2Specify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>6b. Other Cash Advance (Line 2): <em>{ap47.sectionII.otherCashAdvance2Specify || 'Pass-Through Advance (2)'}</em></span>
+                          <span className="font-mono">${(ap47.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {((ap47.sectionII.otherCashAdvance3Amount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvance3Specify)) && (
+                        <div className="flex justify-between text-neutral-800 font-medium">
+                          <span>6c. Other Cash Advance (Line 3): <em>{ap47.sectionII.otherCashAdvance3Specify || 'Pass-Through Advance (3)'}</em></span>
+                          <span className="font-mono">${(ap47.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</span>
+                        </div>
+                      )}
+                      {(ap47.sectionII.customCashAdvances || []).map((c, idx) => (
+                        <div key={c.id || idx} className="flex justify-between text-neutral-800 font-medium">
+                          <span>{7 + idx}. {c.description}:</span>
+                          <span className="font-mono">${c.amount.toFixed(2)}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="flex justify-between pt-2 border-t border-neutral-300 font-bold text-xs text-neutral-900">
+                      <span>ESTIMATED TOTAL CASH ADVANCES:</span>
+                      <span className="font-mono">${ap47.sectionII.totalCashAdvances.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  {/* Summary */}
+                  <div className="space-y-2 bg-red-50/60 border border-red-200 rounded-xl p-3.5 print:p-2.5">
+                    <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-red-200 pb-1">
+                      III. SUMMARY OF CHARGES
+                    </h5>
+
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span>1. Funeral Home Charges:</span>
+                        <span className="font-mono font-bold">${ap47.sectionIII.funeralHomeChargesTotal.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>2. Cash Advances:</span>
+                        <span className="font-mono font-bold">${ap47.sectionIII.cashAdvancesTotal.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between pt-1 border-t border-red-200 text-sm font-bold text-[#800000]">
+                        <span>TOTAL FUNERAL CHARGES:</span>
+                        <span className="font-mono">${ap47.sectionIII.totalFuneralCharges.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-emerald-800 font-bold text-xs pt-1">
+                        <span>Less Payments / Life Insurance:</span>
+                        <span className="font-mono">-${ap47.sectionIII.lessCreditsAndInsurance.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between text-xs font-bold text-neutral-900 pt-1 border-t border-red-300">
+                        <span>BALANCE DUE:</span>
+                        <span className="font-mono text-base text-red-900">${ap47.sectionIII.balanceDue.toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
 
             </div>
 
-            {/* PAGE 2 */}
-            <div className="space-y-4 pt-2 ap47-page-break print:break-before-page print:pt-4 print:space-y-3">
-              <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1 bg-neutral-100 rounded">
-                STATEMENT OF GOODS AND SERVICES SELECTED — PAGE 2
+            {/* PAGE 2: STATUTORY AUTHORIZATIONS & SIGNATURES */}
+            <div className="space-y-4 pt-2 ap47-page-break print:break-before-page print:pt-4 print:space-y-4">
+              
+              <div className="flex justify-between items-center border-b border-neutral-300 pb-2 text-[11px] text-neutral-600">
+                <span className="font-serif-title font-bold text-[#800000]">
+                  Benta's Funeral Home, Inc. • Statement of Goods and Services Selected
+                </span>
+                <span className="font-mono text-[10px]">
+                  Deceased: <strong>{caseData.decedent.legalName}</strong> • Date: <strong>{ap47.agreementDate}</strong>
+                </span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] print-grid-cols-2 print:grid-cols-2 print:gap-5">
-                
-                {/* Cash Advances */}
-                <div className="space-y-2 border border-neutral-300 rounded-xl p-3.5">
-                  <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1">
-                    II. CASH ADVANCES (Paid to Others on Family's Behalf)
-                  </h5>
-                  <p className="text-[9px] text-neutral-500 italic">
-                    Charges actually paid to third parties on the family's behalf.
-                  </p>
-
-                  <div className="space-y-1 text-[10px]">
-                    <div className="flex justify-between">
-                      <span>1. Cemetery or Crematory:</span>
-                      <span className="font-mono">${ap47.sectionII.cemeteryOrCrematoryAmount.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>2. Clergy Honoraria / Church:</span>
-                      <span className="font-mono">${ap47.sectionII.clergyHonorariaAmount.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>3. Death Certificate Transcripts ({ap47.sectionII.deathCertificateTranscriptsCount}x):</span>
-                      <span className="font-mono">${ap47.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>4. Organist / Musician:</span>
-                      <span className="font-mono">${ap47.sectionII.organistMusicianAmount.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>5. Pallbearers, Tolls & Tips:</span>
-                      <span className="font-mono">${(ap47.sectionII.pallbearersAmount + ap47.sectionII.bridgeAndRoadTollsAmount + ap47.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</span>
-                    </div>
-                    {((ap47.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvanceSpecify)) && (
-                      <div className="flex justify-between text-neutral-800 font-medium">
-                        <span>6. Other Cash Advance (Line 1): <em>{ap47.sectionII.otherCashAdvanceSpecify || 'Pass-Through Advance (1)'}</em></span>
-                        <span className="font-mono">${(ap47.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</span>
-                      </div>
-                    )}
-                    {((ap47.sectionII.otherCashAdvance2Amount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvance2Specify)) && (
-                      <div className="flex justify-between text-neutral-800 font-medium">
-                        <span>6b. Other Cash Advance (Line 2): <em>{ap47.sectionII.otherCashAdvance2Specify || 'Pass-Through Advance (2)'}</em></span>
-                        <span className="font-mono">${(ap47.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</span>
-                      </div>
-                    )}
-                    {((ap47.sectionII.otherCashAdvance3Amount || 0) > 0 || Boolean(ap47.sectionII.otherCashAdvance3Specify)) && (
-                      <div className="flex justify-between text-neutral-800 font-medium">
-                        <span>6c. Other Cash Advance (Line 3): <em>{ap47.sectionII.otherCashAdvance3Specify || 'Pass-Through Advance (3)'}</em></span>
-                        <span className="font-mono">${(ap47.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</span>
-                      </div>
-                    )}
-                    {(ap47.sectionII.customCashAdvances || []).map((c, idx) => (
-                      <div key={c.id || idx} className="flex justify-between text-neutral-800 font-medium">
-                        <span>{7 + idx}. {c.description}:</span>
-                        <span className="font-mono">${c.amount.toFixed(2)}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-between pt-2 border-t border-neutral-300 font-bold text-xs text-neutral-900">
-                    <span>ESTIMATED TOTAL CASH ADVANCES:</span>
-                    <span className="font-mono">${ap47.sectionII.totalCashAdvances.toFixed(2)}</span>
-                  </div>
-                </div>
-
-                {/* Summary */}
-                <div className="space-y-2 bg-red-50/60 border border-red-200 rounded-xl p-3.5">
-                  <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-red-200 pb-1">
-                    III. SUMMARY OF CHARGES
-                  </h5>
-
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span>1. Funeral Home Charges:</span>
-                      <span className="font-mono font-bold">${ap47.sectionIII.funeralHomeChargesTotal.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>2. Cash Advances:</span>
-                      <span className="font-mono font-bold">${ap47.sectionIII.cashAdvancesTotal.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between pt-1 border-t border-red-200 text-sm font-bold text-[#800000]">
-                      <span>TOTAL FUNERAL CHARGES:</span>
-                      <span className="font-mono">${ap47.sectionIII.totalFuneralCharges.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-emerald-800 font-bold text-xs pt-1">
-                      <span>Less Payments / Life Insurance:</span>
-                      <span className="font-mono">-${ap47.sectionIII.lessCreditsAndInsurance.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-xs font-bold text-neutral-900 pt-1 border-t border-red-300">
-                      <span>BALANCE DUE:</span>
-                      <span className="font-mono text-base text-red-900">${ap47.sectionIII.balanceDue.toFixed(2)}</span>
-                    </div>
-                  </div>
-                </div>
-
+              <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1.5 bg-neutral-100 rounded border border-neutral-200">
+                STATEMENT OF GOODS AND SERVICES SELECTED — PAGE 2
+                <span className="block text-[10px] font-sans font-normal text-neutral-600 normal-case mt-0.5">
+                  Statutory Disclosures, Authorizations & Legally Binding Signatures
+                </span>
               </div>
 
               {/* Section IV Explanations & Signatures */}

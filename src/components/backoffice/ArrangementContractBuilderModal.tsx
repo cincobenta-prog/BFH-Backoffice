@@ -7548,21 +7548,11 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                   </div>
 
-                </div>
-
-                {/* ----------------- PAGE 2 ----------------- */}
-                <div className="space-y-4 pt-2 ap47-page-break print:break-before-page print:pt-4 print:space-y-3">
-                  
-                  {/* Page 2 Title */}
-                  <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1 bg-neutral-100 rounded">
-                    STATEMENT OF GOODS AND SERVICES SELECTED — PAGE 2
-                  </div>
-
-                  {/* SECTION II: CASH ADVANCES & SECTION III: SUMMARY */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] print-grid-cols-2 print:grid-cols-2 print:gap-5">
+                  {/* SECTION II: CASH ADVANCES & SECTION III: SUMMARY OF CHARGES (CONSOLIDATED ONTO PAGE 1) */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[11px] pt-4 border-t-2 border-neutral-900 print-grid-cols-2 print:grid-cols-2 print:gap-5 print:pt-2">
                     
                     {/* Left Column: Cash Advances */}
-                    <div className="space-y-3 border border-neutral-300 rounded-xl p-3.5">
+                    <div className="space-y-3 border border-neutral-300 rounded-xl p-3.5 print:p-2.5">
                       <div className="flex justify-between items-center border-b border-neutral-200 pb-1">
                         <h5 className="font-bold text-xs uppercase text-[#800000]">
                           II. CASH ADVANCES (Paid to Others on Family's Behalf)
@@ -7762,7 +7752,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </div>
 
                     {/* Right Column: Summary of Charges & Balances */}
-                    <div className="space-y-3 bg-red-50/60 border border-red-200 rounded-xl p-3.5">
+                    <div className="space-y-3 bg-red-50/60 border border-red-200 rounded-xl p-3.5 print:p-2.5">
                       <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-red-200 pb-1">
                         III. SUMMARY OF CHARGES
                       </h5>
@@ -7797,38 +7787,61 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                   </div>
 
+                </div>
+
+                {/* ----------------- PAGE 2: STATUTORY AUTHORIZATIONS & SIGNATURES ----------------- */}
+                <div className="space-y-4 pt-2 ap47-page-break print:break-before-page print:pt-4 print:space-y-4">
+                  
+                  {/* Page 2 Official Top Reference Strip */}
+                  <div className="flex justify-between items-center border-b border-neutral-300 pb-2 text-[11px] text-neutral-600">
+                    <span className="font-serif-title font-bold text-[#800000]">
+                      Benta's Funeral Home, Inc. • Statement of Goods and Services Selected
+                    </span>
+                    <span className="font-mono text-[10px]">
+                      Deceased: <strong>{activeCase.decedent.legalName}</strong> • Date: <strong>{statementData.agreementDate}</strong> • Inv: <strong>#{statementData.invoiceNumber}</strong>
+                    </span>
+                  </div>
+
+                  {/* Page 2 Title */}
+                  <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1.5 bg-neutral-100 rounded border border-neutral-200">
+                    STATEMENT OF GOODS AND SERVICES SELECTED — PAGE 2
+                    <span className="block text-[10px] font-sans font-normal text-neutral-600 normal-case mt-0.5">
+                      Statutory Disclosures, Authorizations & Legally Binding Signatures
+                    </span>
+                  </div>
+
                   {/* SECTION IV: EXPLANATION OF CHARGES & STATUTORY CHECKBOXES */}
-                  <div className="border border-neutral-300 rounded-xl p-3.5 space-y-3 text-[10px] text-neutral-700">
-                    <h5 className="font-bold text-xs uppercase text-neutral-900 border-b border-neutral-200 pb-1">
+                  <div className="border border-neutral-300 rounded-xl p-4 sm:p-5 space-y-3.5 text-[10.5px] text-neutral-700 bg-neutral-50/40 print:p-3 print:space-y-3">
+                    <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1.5">
                       IV. EXPLANATION OF CHARGES & STATUTORY AUTHORIZATIONS
                     </h5>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 print-grid-cols-2 print:grid-cols-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 print-grid-cols-2 print:grid-cols-2">
                       
                       {/* Custody Authorization */}
-                      <div className="p-2.5 bg-neutral-50 rounded-lg border border-neutral-200 space-y-1">
-                        <div className="font-bold text-neutral-900 flex items-center gap-1">
-                          <span className="text-emerald-700">☑</span>
+                      <div className="p-3 bg-white rounded-lg border border-neutral-300 space-y-1 shadow-xs">
+                        <div className="font-bold text-neutral-900 flex items-center gap-1.5 text-xs">
+                          <span className="text-emerald-700 font-bold">☑</span>
                           <span>Custody Authorization:</span>
                         </div>
-                        <p className="text-[9px] text-neutral-500">
+                        <p className="text-[9.5px] text-neutral-600 leading-relaxed">
                           "The undersigned hereby authorizes Benta's Funeral Home, Inc. or its representatives to obtain custody of the remains of {activeCase.decedent.legalName}."
                         </p>
-                        <span className="font-bold text-neutral-800 block text-[9px]">
+                        <span className="font-bold text-neutral-800 block text-[9.5px] pt-1 border-t border-neutral-200">
                           Authorized by: {activeCase.informant.fullName} ({activeCase.informant.relationship})
                         </span>
                       </div>
 
                       {/* Embalming Authorization */}
-                      <div className="p-2.5 bg-neutral-50 rounded-lg border border-neutral-200 space-y-1">
-                        <div className="font-bold text-neutral-900 flex items-center gap-1">
-                          <span className="text-emerald-700">☑</span>
+                      <div className="p-3 bg-white rounded-lg border border-neutral-300 space-y-1 shadow-xs">
+                        <div className="font-bold text-neutral-900 flex items-center gap-1.5 text-xs">
+                          <span className="text-emerald-700 font-bold">☑</span>
                           <span>Embalming Authorization (10 NYCRR § 77.7):</span>
                         </div>
-                        <p className="text-[9px] text-neutral-500">
+                        <p className="text-[9.5px] text-neutral-600 leading-relaxed">
                           "The undersigned hereby authorizes the above funeral establishment [✓] to embalm [ ] not to embalm the remains."
                         </p>
-                        <span className="font-bold text-neutral-800 block text-[9px]">
+                        <span className="font-bold text-neutral-800 block text-[9.5px] pt-1 border-t border-neutral-200">
                           Selected: {statementData.sectionIV.embalmingAuthorization.choice === 'embalm' ? 'Embalming Authorized for Public Viewing' : 'Direct Disposition / No Embalming'}
                         </span>
                       </div>
@@ -7836,47 +7849,53 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </div>
 
                     {/* FTC Rule & GPL Prior Receipt Acknowledgement */}
-                    <div className="p-2.5 bg-amber-50/60 rounded-lg border border-amber-200 text-[10px] space-y-1">
+                    <div className="p-3 bg-amber-50/70 rounded-lg border border-amber-300/80 text-[10px] space-y-1.5">
                       <p className="font-bold text-neutral-900">
                         "Charges are only for those items that are used. If we are required by law to use any items, we will explain the reasons in writing below."
                       </p>
-                      <p className="text-neutral-600 text-[9px]">
+                      <p className="text-neutral-700 text-[9.5px] leading-relaxed">
                         "Prior to the discussion of these funeral arrangements, I was presented with a copy of this funeral firm's 'General Price List' for which I hereby acknowledge receipt, and have had an opportunity to review the firm's Casket Price List and Outer Interment Receptacle Price List."
                       </p>
                     </div>
 
                     {/* Public Notice & Warranty Exclusion */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[9px] text-neutral-500 pt-1 print-grid-cols-2 print:grid-cols-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-[9.5px] text-neutral-600 pt-1 border-t border-neutral-200 print-grid-cols-2 print:grid-cols-2">
                       <div>
-                        <strong>PUBLIC NOTICE:</strong> The New York State Department of Health is responsible for licensing and regulating New York State funeral directing under the Public Health Law.
+                        <strong className="text-neutral-800">PUBLIC NOTICE:</strong> The New York State Department of Health is responsible for licensing and regulating New York State funeral directing under the Public Health Law.
                         <br />
-                        <em>Bureau of Funeral Directing, NYS Dept of Health, 875 Central Avenue, Albany, NY 12206.</em>
+                        <em className="text-[9px] text-neutral-500">Bureau of Funeral Directing, NYS Dept of Health, 875 Central Avenue, Albany, NY 12206.</em>
                       </div>
                       <div>
-                        <strong>EXCLUSION OF WARRANTY:</strong> The only warranties, express or implied, granted in connection with the goods sold with this funeral service are the express written warranties, if any, extended by the manufacturers thereof.
+                        <strong className="text-neutral-800">EXCLUSION OF WARRANTY:</strong> The only warranties, express or implied, granted in connection with the goods sold with this funeral service are the express written warranties, if any, extended by the manufacturers thereof.
                       </div>
                     </div>
 
-                    {/* Dual Signatures */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300 print-grid-cols-2 print:grid-cols-2">
+                    {/* Dual Signatures - Back of the Contract */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-5 border-t-2 border-neutral-900 print-grid-cols-2 print:grid-cols-2 print:pt-4">
                       <div>
-                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000] min-h-[26px] flex items-end">
+                        <div className="border-b-2 border-neutral-900 pb-1.5 font-serif italic text-base text-[#800000] min-h-[32px] flex items-end">
                           {activeCase.informant.fullName} (Electronic Jurat Verified)
                         </div>
-                        <div className="flex justify-between items-center text-[9px] text-neutral-600 mt-1 font-sans">
-                          <span className="font-semibold text-neutral-800">Signature of Purchaser / Next of Kin</span>
+                        <div className="flex justify-between items-center text-[10px] text-neutral-700 mt-1.5 font-sans">
+                          <span className="font-bold text-neutral-900 uppercase tracking-wider">Signature of Purchaser / Next of Kin</span>
                           <span className="font-mono">Date: {statementData.agreementDate}</span>
                         </div>
+                        <p className="text-[9px] text-neutral-500 mt-0.5">
+                          Purchaser / Informant Address on File with Establishment
+                        </p>
                       </div>
 
                       <div>
-                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-neutral-900 min-h-[26px] flex items-end">
+                        <div className="border-b-2 border-neutral-900 pb-1.5 font-serif italic text-base text-neutral-900 min-h-[32px] flex items-end">
                           {activeCase.assignedDirector || 'Jason Benta, NYS Reg. #08850'}
                         </div>
-                        <div className="flex justify-between items-center text-[9px] text-neutral-600 mt-1 font-sans">
-                          <span className="font-semibold text-neutral-800">Signature of Licensed Funeral Director</span>
-                          <span>Benta's Funeral Home, Inc.</span>
+                        <div className="flex justify-between items-center text-[10px] text-neutral-700 mt-1.5 font-sans">
+                          <span className="font-bold text-neutral-900 uppercase tracking-wider">Signature of Licensed Funeral Director</span>
+                          <span className="font-semibold text-neutral-800">Benta's Funeral Home, Inc.</span>
                         </div>
+                        <p className="text-[9px] text-neutral-500 mt-0.5">
+                          Establishment Reg. #08850 • Bureau of Funeral Directing
+                        </p>
                       </div>
                     </div>
 

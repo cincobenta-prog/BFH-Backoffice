@@ -408,32 +408,36 @@
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
-    font-size: 10px !important;
-    line-height: 1.35 !important;
+    font-size: 9.5px !important;
+    line-height: 1.25 !important;
   }
 
   #official-form-ap47-contract .space-y-6 > * + *,
   #official-form-ap47-matrix .space-y-6 > * + * {
-    margin-top: 0.65rem !important;
+    margin-top: 0.45rem !important;
   }
 
   #official-form-ap47-contract .space-y-4 > * + *,
   #official-form-ap47-matrix .space-y-4 > * + * {
-    margin-top: 0.45rem !important;
+    margin-top: 0.3rem !important;
   }
 
   #official-form-ap47-contract .space-y-3 > * + *,
   #official-form-ap47-matrix .space-y-3 > * + * {
-    margin-top: 0.35rem !important;
+    margin-top: 0.2rem !important;
   }
 
   #official-form-ap47-contract .p-2\.5,
   #official-form-ap47-contract .p-3,
   #official-form-ap47-contract .p-3\.5,
+  #official-form-ap47-contract .p-4,
+  #official-form-ap47-contract .p-5,
   #official-form-ap47-matrix .p-2\.5,
   #official-form-ap47-matrix .p-3,
-  #official-form-ap47-matrix .p-3\.5 {
-    padding: 0.3rem 0.5rem !important;
+  #official-form-ap47-matrix .p-3\.5,
+  #official-form-ap47-matrix .p-4,
+  #official-form-ap47-matrix .p-5 {
+    padding: 0.22rem 0.4rem !important;
   }
 
   /* Clean page break between Page 1 and Page 2 */
