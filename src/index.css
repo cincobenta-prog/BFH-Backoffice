@@ -302,6 +302,14 @@
     print-color-adjust: exact !important;
   }
 
+  #root,
+  #root > div,
+  .min-h-screen {
+    min-height: auto !important;
+    height: auto !important;
+    background: transparent !important;
+  }
+
   .no-print,
   .print-hidden,
   .print\:hidden,
@@ -320,16 +328,24 @@
     overflow: hidden !important;
   }
 
-  /* Isolate modal content when printing from contract studio or document matrix */
-  body:has(#official-form-ap47-contract) nav,
-  body:has(#official-form-ap47-contract) header,
+  /* Suppress entire background application layout when printing the contract */
+  .backoffice-print-suppress,
   body:has(#official-form-ap47-contract) aside,
-  body:has(#official-form-ap47-contract) footer,
-  body:has(#official-form-ap47-matrix) nav,
-  body:has(#official-form-ap47-matrix) header,
+  body:has(#official-form-ap47-contract) header,
+  body:has(#official-form-ap47-contract) main,
+  body:has(#official-form-ap47-contract) nav,
   body:has(#official-form-ap47-matrix) aside,
-  body:has(#official-form-ap47-matrix) footer {
+  body:has(#official-form-ap47-matrix) header,
+  body:has(#official-form-ap47-matrix) main,
+  body:has(#official-form-ap47-matrix) nav,
+  .ap47-other-empty {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
   }
 
   /* Reset modal backdrop so it does not render dark fixed overlays or repeating headers */

@@ -6836,7 +6836,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               : 'N/A'}
                           </strong>
                         </div>
-                        <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-1 ${(!statementData.sectionI.A_otherSpecify && !statementData.sectionI.A_otherAmount) ? 'print:hidden' : ''}`}>
+                        {/* A. Other Alternative Services */}
+                        {Boolean(statementData.sectionI.A_otherSpecify?.trim() || (statementData.sectionI.A_otherAmount || 0) > 0) && (
+                          <div className="hidden print:flex justify-between items-center text-[10px] text-neutral-800 pt-1 border-t border-dashed border-neutral-200">
+                            <span>• Other: {statementData.sectionI.A_otherSpecify || 'Alternative Service'}</span>
+                            <span className="font-mono">${Number(statementData.sectionI.A_otherAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1 print:hidden no-print">
                           <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">A. Other Alternative Services:</span>
                           <div className="flex items-center gap-2">
                             <input
@@ -6877,7 +6884,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <span className="font-semibold text-neutral-800">B. Transfer of remains to funeral establishment:</span>
                           <strong className="font-mono">${statementData.sectionI.B_transferOfRemainsAmount.toFixed(2)}</strong>
                         </div>
-                        <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-1 ${(!statementData.sectionI.B_otherSpecify && !statementData.sectionI.B_otherAmount) ? 'print:hidden' : ''}`}>
+                        {Boolean(statementData.sectionI.B_otherSpecify?.trim() || (statementData.sectionI.B_otherAmount || 0) > 0) && (
+                          <div className="hidden print:flex justify-between items-center text-[10px] text-neutral-800 pt-1 border-t border-dashed border-neutral-200">
+                            <span>• Extra Mileage / Special Transfer: {statementData.sectionI.B_otherSpecify || 'Transfer'}</span>
+                            <span className="font-mono">${Number(statementData.sectionI.B_otherAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1 print:hidden no-print">
                           <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">B. Other Transfer / Extra Mileage:</span>
                           <div className="flex items-center gap-2">
                             <input
@@ -7126,7 +7139,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </div>
                           )}
                         </div>
-                        <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-1 ${(!statementData.sectionI.F_otherSpecify && !statementData.sectionI.F3_otherFacilitiesSpecify && !statementData.sectionI.F_otherAmount && !statementData.sectionI.F3_otherFacilitiesAmount) ? 'print:hidden' : ''}`}>
+                        {/* F. Other Facilities */}
+                        {Boolean((statementData.sectionI.F_otherSpecify || statementData.sectionI.F3_otherFacilitiesSpecify)?.trim() || (statementData.sectionI.F_otherAmount || statementData.sectionI.F3_otherFacilitiesAmount || 0) > 0) && (
+                          <div className="hidden print:flex justify-between items-center text-[10px] text-neutral-800 pt-1 border-t border-dashed border-neutral-200">
+                            <span>• Other Facilities: {statementData.sectionI.F_otherSpecify || statementData.sectionI.F3_otherFacilitiesSpecify || 'Special Facility'}</span>
+                            <span className="font-mono">${Number(statementData.sectionI.F_otherAmount || statementData.sectionI.F3_otherFacilitiesAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1 print:hidden no-print">
                           <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">F. Other Facilities:</span>
                           <div className="flex items-center gap-2">
                             <input
@@ -7177,7 +7197,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </div>
                           ))}
                         </div>
-                        <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-1 ${(!statementData.sectionI.G_otherSpecify && !statementData.sectionI.G_otherAmount) ? 'print:hidden' : ''}`}>
+                        {Boolean(statementData.sectionI.G_otherSpecify?.trim() || (statementData.sectionI.G_otherAmount || 0) > 0) && (
+                          <div className="hidden print:flex justify-between items-center text-[10px] text-neutral-800 pt-1 border-t border-dashed border-neutral-200">
+                            <span>• Other Livery: {statementData.sectionI.G_otherSpecify || 'Special Livery'}</span>
+                            <span className="font-mono">${Number(statementData.sectionI.G_otherAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1 print:hidden no-print">
                           <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">G. Other Livery / Special Transportation:</span>
                           <div className="flex items-center gap-2">
                             <input
@@ -7235,7 +7261,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </div>
                           )}
                         </div>
-                        <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-1 ${(!statementData.sectionI.H_otherSpecify && !statementData.sectionI.H_otherAmount) ? 'print:hidden' : ''}`}>
+                        {/* H. Other Merchandise */}
+                        {Boolean(statementData.sectionI.H_otherSpecify?.trim() || (statementData.sectionI.H_otherAmount || 0) > 0) && (
+                          <div className="hidden print:flex justify-between items-center text-[10px] text-neutral-700 pt-1 border-t border-dashed border-neutral-200">
+                            <span>• Other: {statementData.sectionI.H_otherSpecify || 'Merchandise Item'}</span>
+                            <span className="font-mono">${Number(statementData.sectionI.H_otherAmount || 0).toFixed(2)}</span>
+                          </div>
+                        )}
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1 print:hidden no-print">
                           <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">H. Other Merchandise:</span>
                           <div className="flex items-center gap-2">
                             <input
@@ -7301,7 +7334,32 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             </div>
                           )}
                         </div>
-                        <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-2 ${(!statementData.sectionI.I_otherSpecify && !statementData.sectionI.I12_otherSpecify && !statementData.sectionI.I_otherAmount && !statementData.sectionI.I12_otherAmount && !statementData.sectionI.I_other2Specify && !statementData.sectionI.I_other2Amount && !statementData.sectionI.I_other3Specify && !statementData.sectionI.I_other3Amount) ? 'print:hidden' : ''}`}>
+                        {/* Print View of Filled Other Additional Items */}
+                        {(Boolean(statementData.sectionI.I_otherSpecify?.trim() || (statementData.sectionI.I_otherAmount || 0) > 0) ||
+                          Boolean(statementData.sectionI.I_other2Specify?.trim() || (statementData.sectionI.I_other2Amount || 0) > 0) ||
+                          Boolean(statementData.sectionI.I_other3Specify?.trim() || (statementData.sectionI.I_other3Amount || 0) > 0)) && (
+                          <div className="hidden print:block pt-1 border-t border-dashed border-neutral-200 space-y-0.5 text-[10px] text-neutral-700">
+                            {Boolean(statementData.sectionI.I_otherSpecify?.trim() || (statementData.sectionI.I_otherAmount || 0) > 0) && (
+                              <div className="flex justify-between">
+                                <span>• {statementData.sectionI.I_otherSpecify || statementData.sectionI.I12_otherSpecify || 'Additional Item 1'}:</span>
+                                <span className="font-mono">${Number(statementData.sectionI.I_otherAmount || statementData.sectionI.I12_otherAmount || 0).toFixed(2)}</span>
+                              </div>
+                            )}
+                            {Boolean(statementData.sectionI.I_other2Specify?.trim() || (statementData.sectionI.I_other2Amount || 0) > 0) && (
+                              <div className="flex justify-between">
+                                <span>• {statementData.sectionI.I_other2Specify || statementData.sectionI.I12_other2Specify || 'Additional Item 2'}:</span>
+                                <span className="font-mono">${Number(statementData.sectionI.I_other2Amount || statementData.sectionI.I12_other2Amount || 0).toFixed(2)}</span>
+                              </div>
+                            )}
+                            {Boolean(statementData.sectionI.I_other3Specify?.trim() || (statementData.sectionI.I_other3Amount || 0) > 0) && (
+                              <div className="flex justify-between">
+                                <span>• {statementData.sectionI.I_other3Specify || statementData.sectionI.I12_other3Specify || 'Additional Item 3'}:</span>
+                                <span className="font-mono">${Number(statementData.sectionI.I_other3Amount || statementData.sectionI.I12_other3Amount || 0).toFixed(2)}</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-2 print:hidden no-print">
                           <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">I. Other Additional Services &amp; Merchandise (3 Lines):</span>
                           
                           {/* Line 1 */}
@@ -7437,7 +7495,14 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               </div>
                             )}
                           </div>
-                          <div className={`pt-1.5 border-t border-dashed border-neutral-200 space-y-1 ${(!statementData.sectionI.J_otherSpecify && !statementData.sectionI.J_otherAmount) ? 'print:hidden' : ''}`}>
+                          {/* J. Other Limited Services */}
+                          {Boolean(statementData.sectionI.J_otherSpecify?.trim() || (statementData.sectionI.J_otherAmount || 0) > 0) && (
+                            <div className="hidden print:flex justify-between items-center text-[10px] text-neutral-700 pt-1 border-t border-dashed border-neutral-200">
+                              <span>• Other: {statementData.sectionI.J_otherSpecify || 'Limited Service'}</span>
+                              <span className="font-mono">${Number(statementData.sectionI.J_otherAmount || 0).toFixed(2)}</span>
+                            </div>
+                          )}
+                          <div className="pt-1.5 border-t border-dashed border-neutral-200 space-y-1 print:hidden no-print">
                             <span className="text-[10px] text-neutral-500 font-semibold uppercase tracking-wider block">J. Other Limited Services:</span>
                             <div className="flex items-center gap-2">
                               <input
@@ -7551,8 +7616,34 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           </div>
                         ))}
 
-                        {/* Other Cash Advance Rows (3 Lines) */}
-                        <div className={`pt-2 mt-2 border-t border-dashed border-neutral-200 space-y-2 ${(!statementData.sectionII.otherCashAdvanceSpecify && !statementData.sectionII.otherCashAdvanceAmount && !statementData.sectionII.otherCashAdvance2Specify && !statementData.sectionII.otherCashAdvance2Amount && !statementData.sectionII.otherCashAdvance3Specify && !statementData.sectionII.otherCashAdvance3Amount) ? 'print:hidden' : ''}`}>
+                        {/* Print View of Filled Other Cash Advance Items */}
+                        {(Boolean(statementData.sectionII.otherCashAdvanceSpecify?.trim() || (statementData.sectionII.otherCashAdvanceAmount || 0) > 0) ||
+                          Boolean(statementData.sectionII.otherCashAdvance2Specify?.trim() || (statementData.sectionII.otherCashAdvance2Amount || 0) > 0) ||
+                          Boolean(statementData.sectionII.otherCashAdvance3Specify?.trim() || (statementData.sectionII.otherCashAdvance3Amount || 0) > 0)) && (
+                          <div className="hidden print:block pt-1.5 border-t border-dashed border-neutral-200 space-y-0.5 text-[10px] text-neutral-800">
+                            {Boolean(statementData.sectionII.otherCashAdvanceSpecify?.trim() || (statementData.sectionII.otherCashAdvanceAmount || 0) > 0) && (
+                              <div className="flex justify-between">
+                                <span>• {statementData.sectionII.otherCashAdvanceSpecify || 'Other Cash Advance (Line 1)'}:</span>
+                                <span className="font-mono">${Number(statementData.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</span>
+                              </div>
+                            )}
+                            {Boolean(statementData.sectionII.otherCashAdvance2Specify?.trim() || (statementData.sectionII.otherCashAdvance2Amount || 0) > 0) && (
+                              <div className="flex justify-between">
+                                <span>• {statementData.sectionII.otherCashAdvance2Specify || 'Other Cash Advance (Line 2)'}:</span>
+                                <span className="font-mono">${Number(statementData.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</span>
+                              </div>
+                            )}
+                            {Boolean(statementData.sectionII.otherCashAdvance3Specify?.trim() || (statementData.sectionII.otherCashAdvance3Amount || 0) > 0) && (
+                              <div className="flex justify-between">
+                                <span>• {statementData.sectionII.otherCashAdvance3Specify || 'Other Cash Advance (Line 3)'}:</span>
+                                <span className="font-mono">${Number(statementData.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Screen-Only Other Cash Advance Rows (3 Lines) */}
+                        <div className="pt-2 mt-2 border-t border-dashed border-neutral-200 space-y-2 print:hidden no-print">
                           <span className="font-semibold text-neutral-800 text-[10px] uppercase tracking-wider block">
                             Other Cash Advance Items (3 Lines):
                           </span>

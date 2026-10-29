@@ -1130,7 +1130,8 @@ export function App() {
 
     return (
       <div className="min-h-screen bg-[#f3f4f6] text-neutral-900 font-sans">
-        <BackOfficeLayout
+        <div className={isContractModalOpen ? "print:hidden no-print backoffice-print-suppress" : ""}>
+          <BackOfficeLayout
           currentRole={currentRole}
           onChangeRole={(role) => {
             if (role === 'manager') {
@@ -1501,6 +1502,7 @@ export function App() {
           )}
           </main>
         </BackOfficeLayout>
+        </div>
 
         {/* Service Partner SMS Schedule Modal */}
         {isPartnerModalOpen && (

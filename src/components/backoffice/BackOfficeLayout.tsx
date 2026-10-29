@@ -222,7 +222,7 @@ export const BackOfficeLayout = ({
   return (
     <>
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col bg-[#1c1a1a] text-neutral-300 transition-transform duration-200 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col bg-[#1c1a1a] text-neutral-300 transition-transform duration-200 print:hidden no-print ${
           drawerOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:z-30 lg:w-[272px] lg:translate-x-0`}
         aria-label="Staff navigation"
@@ -314,8 +314,8 @@ export const BackOfficeLayout = ({
         />
       )}
 
-      <div className="flex min-h-screen flex-col lg:pl-[272px]">
-        <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/90 px-4 py-2.5 backdrop-blur sm:px-6">
+      <div className="flex min-h-screen flex-col lg:pl-[272px] print:hidden no-print">
+        <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/90 px-4 py-2.5 backdrop-blur sm:px-6 print:hidden no-print">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setDrawerOpen(true)}
