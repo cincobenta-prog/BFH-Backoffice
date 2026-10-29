@@ -800,11 +800,11 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn contract-print-modal-backdrop print:static print:p-0 print:m-0 print:bg-white print:overflow-visible print:block print:w-full">
-      <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn contract-print-modal-backdrop print:static print:p-0 print:m-0 print:bg-white print:overflow-visible print:block print:w-full print:border-none">
+      <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:border-0 print:border-transparent print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
         
         {/* MODAL HEADER */}
-        <div className="bg-gradient-to-r from-neutral-900 via-[#181216] to-neutral-900 text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 border-b border-amber-400/40 shrink-0 print:hidden">
+        <div className="bg-gradient-to-r from-neutral-900 via-[#181216] to-neutral-900 text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 border-b border-amber-400/40 shrink-0 print:hidden contract-studio-modal-header no-print">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-2xl bg-[#800000] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-md">
               <FileText className="w-5 h-5" />
@@ -857,6 +857,15 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
             </button>
             <button
               type="button"
+              onClick={handleSaveToGoldenRecord}
+              className="px-3 py-1.5 bg-emerald-700/80 hover:bg-emerald-700 text-white text-xs rounded-xl font-bold transition flex items-center space-x-1 cursor-pointer border border-emerald-500/40 shadow-xs"
+              title="Save & Sync adjustments to case"
+            >
+              <Save className="w-3.5 h-3.5 text-emerald-200" />
+              <span className="hidden sm:inline">Save & Sync</span>
+            </button>
+            <button
+              type="button"
               onClick={() => {
                 if (currentStep !== 4) {
                   setCurrentStep(4);
@@ -865,10 +874,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   window.print();
                 }
               }}
-              className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-neutral-200 text-xs rounded-xl font-bold transition flex items-center space-x-1 cursor-pointer"
+              className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white text-xs rounded-xl font-bold transition flex items-center space-x-1 cursor-pointer border border-amber-400/40 shadow-xs"
               title="Print Form AP-47"
             >
-              <Printer className="w-3.5 h-3.5" />
+              <Printer className="w-3.5 h-3.5 text-amber-300" />
               <span className="hidden sm:inline">Print Contract</span>
             </button>
             <button
@@ -882,7 +891,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
         </div>
 
         {/* 4-STEP WIZARD PROGRESS BAR */}
-        <div className="bg-neutral-100 px-4 sm:px-6 py-2.5 border-b border-neutral-200 flex items-center justify-between gap-2 overflow-x-auto shrink-0 text-xs font-semibold print:hidden">
+        <div className="bg-neutral-100 px-4 sm:px-6 py-2.5 border-b border-neutral-200 flex items-center justify-between gap-2 overflow-x-auto shrink-0 text-xs font-semibold print:hidden contract-studio-wizard-bar no-print">
           {[
             { step: 1, title: '1. Loved One Story & Vital Records', icon: BookOpen },
             { step: 2, title: '2. Service Type & Baseline GPL', icon: Building2 },
@@ -6729,25 +6738,17 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
           {currentStep === 4 && (
             <div className="space-y-6 animate-fadeIn">
               
-              {/* Top Banner with Action Buttons */}
-              <div className="bg-neutral-100 p-4 rounded-2xl border border-neutral-200 flex flex-wrap items-center justify-between gap-3 text-xs print:hidden">
-                <div className="space-y-0.5">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-bold text-neutral-900 text-sm">Official Form AP-47 Itemization Verification</span>
-                    <span className="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-mono font-bold">
-                      NYS DOH Compliant
-                    </span>
-                  </div>
-                  <p className="text-neutral-500 text-[11px]">
-                    Verified against General Price List (Effective April 13, 2026).
-                  </p>
+              {/* Screen-Only Action Strip (Hidden in Print) */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-1 print:hidden contract-studio-verification-banner no-print">
+                <div className="flex items-center space-x-2 text-xs text-neutral-500 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                  <span className="font-semibold text-neutral-700">Official NYS Form AP-47 Contract View</span>
                 </div>
-
                 <div className="flex items-center space-x-2">
                   <button
                     type="button"
                     onClick={handleCopyContractSummary}
-                    className="px-3 py-1.5 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 rounded-xl font-bold transition flex items-center space-x-1"
+                    className="px-3 py-1.5 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 rounded-xl font-bold transition flex items-center space-x-1 cursor-pointer text-xs shadow-xs"
                   >
                     <Copy className="w-3.5 h-3.5" />
                     <span>Copy Text</span>
@@ -6755,18 +6756,18 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   <button
                     type="button"
                     onClick={() => window.print()}
-                    className="px-3 py-1.5 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 rounded-xl font-bold transition flex items-center space-x-1"
+                    className="px-3.5 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold transition flex items-center space-x-1.5 cursor-pointer text-xs shadow-xs border border-amber-400/40"
                   >
-                    <Printer className="w-3.5 h-3.5" />
+                    <Printer className="w-3.5 h-3.5 text-amber-300" />
                     <span>Print 2-Page Contract</span>
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveToGoldenRecord}
-                    className="px-5 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold transition flex items-center space-x-1.5 shadow-md shadow-red-950/20"
+                    className="px-3.5 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl font-bold transition flex items-center space-x-1.5 cursor-pointer text-xs shadow-xs"
                   >
                     <Save className="w-3.5 h-3.5 text-amber-300" />
-                    <span>Save & Sync to Case</span>
+                    <span>Save & Sync</span>
                   </button>
                 </div>
               </div>
@@ -7768,21 +7769,23 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     {/* Dual Signatures */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-3 border-t border-neutral-300 print-grid-cols-2 print:grid-cols-2">
                       <div>
-                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000]">
+                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-[#800000] min-h-[26px] flex items-end">
                           {activeCase.informant.fullName} (Electronic Jurat Verified)
                         </div>
-                        <span className="text-[9px] text-neutral-500 block mt-0.5">
-                          Signature of Purchaser / Next of Kin • {statementData.agreementDate}
-                        </span>
+                        <div className="flex justify-between items-center text-[9px] text-neutral-600 mt-1 font-sans">
+                          <span className="font-semibold text-neutral-800">Signature of Purchaser / Next of Kin</span>
+                          <span className="font-mono">Date: {statementData.agreementDate}</span>
+                        </div>
                       </div>
 
                       <div>
-                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-neutral-900">
-                          {activeCase.assignedDirector || 'Jason Benta, NYS LFD #08850'}
+                        <div className="border-b border-neutral-900 pb-1 font-serif italic text-sm text-neutral-900 min-h-[26px] flex items-end">
+                          {activeCase.assignedDirector || 'Jason Benta, NYS Reg. #08850'}
                         </div>
-                        <span className="text-[9px] text-neutral-500 block mt-0.5">
-                          Signature of Licensed Funeral Director • Benta's Funeral Home, Inc.
-                        </span>
+                        <div className="flex justify-between items-center text-[9px] text-neutral-600 mt-1 font-sans">
+                          <span className="font-semibold text-neutral-800">Signature of Licensed Funeral Director</span>
+                          <span>Benta's Funeral Home, Inc.</span>
+                        </div>
                       </div>
                     </div>
 
@@ -7793,18 +7796,18 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               </div>
 
               {/* Step 4 Footer Navigation Bar */}
-              <div className="flex justify-between pt-2 print:hidden">
+              <div className="flex justify-between pt-2 print:hidden contract-studio-footer-nav no-print">
                 <button
                   type="button"
                   onClick={() => setCurrentStep(3)}
-                  className="px-4 py-2 text-xs font-bold text-neutral-600 hover:bg-neutral-100 rounded-xl"
+                  className="px-4 py-2 text-xs font-bold text-neutral-600 hover:bg-neutral-100 rounded-xl cursor-pointer"
                 >
                   Back to Step 3
                 </button>
                 <button
                   type="button"
                   onClick={handleSaveToGoldenRecord}
-                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-8 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20"
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-8 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md shadow-red-950/20 cursor-pointer"
                 >
                   <Save className="w-4 h-4 text-amber-300" />
                   <span>Save & Complete Form AP-47 Statement</span>
