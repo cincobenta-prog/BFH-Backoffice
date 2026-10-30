@@ -799,10 +799,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
     showToast('📋 Full Form AP-47 summary copied to clipboard!');
   };
 
-  // Safe print handler that clears document.title so browser headers do not print OS/portal titles
+  // Safe print handler that sets document.title to invisible space so browser headers do not print titles or URLs
   const handlePrintContract = () => {
     const prevTitle = document.title;
-    document.title = "";
+    document.title = '\u00A0';
     if (currentStep !== 4) {
       setCurrentStep(4);
       setTimeout(() => {
@@ -6788,7 +6788,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
               >
                 
                 {/* ----------------- PAGE 1 ----------------- */}
-                <div className="space-y-4 pb-8 border-b-2 border-neutral-900 print:pb-0 print:border-b-0 print:space-y-3">
+                <div className="space-y-4 pb-8 border-b-2 border-neutral-900 print:pb-0 print:border-b-0 print:space-y-3 ap47-print-page ap47-page-1">
                   
                   {/* Page 1 Header */}
                   <div className="flex justify-between items-start border-b-2 border-neutral-900 pb-3">
@@ -7874,7 +7874,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   const directorName = activeCase.assignedDirector || 'Leatrice Henry';
 
                   return (
-                    <div className="space-y-3 pt-2 ap47-page-break print:break-before-page print:pt-3 print:space-y-2.5">
+                    <div className="space-y-3 pt-2 ap47-page-break print:break-before-page print:pt-3 print:space-y-2.5 ap47-print-page ap47-page-2">
                       
                       {/* Page 2 Official Top Reference Strip */}
                       <div className="flex justify-between items-center border-b border-neutral-300 pb-1.5 text-[10px] text-neutral-600">

@@ -216,7 +216,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
   const handlePrintDocument = () => {
     const prevTitle = document.title;
-    document.title = "";
+    document.title = '\u00A0';
     window.print();
     setTimeout(() => {
       document.title = prevTitle;
@@ -660,7 +660,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
           <div id="official-form-ap47-matrix" className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-10 rounded-xl border-2 border-neutral-400 shadow-sm print:p-0 print:border-none print:shadow-none print:rounded-none print:m-0 print:w-full print:space-y-4">
             
             {/* PAGE 1 */}
-            <div className="space-y-4 pb-6 border-b-2 border-neutral-900 print:pb-0 print:border-b-0 print:space-y-3">
+            <div className="space-y-4 pb-6 border-b-2 border-neutral-900 print:pb-0 print:border-b-0 print:space-y-3 ap47-print-page ap47-page-1">
               
               {/* Header */}
               <div className="flex justify-between items-start border-b-2 border-neutral-900 pb-3">
@@ -1138,7 +1138,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               const directorName = caseData.assignedDirector || 'Leatrice Henry';
 
               return (
-                <div className="space-y-3 pt-2 ap47-page-break print:break-before-page print:pt-3 print:space-y-2.5">
+                <div className="space-y-3 pt-2 ap47-page-break print:break-before-page print:pt-3 print:space-y-2.5 ap47-print-page ap47-page-2">
                   
                   {/* Page 2 Official Top Reference Strip */}
                   <div className="flex justify-between items-center border-b border-neutral-300 pb-1.5 text-[10px] text-neutral-600">

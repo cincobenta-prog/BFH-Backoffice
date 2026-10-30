@@ -29,7 +29,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
 
   const handlePrint = () => {
     const prevTitle = document.title;
-    document.title = "";
+    document.title = '\u00A0';
     window.print();
     setTimeout(() => {
       document.title = prevTitle;
@@ -110,7 +110,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
         </div>
 
         {/* Printable Document Body */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white text-neutral-900 space-y-6 text-xs contract-print-modal-body print:p-0 print:overflow-visible">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white text-neutral-900 space-y-6 text-xs contract-print-modal-body print:p-0 print:overflow-visible ap47-print-page">
           
           {/* Official Letterhead */}
           <div className="text-center space-y-1 pb-4 border-b-2 border-neutral-900">
