@@ -28,7 +28,12 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
   const sog = caseData.statementOfGoods || getDefaultStatementOfGoodsForCase(caseData);
 
   const handlePrint = () => {
+    const prevTitle = document.title;
+    document.title = "";
     window.print();
+    setTimeout(() => {
+      document.title = prevTitle;
+    }, 500);
   };
 
   const handleOpenChecks = () => {
@@ -134,7 +139,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
             <div className="space-y-1">
               <p><strong>Contract Date:</strong> {sog.agreementDate}</p>
               <p><strong>Case Number:</strong> <span className="font-mono font-bold">{caseData.caseNumber}</span></p>
-              <p><strong>Purchaser / Informant:</strong> {caseData.informant.fullName} ({caseData.informant.relationship})</p>
+              <p><strong>Purchaser / Informant:</strong> {caseData.informant.fullName} ({caseData.informant.relationship}) • <span className="font-semibold text-neutral-800">Terms: All funds are due 48 hours prior to service</span></p>
               <p><strong>Licensed Funeral Director:</strong> {sog.sectionIV.licensedFuneralDirector.name} ({sog.sectionIV.licensedFuneralDirector.licenseNumber})</p>
             </div>
           </div>
@@ -487,7 +492,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
           <div className="space-y-2">
             <div className="flex justify-between items-center bg-neutral-900 text-white px-2.5 py-1 rounded">
               <h2 className="font-bold text-xs uppercase tracking-wider">
-                Section II — Cash Advance Items (Disbursements Paid on Behalf of Family)
+                Section II — Cash Advances
               </h2>
               <button
                 onClick={handleOpenChecks}
@@ -663,6 +668,9 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 <span>ESTIMATED BALANCE DUE:</span>
                 <span className="font-mono text-[#800000]">${sog.sectionIII.balanceDue.toFixed(2)}</span>
               </div>
+              <div className="p-2 bg-white rounded-lg border border-red-200 text-[10px] text-neutral-600 space-y-0.5 mt-2">
+                <div><strong>Terms:</strong> All funds are due 48 hours prior to service. Late charge of 1.5% per month applies to balances past due.</div>
+              </div>
             </div>
           </div>
 
@@ -691,9 +699,16 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
               <strong>Statutory Disclosure (10 NYCRR § 77.8):</strong> Embalming is not required by law. Embalming may be, however, in certain cases required by the funeral home. If embalming is selected, it is with the explicit consent of the family as recorded above. If charges are made for goods or services selected by you, you are entitled to a complete itemized explanation.
             </p>
 
-            <div className="grid grid-cols-2 gap-8 pt-6">
+            <p className="text-[10px] text-neutral-800 font-medium">
+              <strong>TERMS:</strong> All funds are due 48 hours prior to service. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
+            </p>
+
+            <div className="grid grid-cols-2 gap-8 pt-4">
               <div className="border-t border-neutral-900 pt-2 space-y-1">
-                <p className="font-bold">Signature of Purchaser / Next of Kin</p>
+                <div className="flex justify-between items-baseline">
+                  <p className="font-bold">Signature of Purchaser / Next of Kin</p>
+                  <span className="text-[9px] font-semibold text-neutral-700">Notice: All funds due 48 hours prior to service</span>
+                </div>
                 <p className="text-[10px] text-neutral-600">eSigned via BFH Family Portal: {caseData.informant.fullName}</p>
                 <p className="text-[10px] text-neutral-400 font-mono">Timestamp: {sog.sectionIV.termsAcknowledgement.acknowledgedDate}</p>
               </div>

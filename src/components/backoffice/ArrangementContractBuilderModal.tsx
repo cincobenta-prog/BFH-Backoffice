@@ -799,6 +799,22 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
     showToast('📋 Full Form AP-47 summary copied to clipboard!');
   };
 
+  // Safe print handler that clears document.title so browser headers do not print OS/portal titles
+  const handlePrintContract = () => {
+    const prevTitle = document.title;
+    document.title = "";
+    if (currentStep !== 4) {
+      setCurrentStep(4);
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => { document.title = prevTitle; }, 500);
+      }, 200);
+    } else {
+      window.print();
+      setTimeout(() => { document.title = prevTitle; }, 500);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fadeIn contract-print-modal-backdrop print:static print:p-0 print:m-0 print:bg-white print:overflow-visible print:block print:w-full print:border-none">
       <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-amber-400 overflow-hidden contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:border-0 print:border-transparent print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
@@ -866,14 +882,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
             </button>
             <button
               type="button"
-              onClick={() => {
-                if (currentStep !== 4) {
-                  setCurrentStep(4);
-                  setTimeout(() => window.print(), 200);
-                } else {
-                  window.print();
-                }
-              }}
+              onClick={handlePrintContract}
               className="px-3 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white text-xs rounded-xl font-bold transition flex items-center space-x-1 cursor-pointer border border-amber-400/40 shadow-xs"
               title="Print Form AP-47"
             >
@@ -6755,7 +6764,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                   </button>
                   <button
                     type="button"
-                    onClick={() => window.print()}
+                    onClick={handlePrintContract}
                     className="px-3.5 py-1.5 bg-[#800000] hover:bg-[#6a0509] text-white rounded-xl font-bold transition flex items-center space-x-1.5 cursor-pointer text-xs shadow-xs border border-amber-400/40"
                   >
                     <Printer className="w-3.5 h-3.5 text-amber-300" />
@@ -6806,7 +6815,11 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <div><span className="text-neutral-500 block text-[9px]">Name of Deceased:</span> <strong>{activeCase.decedent.legalName}</strong></div>
                     <div><span className="text-neutral-500 block text-[9px]">Date of Death:</span> <strong>{activeCase.decedent.dateOfDeath}</strong></div>
                     <div><span className="text-neutral-500 block text-[9px]">Place of Death:</span> <strong>{activeCase.decedent.facilityName || 'Mount Sinai Morningside'}</strong></div>
-                    <div><span className="text-neutral-500 block text-[9px]">Invoice To:</span> <strong>{activeCase.informant.fullName} (NOK)</strong></div>
+                    <div>
+                      <span className="text-neutral-500 block text-[9px]">Invoice To:</span>
+                      <strong>{activeCase.informant.fullName} (NOK)</strong>
+                      <span className="block text-[8px] text-neutral-600 font-medium">Terms: All funds due 48 hours prior to service</span>
+                    </div>
                   </div>
 
                   <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1 bg-neutral-100 rounded">
@@ -7555,7 +7568,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     <div className="space-y-3 border border-neutral-300 rounded-xl p-3.5 print:p-2.5">
                       <div className="flex justify-between items-center border-b border-neutral-200 pb-1">
                         <h5 className="font-bold text-xs uppercase text-[#800000]">
-                          II. CASH ADVANCES (Paid to Others on Family's Behalf)
+                          II. CASH ADVANCES
                         </h5>
                         <button
                           type="button"
@@ -7811,7 +7824,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       </div>
 
                       <div className="p-2 bg-white rounded-lg border border-red-200 text-[10px] text-neutral-600 space-y-0.5">
-                        <div><strong>Terms:</strong> This account becomes due upon arrangement completion. Late charge of 1.5% per month applies to balances past due.</div>
+                        <div><strong>Terms:</strong> All funds are due 48 hours prior to service. Late charge of 1.5% per month applies to balances past due.</div>
                       </div>
                     </div>
 
@@ -8096,13 +8109,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       {/* Payment Agreement, GPL Prior Receipt & Terms */}
                       <div className="space-y-1 text-[8.5px] text-neutral-800 leading-tight">
                         <p>
-                          The foregoing statement has been read by (to) me and I hereby acknowledge receipt of a copy of same and agree to pay the above funeral account and for such additional services and materials as are ordered by me, on or before <span className="border-b border-neutral-800 px-2 font-semibold text-neutral-900 inline-block min-w-[120px]">{statementData.agreementDate}</span>. In the event that this account is not paid in accordance with the terms of this agreement, the undersigned hereby agrees to pay any and all costs and attorney's fees.
+                          The foregoing statement has been read by (to) me and I hereby acknowledge receipt of a copy of same and agree to pay the above funeral account and for such additional services and materials as are ordered by me, on or before <span className="border-b border-neutral-800 px-2 font-semibold text-neutral-900 inline-block min-w-[120px]">{statementData.agreementDate || '48 hours prior to service'} (All funds due 48 hours prior to service)</span>. In the event that this account is not paid in accordance with the terms of this agreement, the undersigned hereby agrees to pay any and all costs and attorney's fees.
                         </p>
                         <p>
                           Prior to the discussion of these funeral arrangements, I was presented with a copy of this funeral firm's "General Price List" for which I hereby acknowledge receipt, and
                         </p>
                         <p>
-                          <strong className="text-neutral-900">TERMS: </strong>This account becomes due <span className="border-b border-neutral-800 px-2 font-medium text-neutral-900 inline-block min-w-[120px]">upon arrangement completion</span>. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
+                          <strong className="text-neutral-900">TERMS: </strong>All funds are due 48 hours prior to service. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
                         </p>
                       </div>
 
@@ -8113,7 +8126,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             <div className="border-b border-neutral-800 pb-0.5 min-h-[18px] font-serif italic text-sm text-[#800000]">
                               {activeCase.informant.fullName} (Electronic Jurat Verified)
                             </div>
-                            <div className="text-[8px] text-neutral-600 mt-0.5">Signature</div>
+                            <div className="flex justify-between items-baseline text-[8px] text-neutral-600 mt-0.5">
+                              <span>Signature of Purchaser / Next of Kin</span>
+                              <span className="text-[7.5px] font-semibold text-neutral-700">Notice: All funds due 48 hours prior to service</span>
+                            </div>
                             <div className="text-[8px] text-neutral-800 font-medium">
                               Relation to Deceased: <span className="border-b border-neutral-400 px-1">{activeCase.informant.relationship}</span>
                             </div>
@@ -8121,7 +8137,10 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
 
                           <div>
                             <div className="border-b border-neutral-800 pb-0.5 min-h-[18px]"></div>
-                            <div className="text-[8px] text-neutral-600 mt-0.5">Signature</div>
+                            <div className="flex justify-between items-baseline text-[8px] text-neutral-600 mt-0.5">
+                              <span>Signature</span>
+                              <span className="text-[7.5px] font-semibold text-neutral-700">Notice: All funds due 48 hours prior to service</span>
+                            </div>
                             <div className="text-[8px] text-neutral-800 font-medium">
                               Relation to Deceased: <span className="border-b border-neutral-400 px-6 inline-block"></span>
                             </div>
@@ -8132,6 +8151,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           <span className="font-bold text-neutral-800 shrink-0">By</span>
                           <span className="border-b border-neutral-800 grow pb-0.2 font-medium text-neutral-900">
                             {activeCase.informant.fullName}
+                          </span>
+                          <span className="text-[8px] font-semibold text-neutral-700 shrink-0">
+                            • Terms: All funds due 48 hours prior to service
                           </span>
                         </div>
                       </div>

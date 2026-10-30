@@ -214,6 +214,15 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
     }));
   };
 
+  const handlePrintDocument = () => {
+    const prevTitle = document.title;
+    document.title = "";
+    window.print();
+    setTimeout(() => {
+      document.title = prevTitle;
+    }, 500);
+  };
+
   const filteredDocs = caseData.documents.filter(doc => {
     if (selectedPhase === 'all') return true;
     return doc.phase === selectedPhase;
@@ -678,7 +687,11 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 <div><span className="text-[9px] text-neutral-500 block">Name of Deceased:</span> <strong>{caseData.decedent.legalName}</strong></div>
                 <div><span className="text-[9px] text-neutral-500 block">Date of Death:</span> <strong>{caseData.decedent.dateOfDeath}</strong></div>
                 <div><span className="text-[9px] text-neutral-500 block">Place of Death:</span> <strong>{caseData.decedent.facilityName || 'Mount Sinai Morningside'}</strong></div>
-                <div><span className="text-[9px] text-neutral-500 block">Invoice To:</span> <strong>{caseData.informant.fullName} (NOK)</strong></div>
+                <div>
+                  <span className="text-[9px] text-neutral-500 block">Invoice To:</span>
+                  <strong>{caseData.informant.fullName} (NOK)</strong>
+                  <span className="block text-[8px] text-neutral-600 font-medium">Terms: All funds due 48 hours prior to service</span>
+                </div>
               </div>
 
               <div className="text-center font-bold text-xs uppercase tracking-wider font-serif-title text-neutral-900 py-1 bg-neutral-100 rounded">
@@ -954,7 +967,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   {/* Cash Advances */}
                   <div className="space-y-2 border border-neutral-300 rounded-xl p-3.5 print:p-2.5">
                     <h5 className="font-bold text-xs uppercase text-[#800000] border-b border-neutral-200 pb-1">
-                      II. CASH ADVANCES (Paid to Others on Family's Behalf)
+                      II. CASH ADVANCES
                     </h5>
                     <p className="text-[9px] text-neutral-500 italic">
                       Charges actually paid to third parties on the family's behalf.
@@ -1070,6 +1083,10 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <span>BALANCE DUE:</span>
                         <span className="font-mono text-base text-red-900">${ap47.sectionIII.balanceDue.toFixed(2)}</span>
                       </div>
+                    </div>
+
+                    <div className="p-2 bg-white rounded-lg border border-red-200 text-[10px] text-neutral-600 space-y-0.5">
+                      <div><strong>Terms:</strong> All funds are due 48 hours prior to service. Late charge of 1.5% per month applies to balances past due.</div>
                     </div>
                   </div>
 
@@ -1356,13 +1373,13 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                   {/* Payment Agreement, GPL Prior Receipt & Terms */}
                   <div className="space-y-1 text-[8.5px] text-neutral-800 leading-tight">
                     <p>
-                      The foregoing statement has been read by (to) me and I hereby acknowledge receipt of a copy of same and agree to pay the above funeral account and for such additional services and materials as are ordered by me, on or before <span className="border-b border-neutral-800 px-2 font-semibold text-neutral-900 inline-block min-w-[120px]">{ap47.agreementDate}</span>. In the event that this account is not paid in accordance with the terms of this agreement, the undersigned hereby agrees to pay any and all costs and attorney's fees.
+                      The foregoing statement has been read by (to) me and I hereby acknowledge receipt of a copy of same and agree to pay the above funeral account and for such additional services and materials as are ordered by me, on or before <span className="border-b border-neutral-800 px-2 font-semibold text-neutral-900 inline-block min-w-[120px]">{ap47.agreementDate || '48 hours prior to service'} (All funds due 48 hours prior to service)</span>. In the event that this account is not paid in accordance with the terms of this agreement, the undersigned hereby agrees to pay any and all costs and attorney's fees.
                     </p>
                     <p>
                       Prior to the discussion of these funeral arrangements, I was presented with a copy of this funeral firm's "General Price List" for which I hereby acknowledge receipt, and
                     </p>
                     <p>
-                      <strong className="text-neutral-900">TERMS: </strong>This account becomes due <span className="border-b border-neutral-800 px-2 font-medium text-neutral-900 inline-block min-w-[120px]">upon arrangement completion</span>. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
+                      <strong className="text-neutral-900">TERMS: </strong>All funds are due 48 hours prior to service. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
                     </p>
                   </div>
 
@@ -1373,7 +1390,10 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                         <div className="border-b border-neutral-800 pb-0.5 min-h-[18px] font-serif italic text-sm text-[#800000]">
                           {caseData.informant.fullName} (Electronic Jurat Verified)
                         </div>
-                        <div className="text-[8px] text-neutral-600 mt-0.5">Signature</div>
+                        <div className="flex justify-between items-baseline text-[8px] text-neutral-600 mt-0.5">
+                          <span>Signature of Purchaser / Next of Kin</span>
+                          <span className="text-[7.5px] font-semibold text-neutral-700">Notice: All funds due 48 hours prior to service</span>
+                        </div>
                         <div className="text-[8px] text-neutral-800 font-medium">
                           Relation to Deceased: <span className="border-b border-neutral-400 px-1">{caseData.informant.relationship}</span>
                         </div>
@@ -1381,7 +1401,10 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
                       <div>
                         <div className="border-b border-neutral-800 pb-0.5 min-h-[18px]"></div>
-                        <div className="text-[8px] text-neutral-600 mt-0.5">Signature</div>
+                        <div className="flex justify-between items-baseline text-[8px] text-neutral-600 mt-0.5">
+                          <span>Signature</span>
+                          <span className="text-[7.5px] font-semibold text-neutral-700">Notice: All funds due 48 hours prior to service</span>
+                        </div>
                         <div className="text-[8px] text-neutral-800 font-medium">
                           Relation to Deceased: <span className="border-b border-neutral-400 px-6 inline-block"></span>
                         </div>
@@ -1392,6 +1415,9 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       <span className="font-bold text-neutral-800 shrink-0">By</span>
                       <span className="border-b border-neutral-800 grow pb-0.2 font-medium text-neutral-900">
                         {caseData.informant.fullName}
+                      </span>
+                      <span className="text-[8px] font-semibold text-neutral-700 shrink-0">
+                        • Terms: All funds due 48 hours prior to service
                       </span>
                     </div>
                   </div>
@@ -1671,7 +1697,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => window.print()}
+                  onClick={handlePrintDocument}
                   className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-lg border border-neutral-300 text-xs font-semibold flex items-center gap-1.5 transition"
                 >
                   <Printer className="w-3.5 h-3.5" />
@@ -2702,7 +2728,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => window.print()}
+                  onClick={handlePrintDocument}
                   className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 transition border border-neutral-300 shadow-2xs"
                 >
                   <Printer className="w-3.5 h-3.5" />

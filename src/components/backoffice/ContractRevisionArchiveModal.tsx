@@ -62,7 +62,12 @@ export const ContractRevisionArchiveModal: React.FC<ContractRevisionArchiveModal
   };
 
   const handlePrintRider = () => {
+    const prevTitle = document.title;
+    document.title = "";
     window.print();
+    setTimeout(() => {
+      document.title = prevTitle;
+    }, 500);
   };
 
   return (
