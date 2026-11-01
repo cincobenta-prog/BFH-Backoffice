@@ -1552,6 +1552,7 @@ export interface StatementOfGoodsSectionII {
   publicTransportationShippingAmount: number;
   gratuitiesLiveryAndStaffAmount: number;
   bridgeAndRoadTollsAmount: number;
+  telephoneTelegraphAmount?: number;
   organistMusicianName: string;
   organistMusicianAmount: number;
   eVitalFilingFeeAmount: number;

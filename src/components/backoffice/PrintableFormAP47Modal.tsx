@@ -3,29 +3,35 @@ import {
   X, 
   Printer, 
   Download,
-  HandCoins
+  HandCoins,
+  ShieldCheck
 } from 'lucide-react';
-import { GoldenRecordCase } from '../../lib/types/funeral';
+import { GoldenRecordCase, StatementOfGoodsData } from '../../lib/types/funeral';
 import { getDefaultStatementOfGoodsForCase } from '../../lib/data/generalPriceList';
 import { CashAdvanceCheckPrinterModal } from './CashAdvanceCheckPrinterModal';
+import { OfficialScannedFormAP47 } from './OfficialScannedFormAP47';
 
 interface PrintableFormAP47ModalProps {
   isOpen: boolean;
   onClose: () => void;
   caseData: GoldenRecordCase;
   onOpenCheckPrinter?: (targetCase: GoldenRecordCase) => void;
+  onSaveContract?: (caseId: string, updatedStatement: StatementOfGoodsData) => void;
 }
 
 export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
   isOpen,
   onClose,
   caseData,
-  onOpenCheckPrinter
+  onOpenCheckPrinter,
+  onSaveContract
 }) => {
   const [isInternalCheckPrinterOpen, setIsInternalCheckPrinterOpen] = useState(false);
-  if (!isOpen) return null;
+  const [statementData, setStatementData] = useState<StatementOfGoodsData>(() => {
+    return caseData.statementOfGoods || getDefaultStatementOfGoodsForCase(caseData);
+  });
 
-  const sog = caseData.statementOfGoods || getDefaultStatementOfGoodsForCase(caseData);
+  if (!isOpen) return null;
 
   const handlePrint = () => {
     const prevTitle = document.title;
@@ -45,7 +51,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
   };
 
   const handleDownloadJSON = () => {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(sog, null, 2));
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(statementData, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
     downloadAnchor.setAttribute("download", `NYS_Form_AP47_${caseData.caseNumber}.json`);
@@ -54,24 +60,37 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
     downloadAnchor.remove();
   };
 
+  const handleUpdateStatement = (updated: StatementOfGoodsData) => {
+    setStatementData(updated);
+    if (onSaveContract) {
+      onSaveContract(caseData.id, updated);
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 print:p-0 font-sans animate-fadeIn contract-print-modal-backdrop print:static print:bg-white print:overflow-visible print:block print:w-full">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 print:p-0 font-sans animate-fadeIn contract-print-modal-backdrop print:static print:bg-white print:overflow-visible print:block print:w-full">
       
       {/* Modal Container */}
-      <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
+      <div className="bg-white border border-neutral-200 rounded-2xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
         
         {/* Screen-Only Header Bar */}
-        <div className="p-4 sm:p-5 bg-neutral-900 text-white flex items-center justify-between shrink-0 print:hidden">
+        <div className="p-3.5 sm:p-4 bg-neutral-900 text-white flex items-center justify-between shrink-0 print:hidden no-print">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center font-bold text-xs">
+            <div className="w-8 h-8 rounded-lg bg-[#800000] text-white flex items-center justify-center font-bold text-xs border border-amber-400/40">
               AP47
             </div>
             <div>
-              <h3 className="font-serif-title text-sm sm:text-base font-bold text-neutral-100">
-                Official Statement of Goods & Services Selected (NYS Form AP-47)
-              </h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-serif font-bold text-sm sm:text-base text-neutral-100">
+                  Official Statement of Goods &amp; Services Selected (Form AP-47)
+                </h3>
+                <span className="hidden md:inline-flex items-center gap-1 bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  <ShieldCheck className="w-3 h-3" />
+                  Office Scanned Form Matched
+                </span>
+              </div>
               <p className="text-[11px] text-neutral-400 font-light">
-                Conforms to 10 NYCRR § 77.8 and NYS Public Health Law § 3440-a • Case <strong className="text-amber-300 font-mono">{caseData.caseNumber}</strong>
+                10 NYCRR &sect; 77.8 &bull; NYS Public Health Law &sect; 3440-a &bull; Case <strong className="text-amber-300 font-mono">{caseData.caseNumber}</strong> &bull; All funds due 48 hours prior to service
               </p>
             </div>
           </div>
@@ -79,22 +98,22 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
           <div className="flex items-center space-x-2">
             <button
               onClick={handleOpenChecks}
-              className="bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition border border-amber-400/40"
+              className="bg-neutral-800 hover:bg-neutral-700 text-amber-300 font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition border border-amber-400/40 cursor-pointer"
               title="Print 3-Part Cash Advance Check Vouchers"
             >
               <HandCoins className="w-3.5 h-3.5 text-amber-300" />
-              <span>Pass-Through Checks</span>
+              <span className="hidden sm:inline">Pass-Through Checks</span>
             </button>
             <button
               onClick={handlePrint}
-              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40"
+              className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 transition shadow-sm border border-amber-400/40 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5 text-amber-300" />
               <span>Print / Save PDF</span>
             </button>
             <button
               onClick={handleDownloadJSON}
-              className="bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 transition border border-neutral-700"
+              className="bg-neutral-800 hover:bg-neutral-700 text-neutral-200 font-bold text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition border border-neutral-700 cursor-pointer"
               title="Download JSON Export"
             >
               <Download className="w-3.5 h-3.5" />
@@ -102,625 +121,23 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-full transition"
+              className="p-1.5 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-full transition cursor-pointer"
+              title="Close Modal"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Printable Document Body */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white text-neutral-900 space-y-6 text-xs contract-print-modal-body print:p-0 print:overflow-visible ap47-print-page">
-          
-          {/* Official Letterhead */}
-          <div className="text-center space-y-1 pb-4 border-b-2 border-neutral-900">
-            <h1 className="font-serif-title text-2xl font-bold uppercase tracking-wider text-neutral-900">
-              Benta's Funeral Home, Inc.
-            </h1>
-            <p className="text-[11px] font-semibold text-neutral-700 uppercase tracking-widest">
-              630 Saint Nicholas Avenue • New York, NY 10030 • (212) 281-8850
-            </p>
-            <p className="text-[10px] text-neutral-500 font-mono">
-              NYS Bureau of Funeral Directing Registration #08850 • Established 1928
-            </p>
-            <div className="pt-2 text-xs font-bold uppercase tracking-wide bg-neutral-100 py-1 rounded border border-neutral-300 mt-2">
-              Itemized Statement of Funeral Goods and Services Selected (NYS Form AP-47)
-            </div>
-          </div>
-
-          {/* Case & Purchaser Metadata Grid */}
-          <div className="grid grid-cols-2 gap-4 p-3 bg-neutral-50 rounded-lg border border-neutral-200">
-            <div className="space-y-1">
-              <p><strong>Name of Deceased:</strong> {caseData.decedent.legalName}</p>
-              <p><strong>Date of Death:</strong> {caseData.decedent.dateOfDeath}</p>
-              <p><strong>Place of Death:</strong> {caseData.decedent.placeOfDeath}</p>
-              <p><strong>Selected Service:</strong> {caseData.serviceSelections.packageTitle}</p>
-            </div>
-            <div className="space-y-1">
-              <p><strong>Contract Date:</strong> {sog.agreementDate}</p>
-              <p><strong>Case Number:</strong> <span className="font-mono font-bold">{caseData.caseNumber}</span></p>
-              <p><strong>Purchaser / Informant:</strong> {caseData.informant.fullName} ({caseData.informant.relationship}) • <span className="font-semibold text-neutral-800">Terms: All funds are due 48 hours prior to service</span></p>
-              <p><strong>Licensed Funeral Director:</strong> {sog.sectionIV.licensedFuneralDirector.name} ({sog.sectionIV.licensedFuneralDirector.licenseNumber})</p>
-            </div>
-          </div>
-
-          {/* SECTION I: ITEMIZED SERVICES */}
-          <div className="space-y-2">
-            <h2 className="font-bold text-xs uppercase tracking-wider bg-neutral-900 text-white px-2.5 py-1 rounded">
-              Section I — Itemized Funeral Home Service Charges
-            </h2>
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-neutral-300 text-[10px] text-neutral-500 uppercase">
-                  <th className="py-1">Description of Service Category</th>
-                  <th className="py-1 text-right">Amount ($)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-200">
-                {sog.sectionI.A_alternativeServicesAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">A. Alternative Services ({sog.serviceType === 'direct_cremation' ? 'Direct Cremation' : sog.serviceType === 'direct_burial' ? 'Direct Burial' : 'Alternative Service'})</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.A_alternativeServicesAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.A_otherAmount || 0) > 0 || Boolean(sog.sectionI.A_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • A. Alternative Services — Other: <em>{sog.sectionI.A_otherSpecify || 'Special Alternative Service'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.A_otherAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.B_transferOfRemainsAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">B. Transfer of Remains to Funeral Establishment (NYC Radius)</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.B_transferOfRemainsAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.B_excessMilesAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • B. Excess Mileage ({sog.sectionI.B_excessMilesCount} miles @ ${(sog.sectionI.B_excessMilesRate || 5).toFixed(2)}/mi)
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.B_excessMilesAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.B_otherAmount || 0) > 0 || Boolean(sog.sectionI.B_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • B. Transfer of Remains — Other: <em>{sog.sectionI.B_otherSpecify || 'Special Transfer Equipment/Personnel'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.B_otherAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C1_embalmingAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">C1. Embalming & Sanitary Preservation (Explicit Authorization Acknowledged)</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C1_embalmingAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C2_topicalDisinfectionAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.a. Topical Disinfection</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_topicalDisinfectionAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C2_custodialCareAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.b. Custodial Care ({sog.sectionI.C2_custodialCareDays} days)</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_custodialCareAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C2_dressingCasketingAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.c. Dressing and Casketing</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_dressingCasketingAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C2_cosmetologyAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.d. Cosmetology</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_cosmetologyAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C2_restorationAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.e. Restoration</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_restorationAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.C2_refrigerationAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">C2.f. Refrigeration ({sog.sectionI.C2_refrigerationDays} days)</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.C2_refrigerationAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.C2_otherAmount || 0) > 0 || (sog.sectionI.C_otherAmount || 0) > 0 || Boolean(sog.sectionI.C2_otherSpecify) || Boolean(sog.sectionI.C_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • C2.g. Other Preparation: <em>{sog.sectionI.C2_otherSpecify || sog.sectionI.C_otherSpecify || 'Special Sanitary Prep / Hair Grooming'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.C2_otherAmount || 0) + (sog.sectionI.C_otherAmount || 0)).toFixed(2)}</td>
-                  </tr>
-                )}
-                <tr>
-                  <td className="py-1.5">D. Basic Services of Funeral Director & Staff (Non-Declinable Overhead)</td>
-                  <td className="py-1.5 text-right font-mono">${sog.sectionI.D_basicArrangementsAmount.toFixed(2)}</td>
-                </tr>
-                {((sog.sectionI.D_otherAmount || 0) > 0 || Boolean(sog.sectionI.D_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • D. Arrangements — Other: <em>{sog.sectionI.D_otherSpecify || 'Special Administrative / Coordination Service'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.D_otherAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.E1_supervisionVisitationAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">E1. Supervision for Visitation / Wake</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E1_supervisionVisitationAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.E2_supervisionFuneralServiceAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">E2. Supervision for Funeral Service / Ceremony</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E2_supervisionFuneralServiceAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.E3_supervisionCemeteryCrematoryAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">E3. Supervision for Cemetery Committal / Crematory</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E3_supervisionCemeteryCrematoryAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.E3_supervisionMemorialAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">E3. Supervision for Memorial Service</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.E3_supervisionMemorialAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.E3_otherSupervisionAmount || 0) > 0 || (sog.sectionI.E_otherAmount || 0) > 0 || Boolean(sog.sectionI.E3_otherSupervisionSpecify) || Boolean(sog.sectionI.E_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • E3. Supervision — Other: <em>{sog.sectionI.E3_otherSupervisionSpecify || sog.sectionI.E_otherSpecify || 'Special Ceremony Staff Supervision'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.E3_otherSupervisionAmount || 0) + (sog.sectionI.E_otherAmount || 0)).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.F1_facilitiesVisitationAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">F1. Facilities for Visitation / Viewing ({caseData.serviceSelections.viewingParlor})</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.F1_facilitiesVisitationAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.F2_facilitiesFuneralServiceAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">F2. Facilities & Staff for Funeral Ceremony ({caseData.serviceSelections.serviceVenueName || "Benta's Main Sanctuary"})</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.F2_facilitiesFuneralServiceAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.F3_repastRoomAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">F3. Fellowship Repast Reception Facility</td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.F3_repastRoomAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.F_otherAmount || 0) > 0 || (sog.sectionI.F3_otherFacilitiesAmount || 0) > 0 || Boolean(sog.sectionI.F_otherSpecify) || Boolean(sog.sectionI.F3_otherFacilitiesSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • F. Use of Facilities — Other: <em>{sog.sectionI.F_otherSpecify || sog.sectionI.F3_otherFacilitiesSpecify || 'Special Gathering Parlor / Salon'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.F_otherAmount || 0) + (sog.sectionI.F3_otherFacilitiesAmount || 0)).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.G_totalLiveryAmount > 0 && (
-                  <tr>
-                    <td className="py-2" colSpan={2}>
-                      <div className="flex justify-between font-semibold border-b border-neutral-200 pb-1">
-                        <span>G. Livery &amp; Transportation Fleet Allocation:</span>
-                        <span className="font-mono font-bold">${sog.sectionI.G_totalLiveryAmount.toFixed(2)}</span>
-                      </div>
-                      <div className="pt-1.5 space-y-1.5 pl-3">
-                        {(sog.sectionI.G_vehicles || []).map((v) => (
-                          <div key={v.id} className="flex items-center justify-between text-[11px] text-neutral-700 bg-neutral-50/70 p-1.5 rounded border border-neutral-200/60">
-                            <div>
-                              <span className="font-semibold text-neutral-900">{v.vehicleType}</span>
-                              <span className="text-[10px] text-neutral-500 uppercase ml-2">({v.rateType.replace(/_/g, ' ')})</span>
-                            </div>
-                            <div className="text-right font-mono font-medium">
-                              {v.count} &times; ${v.unitPrice.toFixed(2)} = ${(v.count * v.unitPrice).toFixed(2)}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                )}
-                {((sog.sectionI.G_otherAmount || 0) > 0 || Boolean(sog.sectionI.G_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • G. Livery — Other: <em>{sog.sectionI.G_otherSpecify || 'Custom Motorcade Vehicle / Sprinter'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.G_otherAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.H1_casketAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      H1. Casket / Alternative Container: <strong>{sog.sectionI.H1_casketModelNameOrNumber || "Selected Casket"}</strong>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.H1_casketAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.H2_outerReceptacleAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      H2. Outer Burial Container / Vault: <strong>{sog.sectionI.H2_outerReceptacleModelName || "Burial Vault"}</strong>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.H2_outerReceptacleAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.H3_urnAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      H3. Cremation Urn / Keepsake: <strong>{sog.sectionI.H3_urnModelName || "Memorial Urn"}</strong>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.H3_urnAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.H_otherAmount || 0) > 0 || Boolean(sog.sectionI.H_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • H. Merchandise — Other: <em>{sog.sectionI.H_otherSpecify || 'Custom Merchandise Item'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.H_otherAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.I6_totalFlowersAmount > 0 && (
-                  <tr>
-                    <td className="py-2" colSpan={2}>
-                      <div className="flex justify-between font-semibold border-b border-neutral-200 pb-1">
-                        <span>I6. Floral Arrangements &amp; Custom Tributes (Benta&apos;s Florist Collection):</span>
-                        <span className="font-mono font-bold">${sog.sectionI.I6_totalFlowersAmount.toFixed(2)}</span>
-                      </div>
-                      <div className="pt-1.5 space-y-1.5 pl-3">
-                        {(sog.sectionI.I6_flowerItems || []).map((f) => (
-                          <div key={f.id} className="flex items-center justify-between text-[11px] text-neutral-700 bg-neutral-50/70 p-1.5 rounded border border-neutral-200/60">
-                            <div className="flex items-center space-x-2">
-                              {f.imageUrl && (
-                                <img
-                                  src={f.imageUrl}
-                                  alt={f.description}
-                                  className="w-8 h-8 rounded object-cover border border-neutral-300 shrink-0"
-                                />
-                              )}
-                              <div>
-                                <span className="font-semibold text-neutral-900">
-                                  {f.code ? `[${f.code}] ` : ''}{f.name || f.description}
-                                </span>
-                                <div className="text-[10px] text-neutral-500">
-                                  {f.size && <span className="uppercase font-bold text-neutral-700">{f.size}</span>}
-                                  {f.ribbonText && <span className="text-[#800000] italic ml-1.5 font-medium">&quot;{f.ribbonText}&quot;</span>}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-right font-mono font-medium">
-                              {f.quantity} &times; ${f.unitPrice.toFixed(2)} = ${(f.quantity * f.unitPrice).toFixed(2)}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                  </tr>
-                )}
-                {sog.sectionI.I1_memorialCardsAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I1. Memorial / Prayer Cards ({sog.sectionI.I1_memorialCardsQty} Cards)
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I1_memorialCardsAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.I10_programsMatrix.quantity > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I10. Printed Memorial Programs ({sog.sectionI.I10_programsMatrix.quantity} qty)
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I10_programsMatrix.totalAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.I8_registerBookAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I8. Register Book ({sog.sectionI.I8_registerBookQty || 1}x)
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I8_registerBookAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionI.I11_videoTributeAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I11. Digital Video Tribute Production
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionI.I11_videoTributeAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.I_otherAmount || 0) > 0 || (sog.sectionI.I12_otherAmount || 0) > 0 || Boolean(sog.sectionI.I_otherSpecify) || Boolean(sog.sectionI.I12_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I. Additional Services &amp; Merchandise — Other (Line 1): <em>{sog.sectionI.I_otherSpecify || sog.sectionI.I12_otherSpecify || 'Custom Keepsake / Memorial Item'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.I_otherAmount || 0) + (sog.sectionI.I12_otherAmount || 0)).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.I_other2Amount || 0) > 0 || (sog.sectionI.I12_other2Amount || 0) > 0 || Boolean(sog.sectionI.I_other2Specify) || Boolean(sog.sectionI.I12_other2Specify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I. Additional Services &amp; Merchandise — Other (Line 2): <em>{sog.sectionI.I_other2Specify || sog.sectionI.I12_other2Specify || 'Custom Keepsake / Memorial Item (2)'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.I_other2Amount || 0) + (sog.sectionI.I12_other2Amount || 0)).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.I_other3Amount || 0) > 0 || (sog.sectionI.I12_other3Amount || 0) > 0 || Boolean(sog.sectionI.I_other3Specify) || Boolean(sog.sectionI.I12_other3Specify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • I. Additional Services &amp; Merchandise — Other (Line 3): <em>{sog.sectionI.I_other3Specify || sog.sectionI.I12_other3Specify || 'Custom Keepsake / Memorial Item (3)'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${((sog.sectionI.I_other3Amount || 0) + (sog.sectionI.I12_other3Amount || 0)).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionI.J_otherAmount || 0) > 0 || Boolean(sog.sectionI.J_otherSpecify)) && (
-                  <tr>
-                    <td className="py-1.5 pl-3 text-neutral-800 text-xs">
-                      • J. Limited Services — Other: <em>{sog.sectionI.J_otherSpecify || 'Special Transport / Forwarding'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionI.J_otherAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-
-              </tbody>
-              <tfoot>
-                <tr className="font-bold border-t-2 border-neutral-900">
-                  <td className="pt-2">Subtotal — Section I (Funeral Home Charges):</td>
-                  <td className="pt-2 text-right font-mono text-sm">${sog.sectionI.totalFuneralHomeCharges.toFixed(2)}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-
-          {/* SECTION II: CASH ADVANCES */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center bg-neutral-900 text-white px-2.5 py-1 rounded">
-              <h2 className="font-bold text-xs uppercase tracking-wider">
-                Section II — Cash Advances
-              </h2>
-              <button
-                onClick={handleOpenChecks}
-                className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-[10px] px-2.5 py-0.5 rounded transition flex items-center gap-1 border border-amber-400/40 print:hidden"
-              >
-                <HandCoins className="w-3 h-3 text-amber-300" />
-                <span>Print Checks (${sog.sectionII.totalCashAdvances.toFixed(2)})</span>
-              </button>
-            </div>
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-neutral-300 text-[10px] text-neutral-500 uppercase">
-                  <th className="py-1">Cash Advance Category</th>
-                  <th className="py-1 text-right">Amount ($)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-200">
-                {sog.sectionII.cemeteryOrCrematoryAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      1. Cemetery / Crematory Fee ({sog.sectionII.cemeteryOrCrematoryName || caseData.serviceSelections.crematoryOrCemeteryName || "Woodlawn Crematory"})
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionII.cemeteryOrCrematoryAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionII.deathCertificateTranscriptsAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      2. Certified Death Certificate Transcripts ({sog.sectionII.deathCertificateTranscriptsCount} Copies @ NYC Health Dept)
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionII.deathCertificateTranscriptsAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionII.clergyHonorariaAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      3. Clergy Honorarium / Church Officiant ({sog.sectionII.clergyChurchName || "Harlem Minister Guild"})
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionII.clergyHonorariaAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionII.organistMusicianAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      4. Organist / Vocalist ({sog.sectionII.organistMusicianName || "Sanctuary Organist"})
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionII.organistMusicianAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {sog.sectionII.pallbearersAmount > 0 && (
-                  <tr>
-                    <td className="py-1.5">
-                      5. Pallbearers Professional Service Crew ({sog.sectionII.pallbearersCount || 4} Staff)
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${sog.sectionII.pallbearersAmount.toFixed(2)}</td>
-                  </tr>
-                )}
-                {(sog.sectionII.bridgeAndRoadTollsAmount > 0 || sog.sectionII.gratuitiesLiveryAndStaffAmount > 0) && (
-                  <tr>
-                    <td className="py-1.5">
-                      6. Bridge &amp; Road Tolls / Chauffeur Service Pool
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.bridgeAndRoadTollsAmount + sog.sectionII.gratuitiesLiveryAndStaffAmount).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.dispositionPermitAmount || 0) > 0) && (
-                  <tr>
-                    <td className="py-1.5">
-                      7. {sog.sectionII.dispositionPermitType || 'NY Disposition Permit'}
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.dispositionPermitAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.eVitalFilingFeeAmount || 0) > 0) && (
-                  <tr>
-                    <td className="py-1.5">
-                      8. NYC EDRS / Electronic Vital Filing Fee
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.eVitalFilingFeeAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.nycCorrectionFeeAmount || 0) > 0) && (
-                  <tr>
-                    <td className="py-1.5">
-                      9. NYC Death Certificate Correction Fee
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.nycCorrectionFeeAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.insuranceFunderFeeAmount || 0) > 0) && (
-                  <tr>
-                    <td className="py-1.5">
-                      10. Insurance Funder Fee / Assignment Processing
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.insuranceFunderFeeAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.publicTransportationShippingAmount || 0) > 0) && (
-                  <tr>
-                    <td className="py-1.5">
-                      11. Public Transportation / Common Carrier Shipping
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.publicTransportationShippingAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.otherCashAdvanceAmount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvanceSpecify)) && (
-                  <tr>
-                    <td className="py-1.5">
-                      12. Other Cash Advance (Line 1): <em>{sog.sectionII.otherCashAdvanceSpecify || 'Pass-Through Cash Disbursement (1)'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvanceAmount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.otherCashAdvance2Amount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvance2Specify)) && (
-                  <tr>
-                    <td className="py-1.5">
-                      12b. Other Cash Advance (Line 2): <em>{sog.sectionII.otherCashAdvance2Specify || 'Pass-Through Cash Disbursement (2)'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvance2Amount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {((sog.sectionII.otherCashAdvance3Amount || 0) > 0 || Boolean(sog.sectionII.otherCashAdvance3Specify)) && (
-                  <tr>
-                    <td className="py-1.5">
-                      12c. Other Cash Advance (Line 3): <em>{sog.sectionII.otherCashAdvance3Specify || 'Pass-Through Cash Disbursement (3)'}</em>
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${(sog.sectionII.otherCashAdvance3Amount || 0).toFixed(2)}</td>
-                  </tr>
-                )}
-                {(sog.sectionII.customCashAdvances || []).map((c, idx) => (
-                  <tr key={c.id || idx}>
-                    <td className="py-1.5">
-                      {13 + idx}. {c.description}
-                    </td>
-                    <td className="py-1.5 text-right font-mono">${c.amount.toFixed(2)}</td>
-                  </tr>
-                ))}
-              </tbody>
-              <tfoot>
-                <tr className="font-bold border-t-2 border-neutral-900">
-                  <td className="pt-2">Subtotal — Section II (Cash Advances):</td>
-                  <td className="pt-2 text-right font-mono text-sm">${sog.sectionII.totalCashAdvances.toFixed(2)}</td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-
-          {/* SECTION III: SUMMARY OF CHARGES */}
-          <div className="space-y-2">
-            <h2 className="font-bold text-xs uppercase tracking-wider bg-neutral-900 text-white px-2.5 py-1 rounded">
-              Section III — Summary of Total Charges & Balance Due
-            </h2>
-            <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-300 space-y-2">
-              <div className="flex justify-between">
-                <span>1. Total Funeral Home Charges (Section I):</span>
-                <span className="font-mono font-bold">${sog.sectionIII.funeralHomeChargesTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>2. Total Cash Advances (Section II):</span>
-                <span className="font-mono font-bold">${sog.sectionIII.cashAdvancesTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between border-t border-neutral-300 pt-2 text-sm font-bold text-neutral-900">
-                <span>TOTAL ESTIMATED FUNERAL CHARGES:</span>
-                <span className="font-mono text-[#800000]">${sog.sectionIII.totalFuneralCharges.toFixed(2)}</span>
-              </div>
-              {sog.sectionIII.lessCreditsAndInsurance > 0 && (
-                <div className="flex justify-between text-emerald-800 font-semibold">
-                  <span>Less: Verified Insurance / HRA / Deposit Credits:</span>
-                  <span className="font-mono">-${sog.sectionIII.lessCreditsAndInsurance.toFixed(2)}</span>
-                </div>
-              )}
-              <div className="flex justify-between border-t-2 border-neutral-900 pt-2 text-base font-bold text-neutral-950">
-                <span>ESTIMATED BALANCE DUE:</span>
-                <span className="font-mono text-[#800000]">${sog.sectionIII.balanceDue.toFixed(2)}</span>
-              </div>
-              <div className="p-2 bg-white rounded-lg border border-red-200 text-[10px] text-neutral-600 space-y-0.5 mt-2">
-                <div><strong>Terms:</strong> All funds are due 48 hours prior to service. Late charge of 1.5% per month applies to balances past due.</div>
-              </div>
-            </div>
-          </div>
-
-          {/* TOTAL SUMMARY & SETTLEMENT */}
-          <div className="p-4 bg-neutral-100 rounded-xl border border-neutral-300 space-y-2">
-            <div className="flex justify-between text-sm font-bold text-neutral-900">
-              <span>TOTAL ESTIMATED FUNERAL CONTRACT AMOUNT:</span>
-              <span className="font-mono text-base text-[#800000]">${caseData.totalAmountDue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
-            </div>
-            {caseData.splitBilling && caseData.splitBilling.length > 0 && (
-              <div className="pt-2 border-t border-neutral-200 text-[11px] text-neutral-600 space-y-1">
-                <span className="font-bold block text-neutral-800">Approved Split-Billing Allocations:</span>
-                {caseData.splitBilling.map((b, i) => (
-                  <div key={i} className="flex justify-between">
-                    <span>• {b.payerType} ({b.providerName})</span>
-                    <span className="font-mono font-semibold">${b.amountAllocated.toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* STATUTORY DISCLOSURES & SIGNATURE BLOCK */}
-          <div className="pt-4 border-t-2 border-neutral-900 space-y-4">
-            <p className="text-[10px] text-neutral-500 leading-relaxed italic">
-              <strong>Statutory Disclosure (10 NYCRR § 77.8):</strong> Embalming is not required by law. Embalming may be, however, in certain cases required by the funeral home. If embalming is selected, it is with the explicit consent of the family as recorded above. If charges are made for goods or services selected by you, you are entitled to a complete itemized explanation.
-            </p>
-
-            <p className="text-[10px] text-neutral-800 font-medium">
-              <strong>TERMS:</strong> All funds are due 48 hours prior to service. The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.
-            </p>
-
-            <div className="grid grid-cols-2 gap-8 pt-4">
-              <div className="border-t border-neutral-900 pt-2 space-y-1">
-                <div className="flex justify-between items-baseline">
-                  <p className="font-bold">Signature of Purchaser / Next of Kin</p>
-                  <span className="text-[9px] font-semibold text-neutral-700">Notice: All funds due 48 hours prior to service</span>
-                </div>
-                <p className="text-[10px] text-neutral-600">eSigned via BFH Family Portal: {caseData.informant.fullName}</p>
-                <p className="text-[10px] text-neutral-400 font-mono">Timestamp: {sog.sectionIV.termsAcknowledgement.acknowledgedDate}</p>
-              </div>
-
-              <div className="border-t border-neutral-900 pt-2 space-y-1">
-                <p className="font-bold">Licensed Funeral Director</p>
-                <p className="text-[10px] text-neutral-600 font-serif-title italic font-bold">Jason Benta, LFD</p>
-                <p className="text-[10px] text-neutral-400 font-mono">NYS LFD License #08850</p>
-              </div>
-            </div>
-          </div>
-
+        {/* Printable Document Body Rendering Authentic Scanned Form AP-47 */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-neutral-100 text-neutral-900 contract-print-modal-body print:p-0 print:bg-white print:overflow-visible">
+          <OfficialScannedFormAP47
+            id="official-form-ap47-printable"
+            caseData={caseData}
+            statementData={statementData}
+            onChangeStatementData={handleUpdateStatement}
+            readOnly={false}
+          />
         </div>
 
       </div>
