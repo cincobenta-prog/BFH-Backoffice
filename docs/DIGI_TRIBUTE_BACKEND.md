@@ -31,3 +31,8 @@ The existing demo tabs (Share a Memory, Coffee Table Book, Funeral Admin, Cloud 
 3. Sending the link by email or text is not automated yet. The panel shows the link to copy. (Twilio SMS can be added through the existing `/api/twilio/sms` function.)
 4. The public tribute page `/t/<slug>` (reads `api/tribute/public.ts`) is not built yet.
 5. Tested only with the server mocked. Not tested against a live database.
+
+## Setup log (2026-11-03)
+- Supabase project `ljgxguxhjhnnmjivrcos`: migration `digi_tribute` applied. Tables `tribute_cases`, `tribute_invites`, `tribute_items`, `tribute_audit` have row level security on with no policies (server-only access). Private bucket `tribute-media` (15 MB, image/audio/video types).
+- Vercel project `bfh-backoffice`, Preview environment: `VITE_AUTH_MODE`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `SUPABASE_URL`, `TRIBUTE_PUBLIC_BASE_URL` (branch `digi-tribute-backend`) and the secret `SUPABASE_SERVICE_ROLE_KEY` (Preview, all branches; can be narrowed to this branch). Production has none of these.
+- Supabase Auth: sign-ups off, redirect URLs must include the preview address `https://bfh-backoffice-git-digi-tribute-backend-benta2.vercel.app/**`.
