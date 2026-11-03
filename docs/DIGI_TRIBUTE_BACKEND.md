@@ -18,3 +18,16 @@ Status: draft, not deployed, database migration NOT applied.
 
 ## Not tested
 Written without running against a live database. Treat as a first draft for review.
+
+## Screens (added 2026-11-03)
+- `src/components/family/FamilyUploadPage.tsx`: public page at `/u/<private token>` (no staff sign-in). Name, relation, memory text, photos/audio/video, consent box. Submits as PENDING. Wired in `src/main.tsx`.
+- `src/components/family/TributeLiveServerPanel.tsx`: staff panel, new "Live Tribute" tab in the Digital Tribute Studio. Create a private family link, review and approve or hide contributions (photo, audio and video previews), publish or unpublish the page address.
+- `src/lib/services/tributeApi.ts`: browser client for `api/tribute/*` plus tests.
+The existing demo tabs (Share a Memory, Coffee Table Book, Funeral Admin, Cloud Sync) are unchanged and still use sample data.
+
+### What still blocks real use
+1. Apply the migration to Supabase and set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `TRIBUTE_PUBLIC_BASE_URL` as server env vars in Vercel.
+2. `npm run dev` does not run the `api/` functions. Test locally with `vercel dev`, or on a Vercel preview deployment of this branch.
+3. Sending the link by email or text is not automated yet. The panel shows the link to copy. (Twilio SMS can be added through the existing `/api/twilio/sms` function.)
+4. The public tribute page `/t/<slug>` (reads `api/tribute/public.ts`) is not built yet.
+5. Tested only with the server mocked. Not tested against a live database.

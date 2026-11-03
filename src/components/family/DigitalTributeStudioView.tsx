@@ -17,6 +17,7 @@ import {
   INITIAL_STORAGE_TELEMETRY
 } from '../../lib/data/digitalTributeQuestionBank';
 import { formatIntoPoeticStanzas } from '../../lib/utils/aiPoemEngine';
+import { TributeLiveServerPanel } from './TributeLiveServerPanel';
 import {
   Sparkles,
   ArrowRight,
@@ -45,7 +46,7 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
   isStaffUser: _isStaffUser
 }) => {
   // Main Studio Mode: 'guest' (Share a Memory) | 'document' (Keepsake Coffee Table Book) | 'admin' (Funeral Admin) | 'cloud' (Cloud Sync)
-  const [activeTab, setActiveTab] = useState<'guest' | 'document' | 'admin' | 'cloud'>('guest');
+  const [activeTab, setActiveTab] = useState<'guest' | 'document' | 'admin' | 'cloud' | 'live'>('guest');
 
   // Contributor 4-Step Workflow: 1 (PIN Gate) | 2 (Relationship) | 3 (Dynamic Questions) | 4 (Studio Recording) | 5 (Completed)
   const [guestStep, setGuestStep] = useState<number>(1);
@@ -394,6 +395,17 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
                 {pendingCount}
               </span>
             )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab('live')}
+            className={`px-4 py-2 rounded-full transition flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'live'
+                ? 'bg-white text-[#af893e] shadow-xs font-bold'
+                : 'text-[#69635b] hover:text-[#191714]'
+            }`}
+          >
+            <span>🌐 Live Tribute</span>
           </button>
 
           <button
@@ -1007,6 +1019,8 @@ export const DigitalTributeStudioView: React.FC<DigitalTributeStudioViewProps> =
       {/* ======================================================== */}
       {/* VIEW 3: FUNERAL HOME ADMINISTRATION (Moderation)         */}
       {/* ======================================================== */}
+      {activeTab === 'live' && <TributeLiveServerPanel activeCase={activeCase} />}
+
       {activeTab === 'admin' && (
         <div className="max-w-4xl mx-auto space-y-6 animate-fadeIn">
           <div className="text-center space-y-1">

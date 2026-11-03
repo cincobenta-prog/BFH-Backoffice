@@ -5,6 +5,8 @@ import './index.css';
 import { registerPwaServiceWorker } from './registerServiceWorker';
 import { AUTH_MODE } from './lib/auth/supabaseClient';
 import { StaffLoginGate } from './components/auth/StaffLoginGate';
+import { FamilyUploadPage } from './components/family/FamilyUploadPage';
+import { tokenFromPath } from './lib/services/tributeApi';
 
 registerPwaServiceWorker();
 
@@ -20,9 +22,14 @@ if (typeof window !== 'undefined') {
   });
 }
 
+// Public family upload page (/u/<private token>): never behind staff sign-in.
+const familyToken = typeof window !== 'undefined' ? tokenFromPath(window.location.pathname) : null;
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    {AUTH_MODE === 'supabase' ? (
+    {familyToken ? (
+      <FamilyUploadPage token={familyToken} />
+    ) : AUTH_MODE === 'supabase' ? (
       <StaffLoginGate>
         <App />
       </StaffLoginGate>
