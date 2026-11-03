@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { registerPwaServiceWorker } from './registerServiceWorker';
+import { AUTH_MODE } from './lib/auth/supabaseClient';
+import { StaffLoginGate } from './components/auth/StaffLoginGate';
 
 registerPwaServiceWorker();
 
@@ -20,7 +22,13 @@ if (typeof window !== 'undefined') {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    {AUTH_MODE === 'supabase' ? (
+      <StaffLoginGate>
+        <App />
+      </StaffLoginGate>
+    ) : (
+      <App />
+    )}
   </React.StrictMode>,
 );
 

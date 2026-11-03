@@ -37,3 +37,16 @@ Any server endpoint that returns family data therefore needs its own, real check
 - Data already in browsers' localStorage stays there until step 3 migrates and clears it.
 - Staff devices still need screen locks and updates.
 - Backups, retention and a privacy policy are separate tasks.
+
+## Implementation status (branch digi-tribute-backend)
+Rollout step 1 is built, off by default:
+- `src/lib/auth/supabaseClient.ts` client and the `VITE_AUTH_MODE` flag
+- `src/lib/auth/staffAuth.ts` session hook, role read from `app_metadata.role`, 30-minute idle sign-out
+- `src/components/auth/StaffLoginGate.tsx` sign-in screen (email link), "no staff role" screen, sign-out button
+- `src/main.tsx` wraps the app in the gate only when `VITE_AUTH_MODE=supabase`
+- `src/lib/auth/staffAuth.test.ts` role tests (a role in `user_metadata` is ignored)
+To try it locally: set `VITE_AUTH_MODE=supabase`, `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env.local`, finish the Supabase dashboard steps above, then run `npm run dev`. With the flag off, nothing changes.
+Not yet done: the in-app role switcher and the manager PIN still work after sign-in (rollout step 4). Sign-in screen not yet tested in a browser against a live project.
+
+## Also found
+The manager PIN has a default value in the source (`ManagerPinLoginModal.tsx`) and the repo is public. Treat that PIN as known. Change it, and replace the browser PIN check with the server-side check described above.

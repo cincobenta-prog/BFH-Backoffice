@@ -20,6 +20,7 @@
     "set-edrs": "node scripts/set-edrs.cjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
     "lucide-react": "^0.475.0",
