@@ -45,3 +45,4 @@ Note: the current encrypt/decrypt functions are synchronous and used across the 
 ## Progress log
 - 2026-11-03: Twilio moved off the browser on branch `digi-tribute-backend`. The client (`twilioService.ts`) now posts to `/api/twilio/sms` and never holds, stores or sends the Auth Token. Settings screens show a server-managed notice instead of a token field. `scripts/set-twilio.cjs` writes `TWILIO_AUTH_TOKEN` (no VITE_ prefix). Type check clean, 39 existing tests pass. Still to do for Twilio: set `TWILIO_ACCOUNT_SID` and `TWILIO_AUTH_TOKEN` in Vercel, and if a token was ever stored in a browser or in a deployed bundle, rotate it in Twilio.
 - Remaining integrations (Stripe, QuickBooks, DocuSign, AWS, EDRS) follow the same pattern.
+- Staff sign-in design written: see `docs/STAFF_SIGNIN_DESIGN.md`.
