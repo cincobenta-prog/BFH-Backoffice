@@ -15,7 +15,6 @@ import {
   X, 
   Send, 
   RefreshCw, 
-  ShieldCheck, 
   ExternalLink,
   Sparkles
 } from 'lucide-react';
@@ -49,7 +48,7 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
   const handleSave = () => {
     const updated: TwilioGatewayConfig = {
       ...config,
-      isLiveActive: Boolean(config.accountSid.trim() && config.authToken.trim()),
+      isLiveActive: Boolean(config.accountSid.trim()),
       lastTestedAt: config.lastTestedAt
     };
     saveTwilioConfig(updated);
@@ -60,10 +59,10 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
   };
 
   const handleTestSms = async () => {
-    if (!config.accountSid.trim() || !config.authToken.trim()) {
+    if (!config.accountSid.trim()) {
       setTestResult({
         success: false,
-        message: 'Please enter your Twilio Account SID and Auth Token / API Secret first.'
+        message: 'Please enter your Twilio Account SID first. The Auth Token is set on the server.'
       });
       return;
     }
@@ -205,22 +204,10 @@ export const TwilioGatewaySettingsModal: React.FC<TwilioGatewaySettingsModalProp
               </div>
             </div>
 
-            {/* 2. Auth Token / Secret */}
-            <div>
-              <label className="text-xs font-bold text-neutral-300 block mb-1 flex items-center justify-between">
-                <span>2. Twilio Auth Token or API Key Secret:</span>
-                <span className="text-[10px] text-neutral-500 font-mono font-normal">32-character secret</span>
-              </label>
-              <div className="relative">
-                <ShieldCheck className="w-4 h-4 text-neutral-500 absolute left-3 top-2.5" />
-                <input
-                  type="password"
-                  value={config.authToken}
-                  onChange={(e) => setConfig({ ...config, authToken: e.target.value.trim() })}
-                  placeholder="••••••••••••••••••••••••••••••••"
-                  className="w-full bg-neutral-950 border border-neutral-700 rounded-xl pl-9 pr-3 py-2 text-xs font-mono text-white focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
-                />
-              </div>
+            {/* 2. Auth Token is server-side only */}
+            <div className="rounded-xl border border-amber-400/40 bg-amber-400/10 p-3 text-[11px] text-amber-100">
+              <b>2. Twilio Auth Token:</b> managed on the server. It is set as the Vercel environment variable{' '}
+              <code className="font-mono">TWILIO_AUTH_TOKEN</code> and is never entered or stored in this browser.
             </div>
 
             {/* 3. From Phone Number */}
