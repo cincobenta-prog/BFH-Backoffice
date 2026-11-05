@@ -98,4 +98,200 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     expect(compContent).toContain('ADDITIONS OR ALTERATIONS OF SERVICES AND MERCHANDISE SELECTED');
     expect(compContent).toContain('The following changes represent items of service and/or merchandise ordered or altered subsequent to the original funeral agreement.');
   });
+
+  it('renders OfficialScannedFormAP47 with case-24501 to static HTML and verifies all 18 must-fixes on the DOM', async () => {
+    const React = await import('react');
+    const { renderToStaticMarkup } = await import('react-dom/server');
+    const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
+
+    const testCase = MOCK_CASES[0]; // case-24501
+    const statement = testCase.statementOfGoods || getDefaultStatementOfGoodsForCase(testCase);
+    const html = renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        id: 'official-form-ap47-printable',
+        caseData: testCase,
+        statementData: statement,
+        readOnly: true
+      })
+    );
+
+    // Verify MUST-FIX 1: Public Notice Albany
+    expect(html).toContain('875 Central Avenue, Albany, New York 12206');
+    expect(html).not.toContain('Hedley Park');
+    expect(html).not.toContain('433 River Street');
+    expect(html).not.toContain('Troy, New York 12180');
+
+    // Verify MUST-FIX 2: Full Arrangements statutory definition
+    expect(html).toContain('Basic arrangements: including funeral director, other staff, equipment and facilities to respond to initial request for service, the arrangement conference, securing of necessary authorizations and coordination of service plans with parties involved in the final disposition of the deceased.');
+    expect(html).not.toContain('Basic arrangements: funeral director, staff, equipment, authorizations &amp; coordination.');
+
+    // Verify MUST-FIX 3: II Cash Advances disclosure with parenthetical
+    expect(html).toContain('These are estimated charges for items to be paid to others. We will charge you no more for these items than is actually paid the third parties. (Describe and show estimated charges.)');
+
+    // Verify MUST-FIX 4: IV Combined line 3
+    expect(html).toContain('Combined charge for other Facilities and Staff (specify)');
+    expect(html).not.toContain('Combined charge for Facilities and Staff for memorial service is');
+
+    // Verify MUST-FIX 5: E.3 Other supervision (specify)
+    expect(html).toContain('3. Other supervision (specify)');
+    expect(html).not.toContain('Supervision at Cemetery / Crematory');
+
+    // Verify MUST-FIX 6: C.1 Embalming preparation room
+    expect(html).toContain('1. Embalming (including use of preparation room)');
+    expect(html).not.toContain('use of prep room');
+
+    // Verify MUST-FIX 7: E Header funeral director and staff
+    expect(html).toContain('E. Supervision (funeral director and staff)');
+
+    // Verify MUST-FIX 8: B Transfer full label
+    expect(html).toContain('Transfer of remains to the funeral establishment including personnel, equipment and vehicle');
+
+    // Verify MUST-FIX 9: Embalming statutory notice under C.1
+    expect(html).toContain('If you select a funeral for which this firm requires embalming such as a funeral with viewing, you may have to pay for embalming.');
+
+    // Verify MUST-FIX 10: GPL + CPL + OIRPL receipt acknowledgment
+    expect(html).toContain('Casket Price List and Outer Interment Receptacle Price List');
+
+    // Verify MUST-FIX 11: A Direct Cremation & Direct Burial lines
+    expect(html).toContain('1. Direct Cremation');
+    expect(html).toContain('2. Direct Burial');
+
+    // Verify MUST-FIX 12: C.2 e Restoration, f Other (specify), no Anatomical Repair
+    expect(html).toContain('e. Restoration');
+    expect(html).toContain('f. Other (specify)');
+    expect(html).not.toContain('Anatomical Repair');
+
+    // Verify MUST-FIX 13: F Facilities wording + F.3
+    expect(html).toContain('1. Use of the facilities for visitation');
+    expect(html).toContain('2. Use of facilities for funeral service');
+    expect(html).toContain('3. Other use of facilities (specify)');
+
+    // Verify MUST-FIX 14: G Livery slots
+    expect(html).toContain('1. a. Hearse or');
+    expect(html).toContain('b. Alternative vehicle');
+    expect(html).toContain('2. Flower vehicle');
+    expect(html).toContain('3. Limousine(s)');
+    expect(html).toContain('4. Passenger car(s)');
+
+    // Verify MUST-FIX 15: H.1 fields + H.2 Outer Interment Receptacle block
+    expect(html).toContain('H. Merchandise');
+    expect(html).toContain('1. Casket or alternative container');
+    expect(html).toContain('2. Outer Interment Receptacle');
+
+    // Verify MUST-FIX 16: I Additional Services labels 1–9
+    expect(html).toContain('1. Memorial Cards');
+    expect(html).toContain('2. Acknowledgement Cards');
+    expect(html).toContain('3. Casket Plate');
+    expect(html).toContain('4. Crucifix/Cross');
+    expect(html).toContain('5. Hairdressing');
+    expect(html).toContain('6. Flowers');
+    expect(html).toContain('7. Clothing or Burial Garments');
+    expect(html).toContain('8. Register Book');
+    expect(html).toContain('9. Death Notices');
+
+    // Verify MUST-FIX 17: I.J Limited Services
+    expect(html).toContain('J. Limited Services');
+    expect(html).toContain('1. Forwarding remains to');
+    expect(html).toContain('2. Receiving remains from');
+
+    // Verify MUST-FIX 18: II Cash Advances labels 1–9
+    expect(html).toContain('1. Cemetery or Crematory');
+    expect(html).toContain('2. Clergy Honoraria');
+    expect(html).toContain('3. Death Certificate Transcripts');
+    expect(html).toContain('4. Livery');
+    expect(html).toContain('5. Pallbearers');
+    expect(html).toContain('6. Public Transportation');
+    expect(html).toContain('7. Gratuities');
+    expect(html).toContain('8. Bridge &amp; Road Tolls');
+    expect(html).toContain('9. Telephone &amp; Telegraph Charges');
+
+    // Related cleanups: Other Authorization by line
+    expect(html).toContain('Other Authorization by:');
+
+    // Export full styled HTML wrapper for INV-24501
+    const artifactDir = '/Users/jbenta1me.com/.gemini/antigravity-ide/brain/7f5d1313-bf0d-4b7a-a203-1b203a00fa2c';
+    const styledHtmlINV24501 = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NYS Form AP-47 — INV-24501</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @page { size: letter portrait; margin: 8mm; }
+    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #f5f5f5; padding: 20px; }
+    .print-page { background: #fff; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding: 24px; }
+    @media print { body { padding: 0; background: #fff; } .print-page { box-shadow: none; padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="print-page">
+    ${html}
+  </div>
+</body>
+</html>`;
+    fs.writeFileSync(path.join(artifactDir, 'INV-24501_regenerated_AP-47.html'), styledHtmlINV24501, 'utf8');
+
+    // Render Blank Template
+    const blankCase = {
+      ...testCase,
+      caseNumber: 'TEMPLATE-BLANK',
+      decedent: {
+        legalName: '____________________________________',
+        gender: 'male' as const,
+        dateOfBirth: '____-__-__',
+        dateOfDeath: '____-__-__',
+        placeOfDeath: '____________________________________',
+        facilityName: '____________________________________',
+        ssn: '',
+        ssnMasked: '___-__-____',
+        maritalStatus: 'single' as const,
+        residenceAddress: '',
+        city: '',
+        state: 'NY',
+        zipCode: '',
+        veteran: false,
+        occupation: '',
+        industry: '',
+        fatherName: '',
+        motherMaidenName: ''
+      },
+      informant: {
+        fullName: '____________________________________',
+        relationship: '________________',
+        phone: '(___) ___-____',
+        email: '',
+        address: '____________________________________',
+        isNextOfKin: true,
+        hasRightToControl: true
+      }
+    };
+    const blankHtml = renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        id: 'official-form-ap47-blank',
+        caseData: blankCase,
+        statementData: getDefaultStatementOfGoodsForCase(blankCase),
+        readOnly: true
+      })
+    );
+    const styledHtmlBlank = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NYS Form AP-47 — Blank Official Template</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @page { size: letter portrait; margin: 8mm; }
+    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #f5f5f5; padding: 20px; }
+    .print-page { background: #fff; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding: 24px; }
+    @media print { body { padding: 0; background: #fff; } .print-page { box-shadow: none; padding: 0; } }
+  </style>
+</head>
+<body>
+  <div class="print-page">
+    ${blankHtml}
+  </div>
+</body>
+</html>`;
+    fs.writeFileSync(path.join(artifactDir, 'AP-47_blank_official_template.html'), styledHtmlBlank, 'utf8');
+  });
 });

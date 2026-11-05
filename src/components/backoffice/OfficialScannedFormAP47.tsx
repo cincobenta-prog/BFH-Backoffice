@@ -88,12 +88,12 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
 
     return (
       <div className={`text-[10px] leading-tight ${indent ? `pl-${indent}` : ''}`}>
-        <div className="flex items-baseline justify-between gap-1 w-full">
-          <span className={`shrink-0 ${isHeader ? 'font-bold text-neutral-950' : 'text-neutral-800'}`}>
+        <div className="flex items-end justify-between gap-1 w-full overflow-hidden">
+          <span className={`shrink min-w-0 ${isHeader ? 'font-bold text-neutral-950' : 'text-neutral-800'} break-words leading-snug`}>
             {label}
           </span>
-          <span className="grow border-b border-dotted border-neutral-400 mx-1 mb-0.5 opacity-70"></span>
-          <span className="shrink-0 font-mono text-right font-medium text-neutral-900 min-w-[58px]">
+          <span className="grow border-b border-dotted border-neutral-400 mx-1 mb-0.5 opacity-70 shrink min-w-[6px]"></span>
+          <span className="shrink-0 font-mono text-right font-medium text-neutral-900 min-w-[56px] whitespace-nowrap pl-1">
             {formattedAmount}
           </span>
         </div>
