@@ -87,18 +87,18 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
       : (amount || '-');
 
     return (
-      <div className={`text-[10px] leading-tight ${indent ? `pl-${indent}` : ''}`}>
+      <div className={`text-[10px] print:text-[8.5px] leading-tight print:leading-[13px] ${indent ? `pl-${indent}` : ''}`}>
         <div className="flex items-end justify-between gap-1 w-full overflow-hidden">
           <span className={`shrink min-w-0 ${isHeader ? 'font-bold text-neutral-950' : 'text-neutral-800'} break-words leading-snug`}>
             {label}
           </span>
           <span className="grow border-b border-dotted border-neutral-400 mx-1 mb-0.5 opacity-70 shrink min-w-[6px]"></span>
-          <span className="shrink-0 font-mono text-right font-medium text-neutral-900 min-w-[56px] whitespace-nowrap pl-1">
+          <span className="shrink-0 font-mono text-right font-medium text-neutral-900 min-w-[56px] whitespace-nowrap pl-1 print:text-[8.5px]">
             {formattedAmount}
           </span>
         </div>
         {sublabel && (
-          <div className="text-[9px] text-neutral-600 pl-2 leading-snug italic">
+          <div className="text-[9px] print:text-[7.5px] text-neutral-600 pl-2 leading-snug italic print:leading-tight">
             {sublabel}
           </div>
         )}
@@ -143,48 +143,42 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
       {/* Main AP-47 Contract Document Canvas */}
       <div
         id={id}
-        className="bg-white text-neutral-900 border-2 border-neutral-800 shadow-xl p-6 sm:p-8 font-serif-text text-xs leading-normal print:p-0 print:border-none print:shadow-none print:w-full"
+        className="bg-white text-neutral-900 border-2 border-neutral-800 shadow-xl p-6 sm:p-8 font-serif-text text-xs leading-normal print:p-0 print:border-none print:shadow-none print:w-full ap47-form-root"
       >
         
         {/* ============================================================== */}
         {/* PAGE 1 / COLUMNS 1 & 2: SECTION I (FUNERAL HOME CHARGES) */}
         {/* ============================================================== */}
-        <div className="space-y-3 ap47-print-page ap47-page-1">
+        <div className="space-y-3 print:space-y-1.5 ap47-print-page ap47-page-1">
           
           {/* Header Block */}
-          <div className="border-b-2 border-neutral-900 pb-2">
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+          <div className="border-b-2 border-neutral-900 pb-2 print:pb-1">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 print:gap-2">
               
               {/* Left Letterhead */}
-              <div className="space-y-0.5">
-                <div className="font-serif italic font-semibold text-lg sm:text-xl text-neutral-800">
+              <div className="space-y-0.5 print:space-y-0">
+                <div className="font-serif italic font-semibold text-lg sm:text-xl print:text-xs text-neutral-800">
                   &ldquo;A Celebration of Life&rdquo;
                 </div>
-                <div className="font-serif font-bold text-2xl sm:text-3xl text-neutral-950 tracking-wide uppercase">
+                <div className="font-serif font-bold text-2xl sm:text-3xl print:text-xl text-neutral-950 tracking-wide uppercase">
                   Benta&apos;s Funeral Home, Inc.
                 </div>
-                <div className="text-[11px] font-sans text-neutral-700">
-                  630 St. Nicholas Avenue (Corner of W. 141st Street)
-                </div>
-                <div className="text-[11px] font-sans text-neutral-700">
-                  New York, New York 10030
-                </div>
-                <div className="text-[11px] font-mono text-neutral-700">
-                  (212) 281-8850-1-2-3
+                <div className="text-[11px] print:text-[8px] font-sans text-neutral-700 leading-tight">
+                  630 St. Nicholas Avenue (Corner of W. 141st Street) • New York, NY 10030 • (212) 281-8850
                 </div>
               </div>
 
               {/* Right Number and Date Fields */}
-              <div className="font-sans text-xs space-y-1.5 self-end sm:self-auto text-right w-full sm:w-auto">
+              <div className="font-sans text-xs print:text-[9px] space-y-1.5 print:space-y-0.5 self-end sm:self-auto text-right w-full sm:w-auto">
                 <div className="flex items-baseline justify-end gap-2">
                   <span className="font-bold">Number:</span>
-                  <span className="font-mono font-bold border-b border-neutral-800 px-3 pb-0.5 min-w-[120px] text-left">
+                  <span className="font-mono font-bold border-b border-neutral-800 px-3 pb-0.5 min-w-[100px] text-left">
                     {sog.invoiceNumber || caseData.caseNumber}
                   </span>
                 </div>
                 <div className="flex items-baseline justify-end gap-2">
                   <span className="font-bold">Date:</span>
-                  <span className="font-mono font-bold border-b border-neutral-800 px-3 pb-0.5 min-w-[120px] text-left">
+                  <span className="font-mono font-bold border-b border-neutral-800 px-3 pb-0.5 min-w-[100px] text-left">
                     {sog.agreementDate}
                   </span>
                 </div>
@@ -193,14 +187,14 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </div>
 
             {/* Decedent Metadata Strip */}
-            <div className="font-sans text-xs pt-3 mt-2 border-t border-neutral-300 space-y-1.5">
+            <div className="font-sans text-xs print:text-[8.5px] pt-2 print:pt-1 mt-1.5 print:mt-0.5 border-t border-neutral-300 space-y-1 print:space-y-0.5">
               <div className="flex flex-wrap items-baseline gap-2">
                 <span className="font-bold shrink-0">Name of Deceased:</span>
                 <span className="font-bold border-b border-neutral-800 px-2 pb-0.5 grow text-neutral-950 min-w-[200px]">
                   {caseData.decedent.legalName}
                 </span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-2">
                 <div className="flex items-baseline gap-2">
                   <span className="font-bold shrink-0">Date of Death:</span>
                   <span className="border-b border-neutral-800 px-2 pb-0.5 grow font-medium">
@@ -217,21 +211,21 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </div>
 
             {/* Itemization Subheader */}
-            <div className="text-center pt-2.5">
-              <div className="font-sans font-bold text-xs sm:text-sm uppercase tracking-wider text-neutral-900">
+            <div className="text-center pt-2 print:pt-1">
+              <div className="font-sans font-bold text-xs sm:text-sm print:text-[9.5px] uppercase tracking-wider text-neutral-900">
                 ITEMIZATION OF FUNERAL SERVICES AND MERCHANDISE SELECTED
               </div>
-              <p className="font-sans text-[9.5px] text-neutral-600 italic mt-0.5 max-w-4xl mx-auto leading-normal">
+              <p className="font-sans text-[9.5px] print:text-[7.5px] text-neutral-600 italic mt-0.5 max-w-4xl mx-auto leading-normal print:leading-tight">
                 The following are the charges for the services, merchandise, and livery you have selected. You will not be charged for any item you do not choose unless it is necessary because of other selections you have made. Any such charges are explained below.
               </p>
             </div>
           </div>
 
           {/* Section I Grid: 2 Columns on Page 1 (or Columns 1 & 2 in 4-column layout) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 font-sans text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-6 print:gap-3.5 pt-2 print:pt-0.5 font-sans text-xs print:text-[8.5px]">
             
             {/* COLUMN 1: Sections A through E */}
-            <div className="space-y-3">
+            <div className="space-y-3 print:space-y-1.5">
               <div className="border-b border-neutral-800 pb-1">
                 <div className="font-bold text-[11px] uppercase tracking-wide text-neutral-900">
                   I. FUNERAL HOME CHARGES
@@ -346,11 +340,11 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </div>
 
             {/* COLUMN 2: Sections F through J */}
-            <div className="space-y-3">
+            <div className="space-y-3 print:space-y-1.5">
               
               {/* F. Use of facilities */}
-              <div className="space-y-1">
-                <div className="font-bold text-neutral-900 text-[10.5px]">F. Use of the facilities</div>
+              <div className="space-y-1 print:space-y-0.5">
+                <div className="font-bold text-neutral-900 text-[10.5px] print:text-[9.5px]">F. Use of the facilities</div>
                 <DotRow label="1. Use of the facilities for visitation" amount={sog.sectionI.F1_facilitiesVisitationAmount} indent={2} />
                 <DotRow label="2. Use of facilities for funeral service" amount={sog.sectionI.F2_facilitiesFuneralServiceAmount} indent={2} />
                 <DotRow 
@@ -381,8 +375,8 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 const passAmount = passVeh ? passVeh.totalAmount : undefined;
 
                 return (
-                  <div className="space-y-1">
-                    <div className="font-bold text-neutral-900 text-[10.5px]">G. Livery</div>
+                  <div className="space-y-1 print:space-y-0.5">
+                    <div className="font-bold text-neutral-900 text-[10.5px] print:text-[9.5px]">G. Livery</div>
                     <DotRow label="1. a. Hearse or" amount={hearseAmount} indent={2} />
                     <DotRow 
                       label={`   b. Alternative vehicle (Specify type: ${altVehType})`} 
@@ -412,19 +406,19 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 const woodSpecies = isWood ? casketSpeciesOrGauge : '________';
                 const metalKind = !isWood && casketSpeciesOrGauge ? (casketSpeciesOrGauge.includes('Steel') ? 'Steel' : casketSpeciesOrGauge) : '________';
                 const gaugeWeight = !isWood && (casketSpeciesOrGauge.includes('Gauge') || casketModel.includes('gauge')) 
-                  ? (casketSpeciesOrGauge.includes('Gauge') ? casketSpeciesOrGauge : '20 Gauge')
-                  : '________';
+                ? (casketSpeciesOrGauge.includes('Gauge') ? casketSpeciesOrGauge : '20 Gauge')
+                : '________';
 
                 return (
-                  <div className="space-y-1 text-[10px]">
-                    <div className="font-bold text-neutral-900 text-[10.5px]">H. Merchandise</div>
+                  <div className="space-y-1 print:space-y-0.5 text-[10px] print:text-[8.5px]">
+                    <div className="font-bold text-neutral-900 text-[10.5px] print:text-[9.5px]">H. Merchandise</div>
                     
                     <DotRow 
                       label="1. Casket or alternative container" 
                       amount={sog.sectionI.H1_casketAmount} 
                       indent={2} 
                     />
-                    <div className="pl-4 text-[9px] text-neutral-800 space-y-0.5">
+                    <div className="pl-4 text-[9px] print:text-[8px] text-neutral-800 space-y-0.5 print:space-y-0 print:leading-tight">
                       <div>a. Supplier: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketSupplier || "Batesville Casket Company") : "________________________"}</span></div>
                       <div>b. Model name or number: <span className="border-b border-neutral-600 font-medium px-2">{casketModel || (sog.sectionI.H1_casketSelected ? "Jessup 20 gauge steel" : "________________________")}</span></div>
                       <div>c. Material: Species of wood <span className="border-b border-neutral-600 font-medium px-2">{woodSpecies}</span> or kind of metal <span className="border-b border-neutral-600 font-medium px-2">{metalKind}</span> weight or gauge <span className="border-b border-neutral-600 font-medium px-2">{gaugeWeight}</span></div>
@@ -432,13 +426,13 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                       <div>d. Interior: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketInterior || "Rosetan Crepe") : "________________________"}</span></div>
                     </div>
 
-                    <div className="pt-1">
+                    <div className="pt-0.5">
                       <DotRow 
                         label="2. Outer Interment Receptacle" 
                         amount={sog.sectionI.H2_outerReceptacleAmount > 0 ? sog.sectionI.H2_outerReceptacleAmount : undefined} 
                         indent={2} 
                       />
-                      <div className="pl-4 text-[9px] text-neutral-800 space-y-0.5">
+                      <div className="pl-4 text-[9px] print:text-[8px] text-neutral-800 space-y-0.5 print:space-y-0 print:leading-tight">
                         <div>a. Supplier: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleSupplier || "Trigard Burial Vaults") : "________________________"}</span></div>
                         <div>b. Model name or number: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleModelName || "Standard Concrete Burial Vault") : "________________________"}</span></div>
                         <div>c. Material: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleMaterial || "Reinforced Concrete / Asphalt Sealed") : "________________________"}</span></div>
@@ -449,11 +443,11 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
               })()}
 
               {/* I. Additional Services and Merchandise Selected */}
-              <div className="space-y-0.5">
-                <div className="font-bold text-neutral-900 text-[10.5px]">
+              <div className="space-y-0.5 print:space-y-0">
+                <div className="font-bold text-neutral-900 text-[10.5px] print:text-[9.5px]">
                   I. Additional Services and Merchandise Selected
                 </div>
-                <div className="text-[9px] text-neutral-500 italic pl-2">(Describe and show price)</div>
+                <div className="text-[9px] print:text-[7.5px] text-neutral-500 italic pl-2 print:leading-tight">(Describe and show price)</div>
                 
                 <DotRow label="1. Memorial Cards" amount={sog.sectionI.I1_memorialCardsAmount} indent={2} />
                 <DotRow label="2. Acknowledgement Cards" amount={sog.sectionI.I2_acknowledgementCardsAmount} indent={2} />
@@ -474,22 +468,25 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   amount={sog.sectionI.I11_videoTributeAmount || sog.sectionI.I_otherAmount} 
                   indent={2} 
                 />
+              </div>
+
+              {/* J. Limited Services */}
+              <div className="space-y-0.5 print:space-y-0">
+                <div className="font-bold text-neutral-900 text-[10.5px] print:text-[9.5px]">J. Limited Services</div>
                 <DotRow 
-                  label={`12. ${sog.sectionI.I_other2Specify || '____________________________________'}`} 
-                  amount={sog.sectionI.I_other2Amount} 
+                  label="1. Forwarding remains to ________________________" 
+                  amount={(sog.sectionI.J1_forwardingRemainsAmount || 0) > 0 ? sog.sectionI.J1_forwardingRemainsAmount : "N/A"} 
+                  indent={2} 
+                />
+                <DotRow 
+                  label="2. Receiving remains from ________________________" 
+                  amount={(sog.sectionI.J2_receivingRemainsAmount || 0) > 0 ? sog.sectionI.J2_receivingRemainsAmount : "N/A"} 
                   indent={2} 
                 />
               </div>
 
-              {/* J. Limited Services */}
-              <div className="space-y-1">
-                <div className="font-bold text-neutral-900 text-[10.5px]">J. Limited Services</div>
-                <DotRow label="1. Forwarding remains to ________________________" amount={sog.sectionI.J1_forwardingRemainsAmount} indent={2} />
-                <DotRow label="2. Receiving remains from ________________________" amount={sog.sectionI.J2_receivingRemainsAmount} indent={2} />
-              </div>
-
               {/* Total of Funeral Home Charges */}
-              <div className="pt-2 border-t-2 border-neutral-900">
+              <div className="pt-1.5 print:pt-1 border-t-2 border-neutral-900">
                 <DotRow 
                   label="TOTAL OF FUNERAL HOME CHARGES" 
                   amount={sog.sectionI.totalFuneralHomeCharges} 
@@ -506,10 +503,10 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
         {/* ============================================================== */}
         {/* PAGE 2 / COLUMNS 3 & 4: CASH ADVANCES, SUMMARY, DISCLOSURES, AUTHORIZATIONS & SIGNATURES */}
         {/* ============================================================== */}
-        <div className="pt-6 border-t-4 border-neutral-900 ap47-page-break print:break-before-page ap47-print-page ap47-page-2">
+        <div className="pt-6 print:pt-2 border-t-4 border-neutral-900 ap47-page-break print:break-before-page ap47-print-page ap47-page-2">
           
           {/* Page 2 Top Reference Line */}
-          <div className="flex justify-between items-center border-b border-neutral-400 pb-1 mb-3 text-[10px] text-neutral-600 font-sans">
+          <div className="flex justify-between items-center border-b border-neutral-400 pb-1 mb-3 print:mb-1.5 text-[10px] print:text-[8.5px] text-neutral-600 font-sans">
             <span className="font-serif italic font-bold text-neutral-900">
               Benta&apos;s Funeral Home, Inc. • Statement of Goods and Services Selected (Form AP-47)
             </span>
@@ -518,10 +515,10 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-sans text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-6 print:gap-3.5 font-sans text-xs print:text-[8.5px]">
             
             {/* COLUMN 3: Cash Advances, Summary, Explanation, Public Notice, Warranty */}
-            <div className="space-y-4">
+            <div className="space-y-4 print:space-y-1.5">
               
               {/* II. Cash Advances */}
               <div className="space-y-1 border border-neutral-800 p-2.5 rounded bg-white">
@@ -678,7 +675,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </div>
 
             {/* COLUMN 4: Invoice To, Authorizations, Terms, GPL, Signatures, Additions */}
-            <div className="space-y-3.5">
+            <div className="space-y-3.5 print:space-y-1.5">
               
               {/* Column 4 Top Subheader & Invoice To */}
               <div className="border-b-2 border-neutral-900 pb-1.5">

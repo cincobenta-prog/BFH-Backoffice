@@ -217,10 +217,19 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
   <title>NYS Form AP-47 — INV-24501</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @page { size: letter portrait; margin: 8mm; }
-    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #f5f5f5; padding: 20px; }
-    .print-page { background: #fff; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding: 24px; }
-    @media print { body { padding: 0; background: #fff; } .print-page { box-shadow: none; padding: 0; } }
+    @page { size: letter portrait; margin: 6mm; }
+    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #f5f5f5; padding: 12px; }
+    .print-page { background: #fff; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding: 16px; }
+    .ap47-page-break { break-before: page !important; page-break-before: always !important; }
+    @media print {
+      body { padding: 0; background: #fff; }
+      .print-page { box-shadow: none; padding: 0; max-width: none; }
+    }
+    .ap47-form-root { font-size: 8.75px !important; line-height: 1.22 !important; }
+    .ap47-form-root .space-y-6 > * + * { margin-top: 0.35rem !important; }
+    .ap47-form-root .space-y-4 > * + * { margin-top: 0.22rem !important; }
+    .ap47-form-root .space-y-3 > * + * { margin-top: 0.15rem !important; }
+    .ap47-form-root .p-2\.5, .ap47-form-root .p-3, .ap47-form-root .p-3\.5, .ap47-form-root .p-4, .ap47-form-root .p-5 { padding: 0.18rem 0.35rem !important; }
   </style>
 </head>
 <body>
@@ -280,10 +289,19 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
   <title>NYS Form AP-47 — Blank Official Template</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @page { size: letter portrait; margin: 8mm; }
-    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #f5f5f5; padding: 20px; }
-    .print-page { background: #fff; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding: 24px; }
-    @media print { body { padding: 0; background: #fff; } .print-page { box-shadow: none; padding: 0; } }
+    @page { size: letter portrait; margin: 6mm; }
+    body { font-family: ui-sans-serif, system-ui, sans-serif; background: #f5f5f5; padding: 12px; }
+    .print-page { background: #fff; max-width: 850px; margin: 0 auto; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); padding: 16px; }
+    .ap47-page-break { break-before: page !important; page-break-before: always !important; }
+    @media print {
+      body { padding: 0; background: #fff; }
+      .print-page { box-shadow: none; padding: 0; max-width: none; }
+    }
+    .ap47-form-root { font-size: 8.75px !important; line-height: 1.22 !important; }
+    .ap47-form-root .space-y-6 > * + * { margin-top: 0.35rem !important; }
+    .ap47-form-root .space-y-4 > * + * { margin-top: 0.22rem !important; }
+    .ap47-form-root .space-y-3 > * + * { margin-top: 0.15rem !important; }
+    .ap47-form-root .p-2\.5, .ap47-form-root .p-3, .ap47-form-root .p-3\.5, .ap47-form-root .p-4, .ap47-form-root .p-5 { padding: 0.18rem 0.35rem !important; }
   </style>
 </head>
 <body>
