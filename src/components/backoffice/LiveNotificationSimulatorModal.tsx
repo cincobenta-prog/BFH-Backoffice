@@ -66,7 +66,6 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
   // Twilio Gateway inline settings state
   const [twilioConfig, setTwilioConfig] = useState<TwilioGatewayConfig>(() => getTwilioConfig());
   const [gatewaySid, setGatewaySid] = useState(twilioConfig.accountSid || '');
-  const [gatewayAuthToken, setGatewayAuthToken] = useState(twilioConfig.authToken || '');
   const [gatewayFromNumber, setGatewayFromNumber] = useState(twilioConfig.fromPhoneNumber || '+12122818850');
   const [gatewayTestPhone, setGatewayTestPhone] = useState('(917) 807-3995');
   const [isGatewayTesting, setIsGatewayTesting] = useState(false);
@@ -77,7 +76,6 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
     const current = getTwilioConfig();
     setTwilioConfig(current);
     setGatewaySid(current.accountSid || '');
-    setGatewayAuthToken(current.authToken || '');
     setGatewayFromNumber(current.fromPhoneNumber || '+12122818850');
   }, []);
 
@@ -86,9 +84,9 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
     const updated: TwilioGatewayConfig = {
       ...twilioConfig,
       accountSid: gatewaySid.trim(),
-      authToken: gatewayAuthToken.trim(),
+      authToken: '',
       fromPhoneNumber: gatewayFromNumber.trim(),
-      isLiveActive: Boolean(gatewaySid.trim() && gatewayAuthToken.trim())
+      isLiveActive: Boolean(gatewaySid.trim())
     };
     saveTwilioConfig(updated);
     setTwilioConfig(updated);
@@ -97,10 +95,10 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
   };
 
   const handleInlineTestSms = async () => {
-    if (!gatewaySid.trim() || !gatewayAuthToken.trim()) {
+    if (!gatewaySid.trim()) {
       setGatewayTestFeedback({
         success: false,
-        message: 'Please enter your Twilio Account SID and Auth Token / Secret above first.'
+        message: 'Please enter your Twilio Account SID above first. The Auth Token is set on the server.'
       });
       return;
     }
@@ -119,7 +117,7 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
     saveTwilioConfig({
       ...twilioConfig,
       accountSid: gatewaySid.trim(),
-      authToken: gatewayAuthToken.trim(),
+      authToken: '',
       fromPhoneNumber: gatewayFromNumber.trim(),
       isLiveActive: true
     });
@@ -1061,18 +1059,8 @@ export const LiveNotificationSimulatorModal: React.FC<LiveNotificationSimulatorM
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-neutral-700 font-bold mb-1 text-[11px]">
-                        2. Twilio Auth Token or API Secret <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="password"
-                        required
-                        value={gatewayAuthToken}
-                        onChange={(e) => setGatewayAuthToken(e.target.value)}
-                        placeholder="e.g. 32-character authentication token"
-                        className="w-full bg-white border border-neutral-300 rounded-xl px-3 py-2 text-xs font-mono text-neutral-900 focus:border-[#800000] outline-none shadow-xs"
-                      />
+                    <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-[11px] text-amber-900">
+                      <b>2. Twilio Auth Token:</b> managed on the server (Vercel variable <code className="font-mono">TWILIO_AUTH_TOKEN</code>). It is never entered or stored in this browser.
                     </div>
 
                     <div>

@@ -23,7 +23,8 @@ function writeEnv(accountSid, authToken, fromNumber) {
   // Update or append keys
   const keys = {
     VITE_TWILIO_ACCOUNT_SID: accountSid.trim(),
-    VITE_TWILIO_AUTH_TOKEN: authToken.trim(),
+    // Server-only (no VITE_ prefix): Vite does not bundle it into the website. Read by api/twilio/sms.ts.
+    TWILIO_AUTH_TOKEN: authToken.trim(),
     VITE_TWILIO_FROM_NUMBER: fromNumber.trim()
   };
 
@@ -44,7 +45,7 @@ function writeEnv(accountSid, authToken, fromNumber) {
   console.log('======================================================');
   console.log(`✅ Saved to: ${envPath}`);
   console.log(`📱 Account SID:  ${accountSid.trim()}`);
-  console.log(`🔑 Auth Token:   ••••••••••••••••••••••••••••••••`);
+  console.log(`🔑 Auth Token:   saved as TWILIO_AUTH_TOKEN (server only). Add the same variable in Vercel: Project > Settings > Environment Variables.`);
   console.log(`📞 From Number:  ${fromNumber.trim()}`);
   console.log('======================================================\n');
 }
