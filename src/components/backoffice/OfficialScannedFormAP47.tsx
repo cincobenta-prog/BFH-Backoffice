@@ -332,7 +332,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 <DotRow label="1. Supervision for visitation" amount={sog.sectionI.E1_supervisionVisitationAmount} indent={2} />
                 <DotRow label="2. Supervision for funeral service" amount={sog.sectionI.E2_supervisionFuneralServiceAmount} indent={2} />
                 <DotRow 
-                  label={`3. Other supervision (specify): ${sog.sectionI.E_otherSpecify || sog.sectionI.E3_otherSupervisionSpecify || 'Cemetery / Committal'}`} 
+                  label={`3. Other supervision (specify): ${sog.sectionI.E_otherSpecify || sog.sectionI.E3_otherSupervisionSpecify || '________________________'}`} 
                   amount={(sog.sectionI.E3_supervisionCemeteryCrematoryAmount || 0) + (sog.sectionI.E3_supervisionMemorialAmount || 0) + (sog.sectionI.E_otherAmount || 0)} 
                   indent={2} 
                 />
@@ -354,7 +354,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 <DotRow label="1. Use of the facilities for visitation" amount={sog.sectionI.F1_facilitiesVisitationAmount} indent={2} />
                 <DotRow label="2. Use of facilities for funeral service" amount={sog.sectionI.F2_facilitiesFuneralServiceAmount} indent={2} />
                 <DotRow 
-                  label={`3. Other use of facilities (specify): ${sog.sectionI.F_otherSpecify || sog.sectionI.F3_otherFacilitiesSpecify || 'Repast Fellowship Suite'}`} 
+                  label={`3. Other use of facilities (specify): ${sog.sectionI.F_otherSpecify || sog.sectionI.F3_otherFacilitiesSpecify || '________________________'}`} 
                   amount={(sog.sectionI.F3_repastRoomAmount || 0) + (sog.sectionI.F_otherAmount || 0) + (sog.sectionI.F3_otherFacilitiesAmount || 0)} 
                   indent={2} 
                 />
@@ -392,11 +392,11 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   indent={2} 
                 />
                 <div className="pl-4 text-[9px] text-neutral-700 space-y-0.5">
-                  <div>a. Supplier: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSupplier || "Batesville Casket Company"}</span></div>
-                  <div>b. Model name or number: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketModelNameOrNumber || "The St. Nicholas Classic Cherry"}</span></div>
-                  <div>c. Material: Species of wood <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketMaterialSpeciesOrGauge || "Solid Appalachian Cherry"}</span> or kind of metal <span className="border-b border-neutral-500 px-2">N/A</span> weight or gauge <span className="border-b border-neutral-500 px-2">N/A</span></div>
-                  <div>&nbsp;&nbsp;&nbsp;&nbsp;or alternative container (describe) <span className="border-b border-neutral-500 px-2">N/A</span></div>
-                  <div>d. Interior: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketInterior || "Champagne Velvet Tufted"}</span></div>
+                  <div>a. Supplier: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketSupplier || "Batesville Casket Company") : "________________________"}</span></div>
+                  <div>b. Model name or number: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketModelNameOrNumber || (sog.sectionI.H1_casketSelected ? "The St. Nicholas Classic Cherry" : "________________________")}</span></div>
+                  <div>c. Material: Species of wood <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketMaterialSpeciesOrGauge || "Solid Appalachian Cherry") : "________"}</span> or kind of metal <span className="border-b border-neutral-500 px-2">{sog.sectionI.H1_casketSelected ? "N/A" : "________"}</span> weight or gauge <span className="border-b border-neutral-500 px-2">{sog.sectionI.H1_casketSelected ? "N/A" : "________"}</span></div>
+                  <div>&nbsp;&nbsp;&nbsp;&nbsp;or alternative container (describe) <span className="border-b border-neutral-500 px-2">________________________</span></div>
+                  <div>d. Interior: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketInterior || "Champagne Velvet Tufted") : "________________________"}</span></div>
                 </div>
 
                 <div className="pt-1">
@@ -406,9 +406,9 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                     indent={2} 
                   />
                   <div className="pl-4 text-[9px] text-neutral-700 space-y-0.5">
-                    <div>a. Supplier: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSupplier || (sog.sectionI.H2_outerReceptacleSelected ? "Trigard Burial Vaults" : "N/A")}</span></div>
-                    <div>b. Model name or number: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleModelName || (sog.sectionI.H2_outerReceptacleSelected ? "Standard Concrete Burial Vault" : "N/A")}</span></div>
-                    <div>c. Material: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleMaterial || (sog.sectionI.H2_outerReceptacleSelected ? "Reinforced Concrete / Asphalt Sealed" : "N/A")}</span></div>
+                    <div>a. Supplier: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleSupplier || "Trigard Burial Vaults") : "________________________"}</span></div>
+                    <div>b. Model name or number: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleModelName || "Standard Concrete Burial Vault") : "________________________"}</span></div>
+                    <div>c. Material: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleMaterial || "Reinforced Concrete / Asphalt Sealed") : "________________________"}</span></div>
                   </div>
                 </div>
               </div>
@@ -565,7 +565,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 <div className="space-y-1 pt-1 text-[9.5px]">
                   <DotRow label="Combined charge for Facilities and Staff for visitation is" amount={combinedVisitation} />
                   <DotRow label="Combined charge for Facilities and Staff for funeral service is" amount={combinedFuneral} />
-                  <DotRow label="Combined charge for other Facilities and Staff (specify)" amount={combinedOther} />
+                  <DotRow label={`Combined charge for other Facilities and Staff (specify) ${sog.sectionIV.combinedOtherSpecify || '________________________'}`} amount={combinedOther} />
                 </div>
 
                 {/* Licensed Funeral Director Signature */}

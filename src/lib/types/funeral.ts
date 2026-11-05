@@ -1586,6 +1586,7 @@ export interface StatementOfGoodsSectionIV {
   combinedVisitationCharge: number;
   combinedFuneralServiceCharge: number;
   combinedOtherCharge: number;
+  combinedOtherSpecify?: string;
 
   custodyAuthorization: {
     authorized: boolean;
