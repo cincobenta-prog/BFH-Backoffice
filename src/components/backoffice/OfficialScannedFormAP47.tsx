@@ -246,12 +246,12 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 <div className="font-bold text-neutral-900 text-[10.5px]">A. Alternative Services</div>
                 <DotRow 
                   label="1. Direct Cremation" 
-                  amount={sog.serviceType === 'direct_cremation' ? sog.sectionI.A_alternativeServicesAmount : undefined} 
+                  amount={sog.serviceType === 'direct_cremation' && (sog.sectionI.A_alternativeServicesAmount || 0) > 0 ? sog.sectionI.A_alternativeServicesAmount : "N/A"} 
                   indent={2} 
                 />
                 <DotRow 
                   label="2. Direct Burial" 
-                  amount={sog.serviceType === 'direct_burial' ? sog.sectionI.A_alternativeServicesAmount : undefined} 
+                  amount={sog.serviceType === 'direct_burial' && (sog.sectionI.A_alternativeServicesAmount || 0) > 0 ? sog.sectionI.A_alternativeServicesAmount : "N/A"} 
                   indent={2} 
                 />
                 {Boolean(sog.sectionI.A_otherSpecify || (sog.sectionI.A_otherAmount || 0) > 0) && (
@@ -268,7 +268,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 <DotRow 
                   label="B. Transfer of remains to the funeral establishment including personnel, equipment and vehicle" 
                   amount={sog.sectionI.B_transferOfRemainsAmount} 
-                  isHeader={true}
+                  isHeader={true} 
                 />
                 {Boolean(sog.sectionI.B_otherSpecify || (sog.sectionI.B_otherAmount || 0) > 0) && (
                   <DotRow 
@@ -288,11 +288,11 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   amount={sog.sectionI.C1_embalmingAmount} 
                   indent={2} 
                 />
-                <p className="text-[8.5px] text-neutral-600 italic leading-snug pl-2 border-l-2 border-neutral-300 my-1">
+                <p className="text-[8.5px] text-neutral-800 italic leading-snug pl-2 border-l-2 border-neutral-400 my-1">
                   If you select a funeral for which this firm requires embalming such as a funeral with viewing, you may have to pay for embalming. You do not have to pay for embalming you do not approve if you select arrangements such as direct cremation or direct burial. If we charge for embalming, we will explain why below.
                 </p>
 
-                <div className="text-[10px] font-semibold text-neutral-800 pl-2">
+                <div className="text-[10px] font-semibold text-neutral-900 pl-2">
                   2. Other Preparation (including use of preparation room but excluding embalming)
                 </div>
                 <DotRow label="a. Topical Disinfection" amount={sog.sectionI.C2_topicalDisinfectionAmount} indent={4} />
@@ -312,9 +312,9 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 <DotRow 
                   label="D. Arrangements" 
                   amount={sog.sectionI.D_basicArrangementsAmount} 
-                  isHeader={true}
+                  isHeader={true} 
                 />
-                <p className="text-[8.5px] text-neutral-600 leading-snug pl-2">
+                <p className="text-[8.5px] text-neutral-800 leading-snug pl-2">
                   Basic arrangements: including funeral director, other staff, equipment and facilities to respond to initial request for service, the arrangement conference, securing of necessary authorizations and coordination of service plans with parties involved in the final disposition of the deceased.
                 </p>
                 {Boolean(sog.sectionI.D_otherSpecify || (sog.sectionI.D_otherAmount || 0) > 0) && (
@@ -339,7 +339,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
               </div>
 
               {/* Page 1 Bottom Tag */}
-              <div className="pt-4 text-[9px] text-neutral-400 font-mono">
+              <div className="pt-4 text-[9px] text-neutral-500 font-mono">
                 &copy; 2012 AP-47
               </div>
 
@@ -361,57 +361,92 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
               </div>
 
               {/* G. Livery */}
-              <div className="space-y-1">
-                <div className="font-bold text-neutral-900 text-[10.5px]">G. Livery</div>
-                <DotRow label="1. a. Hearse or" amount={sog.sectionI.G_totalLiveryAmount > 0 ? 650 : undefined} indent={2} />
-                <DotRow 
-                  label="   b. Alternative vehicle (Specify type: ____________________)" 
-                  amount={undefined} 
-                  indent={2} 
-                />
-                <DotRow label="2. Flower vehicle" amount={undefined} indent={2} />
-                <DotRow 
-                  label="3. Limousine(s) (Specify number: 1 @ $ 650.00 /limousine)" 
-                  amount={sog.sectionI.G_totalLiveryAmount > 650 ? (sog.sectionI.G_totalLiveryAmount - 650) : undefined} 
-                  indent={2} 
-                />
-                <DotRow 
-                  label="4. Passenger car(s) (Specify number: _____ @ $ _____ /car)" 
-                  amount={undefined} 
-                  indent={2} 
-                />
-              </div>
+              {(() => {
+                const vehicles = sog.sectionI.G_vehicles || [];
+                const hearseVeh = vehicles.find(v => /hearse|coach/i.test(v.vehicleType));
+                const altVeh = vehicles.find(v => /sprinter|van|alt/i.test(v.vehicleType));
+                const flowerVeh = vehicles.find(v => /flower/i.test(v.vehicleType));
+                const limoVeh = vehicles.find(v => /limo/i.test(v.vehicleType));
+                const passVeh = vehicles.find(v => /passenger|car/i.test(v.vehicleType));
+
+                const hearseAmount = hearseVeh ? hearseVeh.totalAmount : (sog.sectionI.G_totalLiveryAmount > 0 ? 655 : undefined);
+                const altVehType = altVeh ? altVeh.vehicleType : '____________________';
+                const altVehAmount = altVeh ? altVeh.totalAmount : undefined;
+                const flowerAmount = flowerVeh ? flowerVeh.totalAmount : undefined;
+                const limoCount = limoVeh ? limoVeh.count : '_';
+                const limoRate = limoVeh ? limoVeh.unitPrice.toFixed(2) : '_____';
+                const limoAmount = limoVeh ? limoVeh.totalAmount : undefined;
+                const passCount = passVeh ? passVeh.count : '_';
+                const passRate = passVeh ? passVeh.unitPrice.toFixed(2) : '_____';
+                const passAmount = passVeh ? passVeh.totalAmount : undefined;
+
+                return (
+                  <div className="space-y-1">
+                    <div className="font-bold text-neutral-900 text-[10.5px]">G. Livery</div>
+                    <DotRow label="1. a. Hearse or" amount={hearseAmount} indent={2} />
+                    <DotRow 
+                      label={`   b. Alternative vehicle (Specify type: ${altVehType})`} 
+                      amount={altVehAmount} 
+                      indent={2} 
+                    />
+                    <DotRow label="2. Flower vehicle" amount={flowerAmount} indent={2} />
+                    <DotRow 
+                      label={`3. Limousine(s) (Specify number: ${limoCount} @ $ ${limoRate} /limousine)`} 
+                      amount={limoAmount} 
+                      indent={2} 
+                    />
+                    <DotRow 
+                      label={`4. Passenger car(s) (Specify number: ${passCount} @ $ ${passRate} /car)`} 
+                      amount={passAmount} 
+                      indent={2} 
+                    />
+                  </div>
+                );
+              })()}
 
               {/* H. Merchandise */}
-              <div className="space-y-1 text-[10px]">
-                <div className="font-bold text-neutral-900 text-[10.5px]">H. Merchandise</div>
-                
-                <DotRow 
-                  label="1. Casket or alternative container" 
-                  amount={sog.sectionI.H1_casketAmount} 
-                  indent={2} 
-                />
-                <div className="pl-4 text-[9px] text-neutral-700 space-y-0.5">
-                  <div>a. Supplier: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketSupplier || "Batesville Casket Company") : "________________________"}</span></div>
-                  <div>b. Model name or number: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketModelNameOrNumber || (sog.sectionI.H1_casketSelected ? "The St. Nicholas Classic Cherry" : "________________________")}</span></div>
-                  <div>c. Material: Species of wood <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketMaterialSpeciesOrGauge || "Solid Appalachian Cherry") : "________"}</span> or kind of metal <span className="border-b border-neutral-500 px-2">{sog.sectionI.H1_casketSelected ? "N/A" : "________"}</span> weight or gauge <span className="border-b border-neutral-500 px-2">{sog.sectionI.H1_casketSelected ? "N/A" : "________"}</span></div>
-                  <div>&nbsp;&nbsp;&nbsp;&nbsp;or alternative container (describe) <span className="border-b border-neutral-500 px-2">________________________</span></div>
-                  <div>d. Interior: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketInterior || "Champagne Velvet Tufted") : "________________________"}</span></div>
-                </div>
+              {(() => {
+                const casketModel = sog.sectionI.H1_casketModelNameOrNumber || '';
+                const casketSpeciesOrGauge = sog.sectionI.H1_casketMaterialSpeciesOrGauge || '';
+                const isWood = /wood|cherry|oak|mahogany|pine|poplar|walnut/i.test(casketSpeciesOrGauge) || /wood|cherry|oak|mahogany/i.test(casketModel);
+                const woodSpecies = isWood ? casketSpeciesOrGauge : '________';
+                const metalKind = !isWood && casketSpeciesOrGauge ? (casketSpeciesOrGauge.includes('Steel') ? 'Steel' : casketSpeciesOrGauge) : '________';
+                const gaugeWeight = !isWood && (casketSpeciesOrGauge.includes('Gauge') || casketModel.includes('gauge')) 
+                  ? (casketSpeciesOrGauge.includes('Gauge') ? casketSpeciesOrGauge : '20 Gauge')
+                  : '________';
 
-                <div className="pt-1">
-                  <DotRow 
-                    label="2. Outer Interment Receptacle" 
-                    amount={sog.sectionI.H2_outerReceptacleAmount} 
-                    indent={2} 
-                  />
-                  <div className="pl-4 text-[9px] text-neutral-700 space-y-0.5">
-                    <div>a. Supplier: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleSupplier || "Trigard Burial Vaults") : "________________________"}</span></div>
-                    <div>b. Model name or number: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleModelName || "Standard Concrete Burial Vault") : "________________________"}</span></div>
-                    <div>c. Material: <span className="border-b border-neutral-500 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleMaterial || "Reinforced Concrete / Asphalt Sealed") : "________________________"}</span></div>
+                return (
+                  <div className="space-y-1 text-[10px]">
+                    <div className="font-bold text-neutral-900 text-[10.5px]">H. Merchandise</div>
+                    
+                    <DotRow 
+                      label="1. Casket or alternative container" 
+                      amount={sog.sectionI.H1_casketAmount} 
+                      indent={2} 
+                    />
+                    <div className="pl-4 text-[9px] text-neutral-800 space-y-0.5">
+                      <div>a. Supplier: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketSupplier || "Batesville Casket Company") : "________________________"}</span></div>
+                      <div>b. Model name or number: <span className="border-b border-neutral-600 font-medium px-2">{casketModel || (sog.sectionI.H1_casketSelected ? "Jessup 20 gauge steel" : "________________________")}</span></div>
+                      <div>c. Material: Species of wood <span className="border-b border-neutral-600 font-medium px-2">{woodSpecies}</span> or kind of metal <span className="border-b border-neutral-600 font-medium px-2">{metalKind}</span> weight or gauge <span className="border-b border-neutral-600 font-medium px-2">{gaugeWeight}</span></div>
+                      <div>&nbsp;&nbsp;&nbsp;&nbsp;or alternative container (describe) <span className="border-b border-neutral-600 px-2">________________________</span></div>
+                      <div>d. Interior: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H1_casketSelected ? (sog.sectionI.H1_casketInterior || "Rosetan Crepe") : "________________________"}</span></div>
+                    </div>
+
+                    <div className="pt-1">
+                      <DotRow 
+                        label="2. Outer Interment Receptacle" 
+                        amount={sog.sectionI.H2_outerReceptacleAmount > 0 ? sog.sectionI.H2_outerReceptacleAmount : undefined} 
+                        indent={2} 
+                      />
+                      <div className="pl-4 text-[9px] text-neutral-800 space-y-0.5">
+                        <div>a. Supplier: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleSupplier || "Trigard Burial Vaults") : "________________________"}</span></div>
+                        <div>b. Model name or number: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleModelName || "Standard Concrete Burial Vault") : "________________________"}</span></div>
+                        <div>c. Material: <span className="border-b border-neutral-600 font-medium px-2">{sog.sectionI.H2_outerReceptacleSelected ? (sog.sectionI.H2_outerReceptacleMaterial || "Reinforced Concrete / Asphalt Sealed") : "________________________"}</span></div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                );
+              })()}
 
               {/* I. Additional Services and Merchandise Selected */}
               <div className="space-y-0.5">
