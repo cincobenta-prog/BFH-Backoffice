@@ -399,7 +399,9 @@
 
   /* The AP-47 Contract Canvas */
   #official-form-ap47-contract,
-  #official-form-ap47-matrix {
+  #official-form-ap47-matrix,
+  #official-form-ap47-printable,
+  .ap47-form-root {
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -408,23 +410,29 @@
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
-    font-size: 9.5px !important;
-    line-height: 1.25 !important;
+    font-size: 8.75px !important;
+    line-height: 1.22 !important;
   }
 
   #official-form-ap47-contract .space-y-6 > * + *,
-  #official-form-ap47-matrix .space-y-6 > * + * {
-    margin-top: 0.45rem !important;
+  #official-form-ap47-matrix .space-y-6 > * + *,
+  #official-form-ap47-printable .space-y-6 > * + *,
+  .ap47-form-root .space-y-6 > * + * {
+    margin-top: 0.35rem !important;
   }
 
   #official-form-ap47-contract .space-y-4 > * + *,
-  #official-form-ap47-matrix .space-y-4 > * + * {
-    margin-top: 0.3rem !important;
+  #official-form-ap47-matrix .space-y-4 > * + *,
+  #official-form-ap47-printable .space-y-4 > * + *,
+  .ap47-form-root .space-y-4 > * + * {
+    margin-top: 0.22rem !important;
   }
 
   #official-form-ap47-contract .space-y-3 > * + *,
-  #official-form-ap47-matrix .space-y-3 > * + * {
-    margin-top: 0.2rem !important;
+  #official-form-ap47-matrix .space-y-3 > * + *,
+  #official-form-ap47-printable .space-y-3 > * + *,
+  .ap47-form-root .space-y-3 > * + * {
+    margin-top: 0.15rem !important;
   }
 
   #official-form-ap47-contract .p-2\.5,
@@ -436,8 +444,18 @@
   #official-form-ap47-matrix .p-3,
   #official-form-ap47-matrix .p-3\.5,
   #official-form-ap47-matrix .p-4,
-  #official-form-ap47-matrix .p-5 {
-    padding: 0.22rem 0.4rem !important;
+  #official-form-ap47-matrix .p-5,
+  #official-form-ap47-printable .p-2\.5,
+  #official-form-ap47-printable .p-3,
+  #official-form-ap47-printable .p-3\.5,
+  #official-form-ap47-printable .p-4,
+  #official-form-ap47-printable .p-5,
+  .ap47-form-root .p-2\.5,
+  .ap47-form-root .p-3,
+  .ap47-form-root .p-3\.5,
+  .ap47-form-root .p-4,
+  .ap47-form-root .p-5 {
+    padding: 0.18rem 0.35rem !important;
   }
 
   /* Clean page break between Page 1 and Page 2 */
@@ -477,7 +495,13 @@
   #official-form-ap47-contract select,
   #official-form-ap47-matrix input,
   #official-form-ap47-matrix textarea,
-  #official-form-ap47-matrix select {
+  #official-form-ap47-matrix select,
+  #official-form-ap47-printable input,
+  #official-form-ap47-printable textarea,
+  #official-form-ap47-printable select,
+  .ap47-form-root input,
+  .ap47-form-root textarea,
+  .ap47-form-root select {
     border: none !important;
     background: transparent !important;
     box-shadow: none !important;
@@ -489,7 +513,11 @@
   #official-form-ap47-contract input::placeholder,
   #official-form-ap47-contract textarea::placeholder,
   #official-form-ap47-matrix input::placeholder,
-  #official-form-ap47-matrix textarea::placeholder {
+  #official-form-ap47-matrix textarea::placeholder,
+  #official-form-ap47-printable input::placeholder,
+  #official-form-ap47-printable textarea::placeholder,
+  .ap47-form-root input::placeholder,
+  .ap47-form-root textarea::placeholder {
     color: transparent !important;
     opacity: 0 !important;
   }
@@ -497,7 +525,11 @@
   #official-form-ap47-contract input[type="number"]::-webkit-inner-spin-button,
   #official-form-ap47-contract input[type="number"]::-webkit-outer-spin-button,
   #official-form-ap47-matrix input[type="number"]::-webkit-inner-spin-button,
-  #official-form-ap47-matrix input[type="number"]::-webkit-outer-spin-button {
+  #official-form-ap47-matrix input[type="number"]::-webkit-outer-spin-button,
+  #official-form-ap47-printable input[type="number"]::-webkit-inner-spin-button,
+  #official-form-ap47-printable input[type="number"]::-webkit-outer-spin-button,
+  .ap47-form-root input[type="number"]::-webkit-inner-spin-button,
+  .ap47-form-root input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none !important;
     margin: 0 !important;
   }
