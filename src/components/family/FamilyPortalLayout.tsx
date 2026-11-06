@@ -142,26 +142,38 @@ export const FamilyPortalLayout = ({
   return (
     <>
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col bg-[#1c1a1a] text-neutral-300 transition-transform duration-200 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col text-neutral-300 transition-transform duration-200 border-r border-[#d4af37]/25 shadow-[4px_0_30px_rgba(0,0,0,0.6)] ${
           drawerOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:z-30 lg:w-[272px] lg:translate-x-0`}
+        style={{
+          backgroundImage:
+            'radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.12), transparent 55%), radial-gradient(circle at bottom left, rgba(128, 0, 0, 0.2), transparent 60%), linear-gradient(180deg, #1d1918 0%, #111010 100%)'
+        }}
         aria-label="Family portal navigation"
       >
-        <div className="flex items-center gap-3 border-b border-white/10 px-4 py-4">
-          <img
-            src="/images/ebfh/BENTA_logo.png"
-            alt="Benta's Funeral Home"
-            className="h-10 w-auto shrink-0 rounded-lg bg-white px-1.5 py-1 object-contain"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = '/images/ebfh/Benta-Flame-MN.png';
-            }}
-          />
+        {/* Brand Crest Header with Animated Flame Aura */}
+        <div className="relative flex items-center gap-3 border-b border-amber-400/20 px-4 py-4 backdrop-blur-xs">
+          <div className="relative group shrink-0">
+            <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-amber-500/30 via-red-600/25 to-amber-400/30 blur-xs flame-animated pointer-events-none" />
+            <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-amber-400/50 bg-gradient-to-b from-white to-neutral-100 p-1 shadow-[0_2px_10px_rgba(212,175,55,0.35)] transition-transform duration-300 group-hover:scale-105">
+              <img
+                src="/images/ebfh/Benta-Flame-MN.png"
+                alt="Benta Eternal Flame"
+                className="h-8 w-auto object-contain flame-animated"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/images/ebfh/BENTA_logo.png';
+                }}
+              />
+            </div>
+          </div>
           <div className="min-w-0">
-            <div className="font-serif-title text-[15px] font-semibold leading-tight text-white">
+            <div className="font-serif-title text-[15px] font-bold leading-tight tracking-wide text-white drop-shadow-xs">
               The Family Portal
             </div>
-            <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-300">
-              {activeCase.caseNumber}
+            <div className="mt-0.5 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-amber-300">
+              <span>{activeCase.caseNumber}</span>
+              <span className="text-amber-400/60 font-mono">✦</span>
+              <span>Secure Vault</span>
             </div>
           </div>
           <button
@@ -173,57 +185,68 @@ export const FamilyPortalLayout = ({
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 py-3">
+        <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-4">
           {navGroups.map((group) => (
             <div key={group.title}>
-              <div className="px-3 pb-1.5 pt-3.5 text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-500">
-                {group.title}
+              <div className="flex items-center gap-1.5 px-3 pb-1.5 pt-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-neutral-400">
+                <span className="h-1 w-1 rounded-full bg-amber-400/70" />
+                <span>{group.title}</span>
               </div>
-              {group.links.map((link) => {
-                const Icon = link.icon;
-                const isActive = !!link.tab && portalTab === link.tab;
-                return (
-                  <button
-                    key={group.title + link.label}
-                    onClick={() => go(link)}
-                    aria-current={isActive ? 'page' : undefined}
-                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[13.5px] font-medium transition ${
-                      isActive
-                        ? 'bg-[#800000] font-semibold text-white'
-                        : 'text-neutral-400 hover:bg-white/[0.07] hover:text-white'
-                    }`}
-                  >
-                    <Icon className={`h-[18px] w-[18px] shrink-0 ${isActive ? 'text-white' : 'text-neutral-500'}`} />
-                    <span className="min-w-0 flex-1 truncate">{link.label}</span>
-                    {link.modal && (
-                      <span className="text-[10px] font-semibold text-neutral-600">tool</span>
-                    )}
-                  </button>
-                );
-              })}
+              <div className="space-y-0.5">
+                {group.links.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = !!link.tab && portalTab === link.tab;
+                  return (
+                    <button
+                      key={group.title + link.label}
+                      onClick={() => go(link)}
+                      aria-current={isActive ? 'page' : undefined}
+                      className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13.5px] transition-all duration-200 ${
+                        isActive
+                          ? 'bg-gradient-to-r from-[#800000] via-[#8c080e] to-[#6a0509] font-bold text-white border-l-[3px] border-amber-400 shadow-[0_3px_14px_rgba(128,0,0,0.5)] translate-x-0.5'
+                          : 'text-neutral-400 font-medium hover:bg-white/[0.08] hover:text-white hover:translate-x-1'
+                      }`}
+                    >
+                      <Icon
+                        className={`h-[18px] w-[18px] shrink-0 transition-colors duration-200 ${
+                          isActive ? 'text-amber-300 drop-shadow-[0_0_6px_rgba(252,211,77,0.5)]' : 'text-neutral-400 group-hover:text-amber-300'
+                        }`}
+                      />
+                      <span className="min-w-0 flex-1 truncate">{link.label}</span>
+                      {link.modal && (
+                        <span className="rounded-md border border-amber-400/30 bg-amber-400/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-300">
+                          tool
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           ))}
         </nav>
 
-        <div className="border-t border-white/10 p-3.5">
-          <div className="mb-3 flex items-center gap-2.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-amber-400/40 bg-[#800000] text-[13px] font-bold text-white">
+        {/* Family Portal Footer with Vault Access Status */}
+        <div className="border-t border-amber-400/20 bg-black/25 p-3.5 backdrop-blur-xs">
+          <div className="mb-3 flex items-center gap-2.5 rounded-xl border border-white/5 bg-white/[0.04] p-2">
+            <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-amber-400/60 bg-gradient-to-br from-[#800000] to-[#500000] text-[12px] font-black text-amber-200 shadow-sm">
               {isStaffUser ? 'BFH' : 'FP'}
+              <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-black bg-emerald-400" />
             </div>
             <div className="min-w-0">
-              <div className="truncate text-[13px] font-semibold text-white">
+              <div className="truncate text-[12.5px] font-bold text-white">
                 {isStaffUser ? 'Licensed Staff Console' : 'Private Family Access'}
               </div>
-              <div className="truncate text-[11px] text-neutral-500">
-                {activeCase.informant?.fullName || 'Authorized informant'}
+              <div className="truncate text-[11px] text-amber-300/80">
+                {activeCase.informant?.fullName || 'Authorized Informant'}
               </div>
             </div>
           </div>
           <button
             onClick={onExitPortal}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.06] px-3 py-2.5 text-[12.5px] font-semibold text-neutral-200 transition hover:bg-white/[0.12]"
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-amber-400/30 bg-white/[0.05] px-3 py-2 text-[12px] font-bold text-neutral-200 shadow-2xs transition-all duration-200 hover:border-amber-400/60 hover:bg-white/[0.12] hover:text-white cursor-pointer"
           >
-            {isStaffUser ? <ArrowLeft className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
+            {isStaffUser ? <ArrowLeft className="h-3.5 w-3.5 text-amber-300" /> : <Lock className="h-3.5 w-3.5 text-amber-300" />}
             {isStaffUser ? 'Return to Director Back-Office' : 'Sign Out of Family Vault'}
           </button>
         </div>
@@ -238,11 +261,11 @@ export const FamilyPortalLayout = ({
       )}
 
       <div className="flex min-h-screen flex-col bg-[#f3f4f6] lg:pl-[272px]">
-        <header className="sticky top-0 z-30 border-b border-neutral-200 bg-white/90 px-4 py-2.5 backdrop-blur sm:px-6">
+        <header className="sticky top-0 z-30 border-b border-amber-400/20 bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sm:px-6">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setDrawerOpen(true)}
-              className="rounded-lg border border-neutral-300 p-2 text-neutral-700 transition hover:border-[#800000] hover:text-[#800000] lg:hidden"
+              className="rounded-xl border border-neutral-300 p-2 text-neutral-700 transition hover:border-[#800000] hover:text-[#800000] lg:hidden"
               aria-label="Open navigation"
             >
               <Menu className="h-5 w-5" />
@@ -258,28 +281,42 @@ export const FamilyPortalLayout = ({
                   }}
                   aria-haspopup="true"
                   aria-expanded={caseMenuOpen}
-                  className="flex max-w-full items-center gap-2.5 rounded-xl border border-neutral-300 bg-white px-3 py-2 text-left transition hover:border-[#800000]"
+                  className="group flex max-w-full items-center gap-3 rounded-xl border border-neutral-200/90 bg-white px-3.5 py-1.5 text-left shadow-2xs transition-all duration-200 hover:border-amber-500/60 hover:shadow-md hover:bg-neutral-50/50 cursor-pointer"
                 >
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-emerald-500" />
+                  <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-400/40 bg-gradient-to-br from-[#800000] to-[#500000] text-[10.5px] font-black text-amber-100 shadow-xs">
+                    {activeCase.decedent.legalName.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('')}
+                  </div>
                   <span className="min-w-0">
-                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-500">
-                      Viewing family
+                    <span className="flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-[0.14em] text-neutral-400">
+                      <span className="relative flex h-2 w-2 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <span>Viewing Family Portal</span>
                     </span>
-                    <span className="block truncate text-[13px] font-semibold text-neutral-900">
-                      {activeCase.caseNumber} · {activeCase.decedent.legalName}
+                    <span className="block truncate text-[13px] font-bold text-neutral-900 group-hover:text-[#800000] transition-colors">
+                      <span className="text-[#800000] font-mono mr-1.5 font-bold">{activeCase.caseNumber}</span>
+                      · {activeCase.decedent.legalName}
                     </span>
                   </span>
-                  <ChevronDown className="h-4 w-4 shrink-0 text-neutral-400" />
+                  <ChevronDown className="h-4 w-4 shrink-0 text-neutral-400 transition-transform duration-200 group-hover:text-amber-500" />
                 </button>
               ) : (
-                <div className="flex items-center gap-2.5 rounded-xl border border-neutral-300 bg-white px-3 py-2">
-                  <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600" />
+                <div className="flex items-center gap-3 rounded-xl border border-amber-400/30 bg-gradient-to-r from-emerald-50/70 via-white to-amber-50/40 px-3.5 py-1.5 shadow-2xs">
+                  <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-400/60 bg-emerald-600 text-[11px] font-black text-white shadow-xs">
+                    <ShieldCheck className="h-4 w-4" />
+                  </div>
                   <span className="min-w-0">
-                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-500">
-                      Confirmed family access
+                    <span className="flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-[0.14em] text-emerald-800">
+                      <span className="relative flex h-2 w-2 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      </span>
+                      <span>Confirmed Private Family Access</span>
                     </span>
-                    <span className="block truncate text-[13px] font-semibold text-neutral-900">
-                      {activeCase.caseNumber} · {activeCase.decedent.legalName}
+                    <span className="block truncate text-[13px] font-bold text-neutral-900">
+                      <span className="text-[#800000] font-mono mr-1.5 font-bold">{activeCase.caseNumber}</span>
+                      · {activeCase.decedent.legalName}
                     </span>
                   </span>
                 </div>
@@ -341,10 +378,10 @@ export const FamilyPortalLayout = ({
             {onOpenGuidedTour && (
               <button
                 onClick={onOpenGuidedTour}
-                className="hidden shrink-0 items-center gap-1.5 rounded-xl border border-[#E5D5AC] bg-[#FAF3E0] px-3.5 py-2 text-xs font-bold text-[#8C6B2D] transition hover:bg-[#F5EAD0] md:flex"
+                className="btn-luxury-brass hidden shrink-0 items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold md:flex cursor-pointer"
               >
-                <Compass className="h-4 w-4" />
-                Portal Tour
+                <Compass className="h-4 w-4 text-amber-700 animate-spin-slow" />
+                <span>Portal Tour</span>
               </button>
             )}
 
@@ -357,9 +394,9 @@ export const FamilyPortalLayout = ({
                 }}
                 aria-haspopup="true"
                 aria-expanded={userMenuOpen}
-                className="flex items-center gap-2 rounded-xl border border-neutral-300 bg-white p-1.5 pr-2.5 transition hover:border-[#800000]"
+                className="flex items-center gap-2 rounded-xl border border-amber-400/30 bg-gradient-to-b from-white to-neutral-50 p-1.5 pr-2.5 shadow-2xs transition-all duration-200 hover:border-amber-500/60 hover:shadow-xs cursor-pointer"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#800000] text-[11px] font-bold text-white">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-amber-400/50 bg-gradient-to-br from-[#800000] to-[#500000] text-[11px] font-black text-amber-200 shadow-xs">
                   {isStaffUser ? 'JB' : 'FP'}
                 </span>
                 <ChevronDown className="h-4 w-4 text-neutral-400" />

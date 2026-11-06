@@ -163,35 +163,61 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
     <div className="space-y-8 animate-fadeIn">
       
       {/* 1. DIGNIFIED WELCOME HERO BANNER */}
-      <SurfaceDark className="p-6 sm:p-10 shadow-xl">
-        <div className="absolute -right-16 -top-16 w-96 h-96 bg-brass-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute right-12 bottom-4 opacity-[0.08] pointer-events-none hidden lg:block">
-          <Building className="w-64 h-64 text-brass-300" />
+      <SurfaceDark className="p-6 sm:p-10 shadow-2xl relative overflow-hidden border border-amber-400/30">
+        <div className="absolute -right-16 -top-16 w-96 h-96 bg-gradient-to-br from-amber-500/15 via-red-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute right-12 bottom-4 opacity-[0.06] pointer-events-none hidden lg:block">
+          <Building className="w-64 h-64 text-amber-200" />
         </div>
 
-        <div className="max-w-3xl space-y-4 relative z-10">
+        <div className="max-w-3xl space-y-5 relative z-10">
           
           <div className="flex flex-wrap items-center gap-2.5">
-            <Badge tone="brand" className="bg-brass-400/15 text-brass-200 border-brass-400/40 px-3.5 py-1 text-[11px]">
-              <Award className="w-3.5 h-3.5 text-brass-300" />
+            <Badge tone="brand" className="bg-amber-400/20 text-amber-200 border-amber-400/40 px-3.5 py-1 text-[11px] font-bold shadow-xs">
+              <Award className="w-3.5 h-3.5 text-amber-300" />
               <span>Benta's Private Family Care Portal</span>
             </Badge>
-            <Badge tone="live" className="bg-emerald-500/15 text-emerald-200 border-emerald-400/40 px-3 py-1 text-[11px]">
+            <Badge tone="live" className="bg-emerald-500/20 text-emerald-200 border-emerald-400/40 px-3.5 py-1 text-[11px] font-bold shadow-xs">
+              <span className="relative flex h-2 w-2 mr-1">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
               <span>Resting Safely in Care at 630 St. Nicholas Ave</span>
             </Badge>
           </div>
 
-          <div className="space-y-1">
-            <div className="text-xs text-neutral-300 uppercase tracking-widest font-semibold">
-              Welcoming {activeCase.informant.fullName} ({activeCase.informant.relationship}) & The Family
+          <div className="space-y-2">
+            <div className="text-xs text-amber-200/90 uppercase tracking-[0.16em] font-bold flex items-center gap-1.5">
+              <span>✦</span>
+              <span>Welcoming {activeCase.informant.fullName} ({activeCase.informant.relationship}) &amp; The Family</span>
             </div>
-            <h1 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-wide">
-              In Loving Memory of<br />
-              <strong className="text-amber-300">{activeCase.decedent.legalName}</strong>
-            </h1>
-            <p className="text-xs sm:text-sm text-neutral-300 font-light italic">
-              {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath} • Case #{activeCase.caseNumber}
-            </p>
+
+            <div className="flex items-start gap-4">
+              <div className="relative shrink-0 mt-1 hidden sm:block">
+                <div className="absolute -inset-1 rounded-2xl bg-amber-400/30 blur-sm flame-animated" />
+                <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-400/50 bg-gradient-to-b from-white/10 to-black/40 p-2 shadow-md">
+                  <img
+                    src="/images/ebfh/Benta-Flame-MN.png"
+                    alt="Eternal Flame"
+                    className="h-10 w-auto object-contain flame-animated"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/images/ebfh/BENTA_logo.png';
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <h1 className="font-serif-title text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-wide leading-tight">
+                  In Loving Memory of<br />
+                  <span className="text-amber-300 drop-shadow-[0_2px_12px_rgba(252,211,77,0.35)]">
+                    {activeCase.decedent.legalName}
+                  </span>
+                </h1>
+                <p className="mt-1 text-xs sm:text-sm text-neutral-300 font-light italic">
+                  {activeCase.decedent.dateOfBirth} — {activeCase.decedent.dateOfDeath} • Case #{activeCase.caseNumber}
+                </p>
+              </div>
+            </div>
           </div>
 
           <p className="text-xs sm:text-sm text-neutral-200 font-light leading-relaxed max-w-2xl">
@@ -226,10 +252,13 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
                 note: 'Jason Benta, LFD'
               }
             ].map((stat) => (
-              <div key={stat.label} className="bg-white/[0.07] backdrop-blur-sm p-3 rounded-xl border border-white/10 space-y-1.5">
+              <div
+                key={stat.label}
+                className="bg-white/[0.08] backdrop-blur-md p-3.5 rounded-xl border border-amber-400/25 space-y-1.5 shadow-xs transition-all duration-200 hover:border-amber-400/60 hover:bg-white/[0.12] hover:-translate-y-0.5"
+              >
                 <div className="flex items-center gap-2">
                   <IconChip icon={stat.icon} size="sm" onDark />
-                  <span className="text-[10px] text-brass-200 font-bold uppercase">{stat.label}</span>
+                  <span className="text-[10px] text-amber-200 font-bold uppercase tracking-wider">{stat.label}</span>
                 </div>
                 <div className="font-bold text-white text-xs">{stat.value}</div>
                 <div className="text-[10px] text-neutral-300">{stat.note}</div>
@@ -239,19 +268,19 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
 
           {/* Interactive Tutorial Launcher Banner */}
           {onOpenGuidedTour && (
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="pt-3 flex flex-wrap items-center gap-3">
               <button
                 onClick={onOpenGuidedTour}
-                className="inline-flex items-center space-x-2 bg-brass-500 hover:bg-brass-600 text-neutral-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-lg transition transform hover:scale-[1.02] cursor-pointer"
+                className="btn-luxury-brass text-neutral-950 font-extrabold px-5 py-2.5 rounded-xl text-xs shadow-lg transition-transform hover:scale-[1.02] cursor-pointer inline-flex items-center space-x-2"
                 title="Start the 6-step interactive family portal guide"
               >
-                <Sparkles className="w-4 h-4 text-neutral-950 animate-pulse" />
+                <Sparkles className="w-4 h-4 text-amber-800 animate-pulse" />
                 <span>Start Interactive Family Guide (6 Comfort Steps)</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-amber-800" />
               </button>
-              <span className="inline-flex items-center gap-1.5 text-[11px] text-brass-200/90 italic">
-                <Lightbulb className="w-3.5 h-3.5 shrink-0" />
-                <span>Guided walkthrough of your obituary suite, floral gifts, live webcast & legal vault</span>
+              <span className="inline-flex items-center gap-1.5 text-[11px] text-amber-200/90 italic">
+                <Lightbulb className="w-3.5 h-3.5 shrink-0 text-amber-300" />
+                <span>Guided walkthrough of your obituary suite, floral gifts, live webcast &amp; legal vault</span>
               </span>
             </div>
           )}
@@ -328,34 +357,42 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
       </Surface>
 
       {/* 2. "WHERE TO START" RECOMMENDED ACTION ROADMAP */}
-      <div className="bg-amber-50/70 border border-amber-200 p-6 rounded-2xl space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center space-x-2 text-[#800000]">
-            <CheckCircle2 className="w-5 h-5 text-[#800000]" />
-            <h3 className="font-serif-title text-base sm:text-lg font-bold text-neutral-900">
-              Where Should Your Family Begin? (Recommended Journey)
-            </h3>
+      <div className="bg-gradient-to-br from-[#FFFBF0] via-white to-[#FDF8EC] border border-amber-300/80 p-6 sm:p-8 rounded-2xl shadow-sm space-y-5 relative overflow-hidden">
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="flex flex-wrap items-center justify-between gap-2 relative z-10">
+          <div className="flex items-center space-x-2.5 text-[#800000]">
+            <div className="w-8 h-8 rounded-xl bg-[#800000]/10 flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-[#800000]" />
+            </div>
+            <div>
+              <h3 className="font-serif-title text-base sm:text-lg font-bold text-neutral-900">
+                Where Should Your Family Begin? (Recommended Journey)
+              </h3>
+              <p className="text-xs text-neutral-500 font-medium">Follow this 4-step sequence for a calm, guided experience</p>
+            </div>
           </div>
-          <Badge tone="action" className="px-3 py-1">4-Step Priority Guide</Badge>
+          <Badge tone="action" className="px-3.5 py-1.5 text-xs font-bold border-amber-400/50 shadow-2xs">
+            4-Step Priority Guide
+          </Badge>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs relative z-10">
           
           <div 
             onClick={() => onNavigateTab('obituary')}
-            className="surface-card surface-card-hover p-4 cursor-pointer space-y-2 group"
+            className="luxury-card-interactive bg-white border border-amber-200/90 rounded-2xl p-4 sm:p-5 cursor-pointer space-y-3 group shadow-2xs hover:border-amber-400 hover:shadow-lg transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="w-6 h-6 rounded-full bg-brass-600/10 text-[#800000] font-bold text-xs flex items-center justify-center">
+              <span className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#800000] to-[#500000] text-amber-200 font-black text-xs flex items-center justify-center shadow-xs border border-amber-400/40">
                 1
               </span>
-              <BookOpenText className="w-4 h-4 text-brass-600 group-hover:scale-110 transition-transform" />
+              <BookOpenText className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="font-bold text-neutral-900">Tell Their Life Story</div>
-            <p className="text-[11px] text-neutral-600 leading-snug">
+            <div className="font-bold text-neutral-900 text-sm">Tell Their Life Story</div>
+            <p className="text-[11.5px] text-neutral-600 leading-snug">
               Answer 9 guided biographical questions to craft the official printed obituary and program bio.
             </p>
-            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:underline">
+            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
               <span>Start Story Studio</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </div>
@@ -363,19 +400,19 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
 
           <div 
             onClick={() => onNavigateTab('documents')}
-            className="surface-card surface-card-hover p-4 cursor-pointer space-y-2 group"
+            className="luxury-card-interactive bg-white border border-amber-200/90 rounded-2xl p-4 sm:p-5 cursor-pointer space-y-3 group shadow-2xs hover:border-amber-400 hover:shadow-lg transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="w-6 h-6 rounded-full bg-brass-600/10 text-[#800000] font-bold text-xs flex items-center justify-center">
+              <span className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#800000] to-[#500000] text-amber-200 font-black text-xs flex items-center justify-center shadow-xs border border-amber-400/40">
                 2
               </span>
-              <FileSignature className="w-4 h-4 text-brass-600 group-hover:scale-110 transition-transform" />
+              <FileSignature className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="font-bold text-neutral-900">eSign Authorizations</div>
-            <p className="text-[11px] text-neutral-600 leading-snug">
+            <div className="font-bold text-neutral-900 text-sm">eSign Authorizations</div>
+            <p className="text-[11.5px] text-neutral-600 leading-snug">
               Review and sign state-required cremation, embalming, and vital records permits from your phone.
             </p>
-            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:underline">
+            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
               <span>Open eSign Pad</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </div>
@@ -383,19 +420,19 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
 
           <div 
             onClick={() => onNavigateTab('tribute')}
-            className="surface-card surface-card-hover p-4 cursor-pointer space-y-2 group"
+            className="luxury-card-interactive bg-white border border-amber-200/90 rounded-2xl p-4 sm:p-5 cursor-pointer space-y-3 group shadow-2xs hover:border-amber-400 hover:shadow-lg transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="w-6 h-6 rounded-full bg-brass-600/10 text-[#800000] font-bold text-xs flex items-center justify-center">
+              <span className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#800000] to-[#500000] text-amber-200 font-black text-xs flex items-center justify-center shadow-xs border border-amber-400/40">
                 3
               </span>
-              <Mic className="w-4 h-4 text-brass-600 group-hover:scale-110 transition-transform" />
+              <Mic className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="font-bold text-neutral-900">Digital Tribute</div>
-            <p className="text-[11px] text-neutral-600 leading-snug">
+            <div className="font-bold text-neutral-900 text-sm">Digital Tribute</div>
+            <p className="text-[11.5px] text-neutral-600 leading-snug">
               Share voice tribute prompts so relatives can record living memories preserved in the Heirloom Book.
             </p>
-            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:underline">
+            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
               <span>Open Tribute Studio</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </div>
@@ -403,19 +440,19 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
 
           <div 
             onClick={() => onNavigateTab('webcast')}
-            className="surface-card surface-card-hover p-4 cursor-pointer space-y-2 group"
+            className="luxury-card-interactive bg-white border border-amber-200/90 rounded-2xl p-4 sm:p-5 cursor-pointer space-y-3 group shadow-2xs hover:border-amber-400 hover:shadow-lg transition-all"
           >
             <div className="flex items-center justify-between">
-              <span className="w-6 h-6 rounded-full bg-brass-600/10 text-[#800000] font-bold text-xs flex items-center justify-center">
+              <span className="w-7 h-7 rounded-xl bg-gradient-to-br from-[#800000] to-[#500000] text-amber-200 font-black text-xs flex items-center justify-center shadow-xs border border-amber-400/40">
                 4
               </span>
-              <Video className="w-4 h-4 text-brass-600 group-hover:scale-110 transition-transform" />
+              <Video className="w-4 h-4 text-amber-600 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="font-bold text-neutral-900">Share Live Webcast Link</div>
-            <p className="text-[11px] text-neutral-600 leading-snug">
+            <div className="font-bold text-neutral-900 text-sm">Share Live Webcast Link</div>
+            <p className="text-[11.5px] text-neutral-600 leading-snug">
               Send the live 4K sanctuary webcast link with zero PIN required for out-of-town mourners worldwide.
             </p>
-            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:underline">
+            <div className="text-[11px] text-[#800000] font-bold flex items-center space-x-1 group-hover:translate-x-1 transition-transform">
               <span>View Webcast Hub</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </div>
@@ -446,16 +483,21 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
               <Surface
                 key={offering.id}
                 hover
-                className="p-6 sm:p-7 flex flex-col justify-between space-y-5 group"
+                className="luxury-card-interactive p-6 sm:p-8 flex flex-col justify-between space-y-6 group rounded-2xl border border-neutral-200/90 bg-white hover:border-amber-400/60 shadow-xs hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               >
+                {/* Gold Hairline Hover Indicator */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-400/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                 {/* Card Top */}
-                <div className="space-y-3">
+                <div className="space-y-3.5">
                   
                   <div className="flex justify-between items-start gap-2">
-                    <div className="flex items-center space-x-3">
-                      <IconChip icon={Icon} size="lg" className="group-hover:scale-110 transition-transform" />
+                    <div className="flex items-center space-x-3.5">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#800000]/10 to-amber-500/10 flex items-center justify-center text-[#800000] group-hover:scale-105 group-hover:bg-[#800000]/15 transition-all border border-amber-400/20 shadow-xs">
+                        <Icon className="w-6 h-6" />
+                      </div>
                       <div>
-                        <h3 className="font-serif-title text-lg font-bold text-neutral-900 leading-snug">
+                        <h3 className="font-serif-title text-lg font-bold text-neutral-900 leading-snug group-hover:text-[#800000] transition-colors">
                           {offering.title}
                         </h3>
                         <span className="text-[11px] text-neutral-500 font-medium">
@@ -464,7 +506,7 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
                       </div>
                     </div>
 
-                    <Badge tone={offering.badgeTone} className="shrink-0">
+                    <Badge tone={offering.badgeTone} className="shrink-0 shadow-2xs">
                       {offering.badge}
                     </Badge>
                   </div>
@@ -474,10 +516,10 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
                   </p>
 
                   {/* Highlights Bullet List */}
-                  <SurfaceTile className="p-3.5 space-y-1.5 text-xs">
+                  <SurfaceTile className="p-3.5 space-y-1.5 text-xs bg-neutral-50/80 border-neutral-200/70">
                     {offering.highlights.map((h, idx) => (
                       <div key={idx} className="flex items-start space-x-2 text-neutral-700">
-                        <Check className="w-3.5 h-3.5 text-brass-600 shrink-0 mt-0.5" strokeWidth={2.5} />
+                        <Check className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" strokeWidth={2.5} />
                         <span className="text-[11px] leading-tight">{h}</span>
                       </div>
                     ))}
@@ -488,10 +530,10 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
                 {/* Card Action Button */}
                 <button
                   onClick={() => onNavigateTab(offering.tab)}
-                  className="w-full bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-sm group-hover:shadow-md"
+                  className="btn-luxury-crimson w-full font-bold text-xs py-3.5 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-sm cursor-pointer"
                 >
                   <span>{offering.buttonText}</span>
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-amber-300" />
                 </button>
 
               </Surface>
