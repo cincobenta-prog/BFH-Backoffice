@@ -1145,6 +1145,19 @@ export const RemovalSchedulingModal: React.FC<RemovalSchedulingModalProps> = ({
                     <div className="font-bold text-neutral-900 text-xs">{currentRemoval?.affidavit?.affidavitNumber || `AFF-REM-${currentCase.caseNumber}`}</div>
                   </div>
 
+                  <div className="flex justify-center mb-1">
+                    <img
+                      src="/images/ebfh/Benta-Flame-MN.png"
+                      alt="Benta Flame"
+                      className="h-12 w-auto object-contain"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src.indexOf('BENTA_logo.png') === -1) {
+                          target.src = '/images/ebfh/BENTA_logo.png';
+                        }
+                      }}
+                    />
+                  </div>
                   <h3 className="font-serif-title italic text-sm text-neutral-700">
                     "Dignity, Integrity, and Reverent Heritage"
                   </h3>

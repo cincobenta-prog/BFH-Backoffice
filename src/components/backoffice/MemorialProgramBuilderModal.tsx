@@ -380,8 +380,18 @@ export const MemorialProgramBuilderModal: React.FC<MemorialProgramBuilderModalPr
 
                     {/* Stately BFH Director Imprint */}
                     <div className="pt-2 border-t border-neutral-200 flex flex-col items-center">
-                      <div className="w-7 h-7 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-xs shadow-xs mb-1">
-                        BFH
+                      <div className="w-7 h-7 rounded-full bg-[#800000] p-1 shadow-xs mb-1 flex items-center justify-center border border-amber-400/30">
+                        <img
+                          src="/images/ebfh/Benta-Flame-MN.png"
+                          alt="Benta Logo"
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            if (target.src.indexOf('BENTA_logo.png') === -1) {
+                              target.src = '/images/ebfh/BENTA_logo.png';
+                            }
+                          }}
+                        />
                       </div>
                       <span className="font-serif-title font-bold text-[10px] tracking-wider uppercase text-neutral-900">
                         Benta's Funeral Home, Inc.

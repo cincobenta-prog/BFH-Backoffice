@@ -169,16 +169,29 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
           <div className="border-b-2 border-neutral-900 pb-2 print:pb-1">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 print:gap-2">
               
-              {/* Left Letterhead */}
-              <div className="space-y-0.5 print:space-y-0">
-                <div className="font-serif italic font-semibold text-lg sm:text-xl print:text-xs text-neutral-800">
-                  &ldquo;A Celebration of Life&rdquo;
-                </div>
-                <div className="font-serif font-bold text-2xl sm:text-3xl print:text-xl text-neutral-950 tracking-wide uppercase">
-                  Benta&apos;s Funeral Home, Inc.
-                </div>
-                <div className="text-[11px] print:text-[8px] font-sans text-neutral-700 leading-tight">
-                  630 St. Nicholas Avenue (Corner of W. 141st Street) • New York, NY 10030 • (212) 281-8850
+              {/* Left Letterhead with Benta Flame Logo */}
+              <div className="flex items-center gap-3.5 print:gap-2">
+                <img
+                  src="/images/ebfh/Benta-Flame-MN.png"
+                  alt="Benta's Funeral Home Flame Emblem"
+                  className="h-14 sm:h-16 print:h-11 w-auto object-contain shrink-0"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.indexOf('BENTA_logo.png') === -1) {
+                      target.src = '/images/ebfh/BENTA_logo.png';
+                    }
+                  }}
+                />
+                <div className="space-y-0.5 print:space-y-0">
+                  <div className="font-serif italic font-semibold text-lg sm:text-xl print:text-xs text-neutral-800">
+                    &ldquo;A Celebration of Life&rdquo;
+                  </div>
+                  <div className="font-serif font-bold text-2xl sm:text-3xl print:text-xl text-neutral-950 tracking-wide uppercase">
+                    Benta&apos;s Funeral Home, Inc.
+                  </div>
+                  <div className="text-[11px] print:text-[8px] font-sans text-neutral-700 leading-tight">
+                    630 St. Nicholas Avenue (Corner of W. 141st Street) • New York, NY 10030 • (212) 281-8850
+                  </div>
                 </div>
               </div>
 
@@ -521,7 +534,18 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
           
           {/* Page 2 Top Reference Line */}
           <div className="flex justify-between items-center border-b border-neutral-400 pb-1 mb-3 print:mb-1.5 text-[10px] print:text-[8.5px] text-neutral-600 font-sans">
-            <span className="font-serif italic font-bold text-neutral-900">
+            <span className="font-serif italic font-bold text-neutral-900 flex items-center gap-1.5">
+              <img
+                src="/images/ebfh/Benta-Flame-MN.png"
+                alt=""
+                className="h-4 print:h-3.5 w-auto object-contain inline-block shrink-0"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src.indexOf('BENTA_logo.png') === -1) {
+                    target.src = '/images/ebfh/BENTA_logo.png';
+                  }
+                }}
+              />
               Benta&apos;s Funeral Home, Inc. • Statement of Goods and Services Selected (Form AP-47)
             </span>
             <span className="font-mono">
