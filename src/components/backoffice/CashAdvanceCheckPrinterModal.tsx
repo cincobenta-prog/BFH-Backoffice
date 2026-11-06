@@ -375,9 +375,17 @@ export const CashAdvanceCheckPrinterModal: React.FC<CashAdvanceCheckPrinterModal
                   <div className="flex justify-between items-start">
                     <div className="space-y-0.5">
                       <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 rounded bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-xs">
-                          B
-                        </div>
+                        <img
+                          src="/images/ebfh/Benta-Flame-MN.png"
+                          alt="Benta Logo"
+                          className="h-7 w-auto object-contain"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            if (target.src.indexOf('BENTA_logo.png') === -1) {
+                              target.src = '/images/ebfh/BENTA_logo.png';
+                            }
+                          }}
+                        />
                         <h2 className="font-serif-title text-base sm:text-lg font-bold uppercase tracking-wider text-neutral-950">
                           Benta's Funeral Home, Inc.
                         </h2>

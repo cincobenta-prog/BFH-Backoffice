@@ -155,8 +155,18 @@ export const ChapelQrSignModal: React.FC<ChapelQrSignModalProps> = ({
             
             {/* Stately Top Heritage Border & Crest */}
             <div className="space-y-2 w-full">
-              <div className="w-12 h-12 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-lg mx-auto shadow-md border-2 border-amber-400">
-                BFH
+              <div className="w-14 h-14 rounded-full bg-[#800000] p-2 mx-auto shadow-md border-2 border-amber-400 flex items-center justify-center">
+                <img
+                  src="/images/ebfh/Benta-Flame-MN.png"
+                  alt="Benta Crest"
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.indexOf('BENTA_logo.png') === -1) {
+                      target.src = '/images/ebfh/BENTA_logo.png';
+                    }
+                  }}
+                />
               </div>
               <span className="font-serif-title font-bold text-xs uppercase tracking-widest text-[#b45309] block">
                 Benta's Funeral Home, Inc. • Harlem, NY

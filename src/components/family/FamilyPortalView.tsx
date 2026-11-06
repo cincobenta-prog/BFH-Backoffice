@@ -42,7 +42,6 @@ import {
   Layout, 
   MessageCircle, 
   Trash2, 
-  ScrollText,
   Newspaper,
   Flower2
 } from 'lucide-react';
@@ -1660,8 +1659,18 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             <div className="bg-white border border-neutral-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
               <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-base">
-                    <ScrollText className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-xl bg-[#800000] p-1.5 flex items-center justify-center border border-amber-400/40 shadow-sm shrink-0">
+                    <img
+                      src="/images/ebfh/Benta-Flame-MN.png"
+                      alt="Benta Logo"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src.indexOf('BENTA_logo.png') === -1) {
+                          target.src = '/images/ebfh/BENTA_logo.png';
+                        }
+                      }}
+                    />
                   </div>
                   <div>
                     <h3 className="font-serif-title text-lg font-bold text-neutral-900">

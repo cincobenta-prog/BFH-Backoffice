@@ -823,8 +823,18 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
         {/* MODAL HEADER */}
         <div className="bg-gradient-to-r from-neutral-900 via-[#181216] to-neutral-900 text-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3 border-b border-amber-400/40 shrink-0 print:hidden contract-studio-modal-header no-print">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#800000] border border-amber-400/50 flex items-center justify-center text-amber-300 shadow-md">
-              <FileText className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-2xl bg-[#800000] border border-amber-400/50 p-1.5 flex items-center justify-center shadow-md shrink-0">
+              <img
+                src="/images/ebfh/Benta-Flame-MN.png"
+                alt="Benta Logo"
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src.indexOf('BENTA_logo.png') === -1) {
+                    target.src = '/images/ebfh/BENTA_logo.png';
+                  }
+                }}
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">

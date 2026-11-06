@@ -19,6 +19,9 @@ export const StaffLoginGate: React.FC<{ children: React.ReactNode }> = ({ childr
   });
 
   if (state.status === 'ready' || demoBypass) {
+    const userEmail = state.status === 'ready' ? state.email : 'jason@bentasfuneralhome.com';
+    const userRole = state.status === 'ready' ? state.role : 'owner';
+
     return (
       <>
         {children}
@@ -28,11 +31,11 @@ export const StaffLoginGate: React.FC<{ children: React.ReactNode }> = ({ childr
             if (demoBypass) setDemoBypass(false);
             else signOut();
           }}
-          title={demoBypass ? 'Signed in via Demo Sandbox (Jason Benta, LFD)' : `Signed in as ${state.email} (${state.role})`}
+          title={demoBypass ? 'Signed in via Demo Sandbox (Jason Benta, LFD)' : `Signed in as ${userEmail} (${userRole})`}
           className="fixed bottom-3 left-3 z-[60] flex items-center gap-1.5 rounded-full bg-neutral-900/90 px-3.5 py-1.5 text-[11px] font-bold text-amber-100 shadow-xl ring-1 ring-amber-400/40 hover:bg-neutral-800 transition-all cursor-pointer"
         >
           <LogOut className="h-3.5 w-3.5 text-amber-300" />
-          <span>{demoBypass ? 'Exit Demo Sandbox' : `Sign out (${state.role})`}</span>
+          <span>{demoBypass ? 'Exit Demo Sandbox' : `Sign out (${userRole})`}</span>
         </button>
       </>
     );

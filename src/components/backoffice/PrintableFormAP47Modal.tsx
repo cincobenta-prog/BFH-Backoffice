@@ -76,8 +76,18 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
         {/* Screen-Only Header Bar */}
         <div className="p-3.5 sm:p-4 bg-neutral-900 text-white flex items-center justify-between shrink-0 print:hidden no-print">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#800000] text-white flex items-center justify-center font-bold text-xs border border-amber-400/40">
-              AP47
+            <div className="w-9 h-9 rounded-lg bg-[#800000] p-1 flex items-center justify-center border border-amber-400/40 shadow-sm shrink-0">
+              <img
+                src="/images/ebfh/Benta-Flame-MN.png"
+                alt="Benta Logo"
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src.indexOf('BENTA_logo.png') === -1) {
+                    target.src = '/images/ebfh/BENTA_logo.png';
+                  }
+                }}
+              />
             </div>
             <div>
               <div className="flex items-center gap-2">

@@ -215,6 +215,10 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     // Related cleanups: Other Authorization by line
     expect(html).toContain('Other Authorization by:');
 
+    // Verify official Benta flame logo presence on Page 1 and Page 2
+    expect(html).toContain('/images/ebfh/Benta-Flame-MN.png');
+    expect(html).toContain('alt="Benta&#x27;s Funeral Home Flame Emblem"');
+
     // Export full styled HTML wrapper for INV-24501
     const artifactDir = '/Users/jbenta1me.com/.gemini/antigravity-ide/brain/7f5d1313-bf0d-4b7a-a203-1b203a00fa2c';
     const styledHtmlINV24501 = `<!DOCTYPE html>

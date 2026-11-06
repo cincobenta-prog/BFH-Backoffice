@@ -1237,20 +1237,39 @@ export const FamilySplitPaymentPortal: React.FC<FamilySplitPaymentPortalProps> =
               
               {/* Watermark Crest */}
               <div className="absolute right-6 top-6 opacity-10 pointer-events-none">
-                <Building2 className="w-32 h-32 text-neutral-900" />
+                <img
+                  src="/images/ebfh/Benta-Flame-MN.png"
+                  alt=""
+                  className="w-28 h-28 object-contain"
+                />
               </div>
 
               {/* Header */}
               <div className="border-b-2 border-[#800000] pb-5 flex justify-between items-start">
-                <div>
-                  <h3 className="font-serif-title text-xl font-bold text-[#800000] tracking-wider uppercase">
-                    Benta’s Funeral Home, Inc.
-                  </h3>
-                  <p className="text-xs text-neutral-600 font-light mt-0.5">
-                    630 St. Nicholas Avenue • Harlem, New York 10030 • (212) 281-8696
-                  </p>
-                  <div className="text-[10px] font-mono text-neutral-500 mt-1">
-                    NYS Registration No. 08850 • Established 1928
+                <div className="flex items-center space-x-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-[#800000] p-2 flex items-center justify-center shadow-md border border-amber-400/40 shrink-0">
+                    <img
+                      src="/images/ebfh/Benta-Flame-MN.png"
+                      alt="Benta Logo"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src.indexOf('BENTA_logo.png') === -1) {
+                          target.src = '/images/ebfh/BENTA_logo.png';
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-serif-title text-xl font-bold text-[#800000] tracking-wider uppercase">
+                      Benta’s Funeral Home, Inc.
+                    </h3>
+                    <p className="text-xs text-neutral-600 font-light mt-0.5">
+                      630 St. Nicholas Avenue • Harlem, New York 10030 • (212) 281-8850
+                    </p>
+                    <div className="text-[10px] font-mono text-neutral-500 mt-1">
+                      NYS Registration No. 08850 • Established 1928
+                    </div>
                   </div>
                 </div>
 

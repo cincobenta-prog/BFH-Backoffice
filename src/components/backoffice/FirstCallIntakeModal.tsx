@@ -1854,8 +1854,18 @@ EST. 1928 • HARLEM, NYC`;
                 {/* Brand Header */}
                 <div className="border-b-2 border-[#800000] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-center sm:text-left">
                   <div className="flex items-center space-x-3 justify-center sm:justify-start">
-                    <div className="w-12 h-12 rounded-2xl bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-xl border-2 border-amber-400/60 shadow-md">
-                      BFH
+                    <div className="w-12 h-12 rounded-2xl bg-[#800000] p-2 flex items-center justify-center border-2 border-amber-400/60 shadow-md shrink-0">
+                      <img
+                        src="/images/ebfh/Benta-Flame-MN.png"
+                        alt="Benta Logo"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (target.src.indexOf('BENTA_logo.png') === -1) {
+                            target.src = '/images/ebfh/BENTA_logo.png';
+                          }
+                        }}
+                      />
                     </div>
                     <div>
                       <h3 className="font-serif-title font-bold text-xl text-[#800000]">

@@ -288,8 +288,18 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             {/* Document Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-neutral-900 pb-3 gap-3">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-base shadow-sm">
-                  B
+                <div className="w-10 h-10 rounded-full bg-[#800000] p-1.5 flex items-center justify-center shadow-sm shrink-0 border border-amber-400/30">
+                  <img
+                    src="/images/ebfh/Benta-Flame-MN.png"
+                    alt="Benta Flame"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.indexOf('BENTA_logo.png') === -1) {
+                        target.src = '/images/ebfh/BENTA_logo.png';
+                      }
+                    }}
+                  />
                 </div>
                 <div>
                   <h3 className="font-serif-title font-bold text-xl text-neutral-900 tracking-wide">
@@ -738,6 +748,19 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
           <div className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
             {/* Header */}
             <div className="text-center border-b-2 border-neutral-900 pb-3 space-y-1">
+              <div className="flex justify-center mb-1">
+                <img
+                  src="/images/ebfh/Benta-Flame-MN.png"
+                  alt="Benta's Funeral Home"
+                  className="h-12 w-auto object-contain"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.indexOf('BENTA_logo.png') === -1) {
+                      target.src = '/images/ebfh/BENTA_logo.png';
+                    }
+                  }}
+                />
+              </div>
               <h2 className="font-serif-title font-bold text-2xl text-[#800000] tracking-wider">
                 BENTA'S FUNERAL HOME, INC.
               </h2>
@@ -815,8 +838,18 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             {/* Form Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b-2 border-neutral-900 pb-4 gap-3">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-[#800000] text-white flex items-center justify-center font-serif-title font-bold text-base shadow-sm">
-                  B
+                <div className="w-10 h-10 rounded-full bg-[#800000] p-1.5 flex items-center justify-center shadow-sm shrink-0 border border-amber-400/30">
+                  <img
+                    src="/images/ebfh/Benta-Flame-MN.png"
+                    alt="Benta Flame"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.indexOf('BENTA_logo.png') === -1) {
+                        target.src = '/images/ebfh/BENTA_logo.png';
+                      }
+                    }}
+                  />
                 </div>
                 <div>
                   <h3 className="font-serif-title font-bold text-lg text-neutral-900">
@@ -1476,11 +1509,26 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
           <div className="space-y-6 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
             {/* Header */}
             <div className="flex justify-between items-center border-b-2 border-neutral-900 pb-3">
-              <div>
-                <h3 className="font-serif-title font-bold text-lg text-neutral-900">
-                  Client Production Package Overview
-                </h3>
-                <p className="text-xs text-[#800000] font-medium">Benta's Digiprint & 360° Media Suite</p>
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-[#800000] p-1.5 flex items-center justify-center shadow-sm shrink-0 border border-amber-400/30">
+                  <img
+                    src="/images/ebfh/Benta-Flame-MN.png"
+                    alt="Benta Flame"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.indexOf('BENTA_logo.png') === -1) {
+                        target.src = '/images/ebfh/BENTA_logo.png';
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <h3 className="font-serif-title font-bold text-lg text-neutral-900">
+                    Client Production Package Overview
+                  </h3>
+                  <p className="text-xs text-[#800000] font-medium">Benta's Digiprint & 360° Media Suite</p>
+                </div>
               </div>
               <div className="text-right text-xs">
                 <p>Today's Date: <strong>{caseData.createdAt.split('T')[0]}</strong></p>
@@ -1655,6 +1703,19 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
         return (
           <div className="space-y-4 text-neutral-900 font-sans text-xs bg-white p-6 sm:p-8 rounded-xl border border-neutral-300 shadow-sm print:p-0 print:border-none">
             <div className="text-center border-b border-neutral-200 pb-3">
+              <div className="flex justify-center mb-1">
+                <img
+                  src="/images/ebfh/Benta-Flame-MN.png"
+                  alt="Benta Logo"
+                  className="h-10 w-auto object-contain"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.indexOf('BENTA_logo.png') === -1) {
+                      target.src = '/images/ebfh/BENTA_logo.png';
+                    }
+                  }}
+                />
+              </div>
               <h4 className="font-bold text-base tracking-wide text-[#800000]">BENTA'S FUNERAL HOME, INC.</h4>
               <p className="text-[10px] text-neutral-500">630 Saint Nicholas Avenue, New York, NY 10030 • (212) 281-8850</p>
               <p className="font-bold text-sm uppercase mt-2 text-neutral-900">{doc.name}</p>
