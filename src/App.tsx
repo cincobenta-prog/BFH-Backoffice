@@ -1138,7 +1138,7 @@ export function App() {
 
     return (
       <div className="min-h-screen bg-[#f3f4f6] text-neutral-900 font-sans">
-        <div className={isContractModalOpen ? "print:hidden no-print backoffice-print-suppress" : ""}>
+        <div className={(isContractModalOpen || isPrintAP47Open || isRemovalModalOpen || isDocuSignModalOpen || isMemorialProgramModalOpen || isChapelQrModalOpen || isEdrsModalOpen) ? "print:hidden no-print backoffice-print-suppress" : ""}>
           <BackOfficeLayout
           currentRole={currentRole}
           onChangeRole={(role) => {

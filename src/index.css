@@ -451,6 +451,9 @@
     margin: 0 !important;
     padding: 0 !important;
     font-size: 11px !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -481,7 +484,7 @@
     overflow: hidden !important;
   }
 
-  /* Suppress entire background application layout when printing the contract */
+  /* Suppress background navigation and chrome when printing the contract or official modal documents */
   .backoffice-print-suppress,
   body:has(#official-form-ap47-contract) aside,
   body:has(#official-form-ap47-contract) header,
@@ -489,8 +492,10 @@
   body:has(#official-form-ap47-contract) nav,
   body:has(#official-form-ap47-matrix) aside,
   body:has(#official-form-ap47-matrix) header,
-  body:has(#official-form-ap47-matrix) main,
   body:has(#official-form-ap47-matrix) nav,
+  body:has(.contract-print-modal-container) aside,
+  body:has(.contract-print-modal-container) header,
+  body:has(.contract-print-modal-container) nav,
   .ap47-other-empty {
     display: none !important;
     visibility: hidden !important;
@@ -538,7 +543,7 @@
     display: block !important;
   }
 
-  /* Ensure the modal body containing the AP-47 contract is strictly visible and unconstrained */
+  /* Ensure the modal body containing the AP-47 contract or inspected document is strictly visible and unconstrained */
   .contract-print-modal-body {
     display: block !important;
     visibility: visible !important;
@@ -547,6 +552,7 @@
     overflow: visible !important;
     width: 100% !important;
     max-width: 100% !important;
+    max-height: none !important;
     height: auto !important;
   }
 

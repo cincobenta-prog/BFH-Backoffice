@@ -319,7 +319,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             </div>
 
             {/* Page Tab Selector in Viewer */}
-            <div className="flex items-center justify-between bg-neutral-100 p-1.5 rounded-xl print:hidden">
+            <div className="flex items-center justify-between bg-neutral-100 p-1.5 rounded-xl print:hidden no-print">
               <span className="text-[11px] font-bold text-neutral-600 px-2">
                 Official Document Page:
               </span>
@@ -352,8 +352,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             {/* ------------------------------------------------------- */}
             {/* PAGE 1: VITAL RECORD INFORMATION                        */}
             {/* ------------------------------------------------------- */}
-            {(vitalRecordViewPage === 'page1' || typeof window === 'undefined') && (
-              <div className="space-y-4 pt-1">
+            <div className={`space-y-4 pt-1 ${vitalRecordViewPage !== 'page1' ? 'hidden print:block' : ''}`}>
                 
                 {/* Decedent Identity */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-b border-neutral-300 pb-2">
@@ -549,13 +548,11 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 </div>
 
               </div>
-            )}
 
             {/* ------------------------------------------------------- */}
             {/* PAGE 2: AUTHORIZATIONS, DIRECTOR LOG & STORY            */}
             {/* ------------------------------------------------------- */}
-            {vitalRecordViewPage === 'page2' && (
-              <div className="space-y-4 pt-1">
+            <div className={`space-y-4 pt-1 print:page-break-before print:break-before-page ${vitalRecordViewPage !== 'page2' ? 'hidden print:block' : ''}`}>
                 
                 {/* Authorizations */}
                 <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200 space-y-3">
@@ -656,8 +653,6 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                 </div>
 
               </div>
-            )}
-
           </div>
         );
       }
@@ -819,7 +814,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             
             {/* Success Toast / Notification Banner */}
             {clothingSavedToast && (
-              <div className="bg-emerald-600 text-white p-3.5 rounded-xl shadow-lg flex items-center justify-between animate-fadeIn">
+              <div className="bg-emerald-600 text-white p-3.5 rounded-xl shadow-lg flex items-center justify-between animate-fadeIn print:hidden no-print">
                 <div className="flex items-center space-x-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-100" />
                   <div>
@@ -877,7 +872,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             </div>
 
             {/* Quick Presets & Form Toolbar */}
-            <div className="bg-[#fcfbfa] p-3.5 rounded-xl border border-neutral-200 flex flex-wrap items-center justify-between gap-2.5">
+            <div className="bg-[#fcfbfa] p-3.5 rounded-xl border border-neutral-200 flex flex-wrap items-center justify-between gap-2.5 print:hidden no-print">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-[11px] font-bold uppercase text-neutral-600 mr-1 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
@@ -1754,7 +1749,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
     <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 text-neutral-900 font-sans">
       
       {/* 1. TOP HEADER & MATRIX SUMMARY */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm">
+      <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-neutral-200 shadow-sm ${previewDoc ? 'print:hidden no-print' : ''}`}>
         <div>
           <div className="flex items-center space-x-2">
             <h2 className="font-serif-title text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
@@ -1796,7 +1791,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
       </div>
 
       {/* Automated Government Filings & Veterans Honors Ribbon */}
-      <div className="bg-gradient-to-r from-[#2B1B17] via-[#241f1a] to-[#800000] text-white p-4 rounded-2xl border border-[#D4AF37]/30 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div className={`bg-gradient-to-r from-[#2B1B17] via-[#241f1a] to-[#800000] text-white p-4 rounded-2xl border border-[#D4AF37]/30 shadow-sm flex flex-wrap items-center justify-between gap-3 ${previewDoc ? 'print:hidden no-print' : ''}`}>
         <div className="flex items-center space-x-3">
           <div className="p-2 bg-white/10 rounded-xl border border-white/20">
             <Building2 className="w-5 h-5 text-[#E6C65B]" />
@@ -1842,7 +1837,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
       </div>
 
       {/* 2. MAIN DOCUMENT MATRIX TABLE */}
-      <div className="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm">
+      <div className={`bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm ${previewDoc ? 'print:hidden no-print' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-neutral-700">
             <thead className="bg-neutral-50 text-neutral-500 uppercase text-[10px] tracking-wider border-b border-neutral-200 font-bold">
@@ -1947,7 +1942,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
           <div className="bg-white border border-neutral-200 rounded-2xl max-w-4xl w-full my-6 p-6 sm:p-8 space-y-5 shadow-2xl text-neutral-900 contract-print-modal-container print:max-w-none print:max-h-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:block print:w-full print:m-0 print:p-0">
             
             {/* Modal Top Controls */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 gap-3 print:hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 gap-3 print:hidden no-print">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-xl bg-red-50 text-[#800000] flex items-center justify-center border border-red-200 shadow-xs">
                   <FileText className="w-5 h-5" />
@@ -1969,7 +1964,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
               <div className="flex items-center space-x-2">
                 <button
                   onClick={handlePrintDocument}
-                  className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 transition border border-neutral-300 shadow-2xs"
+                  className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 transition border border-neutral-300 shadow-2xs cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Print Official PDF</span>
@@ -1982,7 +1977,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
                       setPreviewDoc(null);
                       onOpenESign(doc);
                     }}
-                    className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 transition shadow-sm border border-amber-300/40"
+                    className="bg-[#800000] hover:bg-[#6a0509] text-white text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 transition shadow-sm border border-amber-300/40 cursor-pointer"
                   >
                     <PenTool className="w-3.5 h-3.5 text-amber-300" />
                     <span>eSign Document</span>
@@ -1991,7 +1986,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
                 <button
                   onClick={() => setPreviewDoc(null)}
-                  className="p-2 text-neutral-400 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition"
+                  className="p-2 text-neutral-400 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition cursor-pointer"
                   title="Close Inspector"
                 >
                   <X className="w-5 h-5" />
@@ -2000,12 +1995,12 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
             </div>
 
             {/* Render Exact Form Layout */}
-            <div className="max-h-[72vh] overflow-y-auto pr-1">
+            <div className="max-h-[72vh] overflow-y-auto pr-1 contract-print-modal-body print:max-h-none print:overflow-visible print:h-auto print:p-0">
               {renderOfficialFormContent(previewDoc)}
             </div>
 
             {/* Modal Bottom Actions */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-4 border-t border-neutral-200 gap-3 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pt-4 border-t border-neutral-200 gap-3 text-xs print:hidden no-print">
               <div className="flex items-center space-x-2 text-neutral-500 text-[11px]">
                 <Lock className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Encrypted & Verified via BFH Golden Record v3.0 Compliance Framework</span>

@@ -334,13 +334,13 @@ export const BackOfficeLayout = ({
 
       {drawerOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden print:hidden no-print"
           onClick={() => setDrawerOpen(false)}
           aria-hidden="true"
         />
       )}
 
-      <div className="flex min-h-screen flex-col lg:pl-[272px] print:hidden no-print">
+      <div className="flex min-h-screen flex-col lg:pl-[272px] print:pl-0 print:min-h-0 print:block">
         <header className="sticky top-0 z-30 border-b border-amber-400/20 bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sm:px-6 print:hidden no-print">
           <div className="flex items-center gap-3">
             <button
@@ -541,7 +541,7 @@ export const BackOfficeLayout = ({
           </div>
         </header>
 
-        <div className="min-w-0 flex-1">{children}</div>
+        <div className="min-w-0 flex-1 print:block print:w-full">{children}</div>
       </div>
     </>
   );
