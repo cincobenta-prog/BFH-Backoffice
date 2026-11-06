@@ -62,6 +62,20 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
     sog.sectionIV.combinedOtherCharge || 
     ((sog.sectionI.F3_facilitiesMemorialServiceAmount || 0) + (sog.sectionI.E3_supervisionMemorialAmount || 0));
 
+  const showCombinedVisitation = sog.sectionIV.includeCombinedVisitation !== undefined
+    ? sog.sectionIV.includeCombinedVisitation
+    : true;
+
+  const showCombinedFuneral = sog.sectionIV.includeCombinedFuneralService !== undefined
+    ? sog.sectionIV.includeCombinedFuneralService
+    : true;
+
+  const showCombinedOther = sog.sectionIV.includeCombinedOther !== undefined
+    ? sog.sectionIV.includeCombinedOther
+    : true;
+
+  const cemeteryName = sog.sectionII?.cemeteryOrCrematoryName || caseData.serviceSelections?.crematoryOrCemeteryName || '';
+
   const directorName = sog.sectionIV.licensedFuneralDirector.name || caseData.assignedDirector || 'Jason Benta, LFD';
   const directorLicense = sog.sectionIV.licensedFuneralDirector.licenseNumber || '08850';
 
@@ -530,7 +544,38 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 </p>
 
                 <div className="space-y-0.8 pt-1">
-                  <DotRow label="1. Cemetery or Crematory" amount={sog.sectionII.cemeteryOrCrematoryAmount} indent={1} />
+                  <DotRow 
+                    label={
+                      !readOnly ? (
+                        <span className="inline-flex items-center gap-1 w-full max-w-[280px]">
+                          <span className="shrink-0">1. Cemetery or Crematory:</span>
+                          <input
+                            type="text"
+                            value={sog.sectionII?.cemeteryOrCrematoryName ?? caseData.serviceSelections?.crematoryOrCemeteryName ?? ''}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              handleUpdate(prev => ({
+                                ...prev,
+                                sectionII: {
+                                  ...prev.sectionII,
+                                  cemeteryOrCrematoryName: val
+                                }
+                              }));
+                            }}
+                            placeholder="Enter cemetery/crematory name"
+                            className="font-semibold text-neutral-900 border-b border-dotted border-neutral-600 bg-transparent px-1 py-0 text-[9.5px] print:hidden focus:outline-none focus:border-neutral-900 w-full"
+                          />
+                          <span className="hidden print:inline font-semibold">
+                            {cemeteryName || '________________________'}
+                          </span>
+                        </span>
+                      ) : (
+                        <span>1. Cemetery or Crematory: <span className="font-semibold">{cemeteryName || '________________________'}</span></span>
+                      )
+                    } 
+                    amount={sog.sectionII.cemeteryOrCrematoryAmount} 
+                    indent={1} 
+                  />
                   <DotRow label="2. Clergy Honoraria" amount={sog.sectionII.clergyHonorariaAmount} indent={1} />
                   <DotRow 
                     label={`3. Death Certificate Transcripts (${sog.sectionII.deathCertificateTranscriptsCount || 4}x)`} 
@@ -587,17 +632,181 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
 
               {/* IV. Explanation of Charges */}
               <div className="space-y-1.5 border border-neutral-800 p-2.5 rounded bg-white">
-                <div className="font-bold text-[11px] uppercase tracking-wide text-neutral-900">
-                  IV. EXPLANATION OF CHARGES
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-[11px] uppercase tracking-wide text-neutral-900">
+                    IV. EXPLANATION OF CHARGES
+                  </div>
+                  {!readOnly && (
+                    <div className="flex items-center gap-1 print:hidden no-print text-[8.5px]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleUpdate(prev => ({
+                            ...prev,
+                            sectionIV: {
+                              ...prev.sectionIV,
+                              includeCombinedVisitation: true,
+                              includeCombinedFuneralService: true,
+                              includeCombinedOther: true
+                            }
+                          }));
+                        }}
+                        className="px-1.5 py-0.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded font-semibold border border-neutral-300 cursor-pointer"
+                        title="Show all 3 options on contract"
+                      >
+                        Select All 3
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleUpdate(prev => ({
+                            ...prev,
+                            sectionIV: {
+                              ...prev.sectionIV,
+                              includeCombinedVisitation: false,
+                              includeCombinedFuneralService: false,
+                              includeCombinedOther: false
+                            }
+                          }));
+                        }}
+                        className="px-1.5 py-0.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-600 rounded font-normal border border-neutral-300 cursor-pointer"
+                        title="Deselect all options"
+                      >
+                        Deselect All
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <p className="text-[8.5px] text-neutral-600 leading-snug">
                   Explain charges for embalming and for any items that are not required by law but may be necessary because of cemetery requirements, crematory requirements or other selections made.
                 </p>
 
                 <div className="space-y-1 pt-1 text-[9.5px]">
-                  <DotRow label="Combined charge for Facilities and Staff for visitation is" amount={combinedVisitation} />
-                  <DotRow label="Combined charge for Facilities and Staff for funeral service is" amount={combinedFuneral} />
-                  <DotRow label={`Combined charge for other Facilities and Staff (specify) ${sog.sectionIV.combinedOtherSpecify || '________________________'}`} amount={combinedOther} />
+                  {/* Option 1: Combined charge for facilities and staff for visitation */}
+                  {(showCombinedVisitation || !readOnly) && (
+                    <div className={!showCombinedVisitation ? 'opacity-40 print:hidden' : ''}>
+                      <DotRow 
+                        label={
+                          <span className="inline-flex items-center gap-1.5">
+                            {!readOnly && (
+                              <input
+                                type="checkbox"
+                                checked={showCombinedVisitation}
+                                onChange={(e) => {
+                                  const val = e.target.checked;
+                                  handleUpdate(prev => ({
+                                    ...prev,
+                                    sectionIV: {
+                                      ...prev.sectionIV,
+                                      includeCombinedVisitation: val
+                                    }
+                                  }));
+                                }}
+                                title="Toggle visitation combined charge on contract"
+                                className="rounded text-[#800000] focus:ring-[#800000] print:hidden cursor-pointer h-3 w-3"
+                              />
+                            )}
+                            <span>Combined charge for Facilities and Staff for visitation is</span>
+                            {!showCombinedVisitation && (
+                              <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Omitted)</span>
+                            )}
+                          </span>
+                        } 
+                        amount={combinedVisitation} 
+                      />
+                    </div>
+                  )}
+
+                  {/* Option 2: Combined charge for facilities and staff for funeral services */}
+                  {(showCombinedFuneral || !readOnly) && (
+                    <div className={!showCombinedFuneral ? 'opacity-40 print:hidden' : ''}>
+                      <DotRow 
+                        label={
+                          <span className="inline-flex items-center gap-1.5">
+                            {!readOnly && (
+                              <input
+                                type="checkbox"
+                                checked={showCombinedFuneral}
+                                onChange={(e) => {
+                                  const val = e.target.checked;
+                                  handleUpdate(prev => ({
+                                    ...prev,
+                                    sectionIV: {
+                                      ...prev.sectionIV,
+                                      includeCombinedFuneralService: val
+                                    }
+                                  }));
+                                }}
+                                title="Toggle funeral service combined charge on contract"
+                                className="rounded text-[#800000] focus:ring-[#800000] print:hidden cursor-pointer h-3 w-3"
+                              />
+                            )}
+                            <span>Combined charge for Facilities and Staff for funeral service is</span>
+                            {!showCombinedFuneral && (
+                              <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Omitted)</span>
+                            )}
+                          </span>
+                        } 
+                        amount={combinedFuneral} 
+                      />
+                    </div>
+                  )}
+
+                  {/* Option 3: Combined charge for other facilities and staff: specify */}
+                  {(showCombinedOther || !readOnly) && (
+                    <div className={!showCombinedOther ? 'opacity-40 print:hidden' : ''}>
+                      <DotRow 
+                        label={
+                          <span className="inline-flex items-center gap-1.5 flex-wrap">
+                            {!readOnly && (
+                              <input
+                                type="checkbox"
+                                checked={showCombinedOther}
+                                onChange={(e) => {
+                                  const val = e.target.checked;
+                                  handleUpdate(prev => ({
+                                    ...prev,
+                                    sectionIV: {
+                                      ...prev.sectionIV,
+                                      includeCombinedOther: val
+                                    }
+                                  }));
+                                }}
+                                title="Toggle other facilities & staff combined charge on contract"
+                                className="rounded text-[#800000] focus:ring-[#800000] print:hidden cursor-pointer h-3 w-3"
+                              />
+                            )}
+                            <span>Combined charge for other Facilities and Staff (specify)</span>
+                            {!readOnly ? (
+                              <input
+                                type="text"
+                                value={sog.sectionIV.combinedOtherSpecify || ''}
+                                placeholder="specify another amount"
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  handleUpdate(prev => ({
+                                    ...prev,
+                                    sectionIV: {
+                                      ...prev.sectionIV,
+                                      combinedOtherSpecify: val
+                                    }
+                                  }));
+                                }}
+                                className="border-b border-dotted border-neutral-600 bg-transparent px-1 py-0 text-[9px] print:hidden focus:outline-none focus:border-neutral-900 w-32"
+                              />
+                            ) : null}
+                            <span className={!readOnly ? 'hidden print:inline font-medium' : 'font-medium'}>
+                              {sog.sectionIV.combinedOtherSpecify || '________________________'}
+                            </span>
+                            {!showCombinedOther && (
+                              <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Omitted)</span>
+                            )}
+                          </span>
+                        } 
+                        amount={combinedOther} 
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Licensed Funeral Director Signature */}
@@ -804,7 +1013,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 </p>
 
                 <p className="font-medium text-neutral-950">
-                  <strong>TERMS: </strong>This account becomes due 48 hours prior to service. If bill remains unpaid beyond 48 hours prior to service a late charge of 1.5% per month (annual rate 18%) may be added to the unpaid portion of the balance due. All funds are due 48 hours prior to service.
+                  <strong>TERMS: </strong>This account becomes due 48 hours prior to service. If bill remains unpaid beyond 48 hours prior to service a late charge may be added to the unpaid portion of the balance due. All funds are due 48 hours prior to service.
                 </p>
 
                 <p>

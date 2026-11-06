@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { calculateAP47Totals, getDefaultStatementOfGoodsForCase } from './generalPriceList';
 import { MOCK_CASES } from './mockCases';
@@ -45,7 +46,7 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
       warrantyDisclaimer: 'EXCLUSION OF WARRANTY. The only warranties, express or implied, granted in connection with the goods sold with this funeral service are the express written warranties, if any, extended by the manufacturers thereof. No other warranties and no warranties of merchantability or fitness for a particular purpose are extended by the funeral director.',
       attorneysFees: 'In the event that this account is not paid in accordance with the terms of this agreement, the undersigned hereby agrees to pay any and all costs and attorney\'s fees incurred in connection with the collection of this account.',
       gplPriorReceipt: 'Prior to the discussion of these funeral arrangements, I was presented with a copy of this funeral firm\'s "General Price List" for which I hereby acknowledge receipt, and have had an opportunity to review the firm\'s Casket Price List and Outer Interment Receptacle Price List.',
-      termsNotice: 'TERMS: This account becomes due 48 hours prior to service. If bill remains unpaid beyond 48 hours prior to service a late charge of 1.5% per month (annual rate 18%) may be added to the unpaid portion of the balance due. All funds are due 48 hours prior to service.',
+      termsNotice: 'TERMS: This account becomes due 48 hours prior to service. If bill remains unpaid beyond 48 hours prior to service a late charge may be added to the unpaid portion of the balance due. All funds are due 48 hours prior to service.',
       termsLiability: 'The liability hereby assumed is in addition to the liability imposed by law upon the estate and others, and shall not constitute a release thereof.',
       additionsAlterations: 'ADDITIONS OR ALTERATIONS OF SERVICES AND MERCHANDISE SELECTED. The following changes represent items of service and/or merchandise ordered or altered subsequent to the original funeral agreement.',
       embalmingStatutory: 'If you select a funeral for which this firm requires embalming such as a funeral with viewing, you may have to pay for embalming. You do not have to pay for embalming you do not approve if you select arrangements such as direct cremation or direct burial. If we charge for embalming, we will explain why below.',
@@ -194,8 +195,9 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     expect(html).toContain('1. Forwarding remains to');
     expect(html).toContain('2. Receiving remains from');
 
-    // Verify MUST-FIX 18: II Cash Advances labels 1–9
+    // Verify MUST-FIX 18: II Cash Advances labels 1–9 with cemetery name on line 1
     expect(html).toContain('1. Cemetery or Crematory');
+    expect(html).toContain('Woodlawn Cemetery &amp; Crematory (Bronx, NY)');
     expect(html).toContain('2. Clergy Honoraria');
     expect(html).toContain('3. Death Certificate Transcripts');
     expect(html).toContain('4. Livery');
@@ -204,6 +206,11 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     expect(html).toContain('7. Gratuities');
     expect(html).toContain('8. Bridge &amp; Road Tolls');
     expect(html).toContain('9. Telephone &amp; Telegraph Charges');
+
+    // Verify late charge removed 1.5% per month rate
+    expect(html).not.toContain('1.5% per month');
+    expect(html).not.toContain('annual rate 18%');
+    expect(html).toContain('a late charge may be added to the unpaid portion of the balance due');
 
     // Related cleanups: Other Authorization by line
     expect(html).toContain('Other Authorization by:');
@@ -312,4 +319,78 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
 </html>`;
     fs.writeFileSync(path.join(artifactDir, 'AP-47_blank_official_template.html'), styledHtmlBlank, 'utf8');
   });
+
+  it('allows field directors to select which Section IV combined charge options appear on the contract', async () => {
+    const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
+    const ReactDOMServer = (await import('react-dom/server')).default;
+    const { MOCK_CASES } = await import('./mockCases');
+    const { getDefaultStatementOfGoodsForCase } = await import('./generalPriceList');
+
+    const testCase = MOCK_CASES.find(c => c.id === 'case-24501')!;
+    const baseSog = getDefaultStatementOfGoodsForCase(testCase);
+
+    // Scenario A: All 3 options selected -> all 3 appear on contract
+    const allSelectedSog = {
+      ...baseSog,
+      sectionIV: {
+        ...baseSog.sectionIV,
+        includeCombinedVisitation: true,
+        includeCombinedFuneralService: true,
+        includeCombinedOther: true
+      }
+    };
+    const htmlAll = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: allSelectedSog,
+        readOnly: true
+      })
+    );
+    expect(htmlAll).toContain('Combined charge for Facilities and Staff for visitation is');
+    expect(htmlAll).toContain('Combined charge for Facilities and Staff for funeral service is');
+    expect(htmlAll).toContain('Combined charge for other Facilities and Staff (specify)');
+
+    // Scenario B: Only visitation selected -> funeral service and other omitted
+    const visitationOnlySog = {
+      ...baseSog,
+      sectionIV: {
+        ...baseSog.sectionIV,
+        includeCombinedVisitation: true,
+        includeCombinedFuneralService: false,
+        includeCombinedOther: false
+      }
+    };
+    const htmlVisitationOnly = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: visitationOnlySog,
+        readOnly: true
+      })
+    );
+    expect(htmlVisitationOnly).toContain('Combined charge for Facilities and Staff for visitation is');
+    expect(htmlVisitationOnly).not.toContain('Combined charge for Facilities and Staff for funeral service is');
+    expect(htmlVisitationOnly).not.toContain('Combined charge for other Facilities and Staff (specify)');
+
+    // Scenario C: Only funeral service selected -> visitation and other omitted
+    const funeralOnlySog = {
+      ...baseSog,
+      sectionIV: {
+        ...baseSog.sectionIV,
+        includeCombinedVisitation: false,
+        includeCombinedFuneralService: true,
+        includeCombinedOther: false
+      }
+    };
+    const htmlFuneralOnly = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: funeralOnlySog,
+        readOnly: true
+      })
+    );
+    expect(htmlFuneralOnly).not.toContain('Combined charge for Facilities and Staff for visitation is');
+    expect(htmlFuneralOnly).toContain('Combined charge for Facilities and Staff for funeral service is');
+    expect(htmlFuneralOnly).not.toContain('Combined charge for other Facilities and Staff (specify)');
+  });
 });
+

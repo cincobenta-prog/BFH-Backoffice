@@ -913,6 +913,10 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       combinedVisitationCharge: 1100.00,
       combinedFuneralServiceCharge: 1100.00,
       combinedOtherCharge: 0,
+      combinedOtherSpecify: '',
+      includeCombinedVisitation: true,
+      includeCombinedFuneralService: true,
+      includeCombinedOther: false,
 
       custodyAuthorization: {
         authorized: true,
@@ -941,8 +945,7 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
         signatureDate: '2026-09-19'
       },
 
-      additionsOrAlterations: [],
-      termsLateChargePercent: 1.5
+      additionsOrAlterations: []
     }
   };
 
