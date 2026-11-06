@@ -261,6 +261,159 @@
   transform: translateY(-2px);
 }
 
+/* ------------------------------------------------------------------
+   Classy Wow-Factor & Micro-Animation System
+   Harlem Brass (#d4af37), Benta Crimson (#800000), Deep Obsidian
+   ------------------------------------------------------------------ */
+
+@keyframes flameAura {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(212, 175, 55, 0.45)) drop-shadow(0 0 12px rgba(160, 8, 14, 0.35));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.75)) drop-shadow(0 0 20px rgba(220, 38, 38, 0.5));
+    transform: scale(1.03);
+  }
+}
+
+@keyframes goldShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(212, 175, 55, 0);
+  }
+}
+
+.flame-animated {
+  animation: flameAura 4s ease-in-out infinite;
+  will-change: transform, filter;
+}
+
+.float-slow {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulseGlow 2.5s infinite;
+}
+
+/* Luxury Glass Cards */
+.luxury-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.luxury-glass-dark {
+  background: radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.10), transparent 70%), linear-gradient(180deg, #1f1b1a 0%, #141313 100%);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* Tactile Luxury Buttons */
+.btn-luxury-crimson {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #8c080e 0%, #73060b 60%, #540306 100%);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(140, 8, 14, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-luxury-crimson:hover {
+  background: linear-gradient(135deg, #9f0a11 0%, #82070d 60%, #600407 100%);
+  border-color: rgba(245, 158, 11, 0.8);
+  box-shadow: 0 4px 16px rgba(140, 8, 14, 0.45), 0 0 12px rgba(212, 175, 55, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-luxury-crimson:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(140, 8, 14, 0.3);
+}
+
+.btn-luxury-brass {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FAF3E0 0%, #F5EAD0 100%);
+  border: 1px solid rgba(184, 134, 11, 0.45);
+  color: #78350f;
+  box-shadow: 0 2px 6px rgba(184, 134, 11, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+}
+
+.btn-luxury-brass:hover {
+  background: linear-gradient(135deg, #FFF8EC 0%, #F5E5C4 100%);
+  border-color: rgba(184, 134, 11, 0.75);
+  color: #592507;
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.22), 0 0 10px rgba(212, 175, 55, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-luxury-brass:active {
+  transform: translateY(0);
+}
+
+/* Light sweep shimmer overlay */
+.shimmer-sweep {
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: goldShimmer 3s infinite;
+}
+
+/* Interactive Card Elevations */
+.luxury-card-interactive {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card-interactive:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.08), 0 0 12px rgba(212, 175, 55, 0.15);
+}
+
+/* Gold Hairline */
+.gold-hairline {
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+/* Live pulsing dot */
+.status-dot-pulse {
+  position: relative;
+}
+.status-dot-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  background: inherit;
+  opacity: 0.6;
+  animation: pulseGlow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
 /* Smooth custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;

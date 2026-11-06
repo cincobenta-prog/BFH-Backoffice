@@ -452,13 +452,13 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
       )}
 
       {/* TOP COMMAND BAR: DIRECTOR / MANAGER IDENTITY & SCOPE SELECTOR */}
-      <div className="bg-white border-b border-neutral-200 shadow-2xs sticky top-0 z-30 px-4 sm:px-6 py-3">
+      <div className="bg-white/95 backdrop-blur-md border-b border-amber-400/25 shadow-[0_2px_12px_rgba(0,0,0,0.03)] sticky top-0 z-30 px-4 sm:px-6 py-3">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
           
           {/* Active Director Profile & Color Indicator */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3.5">
             <div 
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-xs border"
+              className="w-11 h-11 rounded-xl flex items-center justify-center text-white font-bold shadow-xs border border-amber-400/50 relative overflow-hidden shrink-0"
               style={{ backgroundColor: activeDirector?.colorTheme?.primary || '#800000' }}
             >
               <User className="w-5 h-5 text-white" />
@@ -469,16 +469,16 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
                 <span className="font-bold text-sm text-neutral-900">
                   {activeDirector?.name || 'Jason Benta'}
                 </span>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${
+                <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border shadow-2xs ${
                   activeDirector?.isManager || activeDirector?.roleType === 'manager' 
-                    ? 'bg-brass-100 text-brass-900 border-brass-300'
-                    : activeDirector?.colorTheme?.badgeBg || 'bg-brass-100 text-brass-900 border-brass-300'
+                    ? 'bg-amber-100 text-amber-900 border-amber-300'
+                    : activeDirector?.colorTheme?.badgeBg || 'bg-amber-100 text-amber-900 border-amber-300'
                 }`}>
-                  {activeDirector?.isManager || activeDirector?.roleType === 'manager' ? 'Managing Director & LFD (Full Access)' : `Funeral Director • ${activeDirector?.colorTheme?.name}`}
+                  {activeDirector?.isManager || activeDirector?.roleType === 'manager' ? '👑 Managing Director & LFD (Full Access)' : `Funeral Director • ${activeDirector?.colorTheme?.name}`}
                 </span>
               </div>
-              <div className="text-xs text-neutral-500 flex items-center space-x-2">
-                <span>{activeDirector?.licenseNumber}</span>
+              <div className="text-xs text-neutral-500 flex items-center space-x-2 mt-0.5">
+                <span className="font-mono font-semibold text-[#800000]">{activeDirector?.licenseNumber}</span>
                 <span>•</span>
                 <span>{activeDirector?.title}</span>
               </div>
@@ -487,7 +487,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
 
           {/* Director / Manager Persona Switcher Dropdown */}
           {onChangeDirectorId && directorProfiles.length > 0 && (
-            <div className="flex items-center space-x-2 bg-neutral-50 p-1.5 rounded-xl border border-neutral-200 text-xs">
+            <div className="flex items-center space-x-2 bg-neutral-50/90 p-1.5 rounded-xl border border-amber-400/30 text-xs shadow-2xs">
               <span className="text-neutral-500 font-semibold pl-1">Switch User:</span>
               <select
                 value={currentDirectorId}
@@ -563,31 +563,31 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
             }
           };
           return (
-            <div className="flex flex-col justify-between gap-4 rounded-2xl border border-[#ecdfc4] border-l-4 border-l-[#b8860b] bg-gradient-to-b from-[#fffdf8] to-white p-5 shadow-sm md:flex-row md:items-center">
-              <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#800000] text-amber-300">
+            <div className="flex flex-col justify-between gap-4 rounded-2xl border border-amber-300/80 border-l-4 border-l-[#b8860b] bg-gradient-to-r from-[#FFFDF8] via-white to-[#FDFBF7] p-5 shadow-sm md:flex-row md:items-center relative overflow-hidden">
+              <div className="flex items-start gap-3.5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#800000] to-[#500000] text-amber-300 shadow-xs border border-amber-400/40">
                   <Compass className="h-5 w-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#b8860b]">
-                    Your next step
+                  <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#b8860b]">
+                    Your Next Step
                   </span>
                   <h3 className="font-serif-title mt-0.5 text-base font-bold text-neutral-900">
                     {copy.title}
                   </h3>
-                  <p className="mt-1 max-w-2xl text-xs text-neutral-600">{copy.body}</p>
+                  <p className="mt-1 max-w-2xl text-xs text-neutral-600 leading-relaxed">{copy.body}</p>
                 </div>
               </div>
-              <div className="flex shrink-0 items-center gap-2">
+              <div className="flex shrink-0 items-center gap-2.5">
                 <button
                   onClick={runPrimary}
-                  className="rounded-xl bg-[#800000] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#680000]"
+                  className="btn-luxury-crimson rounded-xl px-4 py-2.5 text-xs font-bold text-white shadow-sm cursor-pointer"
                 >
                   {copy.primary}
                 </button>
                 <button
                   onClick={() => onOpenGoldenRecord?.(activeCase.id)}
-                  className="rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-xs font-semibold text-neutral-800 transition hover:bg-neutral-50"
+                  className="rounded-xl border border-neutral-300/90 bg-white px-3.5 py-2.5 text-xs font-bold text-neutral-800 transition hover:bg-neutral-50 hover:border-amber-400/60 shadow-2xs cursor-pointer"
                 >
                   {copy.secondary}
                 </button>

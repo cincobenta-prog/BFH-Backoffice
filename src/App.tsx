@@ -121,12 +121,20 @@ export function App() {
   const [activePublicSection, setActivePublicSection] = useState('home');
   const [isLobbyKioskOpen, setIsLobbyKioskOpen] = useState(false);
 
-  // Detect ?mode=lobby-kiosk in URL for front-office TV display boot
+  // Detect ?mode=lobby-kiosk or ?portal=backoffice / ?portal=family in URL
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       if (params.get('mode') === 'lobby-kiosk' || params.get('mode') === 'lobby') {
         setIsLobbyKioskOpen(true);
+      }
+      if (params.get('portal') === 'backoffice' || params.get('view') === 'backoffice') {
+        setViewMode('backoffice');
+      }
+      if (params.get('portal') === 'family' || params.get('view') === 'family') {
+        setViewMode('backoffice');
+        setCurrentRole('family');
+        setIsStaffUser(false);
       }
     }
   }, []);
