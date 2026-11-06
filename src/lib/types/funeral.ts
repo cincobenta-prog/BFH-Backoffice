@@ -1587,6 +1587,9 @@ export interface StatementOfGoodsSectionIV {
   combinedFuneralServiceCharge: number;
   combinedOtherCharge: number;
   combinedOtherSpecify?: string;
+  includeCombinedVisitation?: boolean;
+  includeCombinedFuneralService?: boolean;
+  includeCombinedOther?: boolean;
 
   custodyAuthorization: {
     authorized: boolean;
@@ -1616,7 +1619,7 @@ export interface StatementOfGoodsSectionIV {
   };
 
   additionsOrAlterations: FormAP47AdditionsOrAlterations[];
-  termsLateChargePercent: number;
+  termsLateChargePercent?: number;
 }
 
 export type CashAdvanceCategory =

@@ -266,7 +266,7 @@ export const MOCK_CASES: GoldenRecordCase[] = [
       "serviceVenueName": "Benta's Funeral Home - Chapel 1 (Main Sanctuary / Seats 140)",
       "serviceDate": "2026-10-24",
       "serviceTime": "11:00 AM",
-      "crematoryOrCemeteryName": "Cemetery Other",
+      "crematoryOrCemeteryName": "Woodlawn Cemetery & Crematory (Bronx, NY)",
       "officiantName": "Rev. Dr. Calvin O. Butts",
       "organistName": "Prof. Gregory Hopkins"
     },
@@ -489,7 +489,7 @@ export const MOCK_CASES: GoldenRecordCase[] = [
         "totalFuneralHomeCharges": 11653.2
       },
       "sectionII": {
-        "cemeteryOrCrematoryName": "Cemetery Other",
+        "cemeteryOrCrematoryName": "Woodlawn Cemetery & Crematory (Bronx, NY)",
         "cemeteryOrCrematoryAmount": 11674,
         "clergyChurchName": "",
         "clergyHonorariaAmount": 0,
@@ -530,6 +530,10 @@ export const MOCK_CASES: GoldenRecordCase[] = [
         "combinedVisitationCharge": 1100,
         "combinedFuneralServiceCharge": 1100,
         "combinedOtherCharge": 0,
+        "combinedOtherSpecify": "",
+        "includeCombinedVisitation": true,
+        "includeCombinedFuneralService": true,
+        "includeCombinedOther": true,
         "custodyAuthorization": {
           "authorized": true,
           "relationToDeceased": "Spouse (Cassie Williams)",

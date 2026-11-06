@@ -6130,6 +6130,188 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </div>
                   </div>
 
+                  {/* Section IV: Explanation of Charges Combined Disclosures Options */}
+                  <div className="bg-[#fdfcfb] p-5 rounded-2xl border-2 border-brass-400/80 shadow-xs space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-200 pb-3">
+                      <div>
+                        <h4 className="font-serif-title font-bold text-sm text-neutral-900 flex items-center gap-1.5">
+                          <span>📋 Section IV: Explanation of Charges — Combined Disclosures</span>
+                          <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-2 py-0.5 rounded-full border border-amber-300">
+                            Contract Options
+                          </span>
+                        </h4>
+                        <p className="text-[11px] text-neutral-500 mt-0.5">
+                          Field Director selection controls for the 3 combined facilities &amp; staff charge options on Form AP-47. Choose whether or not you want all options to show up on the contract.
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = { ...statementData };
+                            updated.sectionIV.includeCombinedVisitation = true;
+                            updated.sectionIV.includeCombinedFuneralService = true;
+                            updated.sectionIV.includeCombinedOther = true;
+                            setStatementData(calculateAP47Totals(updated));
+                            showToast('✓ Selected all 3 Section IV combined charge options');
+                          }}
+                          className="px-2.5 py-1 bg-neutral-900 hover:bg-neutral-800 text-white rounded-lg font-bold text-xs cursor-pointer shadow-xs"
+                        >
+                          Select All 3 (Show All)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = { ...statementData };
+                            updated.sectionIV.includeCombinedVisitation = false;
+                            updated.sectionIV.includeCombinedFuneralService = false;
+                            updated.sectionIV.includeCombinedOther = false;
+                            setStatementData(calculateAP47Totals(updated));
+                            showToast('Deselected Section IV combined charges');
+                          }}
+                          className="px-2.5 py-1 bg-white hover:bg-neutral-100 text-neutral-700 border border-neutral-300 rounded-lg font-medium text-xs cursor-pointer"
+                        >
+                          Deselect All
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {/* Option 1: Visitation */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-white rounded-xl border border-neutral-200">
+                        <label className="flex items-center space-x-2.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={statementData.sectionIV.includeCombinedVisitation ?? true}
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionIV.includeCombinedVisitation = e.target.checked;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="rounded text-[#800000] focus:ring-[#800000]"
+                          />
+                          <div>
+                            <span className="font-bold text-neutral-900 text-xs block">
+                              Combined charge for facilities and staff for visitation
+                            </span>
+                            <span className="text-[10px] text-neutral-500">
+                              Option 1: Facilities and staff for visitation
+                            </span>
+                          </div>
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-neutral-400 font-mono text-xs">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={statementData.sectionIV.combinedVisitationCharge !== undefined ? (statementData.sectionIV.combinedVisitationCharge === 0 ? '' : statementData.sectionIV.combinedVisitationCharge) : ((statementData.sectionI.F1_facilitiesVisitationAmount || 0) + (statementData.sectionI.E1_supervisionVisitationAmount || 0))}
+                            placeholder="0.00"
+                            onChange={(e) => {
+                              const val = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                              const updated = { ...statementData };
+                              updated.sectionIV.combinedVisitationCharge = val;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs text-right"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Option 2: Funeral Services */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-white rounded-xl border border-neutral-200">
+                        <label className="flex items-center space-x-2.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={statementData.sectionIV.includeCombinedFuneralService ?? true}
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionIV.includeCombinedFuneralService = e.target.checked;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="rounded text-[#800000] focus:ring-[#800000]"
+                          />
+                          <div>
+                            <span className="font-bold text-neutral-900 text-xs block">
+                              Combined charge for facilities and staff for funeral services
+                            </span>
+                            <span className="text-[10px] text-neutral-500">
+                              Option 2: Facilities and staff for funeral ceremonies
+                            </span>
+                          </div>
+                        </label>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-neutral-400 font-mono text-xs">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            value={statementData.sectionIV.combinedFuneralServiceCharge !== undefined ? (statementData.sectionIV.combinedFuneralServiceCharge === 0 ? '' : statementData.sectionIV.combinedFuneralServiceCharge) : ((statementData.sectionI.F2_facilitiesFuneralServiceAmount || 0) + (statementData.sectionI.E2_supervisionFuneralServiceAmount || 0))}
+                            placeholder="0.00"
+                            onChange={(e) => {
+                              const val = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                              const updated = { ...statementData };
+                              updated.sectionIV.combinedFuneralServiceCharge = val;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs text-right"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Option 3: Other Facilities and Staff */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-white rounded-xl border border-neutral-200">
+                        <label className="flex items-center space-x-2.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={statementData.sectionIV.includeCombinedOther ?? true}
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionIV.includeCombinedOther = e.target.checked;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="rounded text-[#800000] focus:ring-[#800000]"
+                          />
+                          <div>
+                            <span className="font-bold text-neutral-900 text-xs block">
+                              Combined charge for other facilities and staff: specify another amount
+                            </span>
+                            <span className="text-[10px] text-neutral-500">
+                              Option 3: Custom facilities &amp; staff specification
+                            </span>
+                          </div>
+                        </label>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <input
+                            type="text"
+                            value={statementData.sectionIV.combinedOtherSpecify || ''}
+                            placeholder="specify another amount"
+                            onChange={(e) => {
+                              const updated = { ...statementData };
+                              updated.sectionIV.combinedOtherSpecify = e.target.value;
+                              setStatementData(calculateAP47Totals(updated));
+                            }}
+                            className="w-40 p-1.5 bg-white border border-neutral-300 rounded text-xs"
+                          />
+                          <div className="flex items-center space-x-2">
+                            <span className="text-neutral-400 font-mono text-xs">$</span>
+                            <input
+                              type="number"
+                              step="0.01"
+                              value={statementData.sectionIV.combinedOtherCharge !== undefined ? (statementData.sectionIV.combinedOtherCharge === 0 ? '' : statementData.sectionIV.combinedOtherCharge) : ((statementData.sectionI.F3_facilitiesMemorialServiceAmount || 0) + (statementData.sectionI.E3_supervisionMemorialAmount || 0))}
+                              placeholder="0.00"
+                              onChange={(e) => {
+                                const val = e.target.value === '' ? 0 : parseFloat(e.target.value) || 0;
+                                const updated = { ...statementData };
+                                updated.sectionIV.combinedOtherCharge = val;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="w-28 p-1.5 bg-white border border-neutral-300 rounded font-mono font-bold text-[#800000] text-xs text-right"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               )}
 
