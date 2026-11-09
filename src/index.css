@@ -569,29 +569,29 @@
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
-    font-size: 8.75px !important;
-    line-height: 1.22 !important;
+    font-size: 9.75px !important;
+    line-height: 1.35 !important;
   }
 
   #official-form-ap47-contract .space-y-6 > * + *,
   #official-form-ap47-matrix .space-y-6 > * + *,
   #official-form-ap47-printable .space-y-6 > * + *,
   .ap47-form-root .space-y-6 > * + * {
-    margin-top: 0.35rem !important;
+    margin-top: 0.55rem !important;
   }
 
   #official-form-ap47-contract .space-y-4 > * + *,
   #official-form-ap47-matrix .space-y-4 > * + *,
   #official-form-ap47-printable .space-y-4 > * + *,
   .ap47-form-root .space-y-4 > * + * {
-    margin-top: 0.22rem !important;
+    margin-top: 0.42rem !important;
   }
 
   #official-form-ap47-contract .space-y-3 > * + *,
   #official-form-ap47-matrix .space-y-3 > * + *,
   #official-form-ap47-printable .space-y-3 > * + *,
   .ap47-form-root .space-y-3 > * + * {
-    margin-top: 0.15rem !important;
+    margin-top: 0.32rem !important;
   }
 
   #official-form-ap47-contract .p-2\.5,
@@ -614,7 +614,7 @@
   .ap47-form-root .p-3\.5,
   .ap47-form-root .p-4,
   .ap47-form-root .p-5 {
-    padding: 0.18rem 0.35rem !important;
+    padding: 0.35rem 0.45rem !important;
   }
 
   /* Clean page break between Page 1 and Page 2 */
@@ -629,10 +629,10 @@
   .ap47-page-2,
   .contract-print-page,
   .contract-print-modal-body.ap47-print-page {
-    padding-top: 0.35in !important;
-    padding-bottom: 0.35in !important;
-    padding-left: 0.45in !important;
-    padding-right: 0.45in !important;
+    padding-top: 0.3in !important;
+    padding-bottom: 0.3in !important;
+    padding-left: 0.4in !important;
+    padding-right: 0.4in !important;
     box-sizing: border-box !important;
     width: 100% !important;
   }

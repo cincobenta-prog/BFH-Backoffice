@@ -1590,6 +1590,8 @@ export interface StatementOfGoodsSectionIV {
   includeCombinedVisitation?: boolean;
   includeCombinedFuneralService?: boolean;
   includeCombinedOther?: boolean;
+  explanationAllSelectedByFamily?: boolean;
+  explanationEmbalmingViewingPurposes?: boolean;
 
   custodyAuthorization: {
     authorized: boolean;

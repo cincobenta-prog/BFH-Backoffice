@@ -6187,6 +6187,57 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </div>
 
                     <div className="space-y-3">
+                      {/* Primary Explanation Checkboxes */}
+                      <div className="bg-amber-50/70 p-4 rounded-xl border border-amber-300 space-y-3">
+                        <div className="text-xs font-bold text-amber-950 uppercase tracking-wide">
+                          Funeral Director Explanation Options (Select one or both)
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          <label className="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-neutral-200 cursor-pointer hover:border-amber-400 transition">
+                            <input
+                              type="checkbox"
+                              checked={statementData.sectionIV.explanationAllSelectedByFamily ?? true}
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionIV.explanationAllSelectedByFamily = e.target.checked;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="rounded text-[#800000] focus:ring-[#800000] mt-0.5"
+                            />
+                            <div>
+                              <span className="font-bold text-neutral-900 text-xs block">
+                                All services and merchandise were selected by the family.
+                              </span>
+                              <span className="text-[10px] text-neutral-500">
+                                Option A: Family affirmative selection disclosure
+                              </span>
+                            </div>
+                          </label>
+
+                          <label className="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-neutral-200 cursor-pointer hover:border-amber-400 transition">
+                            <input
+                              type="checkbox"
+                              checked={statementData.sectionIV.explanationEmbalmingViewingPurposes ?? (statementData.sectionIV.embalmingAuthorization.choice === 'embalm')}
+                              onChange={(e) => {
+                                const updated = { ...statementData };
+                                updated.sectionIV.explanationEmbalmingViewingPurposes = e.target.checked;
+                                setStatementData(calculateAP47Totals(updated));
+                              }}
+                              className="rounded text-[#800000] focus:ring-[#800000] mt-0.5"
+                            />
+                            <div>
+                              <span className="font-bold text-neutral-900 text-xs block">
+                                Embalming requested for viewing purposes.
+                              </span>
+                              <span className="text-[10px] text-neutral-500">
+                                Option B: Public viewing / sanctuary service disclosure
+                              </span>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+
                       {/* Option 1: Visitation */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-white rounded-xl border border-neutral-200">
                         <label className="flex items-center space-x-2.5 cursor-pointer">

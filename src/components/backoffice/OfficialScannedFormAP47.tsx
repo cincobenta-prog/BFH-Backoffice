@@ -101,18 +101,18 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
       : (amount || '-');
 
     return (
-      <div className={`text-[10px] print:text-[8.5px] leading-tight print:leading-[13px] ${indent ? `pl-${indent}` : ''}`}>
+      <div className={`text-[10.5px] print:text-[9.5px] leading-snug print:leading-[16px] ${indent ? `pl-${indent}` : ''}`}>
         <div className="flex items-end justify-between gap-1 w-full overflow-hidden">
           <span className={`shrink min-w-0 ${isHeader ? 'font-bold text-neutral-950' : 'text-neutral-800'} break-words leading-snug`}>
             {label}
           </span>
           <span className="grow border-b border-dotted border-neutral-400 mx-1 mb-0.5 opacity-70 shrink min-w-[6px]"></span>
-          <span className="shrink-0 font-mono text-right font-medium text-neutral-900 min-w-[56px] whitespace-nowrap pl-1 print:text-[8.5px]">
+          <span className="shrink-0 font-mono text-right font-medium text-neutral-900 min-w-[56px] whitespace-nowrap pl-1 print:text-[9.5px]">
             {formattedAmount}
           </span>
         </div>
         {sublabel && (
-          <div className="text-[9px] print:text-[7.5px] text-neutral-600 pl-2 leading-snug italic print:leading-tight">
+          <div className="text-[9.5px] print:text-[8px] text-neutral-600 pl-2 leading-snug italic print:leading-tight">
             {sublabel}
           </div>
         )}
@@ -163,18 +163,18 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
         {/* ============================================================== */}
         {/* PAGE 1 / COLUMNS 1 & 2: SECTION I (FUNERAL HOME CHARGES) */}
         {/* ============================================================== */}
-        <div className="space-y-3 print:space-y-1.5 ap47-print-page ap47-page-1">
+        <div className="space-y-4 print:space-y-2 ap47-print-page ap47-page-1">
           
           {/* Header Block */}
-          <div className="border-b-2 border-neutral-900 pb-2 print:pb-1">
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 print:gap-2">
+          <div className="border-b-2 border-neutral-900 pb-2.5 print:pb-1.5">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 print:gap-3">
               
               {/* Left Letterhead with Benta Flame Logo */}
-              <div className="flex items-center gap-3.5 print:gap-2">
+              <div className="flex items-center gap-3.5 print:gap-2.5">
                 <img
                   src="/images/ebfh/Benta-Flame-MN.png"
                   alt="Benta's Funeral Home Flame Emblem"
-                  className="h-14 sm:h-16 print:h-11 w-auto object-contain shrink-0"
+                  className="h-14 sm:h-16 print:h-12 w-auto object-contain shrink-0"
                   onError={(e) => {
                     const target = e.currentTarget;
                     if (target.src.indexOf('BENTA_logo.png') === -1) {
@@ -183,20 +183,20 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   }}
                 />
                 <div className="space-y-0.5 print:space-y-0">
-                  <div className="font-serif italic font-semibold text-lg sm:text-xl print:text-xs text-neutral-800">
+                  <div className="font-serif italic font-semibold text-lg sm:text-xl print:text-sm text-neutral-800">
                     &ldquo;A Celebration of Life&rdquo;
                   </div>
-                  <div className="font-serif font-bold text-2xl sm:text-3xl print:text-xl text-neutral-950 tracking-wide uppercase">
+                  <div className="font-serif font-bold text-2xl sm:text-3xl print:text-2xl text-neutral-950 tracking-wide uppercase">
                     Benta&apos;s Funeral Home, Inc.
                   </div>
-                  <div className="text-[11px] print:text-[8px] font-sans text-neutral-700 leading-tight">
+                  <div className="text-[11px] print:text-[9.5px] font-sans text-neutral-700 leading-tight">
                     630 St. Nicholas Avenue (Corner of W. 141st Street) • New York, NY 10030 • (212) 281-8850
                   </div>
                 </div>
               </div>
 
               {/* Right Number and Date Fields */}
-              <div className="font-sans text-xs print:text-[9px] space-y-1.5 print:space-y-0.5 self-end sm:self-auto text-right w-full sm:w-auto">
+              <div className="font-sans text-xs print:text-[10px] space-y-1.5 print:space-y-1 self-end sm:self-auto text-right w-full sm:w-auto">
                 <div className="flex items-baseline justify-end gap-2">
                   <span className="font-bold">Number:</span>
                   <span className="font-mono font-bold border-b border-neutral-800 px-3 pb-0.5 min-w-[100px] text-left">
@@ -214,14 +214,14 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </div>
 
             {/* Decedent Metadata Strip */}
-            <div className="font-sans text-xs print:text-[8.5px] pt-2 print:pt-1 mt-1.5 print:mt-0.5 border-t border-neutral-300 space-y-1 print:space-y-0.5">
+            <div className="font-sans text-xs print:text-[9.5px] pt-2.5 print:pt-1.5 mt-2 print:mt-1 border-t border-neutral-300 space-y-1.5 print:space-y-1">
               <div className="flex flex-wrap items-baseline gap-2">
                 <span className="font-bold shrink-0">Name of Deceased:</span>
                 <span className="font-bold border-b border-neutral-800 px-2 pb-0.5 grow text-neutral-950 min-w-[200px]">
                   {caseData.decedent.legalName}
                 </span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 print:gap-3">
                 <div className="flex items-baseline gap-2">
                   <span className="font-bold shrink-0">Date of Death:</span>
                   <span className="border-b border-neutral-800 px-2 pb-0.5 grow font-medium">
@@ -238,21 +238,21 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
             </div>
 
             {/* Itemization Subheader */}
-            <div className="text-center pt-2 print:pt-1">
-              <div className="font-sans font-bold text-xs sm:text-sm print:text-[9.5px] uppercase tracking-wider text-neutral-900">
+            <div className="text-center pt-2.5 print:pt-1.5">
+              <div className="font-sans font-bold text-xs sm:text-sm print:text-[11px] uppercase tracking-wider text-neutral-900">
                 ITEMIZATION OF FUNERAL SERVICES AND MERCHANDISE SELECTED
               </div>
-              <p className="font-sans text-[9.5px] print:text-[7.5px] text-neutral-600 italic mt-0.5 max-w-4xl mx-auto leading-normal print:leading-tight">
+              <p className="font-sans text-[9.5px] print:text-[8.5px] text-neutral-600 italic mt-0.5 max-w-4xl mx-auto leading-normal print:leading-normal">
                 The following are the charges for the services, merchandise, and livery you have selected. You will not be charged for any item you do not choose unless it is necessary because of other selections you have made. Any such charges are explained below.
               </p>
             </div>
           </div>
 
           {/* Section I Grid: 2 Columns on Page 1 (or Columns 1 & 2 in 4-column layout) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-6 print:gap-3.5 pt-2 print:pt-0.5 font-sans text-xs print:text-[8.5px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-6 print:gap-5 pt-2 print:pt-1 font-sans text-xs print:text-[9.5px]">
             
             {/* COLUMN 1: Sections A through E */}
-            <div className="space-y-3 print:space-y-1.5">
+            <div className="space-y-3.5 print:space-y-2">
               <div className="border-b border-neutral-800 pb-1">
                 <div className="font-bold text-[11px] uppercase tracking-wide text-neutral-900">
                   I. FUNERAL HOME CHARGES
@@ -705,6 +705,61 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   Explain charges for embalming and for any items that are not required by law but may be necessary because of cemetery requirements, crematory requirements or other selections made.
                 </p>
 
+                {/* Section IV: Funeral Director Explanation Checkboxes */}
+                <div className="space-y-1.5 pt-1.5 pb-1 border-b border-neutral-300">
+                  {/* Option 1: All services and merchandise were selected by the family */}
+                  <label className="flex items-start gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={sog.sectionIV.explanationAllSelectedByFamily ?? true}
+                      disabled={readOnly}
+                      onChange={(e) => {
+                        const val = e.target.checked;
+                        handleUpdate(prev => ({
+                          ...prev,
+                          sectionIV: {
+                            ...prev.sectionIV,
+                            explanationAllSelectedByFamily: val
+                          }
+                        }));
+                      }}
+                      className="rounded text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
+                    />
+                    <span className="hidden print:inline-block font-mono font-bold text-neutral-900 text-[10px] mr-1">
+                      {(sog.sectionIV.explanationAllSelectedByFamily ?? true) ? '[✓]' : '[  ]'}
+                    </span>
+                    <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
+                      All services and merchandise were selected by the family.
+                    </span>
+                  </label>
+
+                  {/* Option 2: Embalming requested for viewing purposes */}
+                  <label className="flex items-start gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={sog.sectionIV.explanationEmbalmingViewingPurposes ?? isEmbalmingSelected}
+                      disabled={readOnly}
+                      onChange={(e) => {
+                        const val = e.target.checked;
+                        handleUpdate(prev => ({
+                          ...prev,
+                          sectionIV: {
+                            ...prev.sectionIV,
+                            explanationEmbalmingViewingPurposes: val
+                          }
+                        }));
+                      }}
+                      className="rounded text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
+                    />
+                    <span className="hidden print:inline-block font-mono font-bold text-neutral-900 text-[10px] mr-1">
+                      {(sog.sectionIV.explanationEmbalmingViewingPurposes ?? isEmbalmingSelected) ? '[✓]' : '[  ]'}
+                    </span>
+                    <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
+                      Embalming requested for viewing purposes.
+                    </span>
+                  </label>
+                </div>
+
                 <div className="space-y-1 pt-1 text-[9.5px]">
                   {/* Option 1: Combined charge for facilities and staff for visitation */}
                   {(showCombinedVisitation || !readOnly) && (
@@ -1088,14 +1143,12 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   </div>
                 </div>
 
-                {/* By Line & Director Name */}
-                <div className="flex items-baseline gap-2 pt-0.5">
-                  <span className="font-bold">By:</span>
-                  <span className="border-b border-neutral-800 grow font-medium">
-                    {caseData.informant.fullName}
-                  </span>
-                  <span className="text-[8px] text-neutral-500 font-sans">
-                    Print Name of Licensed Funeral Director: <strong className="text-neutral-900">{directorName}</strong>
+                {/* By Line & Director Name (Left: Director Signature Line, Right: Director Printed Name) */}
+                <div className="flex items-baseline gap-2 pt-1.5">
+                  <span className="font-bold text-[9.5px] print:text-[9px]">By:</span>
+                  <span className="border-b border-neutral-800 grow min-w-[120px] h-4"></span>
+                  <span className="text-[8.5px] print:text-[8px] text-neutral-700 font-sans shrink-0">
+                    Print Name of Licensed Funeral Director: <strong className="text-neutral-950 font-bold">{directorName}</strong>
                   </span>
                 </div>
 
