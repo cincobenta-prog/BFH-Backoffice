@@ -1143,12 +1143,12 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   </div>
                 </div>
 
-                {/* By Line & Director Name (Left: Director Signature Line, Right: Director Printed Name) */}
+                {/* By Line & Director Title */}
                 <div className="flex items-baseline gap-2 pt-1.5">
-                  <span className="font-bold text-[9.5px] print:text-[9px]">By:</span>
-                  <span className="border-b border-neutral-800 grow min-w-[120px] h-4"></span>
-                  <span className="text-[8.5px] print:text-[8px] text-neutral-700 font-sans shrink-0">
-                    Print Name of Licensed Funeral Director: <strong className="text-neutral-950 font-bold">{directorName}</strong>
+                  <span className="font-bold text-[9.5px] print:text-[9px] shrink-0">By:</span>
+                  <span className="border-b border-neutral-800 grow h-4"></span>
+                  <span className="text-[9px] print:text-[8.5px] font-semibold text-neutral-900 font-sans shrink-0">
+                    Licensed Funeral Director
                   </span>
                 </div>
 
