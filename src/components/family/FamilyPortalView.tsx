@@ -1728,7 +1728,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </div>
                 <div className="flex justify-between py-1 text-neutral-600 border-b border-neutral-100">
                   <span>Livery Fleet & Cortege Vehicles:</span>
-                  <span className="font-mono text-neutral-900 font-semibold">${(activeCase.statementOfGoods?.sectionI.G_totalLiveryAmount ?? 655).toFixed(2)}</span>
+                  <span className="font-mono text-neutral-900 font-semibold">${(activeCase.statementOfGoods?.sectionI.G_totalLiveryAmount ?? 700).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between py-1 text-neutral-600 border-b border-neutral-100">
                   <span>Floral Arrangements:</span>

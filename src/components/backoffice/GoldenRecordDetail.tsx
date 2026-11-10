@@ -1505,7 +1505,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
                     ) : null}
                     <div className="flex justify-between py-1 border-b border-neutral-100">
                       <span>Livery Fleet Total:</span>
-                      <span className="font-mono font-medium">${(caseData.statementOfGoods?.sectionI.G_totalLiveryAmount ?? 655).toFixed(2)}</span>
+                      <span className="font-mono font-medium">${(caseData.statementOfGoods?.sectionI.G_totalLiveryAmount ?? 700).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between py-1 border-b border-neutral-100">
                       <span>Stationery, Programs & Cards:</span>

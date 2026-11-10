@@ -14,7 +14,7 @@ export * from './partnerCatalogs';
 // -------------------------------------------------------------
 
 export const BFH_GPL_2026 = {
-  effectiveDate: 'April 13, 2026',
+  effectiveDate: 'Proposed Revision (2026)',
   establishment: "Benta's Funeral Home, Inc.",
   address: "630 St. Nicholas Avenue, New York, NY 10030",
   phone: "(212) 281-8850-1-2-3",
@@ -22,72 +22,77 @@ export const BFH_GPL_2026 = {
 
   // Section I.A Alternative Services (Flat Rates)
   directCremation: {
-    withCustomerContainer: 2084.00,
-    withAlternativeContainer: 2214.00,
+    withCustomerContainer: 2150.00,
+    withAlternativeContainer: 2350.00,
   },
   directBurial: {
-    withCustomerContainer: 2084.00,
-    withAlternativeContainer: 2484.00,
+    withCustomerContainer: 2150.00,
+    withAlternativeContainer: 2600.00,
   },
 
   // Section I.B Transfer of Remains
-  transferOfRemainsLocalNYC: 750.00,
+  transferOfRemainsLocalNYC: 800.00,
   excessMilesPerMileRate: 5.00,
 
   // Section I.C Preparation of Remains
-  embalming: 900.00,
+  embalming: 950.00,
   topicalDisinfection: 400.00,
-  custodialCareDailyRate: 50.00, // Charged after 24h
-  dressingCasketing: 250.00,
-  cosmetology: 100.00,
-  restoration: 400.00,
+  custodialCareDailyRate: 400.00, // Charged after 24h
+  dressingCasketing: 275.00,
+  cosmetology: 125.00,
+  restoration: 425.00,
   refrigerationDailyRate: 50.00,
 
   // Section I.D Arrangements
-  basicArrangements: 950.00,
+  basicArrangements: 1050.00,
 
   // Section I.E Supervision
-  supervisionVisitation: 550.00,
-  supervisionVisitationAfterHours: 750.00,
-  supervisionFuneralService: 550.00,
-  supervisionFuneralServiceAfterHours: 750.00,
-  supervisionCemeteryCrematory: 550.00,
-  supervisionMemorialService: 550.00,
-  supervisionGravesideCeremony: 550.00,
+  supervisionVisitation: 600.00,
+  supervisionVisitationAfterHours: 800.00,
+  supervisionFuneralService: 600.00,
+  supervisionFuneralServiceAfterHours: 800.00,
+  supervisionCemeteryCrematory: 600.00,
+  supervisionMemorialService: 600.00,
+  supervisionGravesideCeremony: 600.00,
   supervisionDisinterment: 2500.00,
   consulateFilingFee: 200.00,
 
   // Section I.F Facilities
-  facilitiesVisitation: 550.00,
-  facilitiesFuneralService: 550.00,
-  facilitiesMemorialService: 550.00,
-  prepRoomCeremonialLegal: 275.00,
-  repastRoomBase: 1400.00,
+  facilitiesVisitation: 600.00,
+  facilitiesFuneralService: 600.00,
+  facilitiesMemorialService: 600.00,
+  prepRoomCeremonialLegal: 300.00,
+  repastRoomBase: 1500.00,
+  repastRoomTiers: {
+    upTo50: 1500.00,
+    from51To100: 2000.00,
+    over100: 2500.00
+  },
 
   // Combined Supervision & Facilities
-  combinedVisitation: 1100.00,
-  combinedFuneralService: 1100.00,
-  combinedMemorialService: 1100.00,
-  combinedVisitationAfterHours: 1300.00,
-  combinedFuneralServiceAfterHours: 1300.00,
+  combinedVisitation: 1200.00,
+  combinedFuneralService: 1200.00,
+  combinedMemorialService: 1200.00,
+  combinedVisitationAfterHours: 1400.00,
+  combinedFuneralServiceAfterHours: 1400.00,
 
   // Section I.G Livery Rates
   livery: {
-    hearseLocalNYC: 655.00,
-    hearseCalverton: 755.00,
-    alternativeVehicleLocal: 484.00,
-    flowerVehicleLocal: 655.00,
-    limousine7PaxLocal: 715.00,
-    limousine7PaxCalverton: 825.00,
+    hearseLocalNYC: 700.00,
+    hearseCalverton: 810.00,
+    alternativeVehicleLocal: 520.00,
+    flowerVehicleLocal: 700.00,
+    limousine7PaxLocal: 765.00,
+    limousine7PaxCalverton: 885.00,
     sprinterVan: 1300.00, // Mercedes Sprinter Van
-    sprinter10PaxLocal: 1035.00,
-    sprinter10PaxCalverton: 1195.00,
-    sprinter14PaxLocal: 1155.00,
-    sprinter14PaxCalverton: 1315.00,
+    sprinter10PaxLocal: 1110.00,
+    sprinter10PaxCalverton: 1280.00,
+    sprinter14PaxLocal: 1240.00,
+    sprinter14PaxCalverton: 1410.00,
     utilityVanEscortedWithFamily: 650.00,
-    utilityVanEscortedWithoutFamily: 484.00,
-    overtimeHourlyRateHearseAndLimo: 120.00, // after 5h local / 6h long distance
-    overtimeHourlyRateSprinter: 175.00,
+    utilityVanEscortedWithoutFamily: 520.00,
+    overtimeHourlyRateHearseAndLimo: 130.00, // after 5h local / 6h long distance
+    overtimeHourlyRateSprinter: 185.00,
   },
 
   // Section I.H Merchandise Ranges
@@ -129,8 +134,8 @@ export const BFH_GPL_2026 = {
   },
 
   // Section I.J Limited Services
-  forwardingRemainsLocal: 2084.00,
-  receivingRemainsLocal: 2084.00,
+  forwardingRemainsLocal: 2150.00,
+  receivingRemainsLocal: 2150.00,
 
   // Section II Cash Advances Defaults
   cashAdvances: {
@@ -910,8 +915,8 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
         ? 'Crematory requires rigid leak-proof container.' 
         : 'Cemetery regulations require outer interment receptacle (graveliner/vault) to prevent grave sinking.',
       combinedChargesExplanation: 'Separate itemized charges are indicated for facilities and supervision as per BFH General Price List.',
-      combinedVisitationCharge: 1100.00,
-      combinedFuneralServiceCharge: 1100.00,
+      combinedVisitationCharge: BFH_GPL_2026.combinedVisitation,
+      combinedFuneralServiceCharge: BFH_GPL_2026.combinedFuneralService,
       combinedOtherCharge: 0,
       combinedOtherSpecify: '',
       includeCombinedVisitation: true,

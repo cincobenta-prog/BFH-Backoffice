@@ -2227,9 +2227,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     Comprehensive full-service traditional burial. Line items include basic arrangements, local transfer, embalming, facility, supervision, hearse, and cortege.
                   </p>
                   <div className="text-xs font-mono text-neutral-700 pt-1 border-t border-neutral-200 space-y-0.5">
-                    <div>• Basic Arrangements: <strong>$950.00</strong></div>
-                    <div>• Local Transfer: <strong>$750.00</strong> | Embalming: <strong>$900.00</strong></div>
-                    <div>• Supervision & Facilities: <strong>$2,200.00</strong></div>
+                    <div>• Basic Arrangements: <strong>$1,050.00</strong></div>
+                    <div>• Local Transfer: <strong>$800.00</strong> | Embalming: <strong>$950.00</strong></div>
+                    <div>• Supervision & Facilities: <strong>$2,400.00</strong></div>
                   </div>
                 </div>
 
@@ -2254,9 +2254,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     Full ceremonial funeral gathering with viewing in Chapel A/B prior to cremation, ceremonial rental casket option ($1,100), and living voice tribute.
                   </p>
                   <div className="text-xs font-mono text-neutral-700 pt-1 border-t border-neutral-200 space-y-0.5">
-                    <div>• Basic Arrangements: <strong>$950.00</strong></div>
-                    <div>• Local Transfer: <strong>$750.00</strong> | Embalming / Prep: <strong>$900.00</strong></div>
-                    <div>• Supervision & Facilities: <strong>$2,200.00</strong></div>
+                    <div>• Basic Arrangements: <strong>$1,050.00</strong></div>
+                    <div>• Local Transfer: <strong>$800.00</strong> | Embalming / Prep: <strong>$950.00</strong></div>
+                    <div>• Supervision & Facilities: <strong>$2,400.00</strong></div>
                   </div>
                 </div>
 
@@ -2281,9 +2281,9 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     Direct cremation baseline with chapel facility & supervision for memorial celebration. Variables: programs, prayer cards, officiant, organist, limousine, repast.
                   </p>
                   <div className="text-xs font-mono text-neutral-700 pt-1 border-t border-neutral-200 space-y-0.5">
-                    <div>• Basic Arrangements: <strong>$950.00</strong></div>
-                    <div>• Local Transfer: <strong>$750.00</strong> | Shelter / Prep: <strong>$384.00</strong></div>
-                    <div>• Memorial Supervision & Facilities: <strong>$1,100.00</strong></div>
+                    <div>• Basic Arrangements: <strong>$1,050.00</strong></div>
+                    <div>• Local Transfer: <strong>$800.00</strong> | Shelter / Prep: <strong>$300.00</strong></div>
+                    <div>• Memorial Supervision & Facilities: <strong>$1,200.00</strong></div>
                   </div>
                 </div>
 
@@ -2301,7 +2301,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       ⚡ Direct Cremation
                     </span>
                     <span className="text-xs font-mono font-bold text-[#b45309]">
-                      $2,084.00 – $2,214.00
+                      $2,150.00 – $2,350.00
                     </span>
                   </div>
                   <p className="text-xs text-neutral-600">
@@ -2322,7 +2322,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }`}
                         >
                           <div>With Customer Container</div>
-                          <div className="font-mono text-xs mt-0.5">$2,084.00</div>
+                          <div className="font-mono text-xs mt-0.5">$2,150.00</div>
                         </button>
 
                         <button
@@ -2335,7 +2335,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }`}
                         >
                           <div>With BFH Cardboard Box</div>
-                          <div className="font-mono text-xs mt-0.5">$2,214.00</div>
+                          <div className="font-mono text-xs mt-0.5">$2,350.00</div>
                         </button>
                       </div>
                     </div>
@@ -2356,7 +2356,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       🌿 Direct Earth Burial
                     </span>
                     <span className="text-xs font-mono font-bold text-[#b45309]">
-                      $2,084.00 – $2,484.00
+                      $2,150.00 – $2,600.00
                     </span>
                   </div>
                   <p className="text-xs text-neutral-600">
@@ -2377,7 +2377,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }`}
                         >
                           <div>With Customer Container</div>
-                          <div className="font-mono text-xs mt-0.5">$2,084.00</div>
+                          <div className="font-mono text-xs mt-0.5">$2,150.00</div>
                         </button>
 
                         <button
@@ -2390,7 +2390,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           }`}
                         >
                           <div>With BFH Wood Container</div>
-                          <div className="font-mono text-xs mt-0.5">$2,484.00</div>
+                          <div className="font-mono text-xs mt-0.5">$2,600.00</div>
                         </button>
                       </div>
                     </div>
@@ -3510,13 +3510,13 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </span>
                     <div className="flex flex-wrap gap-2 text-xs">
                       {[
-                        { type: 'Cadillac Professional Funeral Hearse', price: BFH_GPL_2026.livery.hearseLocalNYC, label: 'Hearse ($655)', icon: '🚗', escort: 'none' as const },
-                        { type: '7-Passenger Cadillac Family Limousine', price: BFH_GPL_2026.livery.limousine7PaxLocal, label: '7-Pax Limo ($715)', icon: '🚙', escort: 'with_family' as const },
-                        { type: 'Mercedes Sprinter Van (14-Passenger)', price: BFH_GPL_2026.livery.sprinterVan, label: '🚐 Mercedes Sprinter Van ($1,300)', icon: '🚐', escort: 'with_family' as const, highlight: true },
-                        { type: 'Transfer / Utility Van (Escorted with Family)', price: BFH_GPL_2026.livery.utilityVanEscortedWithFamily, label: 'Van (Escorted w/ Family - $650)', icon: '🚐', escort: 'with_family' as const },
-                        { type: 'Transfer / Utility Van (Escorted without Family)', price: BFH_GPL_2026.livery.utilityVanEscortedWithoutFamily, label: 'Van (Escorted w/o Family - $484)', icon: '🚐', escort: 'without_family' as const },
-                        { type: 'Lead Director / NYPD Escort Vehicle', price: BFH_GPL_2026.livery.alternativeVehicleLocal, label: 'Lead Escort Car ($484)', icon: '🚓', escort: 'none' as const },
-                        { type: 'Flower Vehicle / Basket Transport', price: BFH_GPL_2026.livery.flowerVehicleLocal, label: 'Flower Car ($655)', icon: '🌸', escort: 'none' as const }
+                        { type: 'Cadillac Professional Funeral Hearse', price: BFH_GPL_2026.livery.hearseLocalNYC, label: `Hearse ($${BFH_GPL_2026.livery.hearseLocalNYC})`, icon: '🚗', escort: 'none' as const },
+                        { type: '7-Passenger Cadillac Family Limousine', price: BFH_GPL_2026.livery.limousine7PaxLocal, label: `7-Pax Limo ($${BFH_GPL_2026.livery.limousine7PaxLocal})`, icon: '🚙', escort: 'with_family' as const },
+                        { type: 'Mercedes Sprinter Van (14-Passenger)', price: BFH_GPL_2026.livery.sprinter14PaxLocal, label: `🚐 Mercedes Sprinter Van ($${BFH_GPL_2026.livery.sprinter14PaxLocal.toLocaleString()})`, icon: '🚐', escort: 'with_family' as const, highlight: true },
+                        { type: 'Transfer / Utility Van (Escorted with Family)', price: BFH_GPL_2026.livery.utilityVanEscortedWithFamily, label: `Van (Escorted w/ Family - $${BFH_GPL_2026.livery.utilityVanEscortedWithFamily})`, icon: '🚐', escort: 'with_family' as const },
+                        { type: 'Transfer / Utility Van (Escorted without Family)', price: BFH_GPL_2026.livery.utilityVanEscortedWithoutFamily, label: `Van (Escorted w/o Family - $${BFH_GPL_2026.livery.utilityVanEscortedWithoutFamily})`, icon: '🚐', escort: 'without_family' as const },
+                        { type: 'Lead Director / NYPD Escort Vehicle', price: BFH_GPL_2026.livery.alternativeVehicleLocal, label: `Lead Escort Car ($${BFH_GPL_2026.livery.alternativeVehicleLocal})`, icon: '🚓', escort: 'none' as const },
+                        { type: 'Flower Vehicle / Basket Transport', price: BFH_GPL_2026.livery.flowerVehicleLocal, label: `Flower Car ($${BFH_GPL_2026.livery.flowerVehicleLocal})`, icon: '🌸', escort: 'none' as const }
                       ].map((preset) => (
                         <button
                           key={preset.label}
@@ -5789,12 +5789,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             type="button"
                             onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.F1_facilitiesVisitationAmount = BFH_GPL_2026.facilitiesVisitation || 550;
+                              updated.sectionI.F1_facilitiesVisitationAmount = BFH_GPL_2026.facilitiesVisitation || 600;
                               setStatementData(calculateAP47Totals(updated));
                             }}
                             className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                           >
-                            Set $550 GPL
+                            Set $600 GPL
                           </button>
                         </div>
                       </div>
@@ -5830,24 +5830,24 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                               type="button"
                               onClick={() => {
                                 const updated = { ...statementData };
-                                updated.sectionI.E1_supervisionVisitationAmount = BFH_GPL_2026.supervisionVisitation || 550;
+                                updated.sectionI.E1_supervisionVisitationAmount = BFH_GPL_2026.supervisionVisitation || 600;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
                               className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                             >
-                              $550
+                              $600
                             </button>
                             <button
                               type="button"
                               onClick={() => {
                                 const updated = { ...statementData };
-                                updated.sectionI.E1_supervisionVisitationAmount = BFH_GPL_2026.supervisionVisitationAfterHours || 750;
+                                updated.sectionI.E1_supervisionVisitationAmount = BFH_GPL_2026.supervisionVisitationAfterHours || 800;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
                               className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                               title="After Hours Rate"
                             >
-                              $750 (Eve)
+                              $800 (Eve)
                             </button>
                           </div>
                         </div>
@@ -5883,12 +5883,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             type="button"
                             onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.F2_facilitiesFuneralServiceAmount = BFH_GPL_2026.facilitiesFuneralService || 550;
+                              updated.sectionI.F2_facilitiesFuneralServiceAmount = BFH_GPL_2026.facilitiesFuneralService || 600;
                               setStatementData(calculateAP47Totals(updated));
                             }}
                             className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                           >
-                            Set $550 GPL
+                            Set $600 GPL
                           </button>
                         </div>
                       </div>
@@ -5923,12 +5923,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             type="button"
                             onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.E2_supervisionFuneralServiceAmount = BFH_GPL_2026.supervisionFuneralService || 550;
+                              updated.sectionI.E2_supervisionFuneralServiceAmount = BFH_GPL_2026.supervisionFuneralService || 600;
                               setStatementData(calculateAP47Totals(updated));
                             }}
                             className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                           >
-                            Set $550 GPL
+                            Set $600 GPL
                           </button>
                         </div>
                       </div>
@@ -5963,12 +5963,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             type="button"
                             onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.F3_facilitiesMemorialServiceAmount = BFH_GPL_2026.facilitiesMemorialService || 550;
+                              updated.sectionI.F3_facilitiesMemorialServiceAmount = BFH_GPL_2026.facilitiesMemorialService || 600;
                               setStatementData(calculateAP47Totals(updated));
                             }}
                             className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                           >
-                            Set $550 GPL
+                            Set $600 GPL
                           </button>
                         </div>
                       </div>
@@ -6003,12 +6003,12 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                             type="button"
                             onClick={() => {
                               const updated = { ...statementData };
-                              updated.sectionI.E3_supervisionMemorialAmount = BFH_GPL_2026.supervisionMemorialService || 550;
+                              updated.sectionI.E3_supervisionMemorialAmount = BFH_GPL_2026.supervisionMemorialService || 600;
                               setStatementData(calculateAP47Totals(updated));
                             }}
                             className="px-2 py-0.5 bg-white border border-neutral-300 hover:bg-neutral-100 rounded text-[10px] text-neutral-600 font-mono"
                           >
-                            Set $550 GPL
+                            Set $600 GPL
                           </button>
                         </div>
                       </div>
@@ -6072,7 +6072,7 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                           {[
                             { label: 'Wake Staff Supervision ($350)', amt: 350, desc: 'Staff Supervision for Wake & Viewing' },
                             { label: 'Evening Viewing Supervision ($450)', amt: 450, desc: 'Evening Viewing Staff Supervision' },
-                            { label: 'Sanctuary Service Supervision ($550)', amt: 550, desc: 'Offsite Sanctuary Service Staff Supervision' }
+                            { label: 'Sanctuary Service Supervision ($600)', amt: 600, desc: 'Offsite Sanctuary Service Staff Supervision' }
                           ].map((p) => (
                             <button
                               key={p.label}

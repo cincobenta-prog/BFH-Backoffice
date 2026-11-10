@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { DispositionType, GoldenRecordCase, FullVitalRecordInformationSheet, FloralArrangementItem } from '../../lib/types/funeral';
 import { INITIAL_DOCUMENT_TEMPLATES } from '../../lib/data/mockCases';
-import { getDefaultStatementOfGoodsForCase, calculateAP47Totals } from '../../lib/data/generalPriceList';
+import { getDefaultStatementOfGoodsForCase, calculateAP47Totals, BFH_GPL_2026 } from '../../lib/data/generalPriceList';
 import { 
   BFH_FLORAL_CATALOG, 
   DANIELAS_ORIGINAL_CATALOG,
@@ -212,10 +212,10 @@ export const ArrangerWizard: React.FC<ArrangerWizardProps> = ({
 
   // Pricing Calculation
   const basePrices: Record<DispositionType, number> = {
-    direct_cremation: 2084,
-    cremation_memorial: 3184,
+    direct_cremation: BFH_GPL_2026.directCremation.withCustomerContainer,
+    cremation_memorial: BFH_GPL_2026.directCremation.withCustomerContainer + BFH_GPL_2026.combinedMemorialService,
     full_cremation: 4800,
-    direct_burial: 2084,
+    direct_burial: BFH_GPL_2026.directBurial.withCustomerContainer,
     full_burial: 5800,
     pre_need: 3500,
     undecided: 0

@@ -3,7 +3,7 @@ import {
   GoldenRecordCase, 
   StatementOfGoodsData 
 } from '../../lib/types/funeral';
-import { calculateAP47Totals } from '../../lib/data/generalPriceList';
+import { calculateAP47Totals, BFH_GPL_2026 } from '../../lib/data/generalPriceList';
 import { CheckSquare, Square } from 'lucide-react';
 
 interface OfficialScannedFormAP47Props {
@@ -390,7 +390,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 const limoVeh = vehicles.find(v => /limo/i.test(v.vehicleType));
                 const passVeh = vehicles.find(v => /passenger|car/i.test(v.vehicleType));
 
-                const hearseAmount = hearseVeh ? hearseVeh.totalAmount : (sog.sectionI.G_totalLiveryAmount > 0 ? 655 : undefined);
+                const hearseAmount = hearseVeh ? hearseVeh.totalAmount : (sog.sectionI.G_totalLiveryAmount > 0 ? (BFH_GPL_2026.livery.hearseLocalNYC || 700) : undefined);
                 const altVehType = altVeh ? altVeh.vehicleType : '____________________';
                 const altVehAmount = altVeh ? altVeh.totalAmount : undefined;
                 const flowerAmount = flowerVeh ? flowerVeh.totalAmount : undefined;
