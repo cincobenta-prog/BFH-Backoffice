@@ -239,7 +239,7 @@ export async function testPressConnection(
 /**
  * Generates an automated Pre-Flight 300 DPI CMYK Quality Inspection Report
  */
-export function runPreflightInspection(caseItem: GoldenRecordCase, itemType: PressItemType): {
+export function runPreflightInspection(caseItem: GoldenRecordCase | null | undefined, itemType: PressItemType): {
   passed: boolean;
   resolutionDPI: number;
   colorSpace: 'CMYK (FOGRA39)' | 'RGB';
@@ -248,6 +248,18 @@ export function runPreflightInspection(caseItem: GoldenRecordCase, itemType: Pre
   issuesFound: string[];
 } {
   const issues: string[] = [];
+
+  if (!caseItem) {
+    issues.push('Notice: No active case selected for print preflight.');
+    return {
+      passed: false,
+      resolutionDPI: 300,
+      colorSpace: 'CMYK (FOGRA39)',
+      bleedMarginInches: 0.125,
+      cropMarksIncluded: true,
+      issuesFound: issues
+    };
+  }
 
   if (!caseItem.decedent?.legalName) {
     issues.push('Notice: Decedent legal name missing in case record.');

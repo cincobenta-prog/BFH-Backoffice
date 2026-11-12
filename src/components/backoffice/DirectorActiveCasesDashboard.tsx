@@ -30,7 +30,8 @@ import {
   Compass,
   BookOpen,
   Video,
-  CreditCard
+  CreditCard,
+  Sparkles
 } from 'lucide-react';
 
 const NEXT_STEP_COPY: Record<string, { title: string; body: string; primary: string; secondary: string }> = {
@@ -68,7 +69,7 @@ const NEXT_STEP_COPY: Record<string, { title: string; body: string; primary: str
 
 export interface DirectorActiveCasesDashboardProps {
   cases: GoldenRecordCase[];
-  activeCase: GoldenRecordCase;
+  activeCase?: GoldenRecordCase | null;
   onSelectCase: (caseItem: GoldenRecordCase) => void;
   onOpenGoldenRecord: (caseId?: string) => void;
   onOpenESignModal?: (doc?: DocumentItem | null) => void;
@@ -546,7 +547,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
         )}
 
         {/* GUIDED NEXT STEP */}
-        {(() => {
+        {activeCase && (() => {
           const copy = NEXT_STEP_COPY[activeCase.currentPhase] || NEXT_STEP_COPY.intake_removal;
           const runPrimary = () => {
             switch (activeCase.currentPhase) {
@@ -783,8 +784,49 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
           </div>
         )}
 
+        {/* EMPTY STATE OR CASE LIST */}
+        {cases.length === 0 ? (
+          <div className="bg-white rounded-2xl border-2 border-dashed border-amber-300/80 p-12 text-center shadow-xs space-y-5">
+            <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-[#800000] to-[#500000] text-amber-200 flex items-center justify-center mx-auto shadow-md border border-amber-400/30">
+              <Sparkles className="w-8 h-8" />
+            </div>
+            <div className="max-w-md mx-auto space-y-2">
+              <h3 className="font-serif-title font-bold text-xl text-neutral-900">
+                System Cleared &amp; Ready for Live Cases
+              </h3>
+              <p className="text-xs text-neutral-600 leading-relaxed">
+                All test cases have been cleared. You are in clean live operational mode. Record a First Call intake or launch the Case Arranger to run parallel with office operations.
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-3 pt-2">
+              {onOpenFirstCallIntake && (
+                <button
+                  onClick={onOpenFirstCallIntake}
+                  className="bg-[#800000] hover:bg-[#6a0509] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-md cursor-pointer"
+                >
+                  <PhoneCall className="w-4 h-4 text-amber-300" />
+                  <span>Intake First Call</span>
+                </button>
+              )}
+              {onOpenNewCase && (
+                <button
+                  onClick={onOpenNewCase}
+                  className="bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 font-bold text-xs px-5 py-2.5 rounded-xl transition flex items-center space-x-2 shadow-xs cursor-pointer"
+                >
+                  <FileText className="w-4 h-4 text-brass-700" />
+                  <span>Create New Case</span>
+                </button>
+              )}
+            </div>
+          </div>
+        ) : filteredCases.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-neutral-200 p-8 text-center text-xs text-neutral-500">
+            No active cases match current search or filters.
+          </div>
+        ) : null}
+
         {/* CASE CARDS LIST */}
-        {viewMode === 'cards' && (
+        {cases.length > 0 && filteredCases.length > 0 && viewMode === 'cards' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             {filteredCases.map((c) => {
               const isUnclaimed = c.caseClaimStatus === 'unclaimed' || !c.assignedDirectorId;
@@ -1230,7 +1272,7 @@ export const DirectorActiveCasesDashboard: React.FC<DirectorActiveCasesDashboard
         )}
 
         {/* VIEW MODE B: HIGH-DENSITY OPERATIONAL MATRIX */}
-        {viewMode === 'matrix' && (
+        {cases.length > 0 && filteredCases.length > 0 && viewMode === 'matrix' && (
           <div className="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">

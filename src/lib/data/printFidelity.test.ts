@@ -3,10 +3,10 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { DocumentJourneyMatrix } from '../../components/backoffice/DocumentJourneyMatrix';
 import { BackOfficeLayout } from '../../components/backoffice/BackOfficeLayout';
-import { MOCK_CASES } from './mockCases';
+import { TEST_CASE_AP47_FIXTURE } from './testFixtures';
 
 describe('Document Print Fidelity & Layout Integrity', () => {
-  const testCase = MOCK_CASES[0]; // Case 24501 Carl Antonio Williamson
+  const testCase = TEST_CASE_AP47_FIXTURE;
 
   it('verifies BackOfficeLayout does not hide children in print stylesheets', () => {
     const html = renderToString(
@@ -14,7 +14,7 @@ describe('Document Print Fidelity & Layout Integrity', () => {
         currentRole: 'director',
         onChangeRole: () => {},
         activeCase: testCase,
-        cases: MOCK_CASES,
+        cases: [testCase],
         onSelectCase: () => {},
         activeTab: 'documents',
         onChangeTab: () => {},

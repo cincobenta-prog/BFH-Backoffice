@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 
 interface DocumentJourneyMatrixProps {
-  caseData: GoldenRecordCase;
+  caseData?: GoldenRecordCase | null;
   onUpdateDocumentStatus: (docId: string, newStatus: DocumentStatus) => void;
   onOpenESign: (doc?: DocumentItem) => void;
   onUpdateCase?: (updatedCase: GoldenRecordCase) => void;
@@ -48,7 +48,7 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
 
   // Initialized Clothing Submittal Form State (Interactive & Editable)
   const [clothingData, setClothingData] = useState<ClothingChecklistData>(() => {
-    if (caseData.clothingSubmittal) {
+    if (caseData?.clothingSubmittal) {
       return caseData.clothingSubmittal;
     }
     return {
@@ -91,10 +91,10 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
       hairdresserAssigned: true,
       hairdresserName: 'Kelvin Brooks (646-508-3474)',
       cosmeticsNotes: 'Natural tones, warm complexion styling. Family provided reference portrait photo for hairline taper fade.',
-      deliveredBy: caseData.informant.fullName || 'Family Representative',
-      deliveredByPhone: caseData.informant.phone || '(212) 555-0198',
-      receivedByDirector: caseData.assignedDirector || 'Jason Benta (Director in Charge)',
-      dateReceived: caseData.createdAt.split('T')[0],
+      deliveredBy: caseData?.informant?.fullName || 'Family Representative',
+      deliveredByPhone: caseData?.informant?.phone || '(212) 555-0198',
+      receivedByDirector: caseData?.assignedDirector || 'Jason Benta (Director in Charge)',
+      dateReceived: caseData?.createdAt ? caseData.createdAt.split('T')[0] : new Date().toISOString().split('T')[0],
       isCompleted: false,
       lastUpdated: undefined
     };
@@ -103,6 +103,28 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
   const [newCustomJewelryName, setNewCustomJewelryName] = useState('');
   const [newCustomJewelryDesc, setNewCustomJewelryDesc] = useState('');
   const [newCustomJewelryDisp, setNewCustomJewelryDisp] = useState<'remain_on_decedent' | 'return_to_family'>('remain_on_decedent');
+
+  if (!caseData) {
+    return (
+      <div className="p-8 max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl border border-neutral-200/80 p-12 text-center shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-200">
+            <FileText className="w-8 h-8" />
+          </div>
+          <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mb-2">
+            No Active Case Selected
+          </h2>
+          <p className="text-sm text-neutral-600 max-w-md mx-auto mb-6">
+            All test documents and statutory compliance bundles have been cleared. Select or intake a live case to view documents, Form AP-47, and legal affidavits.
+          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-800 text-xs font-semibold rounded-lg border border-emerald-200">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Document Journey Matrix Ready for Live Filings
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleSaveClothingSubmittal = () => {
     const updatedClothing: ClothingChecklistData = {

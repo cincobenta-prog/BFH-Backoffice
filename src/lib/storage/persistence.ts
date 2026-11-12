@@ -7,19 +7,19 @@
  */
 
 export const STORAGE_KEYS = {
-  CASES: 'bfh_cases_v5',
+  CASES: 'bfh_cases_v6',
   DIRECTORS: 'bfh_directors_v5',
   DIRECTOR_PROFILES: 'bfh_directors_v5',
-  ASSIGNMENTS: 'bfh_service_assignments_v5',
-  SERVICE_ASSIGNMENTS: 'bfh_service_assignments_v5',
-  VOUCHERS: 'bfh_1099_vouchers_v5',
-  CALENDAR_EVENTS: 'bfh_calendar_events_v5',
-  LIVERY_HOLDS: 'bfh_livery_holds_v5',
+  ASSIGNMENTS: 'bfh_service_assignments_v6',
+  SERVICE_ASSIGNMENTS: 'bfh_service_assignments_v6',
+  VOUCHERS: 'bfh_1099_vouchers_v6',
+  CALENDAR_EVENTS: 'bfh_calendar_events_v6',
+  LIVERY_HOLDS: 'bfh_livery_holds_v6',
   SERVICE_PARTNERS: 'bfh_service_partners_v5',
-  PARTNER_REQUESTS: 'bfh_partner_requests_v5',
+  PARTNER_REQUESTS: 'bfh_partner_requests_v6',
   MANAGER_AUTH: 'bfh_manager_auth_session',
   MANAGER_PIN: 'bfh_custom_manager_pin',
-  NOTIFICATIONS: 'bfh_notifications_v5',
+  NOTIFICATIONS: 'bfh_notifications_v6',
   TWILIO_GATEWAY_CONFIG: 'bfh_twilio_gateway_config',
   DOCUSIGN_CONFIG: 'bfh_docusign_config',
   CLOUD_SYNC_CONFIG: 'bfh_cloud_sync_config_v1',
@@ -229,3 +229,32 @@ export function clearAllPersistedDemoData(): void {
     console.error('[BFH Persistence] Error resetting storage:', error);
   }
 }
+
+/**
+ * Purges legacy test cases and mock data from previous local storage versions
+ */
+export function purgeLegacyTestCases(): void {
+  if (typeof window === 'undefined' && typeof localStorage === 'undefined') return;
+  try {
+    const legacyKeys = [
+      'bfh_cases_v5',
+      'bfh_cases_v4',
+      'bfh_calendar_events_v5',
+      'bfh_livery_holds_v5',
+      'bfh_service_assignments_v5',
+      'bfh_1099_vouchers_v5',
+      'bfh_partner_requests_v5',
+      'bfh_notifications_v5'
+    ];
+    legacyKeys.forEach(k => {
+      try {
+        if (typeof localStorage !== 'undefined') localStorage.removeItem(k);
+      } catch {
+        // continue
+      }
+    });
+  } catch (err) {
+    console.warn('[BFH Persistence] Legacy cleanup error:', err);
+  }
+}
+

@@ -42,7 +42,7 @@ import { INITIAL_SERVICE_PARTNERS, getInitialFlightChecklist } from '../../lib/d
 import { generateDiscrepancyAudit } from '../../lib/data/discrepancyAuditHelper';
 
 interface GoldenRecordDetailProps {
-  caseData: GoldenRecordCase;
+  caseData?: GoldenRecordCase | null;
   currentRole: UserRole;
   onUpdateCase: (updatedCase: GoldenRecordCase) => void;
   onOpenESign: () => void;
@@ -112,11 +112,35 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
   const [isWebcastModalOpen, setIsWebcastModalOpen] = useState(false);
   const [isVIPItineraryModalOpen, setIsVIPItineraryModalOpen] = useState(false);
   const [copiedAlert, setCopiedAlert] = useState<string | null>(null);
-  const [checklistProgress, setChecklistProgress] = useState<CaseFlightPhaseProgress[]>(() => getInitialFlightChecklist(caseData));
+  const [checklistProgress, setChecklistProgress] = useState<CaseFlightPhaseProgress[]>(() => caseData ? getInitialFlightChecklist(caseData) : []);
 
   useEffect(() => {
-    setChecklistProgress(getInitialFlightChecklist(caseData));
-  }, [caseData.id, caseData.safeArrivalStatus, caseData.statementOfGoods, caseData.medicalCertifier.edrsStatus, caseData.arrangementAppointment]);
+    if (caseData) {
+      setChecklistProgress(getInitialFlightChecklist(caseData));
+    }
+  }, [caseData?.id, caseData?.safeArrivalStatus, caseData?.statementOfGoods, caseData?.medicalCertifier?.edrsStatus, caseData?.arrangementAppointment]);
+
+  if (!caseData) {
+    return (
+      <div className="p-8 max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl border border-neutral-200/80 p-12 text-center shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+            <ScrollText className="w-8 h-8" />
+          </div>
+          <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mb-2">
+            No Active Case Selected
+          </h2>
+          <p className="text-sm text-neutral-600 max-w-md mx-auto mb-6">
+            All test cases have been cleared. To view or manage a Golden Record, intake a new first call or create a live case from the top toolbar.
+          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-800 text-xs font-semibold rounded-lg border border-emerald-200">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            System Clean & Ready for Live Office Operations
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleFlightChecklistAction = (actionType: FlightChecklistActionType) => {
     switch (actionType) {

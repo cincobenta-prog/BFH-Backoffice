@@ -3,7 +3,7 @@ import { GoldenRecordCase, AftercareScheduleItem } from '../../lib/types/funeral
 import { Send, CheckCircle, Star } from 'lucide-react';
 
 interface AftercareCRMNurtureProps {
-  caseData: GoldenRecordCase;
+  caseData?: GoldenRecordCase | null;
   onUpdateAftercare: (updatedAftercare: AftercareScheduleItem[]) => void;
 }
 
@@ -12,6 +12,28 @@ export const AftercareCRMNurture: React.FC<AftercareCRMNurtureProps> = ({
   onUpdateAftercare
 }) => {
   const [activePreview, setActivePreview] = useState<AftercareScheduleItem | null>(null);
+
+  if (!caseData) {
+    return (
+      <div className="p-8 max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl border border-neutral-200/80 p-12 text-center shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-red-50 text-[#800000] flex items-center justify-center mx-auto mb-4 border border-red-200">
+            <Star className="w-8 h-8" />
+          </div>
+          <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mb-2">
+            No Active Case Selected
+          </h2>
+          <p className="text-sm text-neutral-600 max-w-md mx-auto mb-6">
+            All test aftercare schedules and CRM nurture campaigns have been cleared. Select or complete a live service case to trigger bereavement check-ins, anniversaries, and family review invitations.
+          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-800 text-xs font-semibold rounded-lg border border-emerald-200">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Aftercare & Nurture Engine Ready for Live Families
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleTriggerMilestone = (index: number) => {
     const copy = [...caseData.aftercare];

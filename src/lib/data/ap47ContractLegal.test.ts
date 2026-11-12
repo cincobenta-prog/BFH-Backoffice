@@ -1,13 +1,13 @@
 import React from 'react';
 import { describe, it, expect } from 'vitest';
 import { calculateAP47Totals, getDefaultStatementOfGoodsForCase } from './generalPriceList';
-import { MOCK_CASES } from './mockCases';
+import { TEST_CASE_AP47_FIXTURE } from './testFixtures';
 import fs from 'fs';
 import path from 'path';
 
 describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Validation', () => {
   it('correctly populates and calculates financial statement for Page 1 & Page 2 reconciliation', () => {
-    const testCase = MOCK_CASES[0];
+    const testCase = TEST_CASE_AP47_FIXTURE;
     const statement = getDefaultStatementOfGoodsForCase(testCase);
     const calculated = calculateAP47Totals(statement);
 
@@ -105,7 +105,7 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     const { renderToStaticMarkup } = await import('react-dom/server');
     const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
 
-    const testCase = MOCK_CASES[0]; // case-24501
+    const testCase = TEST_CASE_AP47_FIXTURE;
     const statement = testCase.statementOfGoods || getDefaultStatementOfGoodsForCase(testCase);
     const html = renderToStaticMarkup(
       React.createElement(OfficialScannedFormAP47, {
@@ -327,10 +327,10 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
   it('allows field directors to select which Section IV combined charge options appear on the contract', async () => {
     const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
     const ReactDOMServer = (await import('react-dom/server')).default;
-    const { MOCK_CASES } = await import('./mockCases');
+    const { TEST_CASE_AP47_FIXTURE } = await import('./testFixtures');
     const { getDefaultStatementOfGoodsForCase } = await import('./generalPriceList');
 
-    const testCase = MOCK_CASES.find(c => c.id === 'case-24501')!;
+    const testCase = TEST_CASE_AP47_FIXTURE;
     const baseSog = getDefaultStatementOfGoodsForCase(testCase);
 
     // Scenario A: All 3 options selected -> all 3 appear on contract

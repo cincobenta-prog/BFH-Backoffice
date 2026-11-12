@@ -22,20 +22,14 @@ import {
   FirstCallIntakeFormData
 } from './lib/types/funeral';
 import {
-  MOCK_CASES,
-  INITIAL_CALENDAR_EVENTS,
-  INITIAL_NOTIFICATIONS,
-  INITIAL_LIVERY_HOLDS,
   INITIAL_SERVICE_PARTNERS,
-  INITIAL_PARTNER_REQUESTS,
-  INITIAL_DIRECTOR_PROFILES,
-  INITIAL_SERVICE_ASSIGNMENTS,
-  INITIAL_1099_VOUCHERS
+  INITIAL_DIRECTOR_PROFILES
 } from './lib/data/mockCases';
 import {
   loadPersistedState,
   savePersistedState,
-  STORAGE_KEYS
+  STORAGE_KEYS,
+  purgeLegacyTestCases
 } from './lib/storage/persistence';
 import {
   createSignedSessionToken,
@@ -234,32 +228,37 @@ export function App() {
     }));
   };
 
-  // Case State with Persistent Local Storage Hydration
+  // Case State with Persistent Local Storage Hydration (starts empty for live cases)
   const [cases, setCases] = useState<GoldenRecordCase[]>(() => 
-    loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, MOCK_CASES)
+    loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, [])
   );
   const [activeCaseId, setActiveCaseId] = useState<string>(() => {
-    const loaded = loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, MOCK_CASES);
-    return loaded[0]?.id || MOCK_CASES[0].id;
+    const loaded = loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, []);
+    return loaded[0]?.id || '';
   });
 
-  // Facility Calendar Events State
+  // Purge legacy test cases on initial boot to guarantee clean live slate
+  useEffect(() => {
+    purgeLegacyTestCases();
+  }, []);
+
+  // Facility Calendar Events State (cleared of test cases)
   const [calendarEvents, setCalendarEvents] = useState<RoomScheduleEvent[]>(() => 
-    loadPersistedState<RoomScheduleEvent[]>(STORAGE_KEYS.CALENDAR_EVENTS, INITIAL_CALENDAR_EVENTS)
+    loadPersistedState<RoomScheduleEvent[]>(STORAGE_KEYS.CALENDAR_EVENTS, [])
   );
 
-  // Livery Vehicle Holds State
+  // Livery Vehicle Holds State (cleared of test cases)
   const [liveryHolds, setLiveryHolds] = useState<VehicleHoldRequest[]>(() => 
-    loadPersistedState<VehicleHoldRequest[]>(STORAGE_KEYS.LIVERY_HOLDS, INITIAL_LIVERY_HOLDS)
+    loadPersistedState<VehicleHoldRequest[]>(STORAGE_KEYS.LIVERY_HOLDS, [])
   );
   const [isLiveryModalOpen, setIsLiveryModalOpen] = useState(false);
 
-  // Service Partners & SMS Dispatch State
+  // Service Partners & SMS Dispatch State (Partners preserved as vendor directory)
   const [servicePartners, setServicePartners] = useState<ServicePartnerContact[]>(() => 
     loadPersistedState<ServicePartnerContact[]>(STORAGE_KEYS.SERVICE_PARTNERS, INITIAL_SERVICE_PARTNERS)
   );
   const [partnerRequests, setPartnerRequests] = useState<PartnerScheduleRequest[]>(() => 
-    loadPersistedState<PartnerScheduleRequest[]>(STORAGE_KEYS.PARTNER_REQUESTS, INITIAL_PARTNER_REQUESTS)
+    loadPersistedState<PartnerScheduleRequest[]>(STORAGE_KEYS.PARTNER_REQUESTS, [])
   );
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
 
@@ -301,7 +300,7 @@ export function App() {
   const [printAP47TargetCase, setPrintAP47TargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenPrintAP47Modal = (c?: GoldenRecordCase) => {
-    setPrintAP47TargetCase(c || activeCase);
+    setPrintAP47TargetCase(c || activeCase || null);
     setIsPrintAP47Open(true);
   };
 
@@ -314,9 +313,9 @@ export function App() {
   // Chapel QR Easel Sign State
   const [isChapelQrModalOpen, setIsChapelQrModalOpen] = useState(false);
 
-  // Notifications State
+  // Notifications State (cleared of test notifications)
   const [notifications, setNotifications] = useState<SimulatedNotification[]>(() => 
-    loadPersistedState<SimulatedNotification[]>(STORAGE_KEYS.NOTIFICATIONS, INITIAL_NOTIFICATIONS)
+    loadPersistedState<SimulatedNotification[]>(STORAGE_KEYS.NOTIFICATIONS, [])
   );
   const [isNotificationHubOpen, setIsNotificationHubOpen] = useState(false);
 
@@ -335,10 +334,10 @@ export function App() {
     return loaded;
   });
   const [serviceAssignments, setServiceAssignments] = useState<ServiceDirectorAssignment[]>(() => 
-    loadPersistedState<ServiceDirectorAssignment[]>(STORAGE_KEYS.SERVICE_ASSIGNMENTS, INITIAL_SERVICE_ASSIGNMENTS)
+    loadPersistedState<ServiceDirectorAssignment[]>(STORAGE_KEYS.SERVICE_ASSIGNMENTS, [])
   );
   const [vouchers, setVouchers] = useState<Director1099Voucher[]>(() => 
-    loadPersistedState<Director1099Voucher[]>(STORAGE_KEYS.VOUCHERS, INITIAL_1099_VOUCHERS)
+    loadPersistedState<Director1099Voucher[]>(STORAGE_KEYS.VOUCHERS, [])
   );
   const [isAssignModalOpen, setIsAssignModalOpen] = useState<boolean>(false);
   const [selectedAssignmentForModal, setSelectedAssignmentForModal] = useState<ServiceDirectorAssignment | null>(null);
@@ -385,8 +384,8 @@ export function App() {
     }
     handleSendNotification({
       id: `notif-${Date.now()}`,
-      caseId: activeCase.id,
-      decedentName: "Benta's Operations",
+      caseId: activeCase?.id || 'live-system',
+      decedentName: activeCase?.decedent?.legalName || "Benta's Operations",
       recipientName: 'Management Admin',
       recipientPhone: '(212) 281-8850',
       channel: 'sms',
@@ -419,7 +418,7 @@ export function App() {
   const [stripeTargetCase, setStripeTargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenDocuSignModal = (c?: GoldenRecordCase) => {
-    setDocuSignTargetCase(c || activeCase);
+    setDocuSignTargetCase(c || activeCase || null);
     setIsDocuSignModalOpen(true);
   };
 
@@ -428,7 +427,7 @@ export function App() {
   const [quickBooksTargetCase, setQuickBooksTargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenQuickBooksModal = (c?: GoldenRecordCase) => {
-    setQuickBooksTargetCase(c || activeCase);
+    setQuickBooksTargetCase(c || activeCase || null);
     setIsQuickBooksModalOpen(true);
   };
 
@@ -443,7 +442,7 @@ export function App() {
   const [checkPrinterTargetCase, setCheckPrinterTargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenCheckPrinterModal = (c?: GoldenRecordCase) => {
-    setCheckPrinterTargetCase(c || activeCase);
+    setCheckPrinterTargetCase(c || activeCase || null);
     setIsCheckPrinterModalOpen(true);
   };
 
@@ -452,7 +451,7 @@ export function App() {
   const [discrepancyTargetCase, setDiscrepancyTargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenDiscrepancyModal = (c?: GoldenRecordCase) => {
-    setDiscrepancyTargetCase(c || activeCase);
+    setDiscrepancyTargetCase(c || activeCase || null);
     setIsDiscrepancyModalOpen(true);
   };
 
@@ -461,7 +460,7 @@ export function App() {
   const [directorHUDTargetCase, setDirectorHUDTargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenDirectorHUDModal = (c?: GoldenRecordCase) => {
-    setDirectorHUDTargetCase(c || activeCase);
+    setDirectorHUDTargetCase(c || activeCase || null);
     setIsDirectorHUDModalOpen(true);
   };
 
@@ -470,7 +469,7 @@ export function App() {
   const [proofApprovalTargetCase, setProofApprovalTargetCase] = useState<GoldenRecordCase | null>(null);
 
   const handleOpenProofApprovalModal = (c?: GoldenRecordCase) => {
-    setProofApprovalTargetCase(c || activeCase);
+    setProofApprovalTargetCase(c || activeCase || null);
     setIsProofApprovalModalOpen(true);
   };
 
@@ -504,13 +503,13 @@ export function App() {
         setIsEdrsModalOpen(true);
         break;
       case 'docusign':
-        handleOpenDocuSignModal(activeCase);
+        if (activeCase) handleOpenDocuSignModal(activeCase);
         break;
       case 'checks':
-        handleOpenCheckPrinterModal(activeCase);
+        if (activeCase) handleOpenCheckPrinterModal(activeCase);
         break;
       case 'hud':
-        handleOpenDirectorHUDModal(activeCase);
+        if (activeCase) handleOpenDirectorHUDModal(activeCase);
         break;
       case 'cloud':
         setIsCloudModalOpen(true);
@@ -578,6 +577,7 @@ export function App() {
   };
 
   const handleUpdateDocumentStatus = (docId: string, newStatus: DocumentStatus) => {
+    if (!activeCase) return;
     const updatedDocs = activeCase.documents.map(doc => {
       if (doc.id === docId) {
         return {
@@ -596,6 +596,7 @@ export function App() {
   };
 
   const handleSignatureComplete = (signatureDataUrl: string, docIds: string[]) => {
+    if (!activeCase) return;
     const updatedDocs = activeCase.documents.map(doc => {
       if (docIds.includes(doc.id)) {
         return {
@@ -1098,6 +1099,33 @@ export function App() {
   if (viewMode === 'backoffice') {
     // If role switched to Family, render the authentic Family Portal with 9-Part Obituary Studio
     if (currentRole === 'family') {
+      if (!activeCase) {
+        return (
+          <div className="min-h-screen bg-[#faf8f5] flex items-center justify-center p-6 text-neutral-900 font-sans">
+            <div className="bg-white rounded-2xl border border-neutral-200/80 p-10 max-w-lg w-full text-center shadow-xl">
+              <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 border border-amber-200">
+                <span className="font-serif-title font-bold text-xl">BFH</span>
+              </div>
+              <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mb-2">
+                No Active Case Selected
+              </h2>
+              <p className="text-sm text-neutral-600 mb-6">
+                All test cases have been cleared. To preview the Family Portal, please intake or select a live case first.
+              </p>
+              <button
+                onClick={() => {
+                  setCurrentRole('director');
+                  setViewMode('backoffice');
+                }}
+                className="w-full bg-[#800000] hover:bg-[#600000] text-white font-semibold py-3 px-6 rounded-xl transition shadow-md"
+              >
+                Return to Director Dashboard
+              </button>
+            </div>
+          </div>
+        );
+      }
+
       return (
         <>
           <FamilyPortalView
@@ -1375,7 +1403,7 @@ export function App() {
                 }));
                 handleSendNotification({
                   id: `notif-${Date.now()}`,
-                  caseId: activeCase.id,
+                  caseId: activeCase?.id || 'trade-guild-payroll',
                   decedentName: "Trade Guild Payroll",
                   recipientName: 'Finance / Accounting',
                   recipientPhone: '(212) 281-8850',
@@ -1749,8 +1777,8 @@ export function App() {
             setBackOfficeTab('manager');
             handleSendNotification({
               id: `notif-${Date.now()}`,
-              caseId: activeCase.id,
-              decedentName: "Benta's Operations",
+              caseId: activeCase?.id || 'live-system',
+              decedentName: activeCase?.decedent?.legalName || "Benta's Operations",
               recipientName: 'Management Admin',
               recipientPhone: '(212) 281-8850',
               channel: 'sms',
@@ -1966,7 +1994,7 @@ export function App() {
           isOpen={isPressModalOpen}
           onClose={() => setIsPressModalOpen(false)}
           cases={cases}
-          selectedCaseId={activeCase.id}
+          selectedCaseId={activeCase?.id}
         />
 
         {/* Live 4K Webcasting, PTZ Multi-Camera Studio & Vimeo Enterprise Gateway Hub */}

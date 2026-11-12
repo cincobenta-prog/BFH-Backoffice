@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 interface FinancialVerificationCenterProps {
-  caseData: GoldenRecordCase;
+  caseData?: GoldenRecordCase | null;
   onUpdateBilling: (updatedBilling: SplitBillingItem[]) => void;
   onOpenStripeModal?: () => void;
   onOpenQuickBooks?: (targetCase: GoldenRecordCase) => void;
@@ -39,16 +39,38 @@ export const FinancialVerificationCenter: React.FC<FinancialVerificationCenterPr
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(true);
   const [carrierName, setCarrierName] = useState('MetLife / Brighthouse Financial');
   const [policyFaceValue, setPolicyFaceValue] = useState<number>(15000);
-  const [beneficiaryName, setBeneficiaryName] = useState(caseData.informant.fullName);
+  const [beneficiaryName, setBeneficiaryName] = useState(caseData?.informant?.fullName || '');
   const [assignmentFeeRate, setAssignmentFeeRate] = useState<number>(3.75); // 3.75% standard assignment fee
   const [fundingAssignmentAdded, setFundingAssignmentAdded] = useState(false);
 
   // Calculations
-  const contractTotal = caseData.totalAmountDue;
+  const contractTotal = caseData?.totalAmountDue || 0;
   const assignmentFeeAmount = Math.round(contractTotal * (assignmentFeeRate / 100));
   const totalAssignedFromPolicy = contractTotal + assignmentFeeAmount;
   const excessRefundToBeneficiary = Math.max(0, policyFaceValue - totalAssignedFromPolicy);
   const netBfhPayout = contractTotal;
+
+  if (!caseData) {
+    return (
+      <div className="p-8 max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl border border-neutral-200/80 p-12 text-center shadow-sm">
+          <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+            <Landmark className="w-8 h-8" />
+          </div>
+          <h2 className="font-serif-title text-2xl font-bold text-neutral-900 mb-2">
+            No Active Case Selected
+          </h2>
+          <p className="text-sm text-neutral-600 max-w-md mx-auto mb-6">
+            All test balances, ledger entries, and split-billing assignments have been cleared. Select or intake a live case to manage billing, QuickBooks sync, and insurance funding.
+          </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-800 text-xs font-semibold rounded-lg border border-emerald-200">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            Financial Center Ready for Live Billing & Invoicing
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleAddSplitItem = (e: React.FormEvent) => {
     e.preventDefault();

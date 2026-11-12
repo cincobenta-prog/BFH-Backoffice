@@ -83,7 +83,7 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
   const [viewingDoc, setViewingDoc] = useState<DocumentItem | null>(null);
   const [signingDoc, setSigningDoc] = useState<DocumentItem | null>(null);
   const [signatureMode, setSignatureMode] = useState<'draw' | 'type'>('type');
-  const [typedSignName, setTypedSignName] = useState<string>(activeCase.informant.fullName || '');
+  const [typedSignName, setTypedSignName] = useState<string>(activeCase?.informant?.fullName || '');
   const [isAgreedTerms, setIsAgreedTerms] = useState<boolean>(false);
   const [signDate, setSignDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [isSigningSubmitting, setIsSigningSubmitting] = useState<boolean>(false);
@@ -197,53 +197,53 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
 
   // Funeral Announcement Customizer State
   const [announcementTheme, setAnnouncementTheme] = useState<AnnouncementTheme>(
-    activeCase.funeralAnnouncement?.theme || 'harlem_obsidian_gold'
+    activeCase?.funeralAnnouncement?.theme || 'harlem_obsidian_gold'
   );
   const [announcementAspectRatio, setAnnouncementAspectRatio] = useState<AnnouncementAspectRatio>(
-    activeCase.funeralAnnouncement?.aspectRatio || 'mobile_story_9_16'
+    activeCase?.funeralAnnouncement?.aspectRatio || 'mobile_story_9_16'
   );
   const [announcementHeadline, setAnnouncementHeadline] = useState(
-    activeCase.funeralAnnouncement?.headlineTitle || "Homegoing Celebration & Life Legacy"
+    activeCase?.funeralAnnouncement?.headlineTitle || "Homegoing Celebration & Life Legacy"
   );
   const [announcementPortraitUrl, setAnnouncementPortraitUrl] = useState(
-    activeCase.funeralAnnouncement?.portraitUrl || activeCase.obituaryData?.photos?.[0]?.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80'
+    activeCase?.funeralAnnouncement?.portraitUrl || activeCase?.obituaryData?.photos?.[0]?.url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=80'
   );
   const [announcementFrameStyle, setAnnouncementFrameStyle] = useState<'arched_gold_foil' | 'oval_classic' | 'square_crest'>(
-    activeCase.funeralAnnouncement?.portraitFrameStyle || 'arched_gold_foil'
+    activeCase?.funeralAnnouncement?.portraitFrameStyle || 'arched_gold_foil'
   );
 
   const [announcementWakeInfo, setAnnouncementWakeInfo] = useState(
-    activeCase.funeralAnnouncement?.visitationInfo || 'Public Viewing & Wake: Monday, Sep 21, 2026 • 4:00 PM – 8:00 PM'
+    activeCase?.funeralAnnouncement?.visitationInfo || 'Public Viewing & Wake: Monday, Sep 21, 2026 • 4:00 PM – 8:00 PM'
   );
   const [announcementWakeVenue, setAnnouncementWakeVenue] = useState(
-    activeCase.funeralAnnouncement?.visitationVenue || "Benta's Funeral Home — Parlor A (630 St. Nicholas Ave, Harlem, NYC)"
+    activeCase?.funeralAnnouncement?.visitationVenue || "Benta's Funeral Home — Parlor A (630 St. Nicholas Ave, Harlem, NYC)"
   );
   const [announcementServiceInfo, setAnnouncementServiceInfo] = useState(
-    activeCase.funeralAnnouncement?.serviceInfo || 'Funeral Sanctuary Service: Tuesday, Sep 22, 2026 • 11:00 AM'
+    activeCase?.funeralAnnouncement?.serviceInfo || 'Funeral Sanctuary Service: Tuesday, Sep 22, 2026 • 11:00 AM'
   );
   const [announcementServiceVenue, setAnnouncementServiceVenue] = useState(
-    activeCase.funeralAnnouncement?.serviceVenue || activeCase.serviceSelections.serviceVenueName || "Benta's Main Sanctuary Chapel 1"
+    activeCase?.funeralAnnouncement?.serviceVenue || activeCase?.serviceSelections?.serviceVenueName || "Benta's Main Sanctuary Chapel 1"
   );
   const [announcementServiceAddress, setAnnouncementServiceAddress] = useState(
-    activeCase.funeralAnnouncement?.serviceAddress || '630 Saint Nicholas Ave, New York, NY 10030'
+    activeCase?.funeralAnnouncement?.serviceAddress || '630 Saint Nicholas Ave, New York, NY 10030'
   );
   const [announcementOfficiant, setAnnouncementOfficiant] = useState(
-    activeCase.funeralAnnouncement?.officiantInfo || (activeCase.serviceSelections.officiantName ? `Officiated by ${activeCase.serviceSelections.officiantName}` : 'Officiated by Rev. Dr. Calvin Butts IV')
+    activeCase?.funeralAnnouncement?.officiantInfo || (activeCase?.serviceSelections?.officiantName ? `Officiated by ${activeCase.serviceSelections.officiantName}` : 'Officiated by Rev. Dr. Calvin Butts IV')
   );
   const [announcementCommittal, setAnnouncementCommittal] = useState(
-    activeCase.funeralAnnouncement?.committalInfo || `Witness Committal: ${activeCase.serviceSelections.crematoryOrCemeteryName || 'Woodlawn Cemetery & Crematory (Bronx, NY)'}`
+    activeCase?.funeralAnnouncement?.committalInfo || `Witness Committal: ${activeCase?.serviceSelections?.crematoryOrCemeteryName || 'Woodlawn Cemetery & Crematory (Bronx, NY)'}`
   );
   const [announcementWebcastUrl, setAnnouncementWebcastUrl] = useState(
-    activeCase.funeralAnnouncement?.webcastUrl || activeCase.webcastSchedule?.streamUrl || `https://e-bfh.com/live/${activeCase.caseNumber}`
+    activeCase?.funeralAnnouncement?.webcastUrl || activeCase?.webcastSchedule?.streamUrl || `https://e-bfh.com/live/${activeCase?.caseNumber || 'case'}`
   );
   const [announcementWebcastPin, setAnnouncementWebcastPin] = useState(
-    activeCase.funeralAnnouncement?.webcastPin || activeCase.webcastSchedule?.securityPin || '1928'
+    activeCase?.funeralAnnouncement?.webcastPin || activeCase?.webcastSchedule?.securityPin || '1928'
   );
   const [announcementDonations, setAnnouncementDonations] = useState(
-    activeCase.funeralAnnouncement?.memorialDonationsNote || activeCase.obituaryData?.memorialDonations || `In lieu of flowers, memorial gifts may be made in honor of ${activeCase.decedent.legalName} to the Harlem Youth & Education Foundation.`
+    activeCase?.funeralAnnouncement?.memorialDonationsNote || activeCase?.obituaryData?.memorialDonations || `In lieu of flowers, memorial gifts may be made in honor of ${activeCase?.decedent?.legalName || 'our loved one'} to the Harlem Youth & Education Foundation.`
   );
   const [announcementFamilyMessage, setAnnouncementFamilyMessage] = useState(
-    activeCase.funeralAnnouncement?.familyMessage || `“The ${activeCase.informant.fullName.split(' ').pop() || 'Vance'} Family extends our deepest gratitude for your comforting prayers, condolences, and enduring love.”`
+    activeCase?.funeralAnnouncement?.familyMessage || `“The ${activeCase?.informant?.fullName?.split(' ').pop() || 'Family'} extends our deepest gratitude for your comforting prayers, condolences, and enduring love.”`
   );
 
   // SMS Text Announcement Dispatcher Modal State
@@ -471,50 +471,50 @@ ${announcementFamilyMessage}
 
   // Initialize or pull obituary data from activeCase
   const defaultObituaryData: ObituaryPackageData = {
-    spokespersonName: activeCase.informant.fullName || 'Spokesperson',
-    spokespersonRelation: activeCase.informant.relationship || 'Next of Kin',
-    spokespersonEmail: activeCase.informant.email || '',
+    spokespersonName: activeCase?.informant?.fullName || 'Spokesperson',
+    spokespersonRelation: activeCase?.informant?.relationship || 'Next of Kin',
+    spokespersonEmail: activeCase?.informant?.email || '',
     consentGranted: true,
     
     // Step 2: Oral History
-    ordinaryHabits: activeCase.obituaryData?.ordinaryHabits || 
-      `Every morning before sunrise, ${activeCase.decedent.legalName.split(' ')[0]} brewed fresh chamomile tea and left handwritten notes of quiet encouragement on the kitchen counter for the family.`,
-    signaturePhrase: activeCase.obituaryData?.signaturePhrase || 
+    ordinaryHabits: activeCase?.obituaryData?.ordinaryHabits || 
+      (activeCase?.decedent ? `Every morning before sunrise, ${activeCase.decedent.legalName.split(' ')[0]} brewed fresh chamomile tea and left handwritten notes of quiet encouragement on the kitchen counter for the family.` : ''),
+    signaturePhrase: activeCase?.obituaryData?.signaturePhrase || 
       `“Don't you dare let one bad day tell you who you are.”`,
-    definingStory: activeCase.obituaryData?.definingStory || 
-      `When neighborhood arts programs faced severe cuts, ${activeCase.decedent.legalName.split(' ')[0]} gathered retired mentors to host free after-school music and reading workshops right from the family living room for over four years.`,
+    definingStory: activeCase?.obituaryData?.definingStory || 
+      (activeCase?.decedent ? `When neighborhood arts programs faced severe cuts, ${activeCase.decedent.legalName.split(' ')[0]} gathered retired mentors to host free after-school music and reading workshops right from the family living room for over four years.` : ''),
     
     // Step 3: Chronology
-    birthDetails: activeCase.obituaryData?.birthDetails || 
-      `${activeCase.decedent.dateOfBirth} · ${activeCase.decedent.city}, ${activeCase.decedent.state}`,
-    passingDetails: activeCase.obituaryData?.passingDetails || 
-      `${activeCase.decedent.dateOfDeath} · ${activeCase.decedent.placeOfDeath}`,
-    educationCareer: activeCase.obituaryData?.educationCareer || 
-      `Dedicated over 35 years of master service in ${activeCase.decedent.industry}. A proud alumnus, community mentor, and lifelong pillar of the Harlem civic leadership.`,
+    birthDetails: activeCase?.obituaryData?.birthDetails || 
+      (activeCase?.decedent ? `${activeCase.decedent.dateOfBirth} · ${activeCase.decedent.city}, ${activeCase.decedent.state}` : ''),
+    passingDetails: activeCase?.obituaryData?.passingDetails || 
+      (activeCase?.decedent ? `${activeCase.decedent.dateOfDeath} · ${activeCase.decedent.placeOfDeath}` : ''),
+    educationCareer: activeCase?.obituaryData?.educationCareer || 
+      (activeCase?.decedent ? `Dedicated over 35 years of master service in ${activeCase.decedent.industry}. A proud alumnus, community mentor, and lifelong pillar of the Harlem civic leadership.` : ''),
     
     // Step 4: Family & Services
-    survivors: activeCase.obituaryData?.survivors || 
-      `Devoted spouse ${activeCase.informant.fullName}; loving children and grandchildren; beloved siblings; and a host of cherished relatives, former colleagues, and lifelong friends.`,
-    predeceased: activeCase.obituaryData?.predeceased || 
-      `Parents ${activeCase.decedent.fatherName} and ${activeCase.decedent.motherMaidenName}.`,
-    serviceDetails: activeCase.obituaryData?.serviceDetails || 
-      `A celebration of life will be held ${activeCase.serviceSelections.serviceDate || 'Saturday'} at ${activeCase.serviceSelections.serviceTime || '11:00 AM'} at ${activeCase.serviceSelections.serviceVenueName || "Benta's Funeral Home Chapel"}, 630 St. Nicholas Ave, New York, NY.`,
-    memorialDonations: activeCase.obituaryData?.memorialDonations || 
-      `In lieu of flowers, memorial contributions may be made in honor of ${activeCase.decedent.legalName} to the Harlem Heritage & Youth Enrichment Foundation.`,
+    survivors: activeCase?.obituaryData?.survivors || 
+      (activeCase?.informant ? `Devoted family and next of kin ${activeCase.informant.fullName}; loving children and grandchildren; beloved siblings; and a host of cherished relatives, former colleagues, and lifelong friends.` : ''),
+    predeceased: activeCase?.obituaryData?.predeceased || 
+      (activeCase?.decedent ? `Parents ${activeCase.decedent.fatherName} and ${activeCase.decedent.motherMaidenName}.` : ''),
+    serviceDetails: activeCase?.obituaryData?.serviceDetails || 
+      `A celebration of life will be held ${activeCase?.serviceSelections?.serviceDate || 'Saturday'} at ${activeCase?.serviceSelections?.serviceTime || '11:00 AM'} at ${activeCase?.serviceSelections?.serviceVenueName || "Benta's Funeral Home Chapel"}, 630 St. Nicholas Ave, New York, NY.`,
+    memorialDonations: activeCase?.obituaryData?.memorialDonations || 
+      (activeCase?.decedent ? `In lieu of flowers, memorial contributions may be made in honor of ${activeCase.decedent.legalName} to the Harlem Heritage & Youth Enrichment Foundation.` : ''),
     
     // Step 5 & 6: Dual Drafts
-    voiceTone: activeCase.obituaryData?.voiceTone || 'warm',
-    fullObituaryDraft: activeCase.obituaryData?.fullObituaryDraft || '',
-    shortNoticeDraft: activeCase.obituaryData?.shortNoticeDraft || '',
+    voiceTone: activeCase?.obituaryData?.voiceTone || 'warm',
+    fullObituaryDraft: activeCase?.obituaryData?.fullObituaryDraft || '',
+    shortNoticeDraft: activeCase?.obituaryData?.shortNoticeDraft || '',
     
     // Fact Ledger
-    factLedger: activeCase.obituaryData?.factLedger || [
+    factLedger: activeCase?.obituaryData?.factLedger || (activeCase?.decedent ? [
       { id: 'f-1', detail: `Legal Full Name: ${activeCase.decedent.legalName}`, source: 'NYC EDRS Verified Record', tag: 'confirmed', category: 'identity' },
       { id: 'f-2', detail: `Date of Passing: ${activeCase.decedent.dateOfDeath}`, source: `${activeCase.decedent.placeOfDeath}`, tag: 'confirmed', category: 'dates' },
-      { id: 'f-3', detail: `Spouse / Primary Next of Kin: ${activeCase.informant.fullName}`, source: 'Family Record', tag: 'confirmed', category: 'family' },
+      { id: 'f-3', detail: `Spouse / Primary Next of Kin: ${activeCase.informant?.fullName || 'Next of Kin'}`, source: 'Family Record', tag: 'confirmed', category: 'family' },
       { id: 'f-4', detail: `Military Service: ${activeCase.decedent.veteran ? activeCase.decedent.branchOfService || 'U.S. Armed Forces' : 'Civilian'}`, source: 'Official Record', tag: 'confirmed', category: 'career' },
       { id: 'f-5', detail: `Private Family Nickname: "Little Chief"`, source: 'Family Memory (Private)', tag: 'private', category: 'private' }
-    ],
+    ] : []),
     
     // Fraud Shield
     fraudShieldPassed: true,

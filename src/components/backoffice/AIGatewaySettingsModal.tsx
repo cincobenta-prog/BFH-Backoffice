@@ -42,29 +42,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
-  const currentCase = activeCase || cases[0] || ({
-    id: 'case-demo',
-    caseNumber: 'BFH-2026-0891',
-    currentPhase: 'arrangements',
-    decedent: {
-      legalName: 'Evelyn Marie Jenkins',
-      dateOfBirth: '1944-05-12',
-      dateOfDeath: '2026-09-28',
-      placeOfDeath: 'Mount Sinai Hospital, Manhattan',
-      veteran: false
-    },
-    informant: {
-      fullName: 'Clarissa Jenkins',
-      relationship: 'Daughter',
-      phone: '(212) 555-0198',
-      email: 'clarissa.jenkins@harlemfamily.org'
-    },
-    serviceSelections: {
-      packageTitle: 'Harlem Historic Church Celebration & Earth Burial',
-      serviceVenueName: 'Abyssinian Baptist Church, Harlem',
-      serviceDate: '2026-10-04'
-    }
-  } as unknown as GoldenRecordCase);
+  const currentCase = activeCase || cases[0] || null;
 
   const [activeTab, setActiveTab] = useState<'concierge' | 'obituary' | 'whisper' | 'settings'>('concierge');
   const [config, setConfig] = useState<AIGatewayConfig>(() => getAIGatewayConfig());
@@ -85,7 +63,9 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
   const [chatLog, setChatLog] = useState<Array<{ sender: 'user' | 'ai'; text: string; citation?: string }>>([
     {
       sender: 'ai',
-      text: `Hello, I am your 24/7 Benta Family Care Concierge for **${currentCase.decedent.legalName}** (Case #${currentCase.caseNumber}). How may I gently assist you with arrangements, NYS laws, or benefits?`,
+      text: currentCase 
+        ? `Hello, I am your 24/7 Benta Family Care Concierge for **${currentCase.decedent.legalName}** (Case #${currentCase.caseNumber}). How may I gently assist you with arrangements, NYS laws, or benefits?`
+        : `Hello, I am your 24/7 Benta Family Care Concierge. How may I assist you with arrangements, NYS statutory compliance, or veterans benefits?`,
       citation: "Benta's Funeral Home Care Desk • Est. 1928"
     }
   ]);
@@ -111,12 +91,26 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
     setChatLog(prev => [...prev, { sender: 'user', text: query }]);
     setIsGeneratingChat(true);
 
+    if (!currentCase) {
+      setChatLog(prev => [...prev, { 
+        sender: 'ai', 
+        text: 'I am ready to assist as soon as a live case is selected or created. For general inquiries: Benta’s Funeral Home provides full-service arrangements, NYC EDRS certified death filing, and Woodlawn crematory dispatch.', 
+        citation: "Benta's Operations Desk" 
+      }]);
+      setIsGeneratingChat(false);
+      return;
+    }
+
     const response = await generateAIConciergeResponse(query, currentCase);
     setIsGeneratingChat(false);
     setChatLog(prev => [...prev, { sender: 'ai', text: response.text, citation: response.citation }]);
   };
 
   const handleGenerateObituary = async () => {
+    if (!currentCase) {
+      alert('Please intake or select a live funeral case first to generate a customized 9-part obituary.');
+      return;
+    }
     setIsGeneratingObit(true);
     const obit = await generate9PartObituary({
       caseItem: currentCase,
@@ -243,11 +237,13 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                   <div className="flex items-center space-x-2">
                     <Sparkles className="w-4 h-4 text-brass-300 animate-pulse" />
                     <h5 className="font-bold text-xs uppercase tracking-wider text-brass-200">
-                      Active Case Context: {currentCase.decedent.legalName} ({currentCase.caseNumber})
+                      Active Case Context: {currentCase ? `${currentCase.decedent.legalName} (${currentCase.caseNumber})` : 'Live Operations Mode (No Case Selected)'}
                     </h5>
                   </div>
                   <p className="text-[11px] text-neutral-300">
-                    Next-of-Kin: <strong>{currentCase.informant.fullName}</strong> ({currentCase.informant.relationship}) • Service: <strong>{currentCase.serviceSelections.packageTitle}</strong>
+                    {currentCase 
+                      ? <>Next-of-Kin: <strong>{currentCase.informant.fullName}</strong> ({currentCase.informant.relationship}) • Service: <strong>{currentCase.serviceSelections?.packageTitle || 'Custom'}</strong></>
+                      : 'AI Gateway ready for real cases. Case vitals will automatically populate upon first call intake.'}
                   </p>
                 </div>
 
@@ -344,7 +340,7 @@ export const AIGatewaySettingsModal: React.FC<AIGatewaySettingsModalProps> = ({
                     </h5>
                   </div>
                   <span className="text-[11px] text-neutral-500 font-mono">
-                    Case: {currentCase.decedent.legalName}
+                    Case: {currentCase ? currentCase.decedent.legalName : 'No Active Case'}
                   </span>
                 </div>
 

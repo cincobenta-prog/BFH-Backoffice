@@ -39,7 +39,7 @@ import {
 interface BackOfficeLayoutProps {
   currentRole: UserRole;
   onChangeRole: (role: UserRole) => void;
-  activeCase: GoldenRecordCase;
+  activeCase?: GoldenRecordCase | null;
   cases: GoldenRecordCase[];
   onSelectCase: (caseItem: GoldenRecordCase) => void;
   activeTab: BackOfficeTab;
@@ -381,19 +381,24 @@ export const BackOfficeLayout = ({
                 className="group flex max-w-full items-center gap-3 rounded-xl border border-neutral-200/90 bg-white px-3.5 py-1.5 text-left shadow-2xs transition-all duration-200 hover:border-amber-500/60 hover:shadow-md hover:bg-neutral-50/50 cursor-pointer"
               >
                 <div className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-amber-400/40 bg-gradient-to-br from-[#800000] to-[#500000] text-[10.5px] font-black text-amber-100 shadow-xs">
-                  {activeCase.decedent.legalName.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('')}
+                  {activeCase ? activeCase.decedent.legalName.split(' ').map(n => n[0]).filter(Boolean).slice(0, 2).join('') : '+'}
                 </div>
                 <span className="min-w-0">
                   <span className="flex items-center gap-1.5 text-[9.5px] font-extrabold uppercase tracking-[0.14em] text-neutral-400">
                     <span className="relative flex h-2 w-2 shrink-0">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                      <span className={`inline-flex rounded-full h-2 w-2 ${activeCase ? 'bg-emerald-500' : 'bg-neutral-300'}`}></span>
                     </span>
-                    <span>Working Case</span>
+                    <span>{activeCase ? 'Working Case' : 'No Active Case'}</span>
                   </span>
                   <span className="block truncate text-[13px] font-bold text-neutral-900 group-hover:text-[#800000] transition-colors">
-                    <span className="text-[#800000] font-mono mr-1.5 font-bold">{activeCase.caseNumber}</span>
-                    · {activeCase.decedent.legalName}
+                    {activeCase ? (
+                      <>
+                        <span className="text-[#800000] font-mono mr-1.5 font-bold">{activeCase.caseNumber}</span>
+                        · {activeCase.decedent.legalName}
+                      </>
+                    ) : (
+                      <span className="text-neutral-500 font-normal">Select or create live case</span>
+                    )}
                   </span>
                 </span>
                 <ChevronDown className="h-4 w-4 shrink-0 text-neutral-400 transition-transform duration-200 group-hover:text-amber-500" />
@@ -417,11 +422,11 @@ export const BackOfficeLayout = ({
                   <div className="max-h-[280px] overflow-y-auto space-y-1 pt-1">
                     {filteredCases.length === 0 && (
                       <div className="px-3 py-6 text-center text-[13px] text-neutral-500">
-                        No cases match "{caseQuery}"
+                        {cases.length === 0 ? 'No active cases in system' : `No cases match "${caseQuery}"`}
                       </div>
                     )}
                     {filteredCases.map((c) => {
-                      const selected = c.id === activeCase.id;
+                      const selected = activeCase ? c.id === activeCase.id : false;
                       return (
                         <button
                           key={c.id}
