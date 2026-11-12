@@ -145,7 +145,7 @@ export const FamilyPortalView: React.FC<FamilyPortalViewProps> = ({
 
     setIsSigningSubmitting(true);
     setTimeout(() => {
-      const updatedDocs = activeCase.documents.map((d) => {
+      const updatedDocs = (activeCase.documents || []).map((d) => {
         if (d.id === docToSign.id) {
           return {
             ...d,
@@ -666,7 +666,8 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
             activeCase={activeCase}
             onNavigateTab={(tab) => setPortalTab(tab as any)}
             onOpenESignModal={() => {
-              const firstPending = activeCase.documents.find(d => d.status !== 'completed' && d.status !== 'signed') || activeCase.documents[0];
+              const docs = activeCase.documents || [];
+              const firstPending = docs.find(d => d.status !== 'completed' && d.status !== 'signed') || docs[0];
               if (firstPending) {
                 setSigningDoc(firstPending);
                 setTypedSignName(activeCase.informant.fullName || '');
@@ -1882,11 +1883,12 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-xs bg-neutral-100 px-3 py-1.5 rounded-xl border border-neutral-200 text-neutral-700 font-semibold">
-                    {activeCase.documents.filter(d => d.status === 'completed' || d.status === 'signed').length} of {activeCase.documents.length} Executed
+                    {(activeCase.documents || []).filter(d => d.status === 'completed' || d.status === 'signed').length} of {(activeCase.documents || []).length} Executed
                   </span>
                   <button
                     onClick={() => {
-                      const firstPending = activeCase.documents.find(d => d.status !== 'completed' && d.status !== 'signed') || activeCase.documents[0];
+                      const docs = activeCase.documents || [];
+                      const firstPending = docs.find(d => d.status !== 'completed' && d.status !== 'signed') || docs[0];
                       if (firstPending) {
                         setSigningDoc(firstPending);
                         setTypedSignName(activeCase.informant.fullName || '');
@@ -1902,7 +1904,7 @@ ${obitState.serviceDetails} ${obitState.memorialDonations}`;
               </div>
 
               <div className="space-y-3">
-                {activeCase.documents.map((doc) => {
+                {(activeCase.documents || []).map((doc) => {
                   const isCompleted = doc.status === 'signed' || doc.status === 'completed' || doc.status === 'approved';
                   return (
                     <div key={doc.id} className="p-4 sm:p-5 rounded-2xl border border-neutral-200 bg-neutral-50/60 hover:bg-neutral-50 transition flex flex-wrap items-center justify-between gap-4">

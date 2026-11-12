@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GoldenRecordCase, DocumentItem, DocumentStatus, BFHFormType, ClothingChecklistData, JewelryItemSpec, FullVitalRecordInformationSheet } from '../../lib/types/funeral';
 import { getDefaultStatementOfGoodsForCase } from '../../lib/data/generalPriceList';
+import { INITIAL_DOCUMENT_TEMPLATES } from '../../lib/data/documentTemplates';
 import { OfficialScannedFormAP47 } from './OfficialScannedFormAP47';
 import { 
   FileText, 
@@ -246,7 +247,11 @@ export const DocumentJourneyMatrix: React.FC<DocumentJourneyMatrixProps> = ({
     }, 500);
   };
 
-  const filteredDocs = caseData.documents.filter(doc => {
+  const rawDocs = (caseData.documents && caseData.documents.length > 0)
+    ? caseData.documents
+    : INITIAL_DOCUMENT_TEMPLATES.map(t => ({ ...t, id: `${t.id}-${caseData.caseNumber}` }));
+
+  const filteredDocs = rawDocs.filter(doc => {
     if (selectedPhase === 'all') return true;
     return doc.phase === selectedPhase;
   });

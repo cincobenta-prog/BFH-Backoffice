@@ -1768,7 +1768,7 @@ export const GoldenRecordDetail: React.FC<GoldenRecordDetailProps> = ({
             </div>
 
             <div className="space-y-2 text-xs">
-              {caseData.documents.slice(0, 5).map((doc) => (
+              {(caseData.documents || []).slice(0, 5).map((doc) => (
                 <div key={doc.id} className="flex items-center justify-between p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/60">
                   <span className="truncate max-w-[160px] text-neutral-700 font-medium">{doc.name}</span>
                   <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${

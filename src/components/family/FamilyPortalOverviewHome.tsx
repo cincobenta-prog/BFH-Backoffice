@@ -42,7 +42,7 @@ export const FamilyPortalOverviewHome: React.FC<FamilyPortalOverviewHomeProps> =
 }) => {
   const [toastMessage] = useState<string | null>(null);
 
-  const pendingDocsCount = activeCase.documents.filter(d => d.status !== 'completed').length;
+  const pendingDocsCount = (activeCase.documents || []).filter(d => d.status !== 'completed').length;
 
   const portalOfferings = [
     {

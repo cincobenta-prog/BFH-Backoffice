@@ -7,7 +7,7 @@ import {
 } from '../types/funeral';
 import { INITIAL_DOCUMENT_TEMPLATES } from './documentTemplates';
 
-function createDocumentList(caseNumber: string, dateStr: string): DocumentItem[] {
+export function createDocumentList(caseNumber: string, dateStr: string): DocumentItem[] {
   return INITIAL_DOCUMENT_TEMPLATES.map((tmpl) => {
     if (['doc-1', 'doc-2', 'doc-3', 'doc-4'].includes(tmpl.id)) {
       return {

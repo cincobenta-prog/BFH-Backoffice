@@ -27,7 +27,8 @@ import {
   MOCK_CASES,
   INITIAL_CALENDAR_EVENTS,
   INITIAL_LIVERY_HOLDS,
-  ACTIVE_SERVICE_ASSIGNMENTS
+  ACTIVE_SERVICE_ASSIGNMENTS,
+  createDocumentList
 } from './lib/data/mockCases';
 import {
   loadPersistedState,
@@ -232,11 +233,20 @@ export function App() {
     }));
   };
 
-  // Case State with Persistent Local Storage Hydration (hydrates active real cases)
+  // Case State with Persistent Local Storage Hydration (hydrates active real cases and auto-heals document arrays)
   const [cases, setCases] = useState<GoldenRecordCase[]>(() => {
     const loaded = loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, []);
     if (loaded && loaded.length > 0 && loaded.some(c => c.caseNumber === '24508' || c.caseNumber === '24507')) {
-      return loaded;
+      return loaded.map(c => {
+        const mockMatch = MOCK_CASES.find(m => m.caseNumber === c.caseNumber || m.id === c.id);
+        const hasValidDocs = Array.isArray(c.documents) && c.documents.length >= 10;
+        return {
+          ...c,
+          documents: hasValidDocs ? c.documents : (mockMatch?.documents || createDocumentList(c.caseNumber, '2026-10-30')),
+          statementOfGoods: c.statementOfGoods || mockMatch?.statementOfGoods,
+          vitalRecordsSheet: c.vitalRecordsSheet || mockMatch?.vitalRecordsSheet
+        };
+      });
     }
     return MOCK_CASES;
   });
@@ -601,7 +611,10 @@ export function App() {
 
   const handleUpdateDocumentStatus = (docId: string, newStatus: DocumentStatus) => {
     if (!activeCase) return;
-    const updatedDocs = activeCase.documents.map(doc => {
+    const currentDocs = (activeCase.documents && activeCase.documents.length > 0)
+      ? activeCase.documents
+      : createDocumentList(activeCase.caseNumber, '2026-10-30');
+    const updatedDocs = currentDocs.map(doc => {
       if (doc.id === docId) {
         return {
           ...doc,
@@ -620,8 +633,13 @@ export function App() {
 
   const handleSignatureComplete = (signatureDataUrl: string, docIds: string[]) => {
     if (!activeCase) return;
-    const updatedDocs = activeCase.documents.map(doc => {
-      if (docIds.includes(doc.id)) {
+    const currentDocs = (activeCase.documents && activeCase.documents.length > 0)
+      ? activeCase.documents
+      : createDocumentList(activeCase.caseNumber, '2026-10-30');
+    const updatedDocs = currentDocs.map(doc => {
+      const isMatch = docIds.includes(doc.id) || 
+        Boolean(docIds.length > 1 && doc.formType && ['statement_goods_services', 'right_to_control', 'vital_records', 'woodlawn_cremation'].includes(doc.formType));
+      if (isMatch) {
         return {
           ...doc,
           status: 'signed' as DocumentStatus,
