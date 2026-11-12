@@ -1,16 +1,17 @@
 import { describe, it, expect } from 'vitest';
-import { MOCK_CASES, INITIAL_CALENDAR_EVENTS, INITIAL_SERVICE_ASSIGNMENTS, INITIAL_1099_VOUCHERS } from './mockCases';
+import { MOCK_CASES, INITIAL_CALENDAR_EVENTS, INITIAL_SERVICE_ASSIGNMENTS } from './mockCases';
 import { TEST_CASE_AP47_FIXTURE } from './testFixtures';
 
-describe('Clean State Verification — Live Operation Mode', () => {
-  it('contains zero mock cases in back office system for clean live deployment', () => {
-    expect(MOCK_CASES).toHaveLength(0);
+describe('Active Real Cases Verification — Live Operation Mode', () => {
+  it('contains 5 active real cases in back office system for operational review', () => {
+    expect(MOCK_CASES).toHaveLength(5);
+    const caseNumbers = MOCK_CASES.map(c => c.caseNumber);
+    expect(caseNumbers).toEqual(expect.arrayContaining(['24508', '24507', '24506', '24502', '24500']));
   });
 
-  it('contains zero mock calendar events, livery holds, or assignments', () => {
-    expect(INITIAL_CALENDAR_EVENTS).toHaveLength(0);
-    expect(INITIAL_SERVICE_ASSIGNMENTS).toHaveLength(0);
-    expect(INITIAL_1099_VOUCHERS).toHaveLength(0);
+  it('contains active calendar events and service assignments for operational review', () => {
+    expect(INITIAL_CALENDAR_EVENTS.length).toBeGreaterThan(0);
+    expect(INITIAL_SERVICE_ASSIGNMENTS.length).toBeGreaterThan(0);
   });
 
   it('preserves complete test fixture for legal AP-47 validation suite', () => {

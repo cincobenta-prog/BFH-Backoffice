@@ -23,7 +23,11 @@ import {
 } from './lib/types/funeral';
 import {
   INITIAL_SERVICE_PARTNERS,
-  INITIAL_DIRECTOR_PROFILES
+  INITIAL_DIRECTOR_PROFILES,
+  MOCK_CASES,
+  INITIAL_CALENDAR_EVENTS,
+  INITIAL_LIVERY_HOLDS,
+  ACTIVE_SERVICE_ASSIGNMENTS
 } from './lib/data/mockCases';
 import {
   loadPersistedState,
@@ -228,13 +232,20 @@ export function App() {
     }));
   };
 
-  // Case State with Persistent Local Storage Hydration (starts empty for live cases)
-  const [cases, setCases] = useState<GoldenRecordCase[]>(() => 
-    loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, [])
-  );
+  // Case State with Persistent Local Storage Hydration (hydrates active real cases)
+  const [cases, setCases] = useState<GoldenRecordCase[]>(() => {
+    const loaded = loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, []);
+    if (loaded && loaded.length > 0 && loaded.some(c => c.caseNumber === '24508' || c.caseNumber === '24507')) {
+      return loaded;
+    }
+    return MOCK_CASES;
+  });
   const [activeCaseId, setActiveCaseId] = useState<string>(() => {
     const loaded = loadPersistedState<GoldenRecordCase[]>(STORAGE_KEYS.CASES, []);
-    return loaded[0]?.id || '';
+    if (loaded && loaded.length > 0 && loaded.some(c => c.caseNumber === '24508' || c.caseNumber === '24507')) {
+      return loaded[0]?.id || MOCK_CASES[0]?.id || '';
+    }
+    return MOCK_CASES[0]?.id || '';
   });
 
   // Purge legacy test cases on initial boot to guarantee clean live slate
@@ -242,15 +253,23 @@ export function App() {
     purgeLegacyTestCases();
   }, []);
 
-  // Facility Calendar Events State (cleared of test cases)
-  const [calendarEvents, setCalendarEvents] = useState<RoomScheduleEvent[]>(() => 
-    loadPersistedState<RoomScheduleEvent[]>(STORAGE_KEYS.CALENDAR_EVENTS, [])
-  );
+  // Facility Calendar Events State (hydrates with active case viewings and funerals)
+  const [calendarEvents, setCalendarEvents] = useState<RoomScheduleEvent[]>(() => {
+    const loaded = loadPersistedState<RoomScheduleEvent[]>(STORAGE_KEYS.CALENDAR_EVENTS, []);
+    if (loaded && loaded.length > 0 && loaded.some(e => e.caseNumber === '24508' || e.caseNumber === '24507')) {
+      return loaded;
+    }
+    return INITIAL_CALENDAR_EVENTS;
+  });
 
-  // Livery Vehicle Holds State (cleared of test cases)
-  const [liveryHolds, setLiveryHolds] = useState<VehicleHoldRequest[]>(() => 
-    loadPersistedState<VehicleHoldRequest[]>(STORAGE_KEYS.LIVERY_HOLDS, [])
-  );
+  // Livery Vehicle Holds State (hydrates with active cortege livery holds)
+  const [liveryHolds, setLiveryHolds] = useState<VehicleHoldRequest[]>(() => {
+    const loaded = loadPersistedState<VehicleHoldRequest[]>(STORAGE_KEYS.LIVERY_HOLDS, []);
+    if (loaded && loaded.length > 0 && loaded.some(h => h.caseNumber === '24508' || h.caseNumber === '24507')) {
+      return loaded;
+    }
+    return INITIAL_LIVERY_HOLDS;
+  });
   const [isLiveryModalOpen, setIsLiveryModalOpen] = useState(false);
 
   // Service Partners & SMS Dispatch State (Partners preserved as vendor directory)
@@ -333,9 +352,13 @@ export function App() {
     }
     return loaded;
   });
-  const [serviceAssignments, setServiceAssignments] = useState<ServiceDirectorAssignment[]>(() => 
-    loadPersistedState<ServiceDirectorAssignment[]>(STORAGE_KEYS.SERVICE_ASSIGNMENTS, [])
-  );
+  const [serviceAssignments, setServiceAssignments] = useState<ServiceDirectorAssignment[]>(() => {
+    const loaded = loadPersistedState<ServiceDirectorAssignment[]>(STORAGE_KEYS.SERVICE_ASSIGNMENTS, []);
+    if (loaded && loaded.length > 0 && loaded.some(a => a.caseNumber === '24508' || a.caseNumber === '24507')) {
+      return loaded;
+    }
+    return ACTIVE_SERVICE_ASSIGNMENTS;
+  });
   const [vouchers, setVouchers] = useState<Director1099Voucher[]>(() => 
     loadPersistedState<Director1099Voucher[]>(STORAGE_KEYS.VOUCHERS, [])
   );

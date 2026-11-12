@@ -1284,7 +1284,7 @@ export interface FullVitalRecordInformationSheet {
   dateOfBirth?: string;
   age?: number | string;
   birthPlaceCityStateCountry?: string;
-  maritalStatus?: 'married' | 'separated' | 'never_married' | 'widowed' | 'divorced';
+  maritalStatus?: 'married' | 'separated' | 'never_married' | 'widowed' | 'divorced' | 'single';
   ssn?: string;
   race?: string;
   occupationTitle?: string;
