@@ -1766,112 +1766,118 @@ export function App() {
         )}
 
         {/* Manager PIN Login Modal */}
-        <ManagerPinLoginModal
-          isOpen={isManagerPinModalOpen}
-          onClose={() => setIsManagerPinModalOpen(false)}
-          onSuccess={() => {
-            const token = createSignedSessionToken('manager', 'lfd-08850', 'Jason Benta (Managing LFD #08850)', 60);
-            setManagerSession(token);
-            setIsManagerPinModalOpen(false);
-            setCurrentRole('manager');
-            setBackOfficeTab('manager');
-            handleSendNotification({
-              id: `notif-${Date.now()}`,
-              caseId: activeCase?.id || 'live-system',
-              decedentName: activeCase?.decedent?.legalName || "Benta's Operations",
-              recipientName: 'Management Admin',
-              recipientPhone: '(212) 281-8850',
-              channel: 'sms',
-              type: 'portal_update',
-              title: '🔐 Manager Suite Unlocked',
-              bodyText: 'Jason Benta (Managing LFD #08850) authenticated. Cryptographic RBAC session token issued (60-min window).',
-              sentAt: 'Just now',
-              status: 'delivered'
-            });
-          }}
-        />
+        {isManagerPinModalOpen && (
+          <ManagerPinLoginModal
+            isOpen={isManagerPinModalOpen}
+            onClose={() => setIsManagerPinModalOpen(false)}
+            onSuccess={() => {
+              const token = createSignedSessionToken('manager', 'lfd-08850', 'Jason Benta (Managing LFD #08850)', 60);
+              setManagerSession(token);
+              setIsManagerPinModalOpen(false);
+              setCurrentRole('manager');
+              setBackOfficeTab('manager');
+              handleSendNotification({
+                id: `notif-${Date.now()}`,
+                caseId: activeCase?.id || 'live-system',
+                decedentName: activeCase?.decedent?.legalName || "Benta's Operations",
+                recipientName: 'Management Admin',
+                recipientPhone: '(212) 281-8850',
+                channel: 'sms',
+                type: 'portal_update',
+                title: '🔐 Manager Suite Unlocked',
+                bodyText: 'Jason Benta (Managing LFD #08850) authenticated. Cryptographic RBAC session token issued (60-min window).',
+                sentAt: 'Just now',
+                status: 'delivered'
+              });
+            }}
+          />
+        )}
 
         {/* Director Assignment Modal */}
-        <DirectorAssignmentModal
-          isOpen={isAssignModalOpen}
-          assignment={selectedAssignmentForModal}
-          directors={directorProfiles}
-          onClose={() => {
-            setIsAssignModalOpen(false);
-            setSelectedAssignmentForModal(null);
-          }}
-          onSaveAssignment={(updatedAssignment) => {
-            setServiceAssignments(prev => prev.map(a => a.id === updatedAssignment.id ? updatedAssignment : a));
-            
-            // Sync with active case
-            setCases(prev => prev.map(c => {
-              if (c.id === updatedAssignment.caseId || c.caseNumber === updatedAssignment.caseNumber) {
-                return {
-                  ...c,
-                  assignedDirector: `${updatedAssignment.assignedDirectorName} (${updatedAssignment.directorLicense || 'LFD'})`,
-                  notes: [
-                    ...c.notes,
-                    {
-                      id: `note-${Date.now()}`,
-                      author: 'Manager Operations Suite',
-                      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                      text: `Director ${updatedAssignment.assignedDirectorName} (${updatedAssignment.directorType === 'in_house' ? 'In-House Staff' : 'Outsourced Trade Guild'}) assigned to lead service on ${updatedAssignment.serviceDate} at ${updatedAssignment.venueName}. Call time: ${updatedAssignment.callTime}.`
-                    }
-                  ]
-                };
-              }
-              return c;
-            }));
+        {isAssignModalOpen && (
+          <DirectorAssignmentModal
+            isOpen={isAssignModalOpen}
+            assignment={selectedAssignmentForModal}
+            directors={directorProfiles}
+            onClose={() => {
+              setIsAssignModalOpen(false);
+              setSelectedAssignmentForModal(null);
+            }}
+            onSaveAssignment={(updatedAssignment) => {
+              setServiceAssignments(prev => prev.map(a => a.id === updatedAssignment.id ? updatedAssignment : a));
+              
+              // Sync with active case
+              setCases(prev => prev.map(c => {
+                if (c.id === updatedAssignment.caseId || c.caseNumber === updatedAssignment.caseNumber) {
+                  return {
+                    ...c,
+                    assignedDirector: `${updatedAssignment.assignedDirectorName} (${updatedAssignment.directorLicense || 'LFD'})`,
+                    notes: [
+                      ...c.notes,
+                      {
+                        id: `note-${Date.now()}`,
+                        author: 'Manager Operations Suite',
+                        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        text: `Director ${updatedAssignment.assignedDirectorName} (${updatedAssignment.directorType === 'in_house' ? 'In-House Staff' : 'Outsourced Trade Guild'}) assigned to lead service on ${updatedAssignment.serviceDate} at ${updatedAssignment.venueName}. Call time: ${updatedAssignment.callTime}.`
+                      }
+                    ]
+                  };
+                }
+                return c;
+              }));
 
-            // Create 1099 voucher if outsourced
-            if (updatedAssignment.directorType === 'outsourced' && updatedAssignment.assignedDirectorId) {
-              const existingVoucher = vouchers.find(v => v.assignmentId === updatedAssignment.id);
-              if (!existingVoucher) {
-                const newVoucher: Director1099Voucher = {
-                  id: `vch-${Date.now()}`,
-                  voucherNumber: `VCH-2026-0${Math.floor(Math.random() * 900 + 100)}`,
-                  assignmentId: updatedAssignment.id,
-                  directorId: updatedAssignment.assignedDirectorId,
-                  directorName: updatedAssignment.assignedDirectorName || 'Trade Director',
-                  directorLicense: updatedAssignment.directorLicense || 'NYS LFD',
-                  caseNumber: updatedAssignment.caseNumber,
-                  decedentName: updatedAssignment.decedentName,
-                  serviceDate: updatedAssignment.serviceDate,
-                  serviceType: updatedAssignment.serviceType,
-                  amount: updatedAssignment.costAnalysis.outsourcedCost || 350.00,
-                  status: 'pending_approval',
-                  notes: 'Automatic trade guild disbursement voucher generated upon service dispatch.'
-                };
-                setVouchers(prev => [newVoucher, ...prev]);
+              // Create 1099 voucher if outsourced
+              if (updatedAssignment.directorType === 'outsourced' && updatedAssignment.assignedDirectorId) {
+                const existingVoucher = vouchers.find(v => v.assignmentId === updatedAssignment.id);
+                if (!existingVoucher) {
+                  const newVoucher: Director1099Voucher = {
+                    id: `vch-${Date.now()}`,
+                    voucherNumber: `VCH-2026-0${Math.floor(Math.random() * 900 + 100)}`,
+                    assignmentId: updatedAssignment.id,
+                    directorId: updatedAssignment.assignedDirectorId,
+                    directorName: updatedAssignment.assignedDirectorName || 'Trade Director',
+                    directorLicense: updatedAssignment.directorLicense || 'NYS LFD',
+                    caseNumber: updatedAssignment.caseNumber,
+                    decedentName: updatedAssignment.decedentName,
+                    serviceDate: updatedAssignment.serviceDate,
+                    serviceType: updatedAssignment.serviceType,
+                    amount: updatedAssignment.costAnalysis.outsourcedCost || 350.00,
+                    status: 'pending_approval',
+                    notes: 'Automatic trade guild disbursement voucher generated upon service dispatch.'
+                  };
+                  setVouchers(prev => [newVoucher, ...prev]);
+                }
               }
-            }
 
-            handleSendNotification({
-              id: `notif-${Date.now()}`,
-              caseId: updatedAssignment.caseId,
-              decedentName: updatedAssignment.decedentName,
-              recipientName: updatedAssignment.assignedDirectorName || 'Director Staff',
-              recipientPhone: '(212) 555-0198',
-              channel: 'sms',
-              type: 'partner_dispatch',
-              title: `👔 Director Assigned: ${updatedAssignment.decedentName}`,
-              bodyText: `${updatedAssignment.assignedDirectorName} assigned for ${updatedAssignment.serviceDate} (${updatedAssignment.serviceTime}) at ${updatedAssignment.venueName}.`,
-              sentAt: 'Just now',
-              status: 'delivered'
-            });
-          }}
-        />
+              handleSendNotification({
+                id: `notif-${Date.now()}`,
+                caseId: updatedAssignment.caseId,
+                decedentName: updatedAssignment.decedentName,
+                recipientName: updatedAssignment.assignedDirectorName || 'Director Staff',
+                recipientPhone: '(212) 555-0198',
+                channel: 'sms',
+                type: 'partner_dispatch',
+                title: `👔 Director Assigned: ${updatedAssignment.decedentName}`,
+                bodyText: `${updatedAssignment.assignedDirectorName} assigned for ${updatedAssignment.serviceDate} (${updatedAssignment.serviceTime}) at ${updatedAssignment.venueName}.`,
+                sentAt: 'Just now',
+                status: 'delivered'
+              });
+            }}
+          />
+        )}
 
         {/* Printable NYS Form AP-47 Official Statement of Goods & Services Modal */}
-        <PrintableFormAP47Modal
-          isOpen={isPrintAP47Open}
-          onClose={() => {
-            setIsPrintAP47Open(false);
-            setPrintAP47TargetCase(null);
-          }}
-          caseData={printAP47TargetCase || activeCase}
-          onOpenCheckPrinter={(targetCase) => handleOpenCheckPrinterModal(targetCase)}
-        />
+        {isPrintAP47Open && (
+          <PrintableFormAP47Modal
+            isOpen={isPrintAP47Open}
+            onClose={() => {
+              setIsPrintAP47Open(false);
+              setPrintAP47TargetCase(null);
+            }}
+            caseData={printAP47TargetCase || activeCase}
+            onOpenCheckPrinter={(targetCase) => handleOpenCheckPrinterModal(targetCase)}
+          />
+        )}
 
         {/* DocuSign NYS ESRA Compliant Legal E-Signature Hub Modal */}
         {isDocuSignModalOpen && (
@@ -1964,10 +1970,12 @@ export function App() {
         )}
 
         {/* Twilio Live SMS Cellular Gateway Configuration Modal */}
-        <TwilioGatewaySettingsModal
-          isOpen={isTwilioGatewayModalOpen}
-          onClose={() => setIsTwilioGatewayModalOpen(false)}
-        />
+        {isTwilioGatewayModalOpen && (
+          <TwilioGatewaySettingsModal
+            isOpen={isTwilioGatewayModalOpen}
+            onClose={() => setIsTwilioGatewayModalOpen(false)}
+          />
+        )}
 
         {/* Cloud Database, S3 Object Storage & Multi-Device Real-Time Sync Modal */}
         {isCloudModalOpen && (
@@ -1982,73 +1990,83 @@ export function App() {
         )}
 
         {/* 24/7 AI Family Care Concierge, 9-Part Obituary Generator & Whisper Audio Hub */}
-        <AIGatewaySettingsModal
-          isOpen={isAIGatewayModalOpen}
-          onClose={() => setIsAIGatewayModalOpen(false)}
-          activeCase={activeCase}
-          cases={cases}
-        />
+        {isAIGatewayModalOpen && (
+          <AIGatewaySettingsModal
+            isOpen={isAIGatewayModalOpen}
+            onClose={() => setIsAIGatewayModalOpen(false)}
+            activeCase={activeCase}
+            cases={cases}
+          />
+        )}
 
         {/* Commercial Press Fulfillment & 300 DPI CMYK Offset Routing */}
-        <CommercialPressFulfillmentModal
-          isOpen={isPressModalOpen}
-          onClose={() => setIsPressModalOpen(false)}
-          cases={cases}
-          selectedCaseId={activeCase?.id}
-        />
+        {isPressModalOpen && (
+          <CommercialPressFulfillmentModal
+            isOpen={isPressModalOpen}
+            onClose={() => setIsPressModalOpen(false)}
+            cases={cases}
+            selectedCaseId={activeCase?.id}
+          />
+        )}
 
         {/* Live 4K Webcasting, PTZ Multi-Camera Studio & Vimeo Enterprise Gateway Hub */}
-        <WebcastLiveStreamHubModal
-          isOpen={isWebcastHubModalOpen}
-          onClose={() => {
-            setIsWebcastHubModalOpen(false);
-            setWebcastTargetCase(null);
-          }}
-          activeCase={webcastTargetCase || activeCase}
-          cases={cases}
-          onSendNotification={handleSendNotification}
-        />
+        {isWebcastHubModalOpen && (
+          <WebcastLiveStreamHubModal
+            isOpen={isWebcastHubModalOpen}
+            onClose={() => {
+              setIsWebcastHubModalOpen(false);
+              setWebcastTargetCase(null);
+            }}
+            activeCase={webcastTargetCase || activeCase}
+            cases={cases}
+            onSendNotification={handleSendNotification}
+          />
+        )}
 
         {/* Stripe Merchant POS Terminal & Split-Pay Crowdfunding Gateway */}
-        <StripePaymentGatewayModal
-          isOpen={isStripeModalOpen}
-          onClose={() => {
-            setIsStripeModalOpen(false);
-            setStripeTargetCase(null);
-          }}
-          activeCase={stripeTargetCase || activeCase}
-          cases={cases}
-          onSendNotification={handleSendNotification}
-          onUpdateCaseBilling={(caseId, updatedBilling) => {
-            setCases(prev => prev.map(c => {
-              if (c.id === caseId) {
-                return {
-                  ...c,
-                  splitBilling: updatedBilling
-                };
-              }
-              return c;
-            }));
-          }}
-        />
+        {isStripeModalOpen && (
+          <StripePaymentGatewayModal
+            isOpen={isStripeModalOpen}
+            onClose={() => {
+              setIsStripeModalOpen(false);
+              setStripeTargetCase(null);
+            }}
+            activeCase={stripeTargetCase || activeCase}
+            cases={cases}
+            onSendNotification={handleSendNotification}
+            onUpdateCaseBilling={(caseId, updatedBilling) => {
+              setCases(prev => prev.map(c => {
+                if (c.id === caseId) {
+                  return {
+                    ...c,
+                    splitBilling: updatedBilling
+                  };
+                }
+                return c;
+              }));
+            }}
+          />
+        )}
 
         {/* Enterprise Integrations & API Gateway Command Center Hub */}
-        <IntegrationsCommandCenterModal
-          isOpen={isIntegrationsCenterOpen}
-          onClose={() => setIsIntegrationsCenterOpen(false)}
-          onLaunchStripe={() => {
-            setStripeTargetCase(activeCase);
-            setIsStripeModalOpen(true);
-          }}
-          onLaunchTwilio={() => setIsTwilioGatewayModalOpen(true)}
-          onLaunchCloud={() => setIsCloudModalOpen(true)}
-          onLaunchDocuSign={() => handleOpenDocuSignModal(activeCase)}
-          onLaunchQuickBooks={() => handleOpenQuickBooksModal(activeCase)}
-          onLaunchEdrs={() => setIsEdrsModalOpen(true)}
-          onLaunchWebcast={() => setIsWebcastHubModalOpen(true)}
-          onLaunchPress={() => setIsPressModalOpen(true)}
-          onLaunchAI={() => setIsAIGatewayModalOpen(true)}
-        />
+        {isIntegrationsCenterOpen && (
+          <IntegrationsCommandCenterModal
+            isOpen={isIntegrationsCenterOpen}
+            onClose={() => setIsIntegrationsCenterOpen(false)}
+            onLaunchStripe={() => {
+              setStripeTargetCase(activeCase);
+              setIsStripeModalOpen(true);
+            }}
+            onLaunchTwilio={() => setIsTwilioGatewayModalOpen(true)}
+            onLaunchCloud={() => setIsCloudModalOpen(true)}
+            onLaunchDocuSign={() => handleOpenDocuSignModal(activeCase)}
+            onLaunchQuickBooks={() => handleOpenQuickBooksModal(activeCase)}
+            onLaunchEdrs={() => setIsEdrsModalOpen(true)}
+            onLaunchWebcast={() => setIsWebcastHubModalOpen(true)}
+            onLaunchPress={() => setIsPressModalOpen(true)}
+            onLaunchAI={() => setIsAIGatewayModalOpen(true)}
+          />
+        )}
 
         {/* End-to-End Case Lifecycle Simulation Runner Modal */}
         {isSimulationModalOpen && (

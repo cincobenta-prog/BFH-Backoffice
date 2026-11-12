@@ -8,13 +8,14 @@ import {
 } from 'lucide-react';
 import { GoldenRecordCase, StatementOfGoodsData } from '../../lib/types/funeral';
 import { getDefaultStatementOfGoodsForCase } from '../../lib/data/generalPriceList';
+import { TEST_CASE_AP47_FIXTURE } from '../../lib/data/testFixtures';
 import { CashAdvanceCheckPrinterModal } from './CashAdvanceCheckPrinterModal';
 import { OfficialScannedFormAP47 } from './OfficialScannedFormAP47';
 
 interface PrintableFormAP47ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  caseData: GoldenRecordCase;
+  caseData?: GoldenRecordCase | null;
   onOpenCheckPrinter?: (targetCase: GoldenRecordCase) => void;
   onSaveContract?: (caseId: string, updatedStatement: StatementOfGoodsData) => void;
 }
@@ -26,9 +27,10 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
   onOpenCheckPrinter,
   onSaveContract
 }) => {
+  const currentCase = caseData || TEST_CASE_AP47_FIXTURE;
   const [isInternalCheckPrinterOpen, setIsInternalCheckPrinterOpen] = useState(false);
   const [statementData, setStatementData] = useState<StatementOfGoodsData>(() => {
-    return caseData.statementOfGoods || getDefaultStatementOfGoodsForCase(caseData);
+    return currentCase.statementOfGoods || getDefaultStatementOfGoodsForCase(currentCase);
   });
 
   if (!isOpen) return null;
@@ -44,7 +46,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
 
   const handleOpenChecks = () => {
     if (onOpenCheckPrinter) {
-      onOpenCheckPrinter(caseData);
+      onOpenCheckPrinter(currentCase);
     } else {
       setIsInternalCheckPrinterOpen(true);
     }
@@ -54,7 +56,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(statementData, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `NYS_Form_AP47_${caseData.caseNumber}.json`);
+    downloadAnchor.setAttribute("download", `NYS_Form_AP47_${currentCase.caseNumber}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -63,7 +65,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
   const handleUpdateStatement = (updated: StatementOfGoodsData) => {
     setStatementData(updated);
     if (onSaveContract) {
-      onSaveContract(caseData.id, updated);
+      onSaveContract(currentCase.id, updated);
     }
   };
 
@@ -100,7 +102,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
                 </span>
               </div>
               <p className="text-[11px] text-neutral-400 font-light">
-                10 NYCRR &sect; 77.8 &bull; NYS Public Health Law &sect; 3440-a &bull; Case <strong className="text-amber-300 font-mono">{caseData.caseNumber}</strong> &bull; All funds due 48 hours prior to service
+                10 NYCRR &sect; 77.8 &bull; NYS Public Health Law &sect; 3440-a &bull; Case <strong className="text-amber-300 font-mono">{currentCase.caseNumber}</strong> &bull; All funds due 48 hours prior to service
               </p>
             </div>
           </div>
@@ -143,7 +145,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-neutral-100 text-neutral-900 contract-print-modal-body print:p-0 print:bg-white print:overflow-visible">
           <OfficialScannedFormAP47
             id="official-form-ap47-printable"
-            caseData={caseData}
+            caseData={currentCase}
             statementData={statementData}
             onChangeStatementData={handleUpdateStatement}
             readOnly={false}
@@ -157,7 +159,7 @@ export const PrintableFormAP47Modal: React.FC<PrintableFormAP47ModalProps> = ({
         <CashAdvanceCheckPrinterModal
           isOpen={isInternalCheckPrinterOpen}
           onClose={() => setIsInternalCheckPrinterOpen(false)}
-          caseData={caseData}
+          caseData={currentCase}
         />
       )}
 
