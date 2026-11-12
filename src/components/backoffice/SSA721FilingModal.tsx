@@ -5,6 +5,7 @@ import {
   simulateSSA721ElectronicTransmission, 
   NYC_SSA_FIELD_OFFICES 
 } from '../../lib/data/govFilingsAndVeteransData';
+import { TEST_CASE_AP47_FIXTURE } from '../../lib/data/testFixtures';
 import { 
   CheckCircle2, 
   Send, 
@@ -24,7 +25,7 @@ import {
 interface SSA721FilingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  activeCase: GoldenRecordCase;
+  activeCase?: GoldenRecordCase;
   cases: GoldenRecordCase[];
   onSelectCase?: (caseId: string) => void;
   onSaveFiling: (filing: SSA721Filing) => void;
@@ -38,8 +39,8 @@ export const SSA721FilingModal: React.FC<SSA721FilingModalProps> = ({
   onSelectCase,
   onSaveFiling
 }) => {
-  const [selectedCaseId, setSelectedCaseId] = useState<string>(activeCase.id);
-  const currentCase = cases.find(c => c.id === selectedCaseId) || activeCase;
+  const [selectedCaseId, setSelectedCaseId] = useState<string>(activeCase?.id || cases[0]?.id || '');
+  const currentCase = cases.find(c => c.id === selectedCaseId) || activeCase || TEST_CASE_AP47_FIXTURE;
 
   // Initialize or hydrate filing state
   const [filing, setFiling] = useState<SSA721Filing>(() => {
@@ -55,7 +56,9 @@ export const SSA721FilingModal: React.FC<SSA721FilingModalProps> = ({
     setSelectedCaseId(newCaseId);
     if (onSelectCase) onSelectCase(newCaseId);
     const targetCase = cases.find(c => c.id === newCaseId) || activeCase;
-    setFiling(targetCase.ssa721Filing || createInitialSSA721FromCase(targetCase));
+    if (targetCase) {
+      setFiling(targetCase.ssa721Filing || createInitialSSA721FromCase(targetCase));
+    }
   };
 
   const handleTransmitEFile = () => {

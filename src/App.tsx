@@ -2189,55 +2189,63 @@ export function App() {
       />
 
       {/* NYS PRE-NEED TRUST & MEDICAID SPEND-DOWN VAULT MODAL */}
-      <PreNeedTrustVaultModal
-        isOpen={isPreNeedModalOpen}
-        onClose={() => setIsPreNeedModalOpen(false)}
-        accounts={preNeedAccounts}
-        onUpdateAccounts={setPreNeedAccounts}
-        cases={cases}
-        onAddCase={(newCase) => {
-          setCases(prev => [newCase, ...prev]);
-          setActiveCaseId(newCase.id);
-          setIsPreNeedModalOpen(false);
-          setBackOfficeTab('golden_record');
-        }}
-        onSelectCase={(target) => {
-          setActiveCaseId(target.id);
-          setIsPreNeedModalOpen(false);
-          setBackOfficeTab('golden_record');
-        }}
-      />
+      {isPreNeedModalOpen && (
+        <PreNeedTrustVaultModal
+          isOpen={isPreNeedModalOpen}
+          onClose={() => setIsPreNeedModalOpen(false)}
+          accounts={preNeedAccounts}
+          onUpdateAccounts={setPreNeedAccounts}
+          cases={cases}
+          onAddCase={(newCase) => {
+            setCases(prev => [newCase, ...prev]);
+            setActiveCaseId(newCase.id);
+            setIsPreNeedModalOpen(false);
+            setBackOfficeTab('golden_record');
+          }}
+          onSelectCase={(target) => {
+            setActiveCaseId(target.id);
+            setIsPreNeedModalOpen(false);
+            setBackOfficeTab('golden_record');
+          }}
+        />
+      )}
 
       {/* LIFE INSURANCE RAPID-FUNDING & 24H WIRE BRIDGE MODAL */}
-      <InsuranceRapidFundingBridgeModal
-        isOpen={isInsuranceFundingModalOpen}
-        onClose={() => setIsInsuranceFundingModalOpen(false)}
-        cases={cases}
-        activeCase={activeCase}
-        claims={insuranceClaims}
-        onUpdateClaims={setInsuranceClaims}
-        onApplyFundingToCase={handleApplyInsuranceFundingToCase}
-      />
+      {isInsuranceFundingModalOpen && (
+        <InsuranceRapidFundingBridgeModal
+          isOpen={isInsuranceFundingModalOpen}
+          onClose={() => setIsInsuranceFundingModalOpen(false)}
+          cases={cases}
+          activeCase={activeCase}
+          claims={insuranceClaims}
+          onUpdateClaims={setInsuranceClaims}
+          onApplyFundingToCase={handleApplyInsuranceFundingToCase}
+        />
+      )}
 
       {/* FORM SSA-721 STATEMENT OF DEATH & SOCIAL SECURITY CLEARING MODAL */}
-      <SSA721FilingModal
-        isOpen={isSSA721ModalOpen}
-        onClose={() => setIsSSA721ModalOpen(false)}
-        activeCase={activeCase}
-        cases={cases}
-        onSelectCase={(targetId) => setActiveCaseId(targetId)}
-        onSaveFiling={handleSaveSSA721}
-      />
+      {isSSA721ModalOpen && (
+        <SSA721FilingModal
+          isOpen={isSSA721ModalOpen}
+          onClose={() => setIsSSA721ModalOpen(false)}
+          activeCase={activeCase}
+          cases={cases}
+          onSelectCase={(targetId) => setActiveCaseId(targetId)}
+          onSaveFiling={handleSaveSSA721}
+        />
+      )}
 
       {/* VA MILITARY HONORS & VETERANS MEMORIAL BENEFITS HUB MODAL */}
-      <VAMilitaryHonorsHubModal
-        isOpen={isVAHonorsModalOpen}
-        onClose={() => setIsVAHonorsModalOpen(false)}
-        activeCase={activeCase}
-        cases={cases}
-        onSelectCase={(targetId) => setActiveCaseId(targetId)}
-        onSaveHonors={handleSaveVAHonors}
-      />
+      {isVAHonorsModalOpen && (
+        <VAMilitaryHonorsHubModal
+          isOpen={isVAHonorsModalOpen}
+          onClose={() => setIsVAHonorsModalOpen(false)}
+          activeCase={activeCase}
+          cases={cases}
+          onSelectCase={(targetId) => setActiveCaseId(targetId)}
+          onSaveHonors={handleSaveVAHonors}
+        />
+      )}
     </div>
   );
 }

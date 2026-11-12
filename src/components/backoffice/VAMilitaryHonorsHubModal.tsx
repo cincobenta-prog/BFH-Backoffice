@@ -12,6 +12,7 @@ import {
   NYC_METRO_MILITARY_HONOR_GUARDS,
   NY_VA_NATIONAL_CEMETERIES
 } from '../../lib/data/govFilingsAndVeteransData';
+import { TEST_CASE_AP47_FIXTURE } from '../../lib/data/testFixtures';
 import { 
   Award, 
   CheckCircle2, 
@@ -30,7 +31,7 @@ import {
 interface VAMilitaryHonorsHubModalProps {
   isOpen: boolean;
   onClose: () => void;
-  activeCase: GoldenRecordCase;
+  activeCase?: GoldenRecordCase;
   cases: GoldenRecordCase[];
   onSelectCase?: (caseId: string) => void;
   onSaveHonors: (honors: VAMilitaryHonorsData) => void;
@@ -44,8 +45,8 @@ export const VAMilitaryHonorsHubModal: React.FC<VAMilitaryHonorsHubModalProps> =
   onSelectCase,
   onSaveHonors
 }) => {
-  const [selectedCaseId, setSelectedCaseId] = useState<string>(activeCase.id);
-  const currentCase = cases.find(c => c.id === selectedCaseId) || activeCase;
+  const [selectedCaseId, setSelectedCaseId] = useState<string>(activeCase?.id || cases[0]?.id || '');
+  const currentCase = cases.find(c => c.id === selectedCaseId) || activeCase || TEST_CASE_AP47_FIXTURE;
 
   // Initialize or hydrate honors state
   const [honors, setHonors] = useState<VAMilitaryHonorsData>(() => {
@@ -60,7 +61,9 @@ export const VAMilitaryHonorsHubModal: React.FC<VAMilitaryHonorsHubModalProps> =
     setSelectedCaseId(newCaseId);
     if (onSelectCase) onSelectCase(newCaseId);
     const targetCase = cases.find(c => c.id === newCaseId) || activeCase;
-    setHonors(targetCase.militaryHonors || createInitialVAMilitaryHonorsFromCase(targetCase));
+    if (targetCase) {
+      setHonors(targetCase.militaryHonors || createInitialVAMilitaryHonorsFromCase(targetCase));
+    }
   };
 
   const currentUnit = NYC_METRO_MILITARY_HONOR_GUARDS.find(u => u.branch === honors.militaryBranch) || NYC_METRO_MILITARY_HONOR_GUARDS[0];
