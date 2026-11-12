@@ -396,5 +396,105 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     expect(htmlFuneralOnly).toContain('Combined charge for Facilities and Staff for funeral service is');
     expect(htmlFuneralOnly).not.toContain('Combined charge for other Facilities and Staff (specify)');
   });
+
+  it('validates NYS Law requirement: zero values display as N/A and never as $0.00, $ -, or 0', async () => {
+    const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
+    const ReactDOMServer = (await import('react-dom/server')).default;
+    const { TEST_CASE_AP47_FIXTURE } = await import('./testFixtures');
+    const { getDefaultStatementOfGoodsForCase } = await import('./generalPriceList');
+
+    const testCase = TEST_CASE_AP47_FIXTURE;
+    const sog = getDefaultStatementOfGoodsForCase(testCase);
+
+    const html = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: sog,
+        readOnly: true
+      })
+    );
+
+    // Verify N/A is used throughout unselected line items
+    expect(html).toContain('N/A');
+    expect(html).not.toContain('$ 0.00');
+    expect(html).not.toContain('>$ 0.00<');
+    expect(html).not.toContain('>$ -<');
+    expect(html).not.toContain('>-<');
+  });
+
+  it('validates contract headers display Case Number on both Page 1 and Page 2', async () => {
+    const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
+    const ReactDOMServer = (await import('react-dom/server')).default;
+    const { TEST_CASE_AP47_FIXTURE } = await import('./testFixtures');
+    const { getDefaultStatementOfGoodsForCase } = await import('./generalPriceList');
+
+    const testCase = TEST_CASE_AP47_FIXTURE;
+    const sog = getDefaultStatementOfGoodsForCase(testCase);
+
+    const html = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: sog,
+        readOnly: true
+      })
+    );
+
+    // Page 1 header must show Case Number: and not Number:
+    expect(html).toContain('Case Number:');
+    expect(html).toContain(testCase.caseNumber);
+    expect(html).not.toContain('<span class="font-bold">Number:</span>');
+
+    // Page 2 header must show Case Number: #24501 and not Inv: #INV-24501
+    expect(html).toContain(`Case Number: <strong>#${testCase.caseNumber}</strong>`);
+    expect(html).not.toContain('• Inv:');
+  });
+
+  it('validates Explanation of Charges displays only the checked option and omits the unchecked option on the contract', async () => {
+    const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
+    const ReactDOMServer = (await import('react-dom/server')).default;
+    const { TEST_CASE_AP47_FIXTURE } = await import('./testFixtures');
+    const { getDefaultStatementOfGoodsForCase } = await import('./generalPriceList');
+
+    const testCase = TEST_CASE_AP47_FIXTURE;
+    const baseSog = getDefaultStatementOfGoodsForCase(testCase);
+
+    // Scenario A: Option 1 checked ("All services and merchandise were selected by the family")
+    const opt1Sog = {
+      ...baseSog,
+      sectionIV: {
+        ...baseSog.sectionIV,
+        explanationAllSelectedByFamily: true,
+        explanationEmbalmingViewingPurposes: false
+      }
+    };
+    const htmlOpt1 = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: opt1Sog,
+        readOnly: true
+      })
+    );
+    expect(htmlOpt1).toContain('All services and merchandise were selected by the family.');
+    expect(htmlOpt1).not.toContain('Embalming requested for viewing purposes.');
+
+    // Scenario B: Option 2 checked ("Embalming requested for viewing purposes")
+    const opt2Sog = {
+      ...baseSog,
+      sectionIV: {
+        ...baseSog.sectionIV,
+        explanationAllSelectedByFamily: false,
+        explanationEmbalmingViewingPurposes: true
+      }
+    };
+    const htmlOpt2 = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: opt2Sog,
+        readOnly: true
+      })
+    );
+    expect(htmlOpt2).not.toContain('All services and merchandise were selected by the family.');
+    expect(htmlOpt2).toContain('Embalming requested for viewing purposes.');
+  });
 });
 

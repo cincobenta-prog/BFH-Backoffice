@@ -6190,48 +6190,60 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                       {/* Primary Explanation Checkboxes */}
                       <div className="bg-amber-50/70 p-4 rounded-xl border border-amber-300 space-y-3">
                         <div className="text-xs font-bold text-amber-950 uppercase tracking-wide">
-                          Funeral Director Explanation Options (Select one or both)
+                          Funeral Director Explanation Options (Select one or the other — only the checked option appears on contract)
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <label className="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-neutral-200 cursor-pointer hover:border-amber-400 transition">
+                          <label className={`flex items-start space-x-2.5 p-2.5 rounded-lg border cursor-pointer transition ${
+                            (statementData.sectionIV.explanationAllSelectedByFamily ?? (!statementData.sectionIV.explanationEmbalmingViewingPurposes))
+                              ? 'bg-amber-100/70 border-amber-500 ring-1 ring-amber-500' 
+                              : 'bg-white border-neutral-200 hover:border-amber-400'
+                          }`}>
                             <input
-                              type="checkbox"
-                              checked={statementData.sectionIV.explanationAllSelectedByFamily ?? true}
-                              onChange={(e) => {
+                              type="radio"
+                              name="builderExplanationOption"
+                              checked={statementData.sectionIV.explanationAllSelectedByFamily ?? (!statementData.sectionIV.explanationEmbalmingViewingPurposes)}
+                              onChange={() => {
                                 const updated = { ...statementData };
-                                updated.sectionIV.explanationAllSelectedByFamily = e.target.checked;
+                                updated.sectionIV.explanationAllSelectedByFamily = true;
+                                updated.sectionIV.explanationEmbalmingViewingPurposes = false;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="rounded text-[#800000] focus:ring-[#800000] mt-0.5"
+                              className="text-[#800000] focus:ring-[#800000] mt-0.5 cursor-pointer"
                             />
                             <div>
                               <span className="font-bold text-neutral-900 text-xs block">
                                 All services and merchandise were selected by the family.
                               </span>
                               <span className="text-[10px] text-neutral-500">
-                                Option A: Family affirmative selection disclosure
+                                Option A: Family affirmative selection disclosure (Only this option will appear on contract)
                               </span>
                             </div>
                           </label>
 
-                          <label className="flex items-start space-x-2.5 p-2.5 bg-white rounded-lg border border-neutral-200 cursor-pointer hover:border-amber-400 transition">
+                          <label className={`flex items-start space-x-2.5 p-2.5 rounded-lg border cursor-pointer transition ${
+                            Boolean(statementData.sectionIV.explanationEmbalmingViewingPurposes)
+                              ? 'bg-amber-100/70 border-amber-500 ring-1 ring-amber-500' 
+                              : 'bg-white border-neutral-200 hover:border-amber-400'
+                          }`}>
                             <input
-                              type="checkbox"
-                              checked={statementData.sectionIV.explanationEmbalmingViewingPurposes ?? (statementData.sectionIV.embalmingAuthorization.choice === 'embalm')}
-                              onChange={(e) => {
+                              type="radio"
+                              name="builderExplanationOption"
+                              checked={Boolean(statementData.sectionIV.explanationEmbalmingViewingPurposes)}
+                              onChange={() => {
                                 const updated = { ...statementData };
-                                updated.sectionIV.explanationEmbalmingViewingPurposes = e.target.checked;
+                                updated.sectionIV.explanationAllSelectedByFamily = false;
+                                updated.sectionIV.explanationEmbalmingViewingPurposes = true;
                                 setStatementData(calculateAP47Totals(updated));
                               }}
-                              className="rounded text-[#800000] focus:ring-[#800000] mt-0.5"
+                              className="text-[#800000] focus:ring-[#800000] mt-0.5 cursor-pointer"
                             />
                             <div>
                               <span className="font-bold text-neutral-900 text-xs block">
                                 Embalming requested for viewing purposes.
                               </span>
                               <span className="text-[10px] text-neutral-500">
-                                Option B: Public viewing / sanctuary service disclosure
+                                Option B: Public viewing / sanctuary service disclosure (Only this option will appear on contract)
                               </span>
                             </div>
                           </label>

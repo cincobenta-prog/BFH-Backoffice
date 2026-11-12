@@ -923,7 +923,7 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       includeCombinedFuneralService: true,
       includeCombinedOther: false,
       explanationAllSelectedByFamily: true,
-      explanationEmbalmingViewingPurposes: !isCremation,
+      explanationEmbalmingViewingPurposes: false,
 
       custodyAuthorization: {
         authorized: true,

@@ -405,6 +405,9 @@ export function generateQBOJsonPayload(caseData: GoldenRecordCase): string {
       BillPhone: {
         FreeFormNumber: invoice.customerPhone
       },
+      CustomerMemo: {
+        value: `Case #${caseData.caseNumber} • Invoice #${invoice.qboDocNumber}`
+      },
       Line: invoice.lineItems.map(item => ({
         Amount: item.amount,
         DetailType: 'SalesItemLineDetail',

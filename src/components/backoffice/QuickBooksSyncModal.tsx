@@ -293,7 +293,9 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                 <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-xl">
                   <div className="text-[10px] text-slate-400 uppercase font-semibold">Invoice Document #</div>
                   <div className="text-base font-bold font-mono text-emerald-300 mt-0.5">{invoiceData.qboDocNumber}</div>
-                  <div className="text-[10px] text-slate-500 mt-1">NYS AP-47 Mirror</div>
+                  <div className="text-[10px] text-amber-300 font-mono mt-1 font-semibold">
+                    Case Number: #{invoiceData.caseNumber}
+                  </div>
                 </div>
 
                 <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-xl">
@@ -322,7 +324,7 @@ export const QuickBooksSyncModal: React.FC<QuickBooksSyncModalProps> = ({
                 <div className="p-4 border-b border-slate-800 flex items-center justify-between">
                   <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
                     <Receipt className="w-4 h-4 text-emerald-400" />
-                    Form AP-47 Itemized Service, Merchandise & Cash Advance Line Mapping
+                    Form AP-47 Itemized Line Mapping • Case #{invoiceData.caseNumber} (Invoice #{invoiceData.qboDocNumber})
                   </h3>
                   <button
                     onClick={() => setShowJsonPayload(!showJsonPayload)}

@@ -79,10 +79,10 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
   const directorName = sog.sectionIV.licensedFuneralDirector.name || caseData.assignedDirector || 'Jason Benta, LFD';
   const directorLicense = sog.sectionIV.licensedFuneralDirector.licenseNumber || '08850';
 
-  // Format currency helper
-  const fmt = (val: number | undefined, showZeroAsDash = true) => {
+  // Format currency helper - NYS Law: zero value cannot appear on contract, must show 'N/A' (Not Applicable)
+  const fmt = (val: number | undefined) => {
     if (val === undefined || val === null || val === 0) {
-      return showZeroAsDash ? '-' : '$ 0.00';
+      return 'N/A';
     }
     return `$ ${val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
@@ -95,10 +95,24 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
     isHeader?: boolean;
     indent?: number;
     showIfZero?: boolean;
-  }> = ({ label, amount, sublabel, isHeader = false, indent = 0, showIfZero = true }) => {
-    const formattedAmount = typeof amount === 'number' 
-      ? fmt(amount, !showIfZero)
-      : (amount || '-');
+  }> = ({ label, amount, sublabel, isHeader = false, indent = 0 }) => {
+    let formattedAmount: string;
+    if (typeof amount === 'number') {
+      formattedAmount = fmt(amount);
+    } else if (
+      amount === undefined || 
+      amount === null || 
+      amount === '' || 
+      amount === '-' || 
+      amount === '$ -' || 
+      amount === '$ 0.00' || 
+      amount === '$0.00' || 
+      amount === '0'
+    ) {
+      formattedAmount = 'N/A';
+    } else {
+      formattedAmount = String(amount);
+    }
 
     return (
       <div className={`text-[10.5px] print:text-[9.5px] leading-snug print:leading-[16px] ${indent ? `pl-${indent}` : ''}`}>
@@ -195,12 +209,12 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                 </div>
               </div>
 
-              {/* Right Number and Date Fields */}
+              {/* Right Case Number and Date Fields */}
               <div className="font-sans text-xs print:text-[10px] space-y-1.5 print:space-y-1 self-end sm:self-auto text-right w-full sm:w-auto">
                 <div className="flex items-baseline justify-end gap-2">
-                  <span className="font-bold">Number:</span>
+                  <span className="font-bold">Case Number:</span>
                   <span className="font-mono font-bold border-b border-neutral-800 px-3 pb-0.5 min-w-[100px] text-left">
-                    {sog.invoiceNumber || caseData.caseNumber}
+                    {caseData.caseNumber}
                   </span>
                 </div>
                 <div className="flex items-baseline justify-end gap-2">
@@ -549,7 +563,7 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
               Benta&apos;s Funeral Home, Inc. • Statement of Goods and Services Selected (Form AP-47)
             </span>
             <span className="font-mono">
-              Deceased: <strong>{caseData.decedent.legalName}</strong> • Date: <strong>{sog.agreementDate}</strong> • Inv: <strong>#{sog.invoiceNumber || caseData.caseNumber}</strong>
+              Deceased: <strong>{caseData.decedent.legalName}</strong> • Date: <strong>{sog.agreementDate}</strong> • Case Number: <strong>#{caseData.caseNumber}</strong>
             </span>
           </div>
 
@@ -705,60 +719,85 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   Explain charges for embalming and for any items that are not required by law but may be necessary because of cemetery requirements, crematory requirements or other selections made.
                 </p>
 
-                {/* Section IV: Funeral Director Explanation Checkboxes */}
-                <div className="space-y-1.5 pt-1.5 pb-1 border-b border-neutral-300">
-                  {/* Option 1: All services and merchandise were selected by the family */}
-                  <label className="flex items-start gap-2 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={sog.sectionIV.explanationAllSelectedByFamily ?? true}
-                      disabled={readOnly}
-                      onChange={(e) => {
-                        const val = e.target.checked;
-                        handleUpdate(prev => ({
-                          ...prev,
-                          sectionIV: {
-                            ...prev.sectionIV,
-                            explanationAllSelectedByFamily: val
-                          }
-                        }));
-                      }}
-                      className="rounded text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
-                    />
-                    <span className="hidden print:inline-block font-mono font-bold text-neutral-900 text-[10px] mr-1">
-                      {(sog.sectionIV.explanationAllSelectedByFamily ?? true) ? '[✓]' : '[  ]'}
-                    </span>
-                    <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
-                      All services and merchandise were selected by the family.
-                    </span>
-                  </label>
+                {/* Section IV: Funeral Director Explanation Options */}
+                {(() => {
+                  const isOpt2Active = Boolean(sog.sectionIV.explanationEmbalmingViewingPurposes);
+                  const isOpt1Active = sog.sectionIV.explanationAllSelectedByFamily !== undefined 
+                    ? Boolean(sog.sectionIV.explanationAllSelectedByFamily)
+                    : !isOpt2Active;
 
-                  {/* Option 2: Embalming requested for viewing purposes */}
-                  <label className="flex items-start gap-2 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={sog.sectionIV.explanationEmbalmingViewingPurposes ?? isEmbalmingSelected}
-                      disabled={readOnly}
-                      onChange={(e) => {
-                        const val = e.target.checked;
-                        handleUpdate(prev => ({
-                          ...prev,
-                          sectionIV: {
-                            ...prev.sectionIV,
-                            explanationEmbalmingViewingPurposes: val
-                          }
-                        }));
-                      }}
-                      className="rounded text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
-                    />
-                    <span className="hidden print:inline-block font-mono font-bold text-neutral-900 text-[10px] mr-1">
-                      {(sog.sectionIV.explanationEmbalmingViewingPurposes ?? isEmbalmingSelected) ? '[✓]' : '[  ]'}
-                    </span>
-                    <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
-                      Embalming requested for viewing purposes.
-                    </span>
-                  </label>
-                </div>
+                  if (readOnly && !isOpt1Active && !isOpt2Active) {
+                    return null;
+                  }
+
+                  return (
+                    <div className="space-y-1.5 pt-1.5 pb-1 border-b border-neutral-300">
+                      {/* Option 1: All services and merchandise were selected by the family */}
+                      {(isOpt1Active || !readOnly) && (
+                        <label className={`flex items-start gap-2 cursor-pointer select-none ${!isOpt1Active ? 'opacity-40 print:hidden' : ''}`}>
+                          <input
+                            type="radio"
+                            name={`ap47ExplanationOption_${caseData.id || caseData.caseNumber}`}
+                            checked={isOpt1Active}
+                            disabled={readOnly}
+                            onChange={() => {
+                              handleUpdate(prev => ({
+                                ...prev,
+                                sectionIV: {
+                                  ...prev.sectionIV,
+                                  explanationAllSelectedByFamily: true,
+                                  explanationEmbalmingViewingPurposes: false
+                                }
+                              }));
+                            }}
+                            className="text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
+                          />
+                          <span className={`font-mono font-bold text-neutral-900 text-[10px] mr-1 ${!readOnly ? 'hidden print:inline-block' : 'inline-block'}`}>
+                            {isOpt1Active ? '[✓]' : '[  ]'}
+                          </span>
+                          <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
+                            All services and merchandise were selected by the family.
+                          </span>
+                          {!isOpt1Active && !readOnly && (
+                            <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Unchecked - will not show on contract)</span>
+                          )}
+                        </label>
+                      )}
+
+                      {/* Option 2: Embalming requested for viewing purposes */}
+                      {(isOpt2Active || !readOnly) && (
+                        <label className={`flex items-start gap-2 cursor-pointer select-none ${!isOpt2Active ? 'opacity-40 print:hidden' : ''}`}>
+                          <input
+                            type="radio"
+                            name={`ap47ExplanationOption_${caseData.id || caseData.caseNumber}`}
+                            checked={isOpt2Active}
+                            disabled={readOnly}
+                            onChange={() => {
+                              handleUpdate(prev => ({
+                                ...prev,
+                                sectionIV: {
+                                  ...prev.sectionIV,
+                                  explanationAllSelectedByFamily: false,
+                                  explanationEmbalmingViewingPurposes: true
+                                }
+                              }));
+                            }}
+                            className="text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
+                          />
+                          <span className={`font-mono font-bold text-neutral-900 text-[10px] mr-1 ${!readOnly ? 'hidden print:inline-block' : 'inline-block'}`}>
+                            {isOpt2Active ? '[✓]' : '[  ]'}
+                          </span>
+                          <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
+                            Embalming requested for viewing purposes.
+                          </span>
+                          {!isOpt2Active && !readOnly && (
+                            <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Unchecked - will not show on contract)</span>
+                          )}
+                        </label>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 <div className="space-y-1 pt-1 text-[9.5px]">
                   {/* Option 1: Combined charge for facilities and staff for visitation */}
@@ -1176,17 +1215,17 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                       <div className="flex items-center gap-1.5">
                         <span className="border border-neutral-800 px-1.5 py-0.2 font-mono text-[7.5px]">[ &nbsp;&nbsp; ]</span>
                         <span className="border-b border-neutral-400 grow h-3"></span>
-                        <span className="border-b border-neutral-400 w-12 h-3 font-mono text-right">$ -</span>
+                        <span className="border-b border-neutral-400 w-12 h-3 font-mono text-right text-[8px]">N/A</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="border border-neutral-800 px-1.5 py-0.2 font-mono text-[7.5px]">[ &nbsp;&nbsp; ]</span>
                         <span className="border-b border-neutral-400 grow h-3"></span>
-                        <span className="border-b border-neutral-400 w-12 h-3 font-mono text-right">$ -</span>
+                        <span className="border-b border-neutral-400 w-12 h-3 font-mono text-right text-[8px]">N/A</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="border border-neutral-800 px-1.5 py-0.2 font-mono text-[7.5px]">[ &nbsp;&nbsp; ]</span>
                         <span className="border-b border-neutral-400 grow h-3"></span>
-                        <span className="border-b border-neutral-400 w-12 h-3 font-mono text-right">$ -</span>
+                        <span className="border-b border-neutral-400 w-12 h-3 font-mono text-right text-[8px]">N/A</span>
                       </div>
                     </div>
                   </div>
@@ -1195,21 +1234,31 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
                   <div className="space-y-0.8 text-[8.5px] border-t sm:border-t-0 sm:border-l border-neutral-300 sm:pl-2.5 pt-1 sm:pt-0">
                     <div className="flex justify-between items-baseline border-b border-neutral-200 pb-0.2">
                       <span className="text-neutral-700">Total Adjustments to Funeral Charges:</span>
-                      <span className="font-mono font-medium">$ -</span>
+                      <span className="font-mono font-medium">N/A</span>
                     </div>
                     <div className="flex justify-between items-baseline border-b border-neutral-200 pb-0.2 font-bold">
                       <span className="text-neutral-900 uppercase">ADJUSTED TOTAL:</span>
-                      <span className="font-mono">${sog.sectionIII.totalFuneralCharges.toFixed(2)}</span>
+                      <span className="font-mono">
+                        {sog.sectionIII.totalFuneralCharges > 0 
+                          ? `$${sog.sectionIII.totalFuneralCharges.toFixed(2)}` 
+                          : 'N/A'}
+                      </span>
                     </div>
                     <div className="flex justify-between items-baseline border-b border-neutral-200 pb-0.2 text-emerald-800 font-semibold">
                       <span>Credit:</span>
                       <span className="font-mono">
-                        ${sog.sectionIII.lessCreditsAndInsurance > 0 ? sog.sectionIII.lessCreditsAndInsurance.toFixed(2) : '-'}
+                        {sog.sectionIII.lessCreditsAndInsurance > 0 
+                          ? `$${sog.sectionIII.lessCreditsAndInsurance.toFixed(2)}` 
+                          : 'N/A'}
                       </span>
                     </div>
                     <div className="flex justify-between items-baseline pt-0.5 text-neutral-950 font-bold">
                       <span>BALANCE DUE:</span>
-                      <span className="font-mono text-[10px] text-[#800000]">${sog.sectionIII.balanceDue.toFixed(2)}</span>
+                      <span className="font-mono text-[10px] text-[#800000]">
+                        {sog.sectionIII.balanceDue > 0 
+                          ? `$${sog.sectionIII.balanceDue.toFixed(2)}` 
+                          : 'N/A'}
+                      </span>
                     </div>
                   </div>
 
