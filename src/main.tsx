@@ -38,6 +38,18 @@ class ErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Unhandled UI Error caught by boundary:', error, errorInfo);
+    // Automatic self-healing: if an error occurred due to stale or incompatible localStorage schema,
+    // clear local storage and reload once automatically so the user never gets stuck.
+    try {
+      const healAttempts = parseInt(sessionStorage.getItem('bfh_auto_heal_count') || '0', 10);
+      if (healAttempts < 1) {
+        sessionStorage.setItem('bfh_auto_heal_count', '1');
+        localStorage.clear();
+        window.location.reload();
+      }
+    } catch (e) {
+      // Storage access guarded
+    }
   }
 
   render() {
@@ -48,16 +60,17 @@ class ErrorBoundary extends React.Component<
             <span className="text-3xl">🕊️</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-amber-200 mb-2">Benta&apos;s Funeral Home, Inc.</h1>
-          <p className="text-sm text-neutral-400 max-w-md mb-6 leading-relaxed">
-            The application encountered a display refresh requirement. Please click below to reload.
+          <p className="text-sm text-neutral-400 max-w-md mb-4 leading-relaxed">
+            The application experienced a display refresh requirement. Click below to load a fresh session.
           </p>
+
+          {this.state.error && (
+            <div className="mb-6 p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-left text-xs font-mono text-red-300 max-w-md w-full overflow-auto">
+              <span className="font-semibold text-red-200">Notice:</span> {this.state.error.message}
+            </div>
+          )}
+
           <div className="flex gap-3">
-            <button
-              onClick={() => window.location.reload()}
-              className="px-5 py-2.5 bg-[#800000] hover:bg-[#9a0000] text-white text-xs font-bold rounded-xl transition cursor-pointer"
-            >
-              Refresh Application
-            </button>
             <button
               onClick={() => {
                 try {
@@ -66,9 +79,15 @@ class ErrorBoundary extends React.Component<
                 } catch (e) {}
                 window.location.href = '/';
               }}
-              className="px-5 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-semibold rounded-xl transition cursor-pointer"
+              className="px-6 py-2.5 bg-[#800000] hover:bg-[#9a0000] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-lg shadow-red-950/50"
             >
-              Reset Session
+              Reset Session & Open Live Site
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-5 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-semibold rounded-xl transition cursor-pointer"
+            >
+              Reload Page
             </button>
           </div>
         </div>

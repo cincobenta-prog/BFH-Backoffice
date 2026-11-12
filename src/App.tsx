@@ -2051,61 +2051,65 @@ export function App() {
         />
 
         {/* End-to-End Case Lifecycle Simulation Runner Modal */}
-        <CaseLifecycleSimulatorModal
-          isOpen={isSimulationModalOpen}
-          onClose={() => setIsSimulationModalOpen(false)}
-          activeCase={activeCase}
-          cases={cases}
-          onSelectCase={(c) => setActiveCaseId(c.id)}
-          onAdvancePhase={handleUpdateCasePhase}
-          onLaunchModal={(key, targetCase) => {
-            switch (key) {
-              case 'removal':
-                setRemovalTargetCase(targetCase);
-                setIsRemovalModalOpen(true);
-                break;
-              case 'contract':
-                setContractTargetCase(targetCase);
-                setIsContractModalOpen(true);
-                break;
-              case 'ai':
-                setIsAIGatewayModalOpen(true);
-                break;
-              case 'docusign':
-                handleOpenDocuSignModal(targetCase);
-                break;
-              case 'quickbooks':
-                handleOpenQuickBooksModal(targetCase);
-                break;
-              case 'stripe':
-                setStripeTargetCase(targetCase);
-                setIsStripeModalOpen(true);
-                break;
-              case 'edrs':
-                setIsEdrsModalOpen(true);
-                break;
-              case 'press':
-                setIsPressModalOpen(true);
-                break;
-              case 'webcast':
-                setIsWebcastHubModalOpen(true);
-                break;
-              case 'golden_record':
-                setActiveCaseId(targetCase.id);
-                setBackOfficeTab('golden_record');
-                break;
-            }
-          }}
-        />
+        {isSimulationModalOpen && (
+          <CaseLifecycleSimulatorModal
+            isOpen={isSimulationModalOpen}
+            onClose={() => setIsSimulationModalOpen(false)}
+            activeCase={activeCase}
+            cases={cases}
+            onSelectCase={(c) => setActiveCaseId(c.id)}
+            onAdvancePhase={handleUpdateCasePhase}
+            onLaunchModal={(key, targetCase) => {
+              switch (key) {
+                case 'removal':
+                  setRemovalTargetCase(targetCase);
+                  setIsRemovalModalOpen(true);
+                  break;
+                case 'contract':
+                  setContractTargetCase(targetCase);
+                  setIsContractModalOpen(true);
+                  break;
+                case 'ai':
+                  setIsAIGatewayModalOpen(true);
+                  break;
+                case 'docusign':
+                  handleOpenDocuSignModal(targetCase);
+                  break;
+                case 'quickbooks':
+                  handleOpenQuickBooksModal(targetCase);
+                  break;
+                case 'stripe':
+                  setStripeTargetCase(targetCase);
+                  setIsStripeModalOpen(true);
+                  break;
+                case 'edrs':
+                  setIsEdrsModalOpen(true);
+                  break;
+                case 'press':
+                  setIsPressModalOpen(true);
+                  break;
+                case 'webcast':
+                  setIsWebcastHubModalOpen(true);
+                  break;
+                case 'golden_record':
+                  setActiveCaseId(targetCase.id);
+                  setBackOfficeTab('golden_record');
+                  break;
+              }
+            }}
+          />
+        )}
 
         {/* Interactive Guided Tour & Spotlight Tutorial Modal */}
-        <InteractiveGuidedTourModal
-          isOpen={isGuidedTourOpen}
-          onClose={() => setIsGuidedTourOpen(false)}
-          activeCase={activeCase}
-          initialTrack={guidedTourInitialTrack}
-          onLaunchToolModal={handleLaunchToolFromTour}
-        />
+        {isGuidedTourOpen && (
+          <InteractiveGuidedTourModal
+            isOpen={isGuidedTourOpen}
+            onClose={() => setIsGuidedTourOpen(false)}
+            activeCase={activeCase}
+            initialTrack={guidedTourInitialTrack}
+            onLaunchToolModal={handleLaunchToolFromTour}
+          />
+        )}
       </div>
     );
   }
@@ -2166,27 +2170,31 @@ export function App() {
       )}
 
       {/* Family Access & Confidential Vault Authentication Modal */}
-      <FamilyAccessModal
-        isOpen={isFamilyAccessModalOpen}
-        onClose={() => setIsFamilyAccessModalOpen(false)}
-        cases={cases}
-        onAuthenticateFamily={handleAuthenticateFamily}
-        onOpenDirectorPortal={() => {
-          setIsStaffUser(true);
-          setCurrentRole('director');
-          setViewMode('backoffice');
-        }}
-      />
+      {isFamilyAccessModalOpen && (
+        <FamilyAccessModal
+          isOpen={isFamilyAccessModalOpen}
+          onClose={() => setIsFamilyAccessModalOpen(false)}
+          cases={cases}
+          onAuthenticateFamily={handleAuthenticateFamily}
+          onOpenDirectorPortal={() => {
+            setIsStaffUser(true);
+            setCurrentRole('director');
+            setViewMode('backoffice');
+          }}
+        />
+      )}
 
       {/* Global Front Office Lobby Kiosk Display Modal */}
-      <FrontOfficeLobbyKioskModal
-        isOpen={isLobbyKioskOpen}
-        onClose={() => setIsLobbyKioskOpen(false)}
-        events={calendarEvents}
-        cases={cases}
-        directorProfiles={directorProfiles}
-        initialDate="2026-09-22"
-      />
+      {isLobbyKioskOpen && (
+        <FrontOfficeLobbyKioskModal
+          isOpen={isLobbyKioskOpen}
+          onClose={() => setIsLobbyKioskOpen(false)}
+          events={calendarEvents}
+          cases={cases}
+          directorProfiles={directorProfiles}
+          initialDate="2026-09-22"
+        />
+      )}
 
       {/* NYS PRE-NEED TRUST & MEDICAID SPEND-DOWN VAULT MODAL */}
       {isPreNeedModalOpen && (
