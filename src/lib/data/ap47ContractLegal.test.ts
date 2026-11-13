@@ -449,52 +449,115 @@ describe('Official Scanned NYS Form AP-47 Legal Disclosures & Verbatim Text Vali
     expect(html).not.toContain('• Inv:');
   });
 
-  it('validates Explanation of Charges displays only the checked option and omits the unchecked option on the contract', async () => {
+  it('validates Section 4 Explanation of Charges automated rule: embalming/prep triggers viewing purpose and cremations/no-embalming triggers family selections', async () => {
     const { OfficialScannedFormAP47 } = await import('../../components/backoffice/OfficialScannedFormAP47');
     const ReactDOMServer = (await import('react-dom/server')).default;
     const { TEST_CASE_AP47_FIXTURE } = await import('./testFixtures');
-    const { getDefaultStatementOfGoodsForCase } = await import('./generalPriceList');
+    const { getDefaultStatementOfGoodsForCase, calculateAP47Totals } = await import('./generalPriceList');
+    const { ACTIVE_REAL_CASES } = await import('./activeRealCases');
 
     const testCase = TEST_CASE_AP47_FIXTURE;
     const baseSog = getDefaultStatementOfGoodsForCase(testCase);
 
-    // Scenario A: Option 1 checked ("All services and merchandise were selected by the family")
-    const opt1Sog = {
+    // Scenario A: When embalming is NOT selected in Section 1 (e.g., cremation or direct burial):
+    // Only "All services and merchandise were selected by the family" appears and is checked [✓].
+    // "Embalming requested for viewing purposes" must NOT appear.
+    const noEmbalmSog = calculateAP47Totals({
       ...baseSog,
+      sectionI: {
+        ...baseSog.sectionI,
+        C1_embalmingSelected: false,
+        C1_embalmingAmount: 0,
+        C2_dressingCasketingAmount: 0,
+        C2_cosmetologyAmount: 0,
+        C2_topicalDisinfectionAmount: 0,
+        C2_restorationAmount: 0,
+        C2_otherAmount: 0,
+        C_otherAmount: 0
+      },
       sectionIV: {
         ...baseSog.sectionIV,
-        explanationAllSelectedByFamily: true,
-        explanationEmbalmingViewingPurposes: false
+        embalmingAuthorization: {
+          choice: 'not_to_embalm' as const,
+          relationToDeceased: 'Spouse',
+          reasonNotes: 'Direct cremation selected; no viewing requested'
+        }
       }
-    };
-    const htmlOpt1 = ReactDOMServer.renderToStaticMarkup(
-      React.createElement(OfficialScannedFormAP47, {
-        caseData: testCase,
-        statementData: opt1Sog,
-        readOnly: true
-      })
-    );
-    expect(htmlOpt1).toContain('All services and merchandise were selected by the family.');
-    expect(htmlOpt1).not.toContain('Embalming requested for viewing purposes.');
+    });
 
-    // Scenario B: Option 2 checked ("Embalming requested for viewing purposes")
-    const opt2Sog = {
-      ...baseSog,
-      sectionIV: {
-        ...baseSog.sectionIV,
-        explanationAllSelectedByFamily: false,
-        explanationEmbalmingViewingPurposes: true
-      }
-    };
-    const htmlOpt2 = ReactDOMServer.renderToStaticMarkup(
+    expect(noEmbalmSog.sectionIV.explanationAllSelectedByFamily).toBe(true);
+    expect(noEmbalmSog.sectionIV.explanationEmbalmingViewingPurposes).toBe(false);
+
+    const htmlNoEmbalm = ReactDOMServer.renderToStaticMarkup(
       React.createElement(OfficialScannedFormAP47, {
         caseData: testCase,
-        statementData: opt2Sog,
+        statementData: noEmbalmSog,
         readOnly: true
       })
     );
-    expect(htmlOpt2).not.toContain('All services and merchandise were selected by the family.');
-    expect(htmlOpt2).toContain('Embalming requested for viewing purposes.');
+    expect(htmlNoEmbalm).toContain('[✓]');
+    expect(htmlNoEmbalm).toContain('All services and merchandise were selected by the family.');
+    expect(htmlNoEmbalm).not.toContain('Embalming requested for viewing purposes.');
+
+    // Scenario B: When embalming and/or preparation IS selected in Section 1:
+    // Only "Embalming requested for viewing purposes" appears and is checked [✓].
+    // "All services and merchandise were selected by the family" must NOT appear.
+    const embalmSog = calculateAP47Totals({
+      ...baseSog,
+      sectionI: {
+        ...baseSog.sectionI,
+        C1_embalmingSelected: true,
+        C1_embalmingAmount: 950
+      },
+      sectionIV: {
+        ...baseSog.sectionIV,
+        embalmingAuthorization: {
+          choice: 'embalm' as const,
+          relationToDeceased: 'Spouse',
+          reasonNotes: 'Approved for public viewing'
+        }
+      }
+    });
+
+    expect(embalmSog.sectionIV.explanationEmbalmingViewingPurposes).toBe(true);
+    expect(embalmSog.sectionIV.explanationAllSelectedByFamily).toBe(false);
+
+    const htmlEmbalm = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: testCase,
+        statementData: embalmSog,
+        readOnly: true
+      })
+    );
+    expect(htmlEmbalm).toContain('[✓]');
+    expect(htmlEmbalm).toContain('Embalming requested for viewing purposes.');
+    expect(htmlEmbalm).not.toContain('All services and merchandise were selected by the family.');
+
+    // Scenario C: Verify real operational case 24506 (Garnet Seraile-McKenzie, Direct Cremation)
+    const case24506 = ACTIVE_REAL_CASES.find(c => c.caseNumber === '24506');
+    expect(case24506).toBeDefined();
+    const html24506 = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: case24506!,
+        statementData: case24506!.statementOfGoods!,
+        readOnly: true
+      })
+    );
+    expect(html24506).toContain('All services and merchandise were selected by the family.');
+    expect(html24506).not.toContain('Embalming requested for viewing purposes.');
+
+    // Scenario D: Verify real operational case 24508 (Sharon Pino, Traditional with Embalming)
+    const case24508 = ACTIVE_REAL_CASES.find(c => c.caseNumber === '24508');
+    expect(case24508).toBeDefined();
+    const html24508 = ReactDOMServer.renderToStaticMarkup(
+      React.createElement(OfficialScannedFormAP47, {
+        caseData: case24508!,
+        statementData: case24508!.statementOfGoods!,
+        readOnly: true
+      })
+    );
+    expect(html24508).toContain('Embalming requested for viewing purposes.');
+    expect(html24508).not.toContain('All services and merchandise were selected by the family.');
   });
 });
 

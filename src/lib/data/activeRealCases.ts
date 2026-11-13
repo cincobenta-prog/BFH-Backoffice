@@ -448,7 +448,7 @@ export const CASE_24508_SHARON_PINO: GoldenRecordCase = {
       includeCombinedVisitation: true,
       includeCombinedFuneralService: true,
       includeCombinedOther: false,
-      explanationAllSelectedByFamily: true,
+      explanationAllSelectedByFamily: false,
       explanationEmbalmingViewingPurposes: true,
       custodyAuthorization: {
         authorized: true,
@@ -948,7 +948,7 @@ export const CASE_24507_BEATRICE_MCKNIGHT: GoldenRecordCase = {
       includeCombinedVisitation: true,
       includeCombinedFuneralService: true,
       includeCombinedOther: false,
-      explanationAllSelectedByFamily: true,
+      explanationAllSelectedByFamily: false,
       explanationEmbalmingViewingPurposes: true,
       custodyAuthorization: {
         authorized: true,
@@ -1404,6 +1404,7 @@ export const CASE_24506_GARNET_SERAILE_MCKENZIE: GoldenRecordCase = {
       includeCombinedFuneralService: false,
       includeCombinedOther: false,
       explanationAllSelectedByFamily: true,
+      explanationEmbalmingViewingPurposes: false,
       custodyAuthorization: {
         authorized: true,
         relationToDeceased: 'Spouse (Dane McKenzie)',
@@ -1911,7 +1912,7 @@ export const CASE_24502_ARTHUR_MAYFIELD: GoldenRecordCase = {
       includeCombinedVisitation: true,
       includeCombinedFuneralService: true,
       includeCombinedOther: false,
-      explanationAllSelectedByFamily: true,
+      explanationAllSelectedByFamily: false,
       explanationEmbalmingViewingPurposes: true,
       custodyAuthorization: {
         authorized: true,
@@ -2403,7 +2404,7 @@ export const CASE_24500_MARSHA_STREETER: GoldenRecordCase = {
       includeCombinedVisitation: true,
       includeCombinedFuneralService: true,
       includeCombinedOther: false,
-      explanationAllSelectedByFamily: true,
+      explanationAllSelectedByFamily: false,
       explanationEmbalmingViewingPurposes: true,
       custodyAuthorization: {
         authorized: true,

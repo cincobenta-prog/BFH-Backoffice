@@ -12,6 +12,7 @@ import {
   BFH_GPL_2026, 
   CATALOG_VAULTS, 
   calculateAP47Totals, 
+  hasEmbalmingOrPreparation,
   getDefaultStatementOfGoodsForCase,
   computeContractDiffs
 } from '../../lib/data/generalPriceList';
@@ -6187,68 +6188,74 @@ Licensed Funeral Director: Jason Benta, NYS Reg. #08850
                     </div>
 
                     <div className="space-y-3">
-                      {/* Primary Explanation Checkboxes */}
-                      <div className="bg-amber-50/70 p-4 rounded-xl border border-amber-300 space-y-3">
-                        <div className="text-xs font-bold text-amber-950 uppercase tracking-wide">
-                          Funeral Director Explanation Options (Select one or the other — only the checked option appears on contract)
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <label className={`flex items-start space-x-2.5 p-2.5 rounded-lg border cursor-pointer transition ${
-                            (statementData.sectionIV.explanationAllSelectedByFamily ?? (!statementData.sectionIV.explanationEmbalmingViewingPurposes))
-                              ? 'bg-amber-100/70 border-amber-500 ring-1 ring-amber-500' 
-                              : 'bg-white border-neutral-200 hover:border-amber-400'
-                          }`}>
-                            <input
-                              type="radio"
-                              name="builderExplanationOption"
-                              checked={statementData.sectionIV.explanationAllSelectedByFamily ?? (!statementData.sectionIV.explanationEmbalmingViewingPurposes)}
-                              onChange={() => {
-                                const updated = { ...statementData };
-                                updated.sectionIV.explanationAllSelectedByFamily = true;
-                                updated.sectionIV.explanationEmbalmingViewingPurposes = false;
-                                setStatementData(calculateAP47Totals(updated));
-                              }}
-                              className="text-[#800000] focus:ring-[#800000] mt-0.5 cursor-pointer"
-                            />
-                            <div>
-                              <span className="font-bold text-neutral-900 text-xs block">
-                                All services and merchandise were selected by the family.
-                              </span>
-                              <span className="text-[10px] text-neutral-500">
-                                Option A: Family affirmative selection disclosure (Only this option will appear on contract)
+                      {/* Primary Explanation Checkboxes: Automated Rule */}
+                      {(() => {
+                        const hasEmbalmingOrPrep = hasEmbalmingOrPreparation(statementData);
+                        return (
+                          <div className="bg-amber-50/70 p-4 rounded-xl border border-amber-300 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div className="text-xs font-bold text-amber-950 uppercase tracking-wide">
+                                Section 4: Explanation of Charges (Automated Contract Rule)
+                              </div>
+                              <span className="text-[10px] bg-amber-200/90 text-amber-950 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                                Auto-Synced with Section 1
                               </span>
                             </div>
-                          </label>
+                            
+                            <p className="text-[11px] text-amber-950 leading-relaxed">
+                              {hasEmbalmingOrPrep
+                                ? 'Family selected embalming and/or preparation of remains in Section 1. "[✓] Embalming requested for viewing purposes" is automatically triggered. "All services and merchandise were selected by the family" is omitted from the contract.'
+                                : 'No embalming or preparation was selected in Section 1 (e.g., cremation or direct burial). "[✓] All services and merchandise were selected by the family" is automatically triggered. "Embalming requested for viewing purposes" is omitted from the contract.'}
+                            </p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div className={`p-3 rounded-lg border transition ${
+                                !hasEmbalmingOrPrep
+                                  ? 'bg-amber-100/80 border-amber-500 ring-1 ring-amber-500 shadow-sm' 
+                                  : 'bg-neutral-100/60 border-neutral-200 opacity-40'
+                              }`}>
+                                <div className="flex items-start space-x-2">
+                                  <span className="font-mono font-bold text-[#800000] text-sm mt-0.5">
+                                    {!hasEmbalmingOrPrep ? '[✓]' : '[  ]'}
+                                  </span>
+                                  <div>
+                                    <span className="font-bold text-neutral-900 text-xs block">
+                                      All services and merchandise were selected by the family.
+                                    </span>
+                                    <span className="text-[10px] text-neutral-600 block mt-0.5">
+                                      {!hasEmbalmingOrPrep 
+                                        ? 'Active on Form AP-47 contract (no embalming selected).' 
+                                        : 'Omitted from Form AP-47 contract.'}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
 
-                          <label className={`flex items-start space-x-2.5 p-2.5 rounded-lg border cursor-pointer transition ${
-                            Boolean(statementData.sectionIV.explanationEmbalmingViewingPurposes)
-                              ? 'bg-amber-100/70 border-amber-500 ring-1 ring-amber-500' 
-                              : 'bg-white border-neutral-200 hover:border-amber-400'
-                          }`}>
-                            <input
-                              type="radio"
-                              name="builderExplanationOption"
-                              checked={Boolean(statementData.sectionIV.explanationEmbalmingViewingPurposes)}
-                              onChange={() => {
-                                const updated = { ...statementData };
-                                updated.sectionIV.explanationAllSelectedByFamily = false;
-                                updated.sectionIV.explanationEmbalmingViewingPurposes = true;
-                                setStatementData(calculateAP47Totals(updated));
-                              }}
-                              className="text-[#800000] focus:ring-[#800000] mt-0.5 cursor-pointer"
-                            />
-                            <div>
-                              <span className="font-bold text-neutral-900 text-xs block">
-                                Embalming requested for viewing purposes.
-                              </span>
-                              <span className="text-[10px] text-neutral-500">
-                                Option B: Public viewing / sanctuary service disclosure (Only this option will appear on contract)
-                              </span>
+                              <div className={`p-3 rounded-lg border transition ${
+                                hasEmbalmingOrPrep
+                                  ? 'bg-amber-100/80 border-amber-500 ring-1 ring-amber-500 shadow-sm' 
+                                  : 'bg-neutral-100/60 border-neutral-200 opacity-40'
+                              }`}>
+                                <div className="flex items-start space-x-2">
+                                  <span className="font-mono font-bold text-[#800000] text-sm mt-0.5">
+                                    {hasEmbalmingOrPrep ? '[✓]' : '[  ]'}
+                                  </span>
+                                  <div>
+                                    <span className="font-bold text-neutral-900 text-xs block">
+                                      Embalming requested for viewing purposes.
+                                    </span>
+                                    <span className="text-[10px] text-neutral-600 block mt-0.5">
+                                      {hasEmbalmingOrPrep 
+                                        ? 'Active on Form AP-47 contract (embalming/prep selected in Section 1).' 
+                                        : 'Omitted from Form AP-47 contract.'}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </label>
-                        </div>
-                      </div>
+                          </div>
+                        );
+                      })()}
 
                       {/* Option 1: Visitation */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-white rounded-xl border border-neutral-200">

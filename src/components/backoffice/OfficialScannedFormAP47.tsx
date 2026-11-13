@@ -3,7 +3,7 @@ import {
   GoldenRecordCase, 
   StatementOfGoodsData 
 } from '../../lib/types/funeral';
-import { calculateAP47Totals, BFH_GPL_2026 } from '../../lib/data/generalPriceList';
+import { calculateAP47Totals, hasEmbalmingOrPreparation, BFH_GPL_2026 } from '../../lib/data/generalPriceList';
 import { CheckSquare, Square } from 'lucide-react';
 
 interface OfficialScannedFormAP47Props {
@@ -46,6 +46,13 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
     handleUpdate(prev => {
       const updated = { ...prev };
       updated.sectionIV.embalmingAuthorization.choice = choice;
+      if (choice === 'not_to_embalm') {
+        updated.sectionI.C1_embalmingSelected = false;
+        updated.sectionI.C1_embalmingAmount = 0;
+      } else {
+        updated.sectionI.C1_embalmingSelected = true;
+        updated.sectionI.C1_embalmingAmount = BFH_GPL_2026.embalming;
+      }
       return updated;
     });
   };
@@ -721,79 +728,35 @@ export const OfficialScannedFormAP47: React.FC<OfficialScannedFormAP47Props> = (
 
                 {/* Section IV: Funeral Director Explanation Options */}
                 {(() => {
-                  const isOpt2Active = Boolean(sog.sectionIV.explanationEmbalmingViewingPurposes);
-                  const isOpt1Active = sog.sectionIV.explanationAllSelectedByFamily !== undefined 
-                    ? Boolean(sog.sectionIV.explanationAllSelectedByFamily)
-                    : !isOpt2Active;
-
-                  if (readOnly && !isOpt1Active && !isOpt2Active) {
-                    return null;
-                  }
+                  // Automated Rule for Section 4 Explanation of Charges:
+                  // When embalming and/or preparation of remains is selected in Section 1 (or embalming authorized):
+                  // -> Automatically triggers [✓] "Embalming requested for viewing purposes."
+                  // -> "All services and merchandise were selected by the family" must NOT appear.
+                  // When embalming/prep is NOT selected (e.g. cremations):
+                  // -> [✓] "All services and merchandise were selected by the family" appears.
+                  // -> "Embalming requested for viewing purposes" must NOT appear.
+                  const hasEmbalmingOrPrep = hasEmbalmingOrPreparation(sog) || Boolean(sog.sectionIV.explanationEmbalmingViewingPurposes);
 
                   return (
                     <div className="space-y-1.5 pt-1.5 pb-1 border-b border-neutral-300">
-                      {/* Option 1: All services and merchandise were selected by the family */}
-                      {(isOpt1Active || !readOnly) && (
-                        <label className={`flex items-start gap-2 cursor-pointer select-none ${!isOpt1Active ? 'opacity-40 print:hidden' : ''}`}>
-                          <input
-                            type="radio"
-                            name={`ap47ExplanationOption_${caseData.id || caseData.caseNumber}`}
-                            checked={isOpt1Active}
-                            disabled={readOnly}
-                            onChange={() => {
-                              handleUpdate(prev => ({
-                                ...prev,
-                                sectionIV: {
-                                  ...prev.sectionIV,
-                                  explanationAllSelectedByFamily: true,
-                                  explanationEmbalmingViewingPurposes: false
-                                }
-                              }));
-                            }}
-                            className="text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
-                          />
-                          <span className={`font-mono font-bold text-neutral-900 text-[10px] mr-1 ${!readOnly ? 'hidden print:inline-block' : 'inline-block'}`}>
-                            {isOpt1Active ? '[✓]' : '[  ]'}
-                          </span>
-                          <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
-                            All services and merchandise were selected by the family.
-                          </span>
-                          {!isOpt1Active && !readOnly && (
-                            <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Unchecked - will not show on contract)</span>
-                          )}
-                        </label>
-                      )}
-
-                      {/* Option 2: Embalming requested for viewing purposes */}
-                      {(isOpt2Active || !readOnly) && (
-                        <label className={`flex items-start gap-2 cursor-pointer select-none ${!isOpt2Active ? 'opacity-40 print:hidden' : ''}`}>
-                          <input
-                            type="radio"
-                            name={`ap47ExplanationOption_${caseData.id || caseData.caseNumber}`}
-                            checked={isOpt2Active}
-                            disabled={readOnly}
-                            onChange={() => {
-                              handleUpdate(prev => ({
-                                ...prev,
-                                sectionIV: {
-                                  ...prev.sectionIV,
-                                  explanationAllSelectedByFamily: false,
-                                  explanationEmbalmingViewingPurposes: true
-                                }
-                              }));
-                            }}
-                            className="text-[#800000] focus:ring-[#800000] mt-0.5 print:hidden cursor-pointer h-3.5 w-3.5"
-                          />
-                          <span className={`font-mono font-bold text-neutral-900 text-[10px] mr-1 ${!readOnly ? 'hidden print:inline-block' : 'inline-block'}`}>
-                            {isOpt2Active ? '[✓]' : '[  ]'}
+                      {hasEmbalmingOrPrep ? (
+                        <div className="flex items-start gap-2 select-none">
+                          <span className="font-mono font-bold text-neutral-900 text-[10px] mr-1 inline-block">
+                            [✓]
                           </span>
                           <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
                             Embalming requested for viewing purposes.
                           </span>
-                          {!isOpt2Active && !readOnly && (
-                            <span className="text-[7.5px] text-neutral-500 italic print:hidden">(Unchecked - will not show on contract)</span>
-                          )}
-                        </label>
+                        </div>
+                      ) : (
+                        <div className="flex items-start gap-2 select-none">
+                          <span className="font-mono font-bold text-neutral-900 text-[10px] mr-1 inline-block">
+                            [✓]
+                          </span>
+                          <span className="text-[10px] print:text-[9px] text-neutral-900 leading-snug font-medium">
+                            All services and merchandise were selected by the family.
+                          </span>
+                        </div>
                       )}
                     </div>
                   );

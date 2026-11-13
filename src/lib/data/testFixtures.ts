@@ -360,6 +360,8 @@ export const TEST_CASE_AP47_FIXTURE: GoldenRecordCase =   {
         "includeCombinedVisitation": true,
         "includeCombinedFuneralService": true,
         "includeCombinedOther": true,
+        "explanationAllSelectedByFamily": false,
+        "explanationEmbalmingViewingPurposes": true,
         "custodyAuthorization": {
           "authorized": true,
           "relationToDeceased": "Spouse (Cassie Williams)",

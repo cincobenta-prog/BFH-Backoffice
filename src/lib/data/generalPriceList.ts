@@ -377,6 +377,40 @@ export const CATALOG_FLOWERS: Array<{
 // TOTALS CALCULATION ENGINE FOR FORM AP-47
 // -------------------------------------------------------------
 
+/**
+ * Automated Business Rule for Section 4: "Explanation of Charges"
+ * When a family selects embalming and/or preparation of remains in Section 1
+ * of the contract (or embalming authorization choice is 'embalm'):
+ * - Triggers [✓] "Embalming requested for viewing purposes."
+ * - "All services and merchandise were selected by the family" must NOT appear.
+ * When embalming/prep is NOT selected (e.g. cremations without embalming):
+ * - Triggers [✓] "All services and merchandise were selected by the family."
+ * - "Embalming requested for viewing purposes" must NOT appear.
+ */
+export const hasEmbalmingOrPreparation = (data?: Partial<StatementOfGoodsData> | null): boolean => {
+  if (!data) return false;
+  const s1 = data.sectionI;
+  if (!s1) return false;
+
+  const hasEmbalming = Boolean(
+    s1.C1_embalmingSelected || 
+    (s1.C1_embalmingAmount && s1.C1_embalmingAmount > 0)
+  );
+
+  const hasPrep = Boolean(
+    (s1.C2_dressingCasketingAmount && s1.C2_dressingCasketingAmount > 0) ||
+    (s1.C2_cosmetologyAmount && s1.C2_cosmetologyAmount > 0) ||
+    (s1.C2_topicalDisinfectionAmount && s1.C2_topicalDisinfectionAmount > 0) ||
+    (s1.C2_restorationAmount && s1.C2_restorationAmount > 0) ||
+    (s1.C2_otherAmount && s1.C2_otherAmount > 0) ||
+    (s1.C_otherAmount && s1.C_otherAmount > 0)
+  );
+
+  const hasEmbalmAuth = data.sectionIV?.embalmingAuthorization?.choice === 'embalm';
+
+  return hasEmbalming || hasPrep || hasEmbalmAuth;
+};
+
 export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGoodsData => {
   const s1 = { ...data.sectionI };
   const s2 = { ...data.sectionII };
@@ -535,11 +569,25 @@ export const calculateAP47Totals = (data: StatementOfGoodsData): StatementOfGood
   s3.lessCreditsAndInsurance = s3.lessCreditsAndInsurance !== undefined ? s3.lessCreditsAndInsurance : 0;
   s3.balanceDue = Math.max(0, Math.round((grandTotal - s3.lessCreditsAndInsurance) * 100) / 100);
 
+  // Automated Section IV Rule: Explanation of Charges
+  const hasEmbalmingOrPrep = hasEmbalmingOrPreparation({
+    sectionI: s1,
+    sectionIV: data.sectionIV,
+    serviceType: data.serviceType
+  });
+
+  const s4 = data.sectionIV ? { ...data.sectionIV } : undefined;
+  if (s4) {
+    s4.explanationEmbalmingViewingPurposes = hasEmbalmingOrPrep;
+    s4.explanationAllSelectedByFamily = !hasEmbalmingOrPrep;
+  }
+
   return {
     ...data,
     sectionI: s1,
     sectionII: s2,
     sectionIII: s3,
+    ...(s4 ? { sectionIV: s4 } : {})
   };
 };
 
@@ -922,8 +970,8 @@ export const getDefaultStatementOfGoodsForCase = (c: GoldenRecordCase): Statemen
       includeCombinedVisitation: true,
       includeCombinedFuneralService: true,
       includeCombinedOther: false,
-      explanationAllSelectedByFamily: true,
-      explanationEmbalmingViewingPurposes: false,
+      explanationAllSelectedByFamily: isCremation && c.dispositionType !== 'full_cremation',
+      explanationEmbalmingViewingPurposes: !isCremation || c.dispositionType === 'full_cremation',
 
       custodyAuthorization: {
         authorized: true,
